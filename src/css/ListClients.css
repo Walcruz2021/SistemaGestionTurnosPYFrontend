@@ -1,0 +1,13 @@
+.agenda .h5{
+    color:"red";
+    size:"10rem"
+}
+
+.agenda h1{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.agenda buttonClient{
+    text-align: center;
+}

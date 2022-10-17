@@ -1,0 +1,176 @@
+
+.containerGralDog{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    
+}
+
+.contenedorTit{
+    display: flex;
+    text-align: center;
+    background-color:aquamarine;
+}
+
+.contenedorTit h5{
+    margin-left:auto;
+    margin-right: auto;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-family: 'Lato';
+    font-style: normal;
+    text-align: center;
+    font-size: 1.5em;
+    color: white;
+}
+
+.containerPed{
+    margin-top: 10px;
+    display:grid;
+    text-align: center;
+    /* border: 1.19px solid rgba(224, 224, 224, 1); */
+    grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+}
+
+
+.contenedorSuma{
+    /* border: 1.19px solid rgba(224, 224, 224, 1); */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+
+}
+/* .containerDog{
+    margin-top: 10px;
+    border: 1.19px solid rgba(224, 224, 224, 1);
+    gap:4px;
+    margin-left: 5px;
+    margin-right: 5px;
+} */
+
+
+
+.container-description{
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap:5px;
+    margin-top: 10px;
+    border: 1.19px solid rgba(224, 224, 224, 1);
+    gap:5px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+    
+/* 
+.container-description h5{
+    text-align: center;
+} */
+
+.container-description div{
+    text-align: center;
+    margin: auto;
+}
+
+.containerIcon{
+   
+    display: flex;
+    
+}
+
+.buttonDleteDog{
+ border: 0cm;
+    margin: 10px;
+}
+
+.buttonEditDog{
+    border: 0cm;
+    margin: 10px;
+}
+/* 
+.icon1{
+    
+    padding: 1rem;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-bottom: 5px;
+    margin-right: 2px;
+    color: white;
+} */
+
+
+.icon3{
+ text-align: center;
+    margin:10px
+}
+
+.icon4{
+    text-align: center;
+       margin:10px;
+       float: left;
+}
+
+.icon5{
+    text-align: center;
+       margin:10px;
+       float: right;
+       
+}
+
+.titulo{
+    
+    font-family: 'Nexa';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 19.0266px;
+    line-height: 23px;
+}
+
+.tituloVentas{
+    font-family: 'Lato';
+    font-style: normal;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.descripcion{
+    font-family: 'Nexa';
+font-style: normal;
+font-weight: 400;
+font-size: 16.6483px;
+line-height: 20px;
+/* identical to box height */
+color: #918E8E;
+}
+
+.containerPed p{
+    width: 178px;
+height: 44px;
+
+font-family: 'Lato';
+font-style: normal;
+font-weight: 300;
+font-size: 20px;
+line-height: 22px;
+
+color: #333333;
+
+}
+
+.containerPed h6{
+    
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 26px;
+    color: #333333;
+}
+
+.ClaseButton{
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}

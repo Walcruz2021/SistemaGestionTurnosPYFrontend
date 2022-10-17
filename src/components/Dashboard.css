@@ -1,0 +1,15 @@
+
+
+.alertHist{
+    background-color: rgb(233, 95, 123);
+    color:white;
+    padding: 10px;
+    text-align: center;
+    margin-top: 7px;
+  
+}
+
+.containerFormEdit{
+    width: 60%;
+    margin: auto;
+}

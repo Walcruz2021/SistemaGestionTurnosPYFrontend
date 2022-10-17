@@ -1,0 +1,7 @@
+use('BDMascotas'),db.getCollection('clientes').find({_id: ObjectId('6324c399da0e0229dc36129b')})
+
+use('BDMascotas'),db.getCollection('turnos').find({_id: ObjectId('63178b47358f702174f8c2ad')})
+
+use('BDMascotas'),db.getCollection('perros').find({_id: ObjectId("6284e483d618910a4cb259f3")})
+
+

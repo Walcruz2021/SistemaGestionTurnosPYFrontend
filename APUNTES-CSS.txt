@@ -1,0 +1,51 @@
+
+
+CARDS RESPONSIVE
+
+######################--HTML--################################
+
+<div className="containerInforme">
+    <div className="cardInf">
+      <div>
+        <FontAwesomeIcon icon={faChartLine} size="2x" />
+        <h5>Total Vendido $ {sumaTotalAnio}</h5>
+      </div>
+    </div>
+    <div className="cardInf">
+      <div>
+        <FontAwesomeIcon icon={faHandHoldingDollar} size="2x" 
+        <h5>Total Efectivo: $ {efectivoTotalAnio}</h5>
+      </div>
+    </div>
+    <div className="cardInf">
+        <div>
+        <FontAwesomeIcon icon={faBuildingColumns} size="2x" />
+        <h5>Total Banco: $ {bcoTotalAnio}</h5>
+       </div>
+     </div>
+     <div className="cardInf">
+       <div>
+          <FontAwesomeIcon icon={faCreditCardAlt} size="2x" />
+          <h5>Total Tarjeta: $ {tarjetaTotalAnio}</h5>
+       </div>
+     </div>
+</div>
+
+###########################--CSS--############################
+
+.containerInforme{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+}
+
+.containerInforme h5{
+text-align: center;
+}
+
+.cardInf div{
+    text-align: center;
+}
+
+.cardInf h5{
+    margin-top: 10px;
+}

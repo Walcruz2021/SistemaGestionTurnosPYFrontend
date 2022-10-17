@@ -1,0 +1,44 @@
+.buttonInf{
+    margin-top: 10px;
+}
+
+.buttonInf button{
+    text-align: center;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 1rem;
+    width: 100%;
+}
+
+.titInf{
+text-align: center;
+color: white;
+background-color: black;
+padding: 5px;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+.containerInforme{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+}
+
+.containerInforme p{
+text-align: center;
+}
+
+.cardInf div{
+    text-align: center;
+}
+
+.cardInf p{
+    margin-top: 10px;
+    font-size: 1rem;
+}

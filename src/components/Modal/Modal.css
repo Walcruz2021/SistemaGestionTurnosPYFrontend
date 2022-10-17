@@ -1,0 +1,11 @@
+
+.inputIngresos{
+    width: 30%;
+    margin-left: 15px;
+    border: 0.2px solid rgb(187, 191, 187);
+}
+
+.inputCheck{
+    margin-left: 30px;
+    margin-right: 5px;
+}

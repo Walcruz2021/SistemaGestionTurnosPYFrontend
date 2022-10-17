@@ -1,0 +1,57 @@
+npm i primereact (para los graficos)
+"start": "react-scripts --openssl-legacy-provider start",
+
+
+useEffect y useState son dos hooks 
+useState: permite almacenar un estado de un componente
+useEffect: debido a qe una aplicacion no solo renderiza un html sino que ademas hace peticiones 
+https, interactua con apis etc etc
+useEffect se ejecuta cada vez que el componente haga render, es decir cada vez que el state cambie 
+de valor. El mismo se ejecuta luego de que se actualizo el dom, es decir luego de que se renderizo
+el nuevo cambio 
+useEffecto recibe dos argumentos 1 funcion y 2 un array,los elementosd que esten dentro de ese array
+cada vez que e cambien provocaran que el useeffect se ejecute nuevamenmte, si se lo pasa vacio solo se ejecutara 
+1 sola vez
+Ademas al agregar el return en el useeffect permite desmontar un compnente de manera de limpiar ejecuciones
+basuras que traten de modificar valores sobre componentes  q aun no se montaron
+
+USE DISPATCH Y USESELETOR
+useDispatch sirve para consumir la accion 
+uses¡Selector sirve para llet el array del state principal 
+
+-------------------------------
+video para validaciones desde el back
+https://www.youtube.com/watch?v=VMRgFfmv6j0
+
+
+npm i --save react-select para el select react
+
+npm i graphql
+npm i express-graphql
+npm i standard -D ayudara a limpiar el codigo corriendo los comandos de lint del package.jsn
+npm i graphql-tools
+
+NPM I npm i formik FOM,RMULARIO CONTROLADO
+
+https://www.youtube.com/watch?v=MoukujUvefs&ab_channel=midudev conexion de mongo con graphql
+https://www.bing.com/videos/search?q=responsive+sin+media+query&&view=detail&mid=076400B714F07E6574E4076400B714F07E6574E4&&FORM=VDRVRV RESPONSIVE CON GRID
+
+https://www.youtube.com/watch?v=hXUhmba5S9E&ab_channel=CesarSazo integracion continua con jenkins
+
+https://www.youtube.com/watch?v=f3902x_dqqQ&ab_channel=YoelvisMulen%7Bcode%7D GRID responsive en cuanto a cards
+
+https://parzibyte.me/blog/2019/07/07/select-javascript-agregar-limpiar-obtener-escuchar-cambios/ (SELECT)INFORMCION IMPORTANTE
+
+--------------------------TEST PROYECTO--------------------------
+
+//LISTADO TURNOS
+
+se deberia poner un loading en el momento de elegir una mascota para el historial(listado turnos)
+el ORDENAR del historial no funciona
+
+//CRAR PERRO    
+no te redirecciona al menu principal una vez creada la mascota
+
+//MODAL INFORMACION 
+
+mejorar el modal de informacion de turno
