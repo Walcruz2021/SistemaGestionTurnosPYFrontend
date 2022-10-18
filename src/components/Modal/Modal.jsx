@@ -109,7 +109,9 @@ export default function Modal({
   setStateHist,
 
   stateListTurn,
-  setListTurn
+  setListTurn,
+  stateInfo,
+  setInfo
 
 }) {
   console.log(stateListTurn)
@@ -614,7 +616,7 @@ export default function Modal({
                 //Letras y espacios, pueden llevar acentos.y Mayusuclas
                 //Z0 es para numeros
 
-                if (!/^[a-zA-Z0-ZÀ-ÿ\s]{3,15}$/.test(values.tipoServ)) {
+                if (!/^[a-zA-Z0-9\_\-\s]{1,30}$/.test(values.tipoServ)) {
                   errors.tipoServ =
                     "No permite caracteres especiales y numeros. Max 15";
                 }
@@ -686,9 +688,6 @@ export default function Modal({
                   confirmButtonColor: "rgb(21, 151, 67)",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    if (showInSettings) {
-                      dispatch(getTurnos());
-                    }
                     setStateModal(!state);
                     stateListTurn.splice(stateInput.index, 1);
                     // setStateInput({
@@ -697,7 +696,10 @@ export default function Modal({
                     //   index: "",
                     // });
                     resetForm()
+                    setInfo(!stateInfo)
                   }
+                  dispatch(getTurnos());
+
                 });
               }}
             >

@@ -171,6 +171,41 @@ function AgendaTurnPrueba({ turnos }) {
         stateListTurn: arrayOrder,
       };
   }
+
+  function handleOrderHistDog(e) {
+    setOrder(!order);
+    //dispatch(orderTurnos(order));
+    const listOrder = vtaxClient.data.vta;
+      const arrayOrder =
+        order === true
+          ? listOrder.sort(function (a, b) {
+              const aux1 = a.date.toLocaleLowerCase();
+              const aux2 = b.date.toLocaleLowerCase();
+              if (aux1 > aux2) {
+                return 1;
+              }
+              if (aux2 > aux1) {
+                return -1;
+              } else return 0;
+            })
+          : // descendente
+            listOrder.sort(function (a, b) {
+              const aux1a = a.date.toLocaleLowerCase();
+              const aux2b = b.date.toLocaleLowerCase();
+              if (aux1a > aux2b) {
+                return -1;
+              }
+              if (aux2b > aux1a) {
+                return 1;
+              } else return 0;
+            });
+
+      return {
+        ...stateListTurn,
+        stateListTurn: arrayOrder,
+      };
+  }
+
   function handleDelete(e, props) {
     MySwal.fire({
       title: "¿Estas seguro?",
@@ -360,6 +395,8 @@ function AgendaTurnPrueba({ turnos }) {
           //listadoTurnos={listadoTurnos}
           stateListTurn={stateListTurn}
           setListTurn={setListTurn}
+          stateInfo={stateInfo}
+          setInfo={setInfo}
         />
 
         {/* MODAL QUE PERMITE MOSTRAR INFORMACION ADICIONAL */}
@@ -751,7 +788,7 @@ function AgendaTurnPrueba({ turnos }) {
                     <th>
                       Date{" "}
                       <FontAwesomeIcon
-                        onClick={(e) => handleOrder(e)}
+                        onClick={(e) => handleOrderHistDog(e)}
                         color={order ? "#FF846A" : "#A2DFFF"}
                         icon={faSortAlphaDown}
                         size="lg"
