@@ -204,17 +204,22 @@ export function vtasMesandAnioxParam(dateFormat) {
 }
 
 //no funciona
-export function vtasxA(payload) {
+export function vtasxA(anio) {
   return async function (dispatch) {
-    const vtas = await axios.get(
-      //"http://localhost:3002/api/ventasxAnio22",
-      //`${host.development}/api/vtasxAnio22`,
-      "https://peluqueriapichichu.onrender.com/api/ventasxAnio22",
-      {});
-    return dispatch({
-      type: VTA_X_ANIO,
-      payload: vtas.data.ventas,
-    });
+    try {
+     
+      const detail = await axios.get(
+        //`http://localhost:3002/api/ventasxAnio/${anio}`
+        `${host.development}/api/ventasxAnio/${anio}`
+      );
+      // console.log(detail,"resultado request en actions")
+      return dispatch({
+        type: VTA_X_ANIO,
+        payload: detail.data.ventas,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 

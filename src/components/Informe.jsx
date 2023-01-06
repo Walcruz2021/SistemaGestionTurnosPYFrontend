@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
 
-// import AgendaItem from "./AgendaItem";
-// import CardsItem from "./CardsItem";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./Informe.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteTurno, orderVentas, vtasxA } from "../reducer/actions";
-import Modal from "./Modal/Modal";
+import { orderVentas, vtasxA } from "../reducer/actions";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+
 import {
   faChartLine,
   faHandHoldingDollar,
   faCreditCardAlt,
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
 
 function TodoList() {
+  const ListAños = [
+    { value: 2020, label: 2020 },
+    { value: 2021, label: 2021 },
+    { value: 2022, label: 2022 },
+    { value: 2023, label: 2023 },
+  ];
+
   const ventas22 = useSelector((state) => state.vtasxAnio);
-  console.log(ventas22, "Listventas");
+  const [selectedAnio, setSelectedAnio] = useState();
+
+  //segun el año seleccionado traera las ventas de todos los meses correspondiente a ese año
+  //console.log(ventas22, "Listventas");
   // [{Dog:"628ae644d66d1f4760a02319"
   // año:2022
   // client:"6287c8a0da18314e74b9325a"
@@ -37,7 +44,6 @@ function TodoList() {
 
   const dispatch = useDispatch();
 
-  
   const [order, setOrder] = useState(false);
 
   function handleOrder(e) {
@@ -45,9 +51,9 @@ function TodoList() {
     dispatch(orderVentas(order));
   }
 
-  useEffect(() => {
-    dispatch(vtasxA());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(vtasxA());
+  // });
 
   // const tam = 0;
   // const arrayAños = [2022];
@@ -58,7 +64,7 @@ function TodoList() {
   // funcion que se encargara de insertar objeto FECHA al array de INFORME
 
   const fechaN = {
-    name: 2022, // 2022
+    name: selectedAnio, // 2022
     meses: [
       {
         mesString: "Enero",
@@ -159,47 +165,43 @@ function TodoList() {
     ],
   };
 
-  //se recorre el listado de todas las ventas 
-  ventas22.map((vta) => {
-    const mes = vta.mes-1;//es -1 poirque mes sera el indice en el array de meses
-    //es decir mayo sera 4 en el array de meses
-    //console.log(mes,"mes en curso")
-    if (vta.valorServ) {
-      if(fechaN.meses[mes]){
-        fechaN.meses[mes].sumaMes = fechaN.meses[mes].sumaMes + vta.valorServ;
-        console.log(fechaN.meses[mes].sumaMes,mes,"suma Mes Curso")
+  //se recorre el listado de todas las ventas. ventas22 sera especificamente referido al año 2022 y fechaN sera especificamente tambien al año 2022
+  if (ventas22) {
+    ventas22.map((vta) => {
+      const mes = vta.mes - 1; //es -1 poirque mes sera el indice en el array de meses
+      //es decir mayo sera 4 en el array de meses
+      //console.log(mes,"mes en curso")
+      if (vta.valorServ) {
+        if (fechaN.meses[mes]) {
+          fechaN.meses[mes].sumaMes = fechaN.meses[mes].sumaMes + vta.valorServ;
+          //console.log(fechaN.meses[mes].sumaMes,mes,"suma Mes Curso")
+        }
       }
-      
-    }
 
-    if (vta.efectivo) {
-      if(fechaN.meses[mes]){
-        fechaN.meses[mes].sumaEfectivo =
-          fechaN.meses[mes].sumaEfectivo + vta.efectivo;
+      if (vta.efectivo) {
+        if (fechaN.meses[mes]) {
+          fechaN.meses[mes].sumaEfectivo =
+            fechaN.meses[mes].sumaEfectivo + vta.efectivo;
+        }
+      } //else fechaN.meses[mes].sumaEfectivo = fechaN.meses[mes].sumaEfectivo + 0;
+
+      if (vta.tarjeta) {
+        if (fechaN.meses[mes]) {
+          fechaN.meses[mes].sumaTarjeta =
+            fechaN.meses[mes].sumaTarjeta + vta.tarjeta;
+        }
+      } //else fechaN.meses[mes].sumaTarjeta = fechaN.meses[mes].sumaTarjeta + 0;
+
+      if (vta.transferencia) {
+        if (fechaN.meses[mes]) {
+          fechaN.meses[mes].sumaTransferencia =
+            fechaN.meses[mes].sumaTransferencia + vta.transferencia;
+        }
       }
-    } //else fechaN.meses[mes].sumaEfectivo = fechaN.meses[mes].sumaEfectivo + 0;
+    });
+  }
 
-
-    if (vta.tarjeta) {
-      if(fechaN.meses[mes]){
-        fechaN.meses[mes].sumaTarjeta =
-          fechaN.meses[mes].sumaTarjeta + vta.tarjeta;
-      }
-      
-    } //else fechaN.meses[mes].sumaTarjeta = fechaN.meses[mes].sumaTarjeta + 0;
-    
-
-
-    if (vta.transferencia) {
-      if(fechaN.meses[mes]){
-        fechaN.meses[mes].sumaTransferencia =
-          fechaN.meses[mes].sumaTransferencia + vta.transferencia;
-      }
-    } 
-    // else
-    //   fechaN.meses[mes].sumaTransferencia =
-    //     fechaN.meses[mes].sumaTransferencia + 0;
-  });
+  //hasta aqui se tendra el objecto fechaN con las sumas de todas las ventas por mes en (efectivo-tarjeta-transferencia)
 
   const arrayVtas = [];
   if (fechaN.meses) {
@@ -209,6 +211,7 @@ function TodoList() {
     var bcoTotalAnio = 0;
     fechaN.meses.map((valor) => {
       if (valor.sumaMes != 0) {
+        console.log(valor, "---Z");
         arrayVtas.push(valor);
         sumaTotalAnio = sumaTotalAnio + valor.sumaMes;
         efectivoTotalAnio = efectivoTotalAnio + valor.sumaEfectivo;
@@ -230,6 +233,16 @@ function TodoList() {
   // 5: 2022
   // length: 6
 
+  const ChangeAnio = (value) => {
+    setSelectedAnio(value.value);
+    SearchVtas(value.value);
+  };
+
+  function SearchVtas(anio) {
+    //console.log(anio);
+    dispatch(vtasxA(anio));
+  }
+
   return (
     <div>
       {Array.isArray(arrayVtas) ? (
@@ -241,34 +254,49 @@ function TodoList() {
                 <button>Listado Ventas</button>
               </Link>
             </div>
+            <Select
+              placeholder="Seleccione Año"
+              options={ListAños}
+              onChange={ChangeAnio}
+              className="classSelect"
+            />
           </div>
 
           <div className="container-lg table-responsive">
-            <div className="titInf">
-              <h5>{arrayVtas[arrayVtas.length - 1].anio}</h5>
-            </div>
-            <table className="table table-bordered table-hover table-white">
-              <thead class="thead-light table-secondary">
-                <tr>
-                  <th>Mes</th>
-                  <th>Vendido</th>
-                  <th>Efectivo</th>
-                  <th>Tarjeta</th>
-                  <th>Banco</th>
-                </tr>
-              </thead>
-              <tbody>
-                {arrayVtas.map((vta) => (
-                  <tr>
-                    <td>{vta.mesString}</td>
-                    <td>{vta.sumaMes}</td>
-                    <td>{vta.sumaEfectivo}</td>
-                    <td>{vta.sumaTarjeta}</td>
-                    <td>{vta.sumaTransferencia}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {ventas22 ? (
+              <>
+                <div className="titInf">
+                  <h5>{arrayVtas[arrayVtas.length-1].anio}</h5>
+                </div>
+                <table className="table table-bordered table-hover table-white">
+                  <thead class="thead-light table-secondary">
+                    <tr>
+                      <th>Mes</th>
+                      <th>Vendido</th>
+                      <th>Efectivo</th>
+                      <th>Tarjeta</th>
+                      <th>Banco</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {arrayVtas.map((vta) => (
+                      <tr>
+                        <td>{vta.mesString}</td>
+                        <td>{vta.sumaMes}</td>
+                        <td>{vta.sumaEfectivo}</td>
+                        <td>{vta.sumaTarjeta}</td>
+                        <td>{vta.sumaTransferencia}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <h5 className="alertVtas">
+                No existen Ventas para el año {selectedAnio}
+              </h5>
+            )}
+
             <div className="containerInforme">
               <div className="cardInf">
                 <div>

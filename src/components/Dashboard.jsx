@@ -82,10 +82,9 @@ function AgendaTurnPrueba({ turnos }) {
     index: "",
   });
 
-
-  useEffect(()=>{
-    setListTurn(turnos)
-  },[])
+  useEffect(() => {
+    setListTurn(turnos);
+  }, []);
 
   //ARRAY DE MASCOTAS PARA SELECT (HISTORIAL)
   const Listdogs = [];
@@ -131,6 +130,7 @@ function AgendaTurnPrueba({ turnos }) {
     //console.log(idDog);
     dispatch(searchHistorialDog(idDog));
   }
+
   function handleChangeDog(selected) {
     setStateInput({
       ...stateInput,
@@ -142,68 +142,68 @@ function AgendaTurnPrueba({ turnos }) {
     setOrder(!order);
     //dispatch(orderTurnos(order));
     const listOrder = stateListTurn;
-      const arrayOrder =
-        order === true
-          ? listOrder.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
-          : // descendente
-            listOrder.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+    const arrayOrder =
+      order === true
+        ? listOrder.sort(function (a, b) {
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
+        : // descendente
+          listOrder.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
-      return {
-        ...stateListTurn,
-        stateListTurn: arrayOrder,
-      };
+    return {
+      ...stateListTurn,
+      stateListTurn: arrayOrder,
+    };
   }
 
   function handleOrderHistDog(e) {
     setOrder(!order);
     //dispatch(orderTurnos(order));
     const listOrder = vtaxClient.data.vta;
-      const arrayOrder =
-        order === true
-          ? listOrder.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
-          : // descendente
-            listOrder.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+    const arrayOrder =
+      order === true
+        ? listOrder.sort(function (a, b) {
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
+        : // descendente
+          listOrder.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
-      return {
-        ...stateListTurn,
-        stateListTurn: arrayOrder,
-      };
+    return {
+      ...stateListTurn,
+      stateListTurn: arrayOrder,
+    };
   }
 
   function handleDelete(e, props) {
@@ -251,7 +251,7 @@ function AgendaTurnPrueba({ turnos }) {
       idClient: props.idClient,
       time: props.time,
       index: props.index,
-      idDog:props.idDog
+      idDog: props.idDog,
     });
     setEditTurn(!editTurn);
   }
@@ -311,7 +311,7 @@ function AgendaTurnPrueba({ turnos }) {
       tipoServ: props.tipoServ,
       notesTurn: props.notesTurn,
       idClient: props.idClient,
-      index:props.index
+      index: props.index,
     });
 
     setNewVentas(!newVentas);
@@ -320,7 +320,7 @@ function AgendaTurnPrueba({ turnos }) {
 
   const handleClose = () => {
     setEditTurn(!editTurn);
-   // console.log("se hizo click");
+    // console.log("se hizo click");
   };
 
   return (
@@ -434,12 +434,10 @@ function AgendaTurnPrueba({ turnos }) {
         <br></br>
 
         {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
-
-        <h5>Tabla de Turnos</h5>
-
       </div>
 
       <div className="container-lg table-responsive">
+        <h5>Tabla de Turnos</h5>
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
@@ -483,7 +481,7 @@ function AgendaTurnPrueba({ turnos }) {
 
                 <td>
                   <Options justify="space-between">
-                    <button
+                    <button className="buttonVtas"
                       onClick={
                         (e) =>
                           handleVentas(e, {
@@ -501,11 +499,11 @@ function AgendaTurnPrueba({ turnos }) {
                         // console.log(turn.notesTurn,"----------> notyes 2")
                       }
                     >
-                      <FontAwesomeIcon icon={faHandHoldingUsd} size="1.5x" />
+                      <FontAwesomeIcon icon={faHandHoldingUsd} size="lg" />
                     </button>
 
                     {/* handleClick permite editar en especifico */}
-                    <button
+                    <button className="buttonEdit"
                       onClick={(e) =>
                         handleClick(e, {
                           _id: turn._id,
@@ -516,16 +514,16 @@ function AgendaTurnPrueba({ turnos }) {
                           date: turn.date,
                           time: turn.time,
                           index: index,
-                          idClient:turn.idClient,
-                          idDog:turn.idDog
+                          idClient: turn.idClient,
+                          idDog: turn.idDog,
                         })
                       }
                     >
-                      <FontAwesomeIcon icon={faPenSquare} size="1.5x" />
+                      <FontAwesomeIcon icon={faPenSquare} size="lg" />
                     </button>
 
                     <button
-                      class="buttonBo"
+                      className="buttonDelete"
                       onClick={(e) =>
                         handleDelete(e, {
                           idTurn: turn._id,
@@ -536,7 +534,7 @@ function AgendaTurnPrueba({ turnos }) {
                       height="2rem"
                       buttonColor="rgba(255, 0, 0, 1)"
                     >
-                      <FontAwesomeIcon icon={faTrash} size="1.5x" />
+                      <FontAwesomeIcon icon={faTrash} size="lg" />
                     </button>
                   </Options>
                 </td>
@@ -581,7 +579,6 @@ function AgendaTurnPrueba({ turnos }) {
                   errors.time = "Debe ingresar Horario";
                 }
 
-
                 //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
                 if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notesTurn)) {
                   errors.notesTurn =
@@ -622,7 +619,7 @@ function AgendaTurnPrueba({ turnos }) {
                     // })
 
                     stateListTurn[inputState.index] = {
-                      _id:inputState._id,
+                      _id: inputState._id,
                       name: inputState.name,
                       nameDog: inputState.nameDog,
                       phone: inputState.phone,
@@ -723,11 +720,10 @@ function AgendaTurnPrueba({ turnos }) {
         </>
       ) : null}
 
-      <br></br>
       {/* SELECTOR DE MASCOTAS PARA EL HISTORIAL */}
       {!stateInfo && !newTurno && !newClient && !newVentas && !newDog ? (
         <div className="container-lg P-2">
-          <Select options={Listdogs} onChange={ChangeDog} />
+          <Select placeholder="Seleccione Mascota a Buscar" options={Listdogs} onChange={ChangeDog} />
         </div>
       ) : null}
 
