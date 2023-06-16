@@ -28,6 +28,7 @@ import {
 import Swal from "sweetalert2";
 import Modal from "./Modal/Modal";
 import Formulario from "./Formulario/FormNewTurno";
+import FormularioBreak from "./Formulario/FormularioNewBreak";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import Select from "react-select";
@@ -421,7 +422,7 @@ function AgendaTurnPrueba({ turnos }) {
       {/* <AgendaInputs></AgendaInputs> */}
 
       <div className="container">
-        <h5>AGREGAR TURNO</h5>
+        <h5>AGREGAR TURNO CLIENTE</h5>
         {!stateInfo &&
         !newTurno &&
         !newClient &&
@@ -432,10 +433,23 @@ function AgendaTurnPrueba({ turnos }) {
         ) : null}
         {/*  */}
         <br></br>
-
-        {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
       </div>
 
+      <div className="container">
+        {/* <h5>AGREGAR DESCANSO</h5> */}
+        {/* {!stateInfo &&
+        !newTurno &&
+        !newClient &&
+        !newVentas &&
+        !editTurn &&
+        !newDog ? (
+          <FormularioBreak />
+        ) : null} */}
+        {/*  */}
+        <br></br>
+      </div>
+
+        {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
       <div className="container-lg table-responsive">
         <h5>Tabla de Turnos</h5>
         <table className="table table-bordered table-hover table-white">

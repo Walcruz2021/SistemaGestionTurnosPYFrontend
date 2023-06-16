@@ -23,6 +23,7 @@ export const VTAS_ANIO_MES_NOW = "VTAS_ANIO_MES_NOW";
 export const VTAS_MES_ANIO_PARAMS = "VTAS_MES_ANIO_PARAMS";
 export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG="UPDATE_DOG"
+export const POST_BREAK="POST_BREAK"
 
 console.log(host.development, "action------------>");
 
@@ -36,6 +37,21 @@ export function addTurnos(payload) {
         payload
       );
       return newTurno;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function addBreak(payload) {
+  console.log(payload, "action");
+  return async function (dispatch) {
+    try {
+      const newBreak = await axios.post(
+        `${host.development}/api/addBreak`,
+        payload
+      );
+      return newBreak;
     } catch (error) {
       console.log(error);
     }

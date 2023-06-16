@@ -21,7 +21,8 @@ import {
   VTAS_ANIO_MES_NOW,
   VTAS_MES_ANIO_PARAMS,
   DELETE_DOG,
-  UPDATE_DOG
+  UPDATE_DOG,
+  POST_BREAK
 } from "./actions";
 
 const initialState = {
@@ -38,7 +39,7 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-  console.log(action.payload)
+  console.log(action.payload);
   // el action  es la respuesta que llega del archivo actions
   // si trae valos quiere decir que actions realizo la request como corresponde
   //console.log(action.payload, "reducer (valores del actions)");
@@ -111,6 +112,11 @@ function rootReducer(state = initialState, action) {
       };
 
     case "POST_TURNOS":
+      return {
+        ...state,
+      };
+
+    case POST_BREAK:
       return {
         ...state,
       };
