@@ -1,8 +1,7 @@
 import axios from 'axios';
+const BASE_URL = 'http://localhost:3002/api';
 
-const BASE_URL = 'http://localhost:3002';
-
-export const axiosInstance=axios.create({
+export default axios.create({
     baseURL: BASE_URL
 });
 
@@ -12,9 +11,4 @@ export const axiosPrivate = axios.create({
     withCredentials: true
 });
 
-const host={
-    //development:"https://peluqueriapichichu.onrender.com"
-    development:BASE_URL
-}
-
-export default host
+//g5254c!wfM5YAsP contraseña

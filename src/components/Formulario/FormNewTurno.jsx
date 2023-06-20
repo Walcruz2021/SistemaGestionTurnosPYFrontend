@@ -8,18 +8,18 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import {
   Label,
-  Label2,
+  //Label2,a eliminar
   Label3,
   InputContainer,
-  LabelCheck,
-  InputContainerCheck,
+  //LabelCheck, a eliminar
+  //InputContainerCheck,a eliminar
 } from "../../cssSyleComp/StyleForm";
 import {
-  Input1,
-  Input2,
-  SelectorStyle,
-  InputCheck,
-  Check,
+  //Input1,
+  //Input2,
+  //SelectorStyle, todos a eliminar
+  //InputCheck,
+  //Check,
   ButtonTurno2,
   ButtonTurno,
 } from "../../cssSyleComp/LandingStyles";

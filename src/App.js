@@ -9,6 +9,7 @@ import ListVentas from './components/ListVentas.jsx'
 import Informe from './components/Informe.jsx'
 import CreateDog from './components/CreateDog.jsx'
 import SettingClient from './components/SettingClient.jsx'
+import Register from "./components/Register.jsx"
 
 // import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
 // import Home from "./components/Home"
@@ -25,6 +26,8 @@ function App () {
           <Route path='/Informe' element={<Informe />} />
           <Route path='/CreateDog' element={<CreateDog />}/>
           <Route path='/settingClient' element={<SettingClient/>}/>
+          <Route path='/register' element={<Register />} />
+
           {/* <Route path="/home" element= {<AgendaTurnos/>}/>
 
          */}

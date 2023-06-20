@@ -1,3 +1,5 @@
+//IMPORTANTE-LUEGO DE HACER LAS VERIFICACION CORRESPONDIENTES SE DEBERIA ELIMINAR ESTE ARCHIVO
+
 import {
   Label,
   Label2,
@@ -165,164 +167,169 @@ export const ConditionalForm = (
 
   //* ***********************************************************************
   // Formulario: "CREAR UN CLIENTE"
-  if (id === 1) {
-    return (
-      <form>
-        <Label>{label1}</Label>
-        <Input1
-          type='text'
-          name='name'
-          required
-          value={stateInput.name}
-          onChange={(e) => onChange1(e)}
-          size='15'
-        />
+  //a eliminar
+  // if (id === 1) {
+  //   return (
+  //     <form>
+  //       <Label>{label1}</Label>
+  //       <Input1
+  //         type='text'
+  //         name='name'
+  //         required
+  //         value={stateInput.name}
+  //         onChange={(e) => onChange1(e)}
+  //         size='15'
+  //       />
 
-        <InputContainer>
-          <Label>{label3}</Label>
-          <Input1
-            type='text'
-            name='phone'
-            required
-            value={stateInput.phone}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label>{label6}</Label>
-          <Input1
-            type='text'
-            name='address'
-            required
-            value={stateInput.address}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label>{label9}</Label>
-          <Input1
-            type='text'
-            name='notesCli'
-            required
-            value={stateInput.notesCli}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-      </form>
-    )
-  }
+  //       <InputContainer>
+  //         <Label>{label3}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='phone'
+  //           required
+  //           value={stateInput.phone}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label6}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='address'
+  //           required
+  //           value={stateInput.address}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label9}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='notesCli'
+  //           required
+  //           value={stateInput.notesCli}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+        
+  //     </form>
+  //   )
+  // }
   // Formulario: "CREAR UN TURNO"
-  if (id === 2) {
-    return (
-      <form>
-        <Select
-          placeholder='Seleccione Client'
-          onChange={(e) => {
-            onChangeSelect(e)
-            SelectClient(e) // ELIMINAR NO SIRVE
-          }}
-          options={arrayClients} // array de objetos(cada cliente con su array de perros)
-        />
+  // a eliminar
+  // if (id === 2) {
+  //   return (
+  //     <form>
+  //       <Select
+  //         placeholder='Seleccione Client'
+  //         onChange={(e) => {
+  //           onChangeSelect(e)
+  //           SelectClient(e) // ELIMINAR NO SIRVE
+  //         }}
+  //         options={arrayClients} // array de objetos(cada cliente con su array de perros)
+  //       />
 
-        <Select
-          onChange={(e) => {
-            FuncionPerro(e)
-          }}
-          options={optionSelectPerro} // aqui deberia ir el array de perros
-        />
+  //       <Select
+  //         onChange={(e) => {
+  //           FuncionPerro(e)
+  //         }}
+  //         options={optionSelectPerro} // aqui deberia ir el array de perros
+  //       />
 
-        <Label>{label3}</Label>
-        <Input1
-          type='text'
-          name='phone'
-          readonly
-          value={FuncionPhone()}
-          // value={stateInput.phone}
-        />
+  //       <Label>{label3}</Label>
+  //       <Input1
+  //         type='text'
+  //         name='phone'
+  //         readonly
+  //         value={FuncionPhone()}
+  //         // value={stateInput.phone}
+  //       />
 
-        <InputContainer>
-          <Label>{label5}</Label>
+  //       <InputContainer>
+  //         <Label>{label5}</Label>
 
-          <Input1
-            type='text'
-            name='notesTurn'
-            required
-            value={stateInput.notesTurn}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
+  //         <Input1
+  //           type='text'
+  //           name='notesTurn'
+  //           required
+  //           value={stateInput.notesTurn}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <InputContainer>
-          <Label3>{label4}</Label3>
-          <Input2
-            type='date'
-            name='date'
-            required
-            value={stateInput.date}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
+  //       <InputContainer>
+  //         <Label3>{label4}</Label3>
+  //         <Input2
+  //           type='date'
+  //           name='date'
+  //           required
+  //           value={stateInput.date}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <Label3>{label8}</Label3>
-        <Input2
-          type='time'
-          name='time'
-          required
-          value={stateInput.time}
-          onChange={(e) => onChange1(e)}
-        />
-      </form>
-    )
-  }
+  //       <Label3>{label8}</Label3>
+  //       <Input2
+  //         type='time'
+  //         name='time'
+  //         required
+  //         value={stateInput.time}
+  //         onChange={(e) => onChange1(e)}
+  //       />
+  //     </form>
+  //   )
+  // }
 
   /// ///////////ADHERIR A VENTAS////////////////
 
-  if (id === 3) {
-    return (
-      <form>
-        <InputContainer>
-          <Label>{label7}</Label>
-          <Input1
-            type='number'
-            name='valorServ'
-            required
-            value={stateInput.valorServ}
-            onChange={(e) => onChange1(e)}
-            size='15'
-          />
-        </InputContainer>
-        <Label>{label12}</Label>
-        <Input1
-          type='text'
-          name='tipoServ'
-          required
-          value={stateInput.tipoServ}
-          onChange={(e) => onChange1(e)}
-          size='15'
-        />
+  //a eliminar
+  // if (id === 3) {
+  //   return (
+  //     <form>
+  //       <InputContainer>
+  //         <Label>{label7}</Label>
+  //         <Input1
+  //           type='number'
+  //           name='valorServ'
+  //           required
+  //           value={stateInput.valorServ}
+  //           onChange={(e) => onChange1(e)}
+  //           size='15'
+  //         />
+  //       </InputContainer>
+  //       <Label>{label12}</Label>
+  //       <Input1
+  //         type='text'
+  //         name='tipoServ'
+  //         required
+  //         value={stateInput.tipoServ}
+  //         onChange={(e) => onChange1(e)}
+  //         size='15'
+  //       />
 
-      </form>
-    )
-  }
+  //     </form>
+  //   )
+  // }
 
   // muestra la Informacion Adicional
-  if (id === 4) {
-    return (
-      <form>
-        <InputContainer>
-          <Label>Nombre del Cliente</Label>
-          <Label2>{stateInput.name}</Label2>
-          <Label>Celular Cliente</Label>
-          <Label2>{stateInput.phone}</Label2>
-          <Label>Notas Adicional</Label>
-          <Label2>{stateInput.notesTurn}</Label2>
-        </InputContainer>
-      </form>
-    )
-  }
+  //a eliminar
+  // if (id === 4) {
+  //   return (
+  //     <form>
+  //       <InputContainer>
+  //         <Label>Nombre del Cliente</Label>
+  //         <Label2>{stateInput.name}</Label2>
+  //         <Label>Celular Cliente</Label>
+  //         <Label2>{stateInput.phone}</Label2>
+  //         <Label>Notas Adicional</Label>
+  //         <Label2>{stateInput.notesTurn}</Label2>
+  //       </InputContainer>
+  //     </form>
+  //   )
+  // }
 
   // INFORMACION ADICIONAL CLIENTE
-
+//averiguar donde se tendria que ver este modal
   if (id === 5) {
     return (
       <form>
@@ -335,140 +342,141 @@ export const ConditionalForm = (
   }
 
   // CREATION DOG
+//a eliminar
+  // if (id === 6) {
+  //   return (
+  //     <form>
+  //       <Select
+  //         placeholder='Elegir Raza'
+  //         onChange={(e) => {
+  //           handleChangeRaza(e)
+  //           // SelectRaza(e);
+  //         }}
+  //         options={selectRazas}
+  //       />
 
-  if (id === 6) {
-    return (
-      <form>
-        <Select
-          placeholder='Elegir Raza'
-          onChange={(e) => {
-            handleChangeRaza(e)
-            // SelectRaza(e);
-          }}
-          options={selectRazas}
-        />
+  //       <Select
+  //         placeholder='Size'
+  //         onChange={(e) => {
+  //           handleChangeSize(e)
+  //           SelectSize(e)
+  //         }}
+  //         options={sizeSelect}
+  //       />
 
-        <Select
-          placeholder='Size'
-          onChange={(e) => {
-            handleChangeSize(e)
-            SelectSize(e)
-          }}
-          options={sizeSelect}
-        />
+  //       <Select
+  //         placeholder='Seleccione Client'
+  //         onChange={(e) => {
+  //           handleChangeCli(e)
+  //           // SelectClient(e);(eliminar no sirve)
+  //         }}
+  //         options={arrayClients}
+  //       />
 
-        <Select
-          placeholder='Seleccione Client'
-          onChange={(e) => {
-            handleChangeCli(e)
-            // SelectClient(e);(eliminar no sirve)
-          }}
-          options={arrayClients}
-        />
+  //       <InputContainer>
+  //         <Label>{label10}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='nameP'
+  //           value={stateInput.nameP}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <InputContainer>
-          <Label>{label10}</Label>
-          <Input1
-            type='text'
-            name='nameP'
-            value={stateInput.nameP}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-
-        <InputContainer>
-          <Label>{label11}</Label>
-          <Input1
-            type='text'
-            name='notaP'
-            value={stateInput.notaP}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-      </form>
-    )
-  }
+  //       <InputContainer>
+  //         <Label>{label11}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='notaP'
+  //           value={stateInput.notaP}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //     </form>
+  //   )
+  // }
   // Formulario: "MODIFICAR UN CLIENTE"
-  if (id === 7) {
-    return (
-      <form>
-        <InputContainer>
-          <Label>{label1}</Label>
-          <Input1
-            type='text'
-            name='name'
-            value={stateInput.name}
-            // placeholder={name}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
+  //a eliminar
+  // if (id === 7) {
+  //   return (
+  //     <form>
+  //       <InputContainer>
+  //         <Label>{label1}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='name'
+  //           value={stateInput.name}
+  //           // placeholder={name}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <InputContainer>
-          <Label>{label3}</Label>
-          <Input1
-            type='text'
-            name='phone'
-            value={stateInput.phone}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label>{label4}</Label>
-          <Input1
-            type='text'
-            name='address'
-            value={stateInput.address}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label>{label9}</Label>
-          <Input1
-            type='text'
-            name='notesCli'
-            value={stateInput.notesCli}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-      </form>
-    )
-  }
+  //       <InputContainer>
+  //         <Label>{label3}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='phone'
+  //           value={stateInput.phone}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label4}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='address'
+  //           value={stateInput.address}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label9}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='notesCli'
+  //           value={stateInput.notesCli}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //     </form>
+  //   )
+  // }
 
   // MODIFICAR TURNO
-  if (id === 8) {
-    return (
-      <form>
+  // if (id === 8) {
+  //   return (
+  //     <form>
 
-        <InputContainer>
-          <Label>{label4}</Label>
-          <Input1
-            type='date'
-            name='date'
-            value={stateInput.date}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label4}</Label>
+  //         <Input1
+  //           type='date'
+  //           name='date'
+  //           value={stateInput.date}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <InputContainer>
-          <Label>{label8}</Label>
-          <Input1
-            type='time'
-            name='time'
-            value={stateInput.time}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
+  //       <InputContainer>
+  //         <Label>{label8}</Label>
+  //         <Input1
+  //           type='time'
+  //           name='time'
+  //           value={stateInput.time}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
 
-        <InputContainer>
-          <Label>{label5}</Label>
-          <Input1
-            type='text'
-            name='notesTurn'
-            value={stateInput.notesTurn}
-            onChange={(e) => onChange1(e)}
-          />
-        </InputContainer>
-      </form>
-    )
-  }
+  //       <InputContainer>
+  //         <Label>{label5}</Label>
+  //         <Input1
+  //           type='text'
+  //           name='notesTurn'
+  //           value={stateInput.notesTurn}
+  //           onChange={(e) => onChange1(e)}
+  //         />
+  //       </InputContainer>
+  //     </form>
+  //   )
+  // }
 }

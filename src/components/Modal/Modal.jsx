@@ -24,7 +24,7 @@ import {
   TitleAndButton,
   ButtonModal,
 } from "../../cssSyleComp/ModalStyles";
-
+import axios from "../../api/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -50,25 +50,20 @@ import "./Modal.css";
 // no es necesario que reciba los 17 parametros ya que este archivo engloba todos los parametros posibles
 // teniendo en cuenta que en este proyecto existen varios tipos de modales y se mostrara el indicado
 // de acuerdo a los valores de los parametros que lñe ingresen en el momento de invocarlo
+const REGISTER_URL = "/createUser";
+
 export default function Modal({
   state,
   setStateModal,
 
   label1, // nombre
-  label2, // nombreDog
   label3, // phone
-  label4, // date
   label5, // notesTurn
   label6, // address
-  label7, // valorServ
-  label8, // time
   label9, // notesCli
   label10, // nombrePerro
   label11, // noteP
-  label12, // tipoServ
   label13, // efectivo
-  label14, // trasnferencia
-  label15, // tarjeta
   label16, //raza
   label17, //tamaño
 
@@ -111,19 +106,19 @@ export default function Modal({
   stateListTurn,
   setListTurn,
   stateInfo,
-  setInfo
+  setInfo,
 
+  userName,
+  password,
 }) {
-  console.log(stateListTurn)
+  console.log(stateListTurn);
   const dispatch = useDispatch();
 
   const arrayClients = [];
   const categoriesClients = useSelector((state) => state.allClients);
 
   const [selectedCli, setSelectedCli] = useState(null);
-  const [selectedRaza, setSelectedRaza] = useState(null);
   //console.log(selectedRaza)
-  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedDog, setSelectedDog] = useState(null);
   //LOS QUITO NO SE VA A UTILIZAR
   // const [isCheckedE, setIsCheckedE] = useState("false");
@@ -180,9 +175,10 @@ export default function Modal({
     raza: "" || raza,
     tamaño: "" || tamaño,
     index: "" || index,
-  });
 
-  console.log(stateInput);
+    userName: "" || userName,
+    password: "" || password,
+  });
 
   useEffect(() => {
     setStateInput({
@@ -208,6 +204,9 @@ export default function Modal({
       raza,
       tamaño,
       index,
+
+      userName,
+      password,
 
       // efectivo:efectivo,
       // trasnferencia:transferencia,
@@ -237,6 +236,8 @@ export default function Modal({
     raza,
     tamaño,
     index,
+    userName,
+    password,
   ]);
 
   function handleChange(e) {
@@ -293,10 +294,12 @@ export default function Modal({
   // FUNCIONES QUE INGRESAN AL FORM
   // EN ESTE CASO POR OBLIGACION INGRESA EL ESTADO COMO PARAMETRO
   // esta funcion servira para que se pueda imprimir o guardar el valor seleccionado del SELECT
-  function handleChangeCli(selectedCli) {
-    setSelectedCli({ selectedCli });
-    // console.log(selectedCli.label3);
-  }
+  
+  //a eliminar
+  // function handleChangeCli(selectedCli) {
+  //   setSelectedCli({ selectedCli });
+  //   // console.log(selectedCli.label3);
+  // }
 
   function handleChangeRaza(e) {
     const seleccion = e.target.value;
@@ -308,9 +311,10 @@ export default function Modal({
     setStateInput({ ...stateInput, tamaño: seleccionS });
   }
 
-  function handleChangeDog(selectedDog) {
-    setSelectedDog({ selectedDog });
-  }
+  //a eliminar
+  // function handleChangeDog(selectedDog) {
+  //   setSelectedDog({ selectedDog });
+  // }
   //* **********************************FIN NEW DOG***********************************************
   // ADD CLIENT
   function handleSubmit(e) {
@@ -375,8 +379,8 @@ export default function Modal({
     //   valorServ: "",
     //   notesCli: ""
     // });
-    if(stateHist){
-      setStateHist(!stateHist)
+    if (stateHist) {
+      setStateHist(!stateHist);
     }
     setVisibleSelect(!visibleSelect);
   }
@@ -450,6 +454,8 @@ export default function Modal({
                   phone: "",
                   address: "",
                   notesCli: "",
+                  userName: "",
+                  password: "",
                 }}
                 validate={(values) => {
                   const errors = {};
@@ -482,8 +488,7 @@ export default function Modal({
                   // }
                   return errors;
                 }}
-                onSubmit={(values, { resetForm }) => {
-                  //console.log(values)
+                onSubmit={async (values, { resetForm }) => {
                   dispatch(
                     addClient({
                       name: values.name,
@@ -492,7 +497,9 @@ export default function Modal({
                       notesCli: values.notesCli,
                       status: true,
                     })
+
                   );
+                
                   // const objetoEnviar = {
                   //   name: values.name,
                   //   phone: values.phone,
@@ -637,12 +644,12 @@ export default function Modal({
                 return errors;
               }}
               onSubmit={(values, { resetForm }) => {
-               
                 const fecha = new Date(stateInput.date);
                 // console.log(fecha,"sadsa")
                 const año = fecha.getFullYear();
                 const mes = fecha.getMonth() + 1;
-                const valorServ=values.efectivo+values.tarjeta+values.transferencia
+                const valorServ =
+                  values.efectivo + values.tarjeta + values.transferencia;
                 // const venta={
                 //   date: stateInput.date,
                 //   idTurno: stateInput.idElement,
@@ -680,7 +687,7 @@ export default function Modal({
                     idClient
                   )
                 );
-          
+
                 MySwal.fire({
                   title: "¡Venta guardada correctamente!",
                   icon: "success",
@@ -695,11 +702,10 @@ export default function Modal({
                     //   tipoServ: "",
                     //   index: "",
                     // });
-                    resetForm()
-                    setInfo(!stateInfo)
+                    resetForm();
+                    setInfo(!stateInfo);
                   }
                   dispatch(getTurnos());
-
                 });
               }}
             >
@@ -714,7 +720,6 @@ export default function Modal({
                 /* and other goodies */
               }) => (
                 <Form onSubmit={handleSubmit}>
-            
                   {/* EFECTIVO */}
                   <InputContainerCheck>
                     <input
@@ -726,7 +731,7 @@ export default function Modal({
                     <label>{label13}</label>
                     {visibleCheckE ? (
                       <Field
-                      className="inputIngresos"
+                        className="inputIngresos"
                         type="number"
                         name="efectivo"
                         placeholder="Efectivo"
@@ -1066,3 +1071,9 @@ export default function Modal({
     </div>
   );
 }
+
+
+
+
+
+

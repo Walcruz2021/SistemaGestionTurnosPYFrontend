@@ -362,12 +362,16 @@ function AgendaTurnPrueba({ turnos }) {
           label3="Celular"
           label6="Direccion"
           label9="Nota Cliente"
+          label18="UserName"
+          label19="Password"
           modalContainerBox
           showInSettings
           name={inputState.name}
           phone={inputState.phone}
           address={inputState.address}
           notesCli={inputState.notesCli}
+          userName={inputState.userName}
+          password={inputState.password}
         />
 
         {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}

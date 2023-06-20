@@ -10,7 +10,6 @@ import {
 } from "../reducer/actions";
 import "./ListClients.css";
 
-
 import HistorialClient from "./HistorialClient";
 import Modal from "./Modal/Modal";
 import { Link } from "react-router-dom";
@@ -20,7 +19,10 @@ import withReactContent from "sweetalert2-react-content";
 import { CloseButton } from "../cssSyleComp/ModalStyles";
 import { Label, InputContainer } from "../cssSyleComp/StyleForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose, faUser } from "@fortawesome/free-solid-svg-icons";
+import axios from "../api/axios";
+
+const REGISTER_URL = "/createUserRolUserClient";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
@@ -46,9 +48,7 @@ function ListClients() {
   //   setStateClients(clients);
   // });
 
-
   const dispatch = useDispatch();
-
 
   //ESTADOS QUE PERMITEN LA VISUALIZACIONES DE COMPONENTES
   //cuando editCliente este activado se mostrara el formulario a completar
@@ -56,7 +56,7 @@ function ListClients() {
   //stateInfo es el que se acciona cada vez que se selecciona un cliente
   const [stateInfo, setInfo] = useState(false);
   const [stateHist, setStateHist] = useState(false);
-  
+
   //console.log(stateInfo,"stateInfo")
   const [inputState, setInputState] = useState({
     id: "",
@@ -68,15 +68,14 @@ function ListClients() {
     arrayDogs: [],
     arrayPedidos: [],
     visible: true,
-    index:"",
-    status:""
-
+    index: "",
+    status: "",
   });
   //console.log(inputState);
 
   useEffect(() => {
     dispatch(getClients());
-  },[]);
+  }, []);
 
   useEffect(() => {
     setInputState({
@@ -89,7 +88,7 @@ function ListClients() {
       arrayDogs: [],
       arrayPedidos: [],
       visible: true,
-      status:""
+      status: "",
     });
   }, []);
 
@@ -107,7 +106,6 @@ function ListClients() {
 
   //console.log(arrayClients);
 
-
   //esto se efectua cada vez que se aprieta un cliente
   function handleInfo(e, props) {
     e.preventDefault();
@@ -119,8 +117,8 @@ function ListClients() {
       setInfo(!stateInfo);
     }
 
-    if(!stateHist){
-      setStateHist(!stateHist)
+    if (!stateHist) {
+      setStateHist(!stateHist);
     }
     setInputState({
       _id: props._id,
@@ -130,8 +128,8 @@ function ListClients() {
       notesCli: props.notesCli,
       arrayDogs: props.arrayDogs,
       arrayPedidos: props.arrayPedidos,
-      index:props.index,
-      status:props.status
+      index: props.index,
+      status: props.status,
     });
   }
 
@@ -156,7 +154,7 @@ function ListClients() {
 
   const [newClient, setNewClient] = useState(false);
 
-  function handleDelete({idClient,index}) {
+  function handleDelete({ idClient, index }) {
     //console.log(idClient)
     if (idClient) {
       MySwal.fire({
@@ -169,7 +167,6 @@ function ListClients() {
         confirmButtonText: "Sí",
         cancelButtonText: "Cancelar",
       }).then((result) => {
-        
         if (result.isConfirmed) {
           dispatch(deleteClient(idClient));
           //clients[index].status=false
@@ -178,25 +175,24 @@ function ListClients() {
 
           //al eliminar el lciente se sambia el stateHist de manea de que no se visualize las mascotas pertenecientes al cliente eliminado
           //el cual previamente se habia seleccionado
-          if(stateHist){
-            setStateHist(!stateHist)
+          if (stateHist) {
+            setStateHist(!stateHist);
           }
 
           //al eliminar el cliente se cambia statInfo de manera de que no se visualize los input de edicion
-          if(stateInfo){
-            setInfo(!stateInfo)
+          if (stateInfo) {
+            setInfo(!stateInfo);
           }
 
           //setStateClients(stateClients[index].status=false)
-        
-      
+
           //console.log(stateClients[index],"cliente elminado")
           //al eliminar un cliente quedan los botones ediat y cancelar y ademas queda guardado en el estado el id del cliente eliminado
           //por tanto se puede hacer click en los botones ya quye estan haciendo referencia al id de un cliente (en este caso del eliminado)
           //por tanto se blanquea el id al eliminar dicho cliente
           setInputState({
-            id:""
-          })
+            id: "",
+          });
           //dispatch(getClients());
 
           MySwal.fire({
@@ -219,12 +215,69 @@ function ListClients() {
     //console.log(selectedCli)
     setSearch(selectedCli.value);
   }
-  
+
   const handleClose = () => {
     if (editClient) {
       setEditClient(!editClient);
     }
     console.log("se hizo click");
+  };
+
+  const createHashRouter = (value) => {
+    //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
+    //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
+    //primera encontrada.
+    const userSinEsp = value.userName.replace(/\s/g, "");
+    MySwal.fire({
+      title: "¿Estas seguro?",
+      text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#1ABD53",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
+        //que ocurra durante la peticion
+        try {
+          const response = await axios.post(
+            REGISTER_URL,
+            JSON.stringify({
+              userName: userSinEsp,
+              password: value.password.toString(),
+              idClient: value.idClient,
+              role: "userClient",
+            }),
+            {
+              headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
+              withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
+            }
+          );
+          console.log(response, "--->");
+          if (response.status === 200) {
+            MySwal.fire({
+              title: "Solicitud con Exito",
+              text: "User y Password creados",
+              icon: "success",
+              confirmButtonColor: "#00A0D2",
+            });
+            dispatch(getClients());
+          } 
+        } catch (error) {
+          console.log(error);
+          if (error.response.status === 400) {
+            MySwal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "El usuario ya existe",
+            });
+          }
+        }
+        
+      }
+    });
   };
 
   return (
@@ -275,10 +328,9 @@ function ListClients() {
         showInSettings
       />
 
-
       {/* <AgendaInputs></AgendaInputs> */}
       <br />
-      {clients? (
+      {clients ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -288,13 +340,13 @@ function ListClients() {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
-                {/* <th>Notes</th> */}
+                <th>Crear User</th>
                 {/* <th>Option</th> */}
               </tr>
             </thead>
             <tbody>
               {clients
-                ? clients.filter(searchCli(stateSearch)).map((cli,index) =>
+                ? clients.filter(searchCli(stateSearch)).map((cli, index) =>
                     cli.status === true ? (
                       <tr key={cli._id}>
                         <td
@@ -308,8 +360,8 @@ function ListClients() {
                               address: cli.address,
                               notesCli: cli.notesCli,
                               arrayPedidos: cli.pedidos,
-                              index:index,
-                              status:cli.status
+                              index: index,
+                              status: cli.status,
                             })
                           }
                         >
@@ -317,6 +369,20 @@ function ListClients() {
                         </td>
                         <td>{cli.phone}</td>
                         <td>{cli.address}</td>
+                        <td className="marginIcon">
+                          {cli.userLogin === false ? (
+                            <FontAwesomeIcon
+                              icon={faUser}
+                              onClick={() =>
+                                createHashRouter({
+                                  userName: cli.name,
+                                  password: cli.phone,
+                                  idClient: cli._id,
+                                })
+                              }
+                            />
+                          ) : null}
+                        </td>
                       </tr>
                     ) : null
                   )
@@ -326,235 +392,238 @@ function ListClients() {
         </div>
       ) : null}
 
-{stateHist?
- <div className="container-lg table-responsive">
- <h5 className="tituloH">Historial del Cliente: {inputState.name}</h5>
- <HistorialClient state={inputState} stateHist={stateHist} setStateHist={setStateHist} />
- <div className="containerButton">
-          <button
-            onClick={() => handleDelete({idClient:inputState._id,index:inputState.index})}
-            className="buttonDel"
-          >
-            Eliminar Cliente
-          </button>
-          <button
-            onClick={() =>
-              handleEdit({
-                _id: inputState._id,
-                name: inputState.name,
-                // nameDog: el.nameDog,
-                phone: inputState.phone,
-                address: inputState.address,
-                notesCli: inputState.notesCli,
-              })
-            }
-            className="buttonEdi"
-          >
-            Editar Cliente
-          </button>
+      {stateHist ? (
+        <div className="container-lg table-responsive">
+          <h5 className="tituloH">Historial del Cliente: {inputState.name}</h5>
+          <HistorialClient
+            state={inputState}
+            stateHist={stateHist}
+            setStateHist={setStateHist}
+          />
+          <div className="containerButton">
+            <button
+              onClick={() =>
+                handleDelete({
+                  idClient: inputState._id,
+                  index: inputState.index,
+                })
+              }
+              className="buttonDel"
+            >
+              Eliminar Cliente
+            </button>
+            <button
+              onClick={() =>
+                handleEdit({
+                  _id: inputState._id,
+                  name: inputState.name,
+                  // nameDog: el.nameDog,
+                  phone: inputState.phone,
+                  address: inputState.address,
+                  notesCli: inputState.notesCli,
+                })
+              }
+              className="buttonEdi"
+            >
+              Editar Cliente
+            </button>
+          </div>
         </div>
-</div>
-:null}
-     
+      ) : null}
 
+      {/* FORMULARIO PARA EDICION  */}
+      <div className="containerForm">
+        {editClient && stateInfo ? (
+          //<SettingClient/>
+          <div>
+            <Formik
+              initialValues={{
+                name: "",
+                phone: "",
+                address: "",
+                notesCli: "",
+              }}
+              validate={(values) => {
+                const errors = {};
 
-{/* FORMULARIO PARA EDICION  */}
-        <div className="containerForm">
-          {editClient && stateInfo ? (
-            //<SettingClient/>
-            <div>
-              <Formik
-                initialValues={{
-                  name: "",
-                  phone: "",
-                  address: "",
-                  notesCli: "",
-                }}
-                validate={(values) => {
-                  const errors = {};
+                //Letras y espacios, pueden llevar acentos.y Mayusuclas
+                //Z0 es para numeros
+                if (!values.name) {
+                  values.name = inputState.name;
+                }
 
-                  //Letras y espacios, pueden llevar acentos.y Mayusuclas
-                  //Z0 es para numeros
-                  if (!values.name) {
-                    values.name = inputState.name;
+                if (!/^[a-zA-ZÀ-ÿ\s]{1,20}$/.test(values.name)) {
+                  errors.name =
+                    "No permite caracteres especiales y numeros.Max 15";
+                }
+
+                if (!values.phone) {
+                  values.phone = inputState.phone;
+                }
+
+                if (!/^\d{7,14}$/.test(values.phone)) {
+                  errors.phone = "Ingresar celular min 7 dig max 14";
+                }
+
+                if (!values.address) {
+                  values.address = inputState.address;
+                }
+
+                if (!/^[a-zA-Z0-ZÀ-ÿ\s]{4,30}$/.test(inputState.address)) {
+                  errors.address =
+                    "30 caracteres max.No permite caracteres especiales";
+                }
+
+                if (!values.notesCli) {
+                  values.notesCli = inputState.notesCli;
+                }
+
+                //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
+                if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notesCli)) {
+                  errors.notesCli =
+                    "30 caracteres max y no permite caracteres especiales";
+                }
+                //else if (
+                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                // ) {
+                //   errors.email = "correo invalido";
+                // }
+                return errors;
+              }}
+              onSubmit={(values, { resetForm }) => {
+                console.log(values);
+
+                //console.log(inputState._id)
+                dispatch(
+                  updateClient(
+                    {
+                      name: values.name,
+                      phone: values.phone,
+                      address: values.address,
+                      notesCli: values.notesCli,
+                    },
+                    inputState._id
+                  )
+                );
+                setInfo(!stateInfo);
+                MySwal.fire({
+                  title: "¡Cliente Actualizado!",
+                  icon: "success",
+                  confirmButtonText: "Aceptar",
+                  confirmButtonColor: "rgb(21, 151, 67)",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    dispatch(getClients());
+
+                    //si no comento esto al modificar un cliemte tira error de historial de cliente
+                    // setInputState({
+                    //   name: values.name,
+                    //   phone: values.phone,
+                    //   address: values.address,
+                    //   notesCli: values.notesCli,
+                    // });
+                    resetForm();
+                    //se cambia el estado de stateHisto al modificar un cliente de manera de que no se visualize
+                    //los datos anteriores previos al modificar el cliente, de lo contrario habia que hacer click en cualquier otro
+                    //lado para porder ver los cambios actuales
+                    setStateHist(!stateHist);
                   }
-
-                  if (!/^[a-zA-ZÀ-ÿ\s]{1,20}$/.test(values.name)) {
-                    errors.name =
-                      "No permite caracteres especiales y numeros.Max 15";
-                  }
-
-                  if (!values.phone) {
-                    values.phone = inputState.phone;
-                  }
-
-                  if (!/^\d{7,14}$/.test(values.phone)) {
-                    errors.phone = "Ingresar celular min 7 dig max 14";
-                  }
-
-                  if (!values.address) {
-                    values.address = inputState.address;
-                  }
-
-                  if (!/^[a-zA-Z0-ZÀ-ÿ\s]{4,30}$/.test(inputState.address)) {
-                    errors.address =
-                      "30 caracteres max.No permite caracteres especiales";
-                  }
-
-                  if (!values.notesCli) {
-                    values.notesCli = inputState.notesCli;
-                  }
-
-                  //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
-                  if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notesCli)) {
-                    errors.notesCli =
-                      "30 caracteres max y no permite caracteres especiales";
-                  }
-                  //else if (
-                  //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                  // ) {
-                  //   errors.email = "correo invalido";
-                  // }
-                  return errors;
-                }}
-                onSubmit={(values, { resetForm }) => {
-                  console.log(values);
-
-                  //console.log(inputState._id)
-                  dispatch(
-                    updateClient(
-                      {
-                        name: values.name,
-                        phone: values.phone,
-                        address: values.address,
-                        notesCli: values.notesCli,
-                      },
-                      inputState._id
-                    )
-                  );
-                  setInfo(!stateInfo);
-                  MySwal.fire({
-                    title: "¡Cliente Actualizado!",
-                    icon: "success",
-                    confirmButtonText: "Aceptar",
-                    confirmButtonColor: "rgb(21, 151, 67)",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      dispatch(getClients());
-
-                      //si no comento esto al modificar un cliemte tira error de historial de cliente
-                      // setInputState({
-                      //   name: values.name,
-                      //   phone: values.phone,
-                      //   address: values.address,
-                      //   notesCli: values.notesCli,
-                      // });
-                      resetForm();
-                      //se cambia el estado de stateHisto al modificar un cliente de manera de que no se visualize 
-                      //los datos anteriores previos al modificar el cliente, de lo contrario habia que hacer click en cualquier otro
-                      //lado para porder ver los cambios actuales
-                      setStateHist(!stateHist)
-                    }
-                  });
-                }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  /* and other goodies */
-                }) => (
-                  <Form onSubmit={handleSubmit}>
-
-            <CloseButton onClick={(e) => handleClose(e)}>
-              <FontAwesomeIcon icon={faWindowClose} />
-            </CloseButton>
-
-
-                    <InputContainer>
-                      <Label>Nombre Cliente</Label>
-                      <Field
-                        className="input1"
-                        placeholder={inputState.name}
-                        type="text"
-                        name="name"
-                      />
-                    </InputContainer>
-
-                    <ErrorMessage
-                      className="error"
+                });
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <CloseButton onClick={(e) => handleClose(e)}>
+                    <FontAwesomeIcon icon={faWindowClose} />
+                  </CloseButton>
+                  <InputContainer>
+                    <Label>Nombre Cliente</Label>
+                    <Field
+                      className="input1"
+                      placeholder={inputState.name}
+                      type="text"
                       name="name"
-                      component={() => (
-                        <div className="error">{errors.name}</div>
-                      )}
-                    ></ErrorMessage>
+                    />
+                  </InputContainer>
 
-                    <InputContainer>
-                      <Label>Celular</Label>
-                      <Field
-                        className="input1"
-                        placeholder={inputState.phone}
-                        type="number"
-                        name="phone"
-                      />
-                    </InputContainer>
+                  <ErrorMessage
+                    className="error"
+                    name="name"
+                    component={() => <div className="error">{errors.name}</div>}
+                  ></ErrorMessage>
 
-                    <ErrorMessage
-                      className="error"
+                  <InputContainer>
+                    <Label>Celular</Label>
+                    <Field
+                      className="input1"
+                      placeholder={inputState.phone}
+                      type="number"
                       name="phone"
-                      component={() => (
-                        <div className="error">{errors.phone}</div>
-                      )}
-                    ></ErrorMessage>
+                    />
+                  </InputContainer>
 
-                    <InputContainer>
-                      <Label>Direccion</Label>
-                      <Field
-                        className="input1"
-                        placeholder={inputState.address}
-                        type="text"
-                        name="address"
-                      />
-                    </InputContainer>
+                  <ErrorMessage
+                    className="error"
+                    name="phone"
+                    component={() => (
+                      <div className="error">{errors.phone}</div>
+                    )}
+                  ></ErrorMessage>
 
-                    <ErrorMessage
-                      className="error"
+                  <InputContainer>
+                    <Label>Direccion</Label>
+                    <Field
+                      className="input1"
+                      placeholder={inputState.address}
+                      type="text"
                       name="address"
-                      component={() => (
-                        <div className="error">{errors.address}</div>
-                      )}
-                    ></ErrorMessage>
+                    />
+                  </InputContainer>
 
-                    <InputContainer>
-                      <Label>Nota Cliente</Label>
-                      <Field
-                        className="input1"
-                        placeholder={inputState.notesCli}
-                        type="text"
-                        name="notesCli"
-                      />
-                    </InputContainer>
+                  <ErrorMessage
+                    className="error"
+                    name="address"
+                    component={() => (
+                      <div className="error">{errors.address}</div>
+                    )}
+                  ></ErrorMessage>
 
-                    <ErrorMessage
-                      className="error"
+                  <InputContainer>
+                    <Label>Nota Cliente</Label>
+                    <Field
+                      className="input1"
+                      placeholder={inputState.notesCli}
+                      type="text"
                       name="notesCli"
-                      component={() => (
-                        <div className="error">{errors.notesCli}</div>
-                      )}
-                    ></ErrorMessage>
+                    />
+                  </InputContainer>
 
-                    <button className="buttonEditClient" type="submit">Modificar Cliente</button>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          ) : null}
-        </div>
-  
+                  <ErrorMessage
+                    className="error"
+                    name="notesCli"
+                    component={() => (
+                      <div className="error">{errors.notesCli}</div>
+                    )}
+                  ></ErrorMessage>
+
+                  <button className="buttonEditClient" type="submit">
+                    Modificar Cliente
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
