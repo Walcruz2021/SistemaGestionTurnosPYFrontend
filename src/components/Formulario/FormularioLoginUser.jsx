@@ -15,13 +15,13 @@ function FormularioLoginUser () {
     const navigate = useNavigate();
     const location = useLocation();
     //se reemplaza  const from = location.state?.from?.pathname || "/"; 
-    //const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/";
 
     //por este codigo debido a error de configuracion de babel
-    let from = "/";
-    if (location.state && location.state.from && location.state.from.pathname) {
-      from = location.state.from.pathname;
-    }
+    // let from = "/";
+    // if (location.state && location.state.from && location.state.from.pathname) {
+    //   from = location.state.from.pathname;
+    // }
     const userRef = useRef();
     const errRef = useRef();
 
@@ -35,7 +35,7 @@ function FormularioLoginUser () {
 
     useEffect(() => {
         setErrMsg('');
-    }, [userName, setUserName])
+    }, [userName, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,31 +48,35 @@ function FormularioLoginUser () {
                     withCredentials: true
                 }
             );
-            console.log(response?JSON.stringify(response.data):null);
+            //console.log(response)
+            //console.log(response?JSON.stringify(response.data):null);
             //console.log(JSON.stringify(response));
-            console.log("ingreso por aquie---->")
-            //const accessToken = response?.data?.accessToken;
-            const accessToken = response && response.data && response.data.accessToken;
-            //const roles = response?.data?.roles;
-            const roles = response&&response.data&&response.data.roles;
+          
+            const accessToken = response?.data?.accessToken;
+            //const accessToken = response && response.data && response.data.accessToken;
+            const roles = response?.data?.roles;
+            //const roles = response&&response.data&&response.data.roles;
+
+            //setAuth se utiliza para establecer el estado de autenticación después de un inicio de sesión exitoso
             setAuth({ userName, password, roles, accessToken });
             setUserName('');
             setPassword('');
             navigate(from, { replace: true });
         } catch (err) {
-            //if (!err?.response) {
-            // if (!err || !err.response) {
-            //     setErrMsg('No Server Response');
-            // } //else if (err.response?.status === 400) {
-            // else if (err && err.response && err.response.status === 400) {
-            //     setErrMsg('Missing Username or Password');
-            // } else if (err && err.response && err.response.status === 401) {
-            //     setErrMsg('Unauthorized');
-            // } else {
-            //     setErrMsg('Login Failed');
-            // }
-            // errRef.current.focus();
             console.log(err)
+            if (!err?.response) {
+            //if (!err || !err.response) {
+                setErrMsg('No Server Response');
+            } //else if (err.response?.status === 400) {
+            else if (err && err.response && err.response.status === 400) {
+                setErrMsg('Missing Username or Password');
+            } else if (err && err.response && err.response.status === 401) {
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Login Failed');
+            }
+            errRef.current.focus();
+            
         }
     }
 
