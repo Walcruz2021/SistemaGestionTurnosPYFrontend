@@ -1,43 +1,62 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom'
-import LandingPage from './components/LandingPage.jsx'
-import AgendaTurnos from './components/AgendaTurnos'
-import ListClients from './components/ListClients.jsx'
-import ListVentas from './components/ListVentas.jsx'
-import Informe from './components/Informe.jsx'
-import CreateDog from './components/CreateDog.jsx'
-import SettingClient from './components/SettingClient.jsx'
-import Register from "./components/Register.jsx"
+import { BrowserRouter, Route, Switch, Routes } from "react-router-dom";
+import LandingPage from "./components/LandingPage.jsx";
+import AgendaTurnos from "./components/AgendaTurnos";
+import Layout from "./components/Layout.jsx";
+
+import ListClients from "./components/ListClients.jsx";
+import ListVentas from "./components/ListVentas.jsx";
+import Informe from "./components/Informe.jsx";
+import CreateDog from "./components/CreateDog.jsx";
+import SettingClient from "./components/SettingClient.jsx";
+import Register from "./components/Register.jsx";
+import FormularioLoginUser from "./components/Formulario/FormularioLoginUser.jsx";
+import RequireAuth from './components/RequireAuth.jsx';
 
 // import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
 // import Home from "./components/Home"
 //s
-function App () {
+
+const ROLES = {
+  'UserClient': 2001,
+  'Editor': 1984,
+  'Admin': 5150
+}
+
+function App() {
   return (
     <BrowserRouter>
       <div>
         <Routes>
           {/* <Route exact path='/' element={<LandingPage />} /> */}
-          <Route path='/' element={<AgendaTurnos />} />
-          <Route path='/listClient' element={<ListClients />} />
-          <Route path='/listVentas' element={<ListVentas />} />
-          <Route path='/Informe' element={<Informe />} />
-          <Route path='/CreateDog' element={<CreateDog />}/>
-          <Route path='/settingClient' element={<SettingClient/>}/>
-          <Route path='/register' element={<Register />} />
+          <Route path="/" element={<Layout />}>
+            <Route path="/listClient" element={<ListClients />} />
+            <Route path="/listVentas" element={<ListVentas />} />
+            <Route path="/Informe" element={<Informe />} />
+            <Route path="/CreateDog" element={<CreateDog />} />
+            <Route path="/settingClient" element={<SettingClient />} />
+            {/* <Route path='/register' element={<Register />} /> */}
+            <Route path="/loginUser" element={<FormularioLoginUser />} />
+              {/* we want to protect these routes */}
 
-          {/* <Route path="/home" element= {<AgendaTurnos/>}/>
+            {/* proteger las rutas anidadas dentro de él y permitir el acceso solo a usuarios que tengan el rol 
+            específico de userClient (suponiendo que ROLES.userClient sea el valor correspondiente al rol de 
+            usuario cliente). */}
 
-         */}
+            <Route element={<RequireAuth allowedRoles={[ROLES.UserClient]} />}>
+              <Route path="/" element={<AgendaTurnos />} />
+            </Route>
+            {/* <Route path="/" element={<AgendaTurnos />} /> */}
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
 
 /// //////////////////////////////////////////
 // import React from 'react';
@@ -159,3 +178,6 @@ export default App
 // }
 
 // export default App;
+
+//walterCruz
+//Agkd@@r8NMd6MGf
