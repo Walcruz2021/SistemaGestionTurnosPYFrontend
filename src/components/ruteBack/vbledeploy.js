@@ -13,8 +13,8 @@ export const axiosPrivate = axios.create({
 });
 
 const host={
-    //development:"https://peluqueriapichichu.onrender.com"
-    development:BASE_URL
+    development:"https://peluqueriapichichu.onrender.com"
+    //development:BASE_URL
 }
 
 export default host
