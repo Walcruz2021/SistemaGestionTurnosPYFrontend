@@ -55,3 +55,9 @@ no te redirecciona al menu principal una vez creada la mascota
 //MODAL INFORMACION 
 
 mejorar el modal de informacion de turno
+
+BACKEND LOGIN
+https://www.youtube.com/watch?v=favjC6EKFgw&list=PL0Zuz27SZ-6PFkIxaJ6Xx_X46avTM1aYw&index=12&ab_channel=DaveGray 
+
+frontend login
+https://www.youtube.com/watch?v=27KeYk-5vJw&ab_channel=DaveGray
