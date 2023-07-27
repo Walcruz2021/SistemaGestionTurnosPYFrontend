@@ -16,18 +16,23 @@
 //  serviceWorker.unregister();
 
 import React from 'react'
+import {RouterProvider } from "react-router-dom";
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 // import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
+import { AuthProvider } from "./auth/AuthProvider.tsx";
 import { store } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
+      <AuthProvider>
+        {/* <RouterProvider router={router}/> */}
       <App />
+      </AuthProvider>
     </React.StrictMode>,
   </Provider>,
   document.getElementById('root')

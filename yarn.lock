@@ -1558,6 +1558,13 @@
   resolved "https://registry.npmjs.org/@types/q/-/q-1.5.2.tgz"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
+"@types/react-dom@^18.2.7":
+  version "18.2.7"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.2.7.tgz"
+  integrity sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.20":
   version "7.1.23"
   resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-7.1.23.tgz"
@@ -1575,10 +1582,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "17.0.43"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.43.tgz"
-  integrity sha512-8Q+LNpdxf057brvPu1lMtC5Vn7J119xrP1aq4qiaefNioQUYANF/CYeK4NsKorSZyUGJ66g0IM+4bbjwx45o2A==
+"@types/react@*", "@types/react@^18.2.17":
+  version "18.2.17"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.2.17.tgz"
+  integrity sha512-u+e7OlgPPh+aryjOm5UJMX32OvB2E3QASOAqVMY6Ahs90djagxwv2ya0IctglNbNTexC12qCSMZG47KPfy1hAA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -9675,15 +9682,15 @@ react-dev-utils@^9.1.0:
     strip-ansi "5.2.0"
     text-table "0.2.0"
 
-"react-dom@^16.0.0 || ^17.0.0", react-dom@^16.11.0, react-dom@^16.5.2, "react-dom@^16.8.0 || ^17.0.0", "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8:
-  version "16.11.0"
-  resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.11.0.tgz"
-  integrity sha512-nrRyIUE1e7j8PaXSPtyRKtz+2y9ubW/ghNgqKFHHAHaeP0fpF5uXR+sq8IMRHC+ZUxw7W9NyCDTBtwWxvkb0iA==
+"react-dom@^16.0.0 || ^17.0.0", react-dom@^16.14.0, react-dom@^16.5.2, "react-dom@^16.8.0 || ^17.0.0", "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8:
+  version "16.14.0"
+  resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
+  integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.17.0"
+    scheduler "^0.19.1"
 
 react-error-overlay@^6.0.3:
   version "6.0.3"
@@ -9903,10 +9910,10 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-"react@^0.13.0 || ^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^16 || ^17 || ^18", react@^16.0.0, "react@^16.0.0 || ^17.0.0", react@^16.11.0, react@^16.5.2, "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@>= 16.8.0", react@>=15, react@>=15.0.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.x:
-  version "16.11.0"
-  resolved "https://registry.npmjs.org/react/-/react-16.11.0.tgz"
-  integrity sha512-M5Y8yITaLmU0ynd0r1Yvfq98Rmll6q8AxaEe88c8e7LxO8fZ2cNgmFt0aGAS9wzf1Ao32NKXtCl+/tVVtkxq6g==
+"react@^0.13.0 || ^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^16 || ^17 || ^18", "react@^16.0.0 || ^17.0.0", react@^16.14.0, react@^16.5.2, "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@>= 16.8.0", react@>=15, react@>=15.0.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.x:
+  version "16.14.0"
+  resolved "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -10595,10 +10602,10 @@ saxes@^3.1.9:
   dependencies:
     xmlchars "^2.1.1"
 
-scheduler@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.npmjs.org/scheduler/-/scheduler-0.17.0.tgz"
-  integrity sha512-7rro8Io3tnCPuY4la/NuI5F2yfESpnfZyT6TtkXnSWVkcu0BCDJ+8gk5ozUaFaxpIyNuWAPXrH0yFcSi28fnDA==
+scheduler@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.npmjs.org/scheduler/-/scheduler-0.19.1.tgz"
+  integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

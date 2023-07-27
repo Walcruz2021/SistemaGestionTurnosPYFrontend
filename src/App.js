@@ -1,32 +1,45 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom'
-import LandingPage from './components/LandingPage.jsx'
-import AgendaTurnos from './components/AgendaTurnos'
-import ListClients from './components/ListClients.jsx'
-import ListVentas from './components/ListVentas.jsx'
-import Informe from './components/Informe.jsx'
-import CreateDog from './components/CreateDog.jsx'
-import SettingClient from './components/SettingClient.jsx'
-import Register from "./components/Register.jsx"
+import React from "react";
+import ReactDOM from "react-dom";
+import { useState } from "react";
+import { BrowserRouter, Route, Switch, Routes } from "react-router-dom";
+import LandingPage from "./components/LandingPage.jsx";
+import AgendaTurnos from "./components/AgendaTurnos";
+import ListClients from "./components/ListClients.jsx";
+import ListVentas from "./components/ListVentas.jsx";
+import Informe from "./components/Informe.jsx";
+import CreateDog from "./components/CreateDog.jsx";
+import SettingClient from "./components/SettingClient.jsx";
+import Register from "./components/Register.jsx";
+import LoginUser from "./components/Formulario/FormularioLogin.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 // import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
 // import Home from "./components/Home"
 //s
-function App () {
+function App() {
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <BrowserRouter>
       <div>
         <Routes>
           {/* <Route exact path='/' element={<LandingPage />} /> */}
-          <Route path='/' element={<AgendaTurnos />} />
-          <Route path='/listClient' element={<ListClients />} />
-          <Route path='/listVentas' element={<ListVentas />} />
-          <Route path='/Informe' element={<Informe />} />
-          <Route path='/CreateDog' element={<CreateDog />}/>
-          <Route path='/settingClient' element={<SettingClient/>}/>
-          <Route path='/register' element={<Register />} />
+          <Route path="/" element={<LoginUser />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <AgendaTurnos />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/dashboard/agenda" element={<AgendaTurnos />} /> */}
+          <Route path="/dashboard1" element={<AgendaTurnos />} />
+          <Route path="/listClient" element={<ListClients />} />
+          <Route path="/listVentas" element={<ListVentas />} />
+          <Route path="/Informe" element={<Informe />} />
+          <Route path="/CreateDog" element={<CreateDog />} />
+          <Route path="/settingClient" element={<SettingClient />} />
+          <Route path="/register" element={<Register />} />
 
           {/* <Route path="/home" element= {<AgendaTurnos/>}/>
 
@@ -34,10 +47,10 @@ function App () {
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
 
 /// //////////////////////////////////////////
 // import React from 'react';

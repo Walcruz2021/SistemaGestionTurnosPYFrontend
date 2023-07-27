@@ -1,5 +1,6 @@
 import axios from "axios";
 import host from "../components/ruteBack/vbledeploy";
+export const LOGIN_USER= "LOGIN_USER"
 export const ADD_TODO = "ADD_TODO";
 export const ORDER_CONTACTS = "ORDER_CONTACTS";
 export const GET_TURNOS = "GET_TURNOS";
@@ -26,6 +27,25 @@ export const UPDATE_DOG="UPDATE_DOG"
 export const POST_BREAK="POST_BREAK"
 
 console.log(host.development, "action------------>");
+
+export function loginUser(payload){
+  return async function (dispatch) {
+    try {
+      const newTurno = await axios.post(
+        //"http://localhost:3002/api/turno",
+        `${host.development}/api/login`,
+        payload
+      );
+      return newTurno;
+    } catch (error) {
+      console.log(error);
+    }
+    return dispatch({
+      type: LOGIN_USER,
+      payload: payload,
+    });
+  }
+}
 
 export function addTurnos(payload) {
   console.log(payload, "action");

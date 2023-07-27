@@ -1,0 +1,37 @@
+
+.containerFormLogin{
+    width: 100%;
+    padding-left: 10rem;
+    padding-right: 10rem;
+}
+
+.input1 {
+    background-color: rgba(255, 255, 255);
+    width: 100%;
+    padding: 0 20px 0;
+    border-radius: 2px;
+    border: 0.2px solid rgb(187, 191, 187);
+    color: rgb(99, 102, 99);
+    height: 40px;
+    font-size: 16px;
+    float: right;
+    }
+    
+    .input2{
+        background-color: rgba(255, 255, 255);
+    width: 60%;
+    padding: 0 5px 0;
+    border-radius: 2px;
+    border: 0.2px solid rgb(187, 191, 187);
+    color: rgb(99, 102, 99);
+    height: 40px;
+    font-size: 14px;
+    float: right;
+    float:right;
+    margin-top:7px;
+    }
+    
+    .error{
+        color:red;
+        font-size:10px;
+    }
