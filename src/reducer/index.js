@@ -37,6 +37,7 @@ const initialState = {
   vtasxAnio: [],
   vtasxAnioandMesNow: [],
   vtasxAnioandMesParam: [],
+  userLoged:[]
 };
 
 function rootReducer(state = initialState, action) {

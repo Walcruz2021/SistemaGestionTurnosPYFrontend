@@ -10,7 +10,7 @@ import Informe from "./components/Informe.jsx";
 import CreateDog from "./components/CreateDog.jsx";
 import SettingClient from "./components/SettingClient.jsx";
 import Register from "./components/Register.jsx";
-import LoginUser from "./components/Formulario/FormularioLogin.jsx";
+import LoginUser from "./components/Formulario/FormularioLogin.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 // import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
@@ -32,8 +32,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/dashboard/agenda" element={<AgendaTurnos />} /> */}
-          <Route path="/dashboard1" element={<AgendaTurnos />} />
           <Route path="/listClient" element={<ListClients />} />
           <Route path="/listVentas" element={<ListVentas />} />
           <Route path="/Informe" element={<Informe />} />

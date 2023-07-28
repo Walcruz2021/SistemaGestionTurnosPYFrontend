@@ -31,18 +31,19 @@ console.log(host.development, "action------------>");
 export function loginUser(payload){
   return async function (dispatch) {
     try {
-      const newTurno = await axios.post(
+      const loginUser = await axios.post(
         //"http://localhost:3002/api/turno",
         `${host.development}/api/login`,
         payload
       );
-      return newTurno;
+      return loginUser;
     } catch (error) {
       console.log(error);
     }
     return dispatch({
       type: LOGIN_USER,
-      payload: payload,
+      payload: payload
+      
     });
   }
 }
