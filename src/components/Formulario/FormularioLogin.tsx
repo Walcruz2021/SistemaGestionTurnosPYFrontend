@@ -16,11 +16,8 @@ import { ButtonTurno2, ButtonTurno } from "../../cssSyleComp/LandingStyles";
 import { Navigate  } from "react-router-dom";
 import hots from "../ruteBack/vbledeploy"
 const Forms1 = () => {
- 
-
+  const MySwal = withReactContent(Swal);
   const auth = useAuth();
- 
-  
   async function funtionUserLogin (email:String,password:String) {
     try {
       const response = await fetch(`${hots.development}/api/login`, {
@@ -39,14 +36,28 @@ const Forms1 = () => {
         //como un objeto del tipo AuthResponse. En otras palabras, se está aplicando un "casting" o conversión explícita del tipo para 
         //asegurarse de que el objeto retornado tenga la estructura y propiedades de AuthResponse.
         const json = (await response.json()) as AuthResponse;
-      console.log(json)
-        console.log(json.body,"----->xxx")
-
+      
         if (json.body.accessToken && json.body.refreshToken) {
-          auth.saveUser(json);
+    
+          MySwal.fire({
+            title: "¡Datos Correctos!",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "rgb(21, 151, 67)",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              auth.saveUser(json);
+            }
+          });
+
         }
-        else("no hay")
       } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Datos Erroneos!',
+          // footer: '<a href="">Why do I have this issue?</a>' aqui se dejaria la direccion en donde se puede recuperar la contraseña
+        })
         const json = (await response.json()) as AuthResponseError;
       }
     } catch (error) {
