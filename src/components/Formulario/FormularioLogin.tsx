@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, ErrorMessage, Form } from "formik";
-import { loginUser } from "../../reducer/actions";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../auth/AuthProvider";
 import { AuthResponse, AuthResponseError } from "../../types/types";
@@ -15,8 +14,7 @@ import {
 } from "../../cssSyleComp/StyleForm";
 import { ButtonTurno2, ButtonTurno } from "../../cssSyleComp/LandingStyles";
 import { Navigate  } from "react-router-dom";
-
-
+import hots from "../ruteBack/vbledeploy"
 const Forms1 = () => {
  
 
@@ -25,18 +23,29 @@ const Forms1 = () => {
   
   async function funtionUserLogin (email:String,password:String) {
     try {
-      const response = await fetch("http://localhost:3002/api/login", {
+      const response = await fetch(`${hots.development}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+
+        //se utiliza JSON.stringify() para convertir ese objeto en una cadena JSON, lo que resultaría en algo similar a:
+        //{"email": "usuario@example.com", "password": "contraseña_segura"}
+        //convierte un objeto JavaScript en una cadena JSON para poder enviarlo o almacenarlo en un formato que pueda ser interpretado 
+        //adecuadamente por otros sistemas o servicios que esperen datos en formato JSON.
         body: JSON.stringify({ email, password }),
+
       });
       if (response.ok) {
+        //as AuthResponse: Esta parte es una notación de tipo de TypeScript. Está indicando que el resultado de response.json() se debe tratar 
+        //como un objeto del tipo AuthResponse. En otras palabras, se está aplicando un "casting" o conversión explícita del tipo para 
+        //asegurarse de que el objeto retornado tenga la estructura y propiedades de AuthResponse.
         const json = (await response.json()) as AuthResponse;
-        console.log(json);
+      console.log(json)
+        console.log(json.body,"----->xxx")
 
         if (json.body.accessToken && json.body.refreshToken) {
           auth.saveUser(json);
         }
+        else("no hay")
       } else {
         const json = (await response.json()) as AuthResponseError;
       }

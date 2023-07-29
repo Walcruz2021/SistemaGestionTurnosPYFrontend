@@ -28,25 +28,6 @@ export const POST_BREAK="POST_BREAK"
 
 console.log(host.development, "action------------>");
 
-export function loginUser(payload){
-  return async function (dispatch) {
-    try {
-      const loginUser = await axios.post(
-        //"http://localhost:3002/api/turno",
-        `${host.development}/api/login`,
-        payload
-      );
-      return loginUser;
-    } catch (error) {
-      console.log(error);
-    }
-    return dispatch({
-      type: LOGIN_USER,
-      payload: payload
-      
-    });
-  }
-}
 
 export function addTurnos(payload) {
   console.log(payload, "action");

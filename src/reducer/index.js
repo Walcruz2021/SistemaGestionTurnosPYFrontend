@@ -1,6 +1,5 @@
 import { bindActionCreators } from "redux";
 import {
-  LOGIN_USER,
   ADD_TODO,
   GET_TURNOS,
   GET_CLIENTXNAME,
@@ -49,10 +48,6 @@ function rootReducer(state = initialState, action) {
   // imprmiira esto de abajao,dependiendo de la accion que se haya elegido
   // Object { type: "GET_RECIPE", payload: (13) […] }
   switch (action.type) {
-    case LOGIN_USER:
-      return {
-        ...state,
-      };
 
     case GET_TURNOS:
       return {
