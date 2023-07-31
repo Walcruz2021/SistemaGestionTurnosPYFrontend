@@ -36,7 +36,7 @@ const Forms1 = () => {
         //como un objeto del tipo AuthResponse. En otras palabras, se está aplicando un "casting" o conversión explícita del tipo para 
         //asegurarse de que el objeto retornado tenga la estructura y propiedades de AuthResponse.
         const json = (await response.json()) as AuthResponse;
-      
+    
         if (json.body.accessToken && json.body.refreshToken) {
     
           MySwal.fire({
@@ -92,9 +92,7 @@ password?:String
           return errors;
         }}
         onSubmit={(values, { resetForm }) => {
-    
           funtionUserLogin(values.email,values.password)
-  
         }}
       >
         {({

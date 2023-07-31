@@ -1,9 +1,9 @@
 export interface AuthResponse {
-  body: {
-    user: User;
+  body:{
     accessToken: string;
     refreshToken: string;
-  };
+    user: User;
+  }
 }
 
 export interface AuthResponseError {

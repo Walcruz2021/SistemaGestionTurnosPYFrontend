@@ -32,12 +32,52 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/listClient" element={<ListClients />} />
-          <Route path="/listVentas" element={<ListVentas />} />
-          <Route path="/Informe" element={<Informe />} />
-          <Route path="/CreateDog" element={<CreateDog />} />
-          <Route path="/settingClient" element={<SettingClient />} />
-          <Route path="/register" element={<Register />} />
+          {/* <Route path="/listClient" element={<ListClients />} /> */}
+          <Route
+            path="/listClient"
+            element={
+              <ProtectedRoute>
+                <ListClients />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/listVentas" element={<ListVentas />} /> */}
+          <Route
+            path="/listVentas"
+            element={
+              <ProtectedRoute>
+                <ListVentas />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/Informe" element={<Informe />} /> */}
+          <Route
+            path="/Informe"
+            element={
+              <ProtectedRoute>
+                <Informe />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/CreateDog" element={<CreateDog />} /> */}
+          <Route
+            path="/CreateDog"
+            element={
+              <ProtectedRoute>
+                <CreateDog />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/settingClient" element={<SettingClient />} /> */}
+          <Route
+            path="/settingClient"
+            element={
+              <ProtectedRoute>
+                <SettingClient />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/register" element={<Register />} /> */}
 
           {/* <Route path="/home" element= {<AgendaTurnos/>}/>
 

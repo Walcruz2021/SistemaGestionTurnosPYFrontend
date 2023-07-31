@@ -2,7 +2,7 @@ import { useContext, createContext, useState,useEffect } from "react";
 import { AuthResponse, User } from "../types/types";
 import requestNewAccessToken from "./requestNewAccessToken";
 import React from "react";
-
+import host from "../components/ruteBack/vbledeploy"
 
 const AuthContext = createContext({
     isAuthenticated: false,
@@ -60,6 +60,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (!!refreshToken) {
             return refreshToken;
         }
+
+        //me traigo el refresh token del localStorage
         const token = localStorage.getItem("token");
         if (token) {
             const { refreshToken } = JSON.parse(token);
@@ -92,7 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async function checkAuth() {
         try {
             if (!!accessToken) {
-                //existe access token
+                //existe usuario autenticado
                 const userInfo = await retrieveUserInfo(accessToken);
                 setUser(userInfo);
                 setAccessToken(accessToken);
@@ -103,7 +105,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 const token = localStorage.getItem("token");
                 if (token) {
                     console.log("useEffect: token", token);
-                    const refreshToken = JSON.parse(token).refreshToken;
+                    //const refreshToken = JSON.parse(token).refreshToken;
+                    const refreshToken = JSON.parse(token);
+                    console.log(refreshToken,"-------->REFRESH")
                     //pedir nuevo access token
                     getNewAccessToken(refreshToken)
                         .then(async (newToken) => {
@@ -125,6 +129,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setIsLoading(false);
         }
     }
+
+    //cada vez que se reinicie el navegador verificara si el ususario se encuentra logueado, es decir si ya existe un accese token
     useEffect(() => {
         checkAuth();
     }, []);
@@ -149,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 async function retrieveUserInfo(accessToken: string) {
     try {
-        const response = await fetch(`http://localhost:3002/api/user`, {
+        const response = await fetch(`${host.development}/api/user`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

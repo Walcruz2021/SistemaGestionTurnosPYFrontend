@@ -1,8 +1,8 @@
 import { AccessTokenResponse } from "../types/types";
-
+import host from "../../src/components/ruteBack/vbledeploy"
 
 export default async function requestNewAccessToken(refreshToken: string) {
-  const response = await fetch(`http://localhost:3002/api/refresh-token`, {
+  const response = await fetch(`${host.development}/api/refresh-token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
