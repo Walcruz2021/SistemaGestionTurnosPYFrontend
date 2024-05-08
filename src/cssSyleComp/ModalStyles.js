@@ -36,6 +36,8 @@ export const Overlay = styled.div`
   display: ${(props) => props.display};
   align-items: center;
   justify-content: center;
+  margin-top:1.5rem;
+  margin-bottom:1.5rem;
 `
 
 // FORM DEL MODAL (INTERIOR)

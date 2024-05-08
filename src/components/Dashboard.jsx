@@ -36,7 +36,13 @@ import Select from "react-select";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { ButtonModal, CloseButton } from "../cssSyleComp/ModalStyles";
 
+import Button from "react-bootstrap/Button";
+import FormBoostrap from "react-bootstrap/Form";
+import "bootstrap/dist/css/bootstrap.css";
 import "./Dashboard.css";
+import ModalAddClient from "./Modal/ModalAddClient";
+
+
 function AgendaTurnPrueba({ turnos }) {
   const listadoTurnos = turnos;
   //console.log(listadoTurnos, "viejo");
@@ -324,6 +330,53 @@ function AgendaTurnPrueba({ turnos }) {
     // console.log("se hizo click");
   };
 
+  function handleSubmit(e) {
+    // e.preventDefault();
+
+    // INGRESAR VENTA
+
+    // Update client
+
+    //UPDATE TURNO
+    if (id === 8) {
+      // UPDATE TURNO
+    }
+
+    //EDIT DOG
+
+    if (id === 10) {
+      e.preventDefault()
+      const payload = {};
+      for (const key in stateInput) {
+        if (stateInput[key] !== undefined) {
+          payload[key] = stateInput[key];
+        }
+      }
+
+      //console.log(payload);
+      //dispatch(updateDog(payload, stateInput.idDog));
+
+      MySwal.fire({
+        title: "¡Mascota actualizada!",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(21, 151, 67)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setStateHist(false);
+          dispatch(getClients());
+          setStateModal(!state);
+          setStateInput({
+            nameDog: "",
+            raza: "",
+            tamaño: "",
+            notaP: "",
+          });
+        }
+      });
+    }
+  }
+
   return (
     <>
       <div>
@@ -352,27 +405,7 @@ function AgendaTurnPrueba({ turnos }) {
           {/* MODAL QUE PERMITE CREAR UN CLIENTE */}
         </div>
 
-        <Modal
-          id={1}
-          state={newClient}
-          setStateModal={setNewClient}
-          title="Crear un Cliente"
-          label1="Nombre Cliente"
-          // label2="Name Dog"
-          label3="Celular"
-          label6="Direccion"
-          label9="Nota Cliente"
-          label18="UserName"
-          label19="Password"
-          modalContainerBox
-          showInSettings
-          name={inputState.name}
-          phone={inputState.phone}
-          address={inputState.address}
-          notesCli={inputState.notesCli}
-          userName={inputState.userName}
-          password={inputState.password}
-        />
+        <ModalAddClient state={newClient} setState={setNewClient}></ModalAddClient>
 
         {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}
         <Modal

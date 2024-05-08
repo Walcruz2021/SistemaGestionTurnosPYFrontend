@@ -11,7 +11,7 @@ import {
 import "./ListClients.css";
 
 import HistorialClient from "./HistorialClient";
-import Modal from "./Modal/Modal";
+import ModalAddClient from "./Modal/ModalAddClient";
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
@@ -264,7 +264,7 @@ function ListClients() {
               confirmButtonColor: "#00A0D2",
             });
             dispatch(getClients());
-          } 
+          }
         } catch (error) {
           console.log(error);
           if (error.response.status === 400) {
@@ -275,7 +275,6 @@ function ListClients() {
             });
           }
         }
-        
       }
     });
   };
@@ -314,19 +313,7 @@ function ListClients() {
         </div>
       </div>
 
-      <Modal
-        id={1}
-        state={newClient}
-        setStateModal={setNewClient}
-        title="Crear un Cliente"
-        label1="Nombre Cliente"
-        // label2="Name Dog"
-        label3="Phone"
-        label6="Address"
-        label9="Note Client"
-        modalContainerBox
-        showInSettings
-      />
+      <ModalAddClient state={newClient} setState={setNewClient}  />
 
       {/* <AgendaInputs></AgendaInputs> */}
       <br />

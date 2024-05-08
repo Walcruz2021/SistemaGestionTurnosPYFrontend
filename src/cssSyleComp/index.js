@@ -75,12 +75,12 @@ export const ButtonContainer = styled.div`
   justify-content: space-evenly;
 `
 
-export const Title = styled.h1`
-  color: ${(props) => props.color || 'rgb(255, 255, 255)'};
-  font-size: 2rem;
-  margin: 0;
-  grid-column: 1 / -1;
-`
+// export const Title = styled.h1`
+//   color: ${(props) => props.color || 'rgb(255, 255, 255)'};
+//   font-size: 2rem;
+//   margin: 0;
+//   grid-column: 1 / -1;
+//`
 
 export const OptionsBar = styled.div`
   padding: 0 4rem;

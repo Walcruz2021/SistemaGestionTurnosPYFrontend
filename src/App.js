@@ -1,43 +1,44 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom'
-import LandingPage from './components/LandingPage.jsx'
-import AgendaTurnos from './components/AgendaTurnos'
-import ListClients from './components/ListClients.jsx'
-import ListVentas from './components/ListVentas.jsx'
-import Informe from './components/Informe.jsx'
-import CreateDog from './components/CreateDog.jsx'
-import SettingClient from './components/SettingClient.jsx'
-import Register from "./components/Register.jsx"
+import { BrowserRouter, Route, Switch, Routes } from "react-router-dom";
+import LandingPage from "./components/LandingPage.jsx";
+import AgendaTurnos from "./components/AgendaTurnos";
+import ListClients from "./components/ListClients.jsx";
+import ListVentas from "./components/ListVentas.jsx";
+import Informe from "./components/Informe.jsx";
+import CreateDog from "./components/CreateDog.jsx";
+import SettingClient from "./components/SettingClient.jsx";
+import Register from "./components/Register.jsx";
+import Prueba from "./components/Prueba.jsx";
 
 // import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
 // import Home from "./components/Home"
 //s
-function App () {
+function App() {
   return (
     <BrowserRouter>
       <div>
         <Routes>
           {/* <Route exact path='/' element={<LandingPage />} /> */}
-          <Route path='/' element={<AgendaTurnos />} />
-          <Route path='/listClient' element={<ListClients />} />
-          <Route path='/listVentas' element={<ListVentas />} />
-          <Route path='/Informe' element={<Informe />} />
-          <Route path='/CreateDog' element={<CreateDog />}/>
-          <Route path='/settingClient' element={<SettingClient/>}/>
-          <Route path='/register' element={<Register />} />
-
+          <Route path="/" element={<AgendaTurnos />} />
+          <Route path="/listClient" element={<ListClients />} />
+          <Route path="/listVentas" element={<ListVentas />} />
+          <Route path="/Informe" element={<Informe />} />
+          <Route path="/CreateDog" element={<CreateDog />} />
+          <Route path="/settingClient" element={<SettingClient />} />
+          <Route path="/register" element={<Register />} />
+          {/* <Route path="/prueba" element={<Prueba />} /> */}
           {/* <Route path="/home" element= {<AgendaTurnos/>}/>
 
          */}
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
 
 /// //////////////////////////////////////////
 // import React from 'react';
