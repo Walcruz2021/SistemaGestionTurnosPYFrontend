@@ -1,7 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
-
-import { BrowserRouter, Route, Switch, Routes } from "react-router-dom";
+import { React, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./components/LandingPage.jsx";
 import AgendaTurnos from "./components/AgendaTurnos";
 import ListClients from "./components/ListClients.jsx";
@@ -9,36 +7,53 @@ import ListVentas from "./components/ListVentas.jsx";
 import Informe from "./components/Informe.jsx";
 import CreateDog from "./components/CreateDog.jsx";
 import SettingClient from "./components/SettingClient.jsx";
-import Register from "./components/Register.jsx";
-import Prueba from "./components/Prueba.jsx";
+import FormRegister from "./components/Formulario/FormsRegister.jsx";
+import FormLoginNew from "./components/Formulario/FormLoginNew.jsx";
+import SideBar from "./components/Menues/SideBar.jsx";
 
-// import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
-// import Home from "./components/Home"
-//s
+// display:flex (allows the sidebar component to be next to another)
 function App() {
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+  const sidebarWidth = "17rem"; // Ancho del sideBar cuando está abierto
+  const sidebarWidth2 = "5rem";
+
+  const routesContent = (
+    <Routes>
+      {/* Definir rutas comunes aquí */}
+      <Route path="/login" element={<FormLoginNew />} />
+      <Route path="/" element={<AgendaTurnos />} />
+      <Route path="/listClient" element={<ListClients />} />
+      <Route path="/listVentas" element={<ListVentas />} />
+      <Route path="/Informe" element={<Informe />} />
+      <Route path="/CreateDog" element={<CreateDog />} />
+      <Route path="/settingClient" element={<SettingClient />} />
+      <Route path="/register" element={<FormRegister />} />
+    </Routes>
+  );
+
   return (
     <BrowserRouter>
-      <div>
-        <Routes>
-          {/* <Route exact path='/' element={<LandingPage />} /> */}
-          <Route path="/" element={<AgendaTurnos />} />
-          <Route path="/listClient" element={<ListClients />} />
-          <Route path="/listVentas" element={<ListVentas />} />
-          <Route path="/Informe" element={<Informe />} />
-          <Route path="/CreateDog" element={<CreateDog />} />
-          <Route path="/settingClient" element={<SettingClient />} />
-          <Route path="/register" element={<Register />} />
-          {/* <Route path="/prueba" element={<Prueba />} /> */}
-          {/* <Route path="/home" element= {<AgendaTurnos/>}/>
+      <div style={{ display: "flex", height: "100vh" }}>
+        {/* Sidebar */}
+        <div style={{ flex: "0 0 auto" }}>
+          <SideBar
+            touchSide={isSideBarOpen}
+            setTouchSide={setIsSideBarOpen}
+          />
+        </div>
 
-         */}
-        </Routes>
+        {/* Routes */}
+        <div style={{ flex: "1", paddingLeft: isSideBarOpen ? sidebarWidth : sidebarWidth2 }}>
+          {routesContent}
+        </div>
       </div>
     </BrowserRouter>
   );
 }
 
 export default App;
+
+
 
 /// //////////////////////////////////////////
 // import React from 'react';

@@ -181,11 +181,11 @@ export default function TodoList() {
     <div>
       <h1>Ventas</h1>
 
-      <div className="grid-container container">
+      <div className="grid-container containerB">
         <Link to="/Informe">
           <button className="button1">Informe Mensual</button>
         </Link>
-        <Link to="/">
+        <Link to="/dashboard">
           <button className="button1">Back Home</button>
         </Link>
       </div>

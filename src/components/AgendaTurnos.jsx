@@ -7,8 +7,7 @@ import Message from "./Message";
 import Dashboard from "./Dashboard";
 import { getClients } from "../reducer/actions";
 import "./AgendaTurnos.css";
-
-
+import SideBar from "././Menues/SideBar";
 
 import axios from "axios";
 
@@ -31,7 +30,6 @@ function TodoList() {
   const [db, setDb] = useState(null);
   console.log(db);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const getTurnosList = async () => {
@@ -64,18 +62,23 @@ function TodoList() {
   }
 
   return (
-    <div>
-      <h1>Turnos</h1>
-
-      {db ? <Dashboard turnos={db}/> :
-
-        <div className="loader-container">
-          {/* <div className="spinner"></div> */}
-          <div className="spinner"></div>
-        </div>
-      }
-      {error && <Message />}
-    </div>
+    <>
+      <div className="titGral">
+        <h1>DASHBOARD</h1>
+      </div>
+      <>
+        {db ? (
+          <Dashboard turnos={db} />
+        
+        ) : (
+          <div className="loader-container">
+            {/* <div className="spinner"></div> */}
+            <div className="spinner"></div>
+          </div>
+        )}
+        {error && <Message />}
+      </>
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ import "./CreateDog.css";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import FormCreateDog from "./Formulario/FormCreateDog";
+import "../css/cssGeneral.css";
 
 function CreateDog() {
   const MySwal = withReactContent(Swal);
@@ -157,14 +158,14 @@ function CreateDog() {
   }
 
   return (
-
     <div className="container">
+      <Link className="buttonInf" to="/dashboard">
+        <button>Back Home</button>
+      </Link>
 
-       <Link className="buttonHome" to="/">
-          <button>Back Home</button>
-        </Link>
-
-      <h5>CREACION MASCOTA</h5>
+      <div className="titGral">
+        <h2>CREACION MASCOTA</h2>
+      </div>
       <FormCreateDog></FormCreateDog>
     </div>
   );

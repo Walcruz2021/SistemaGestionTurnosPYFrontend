@@ -24,6 +24,7 @@ export const VTAS_MES_ANIO_PARAMS = "VTAS_MES_ANIO_PARAMS";
 export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG="UPDATE_DOG"
 export const POST_BREAK="POST_BREAK"
+export const ADD_USER="ADD_USER"
 
 console.log(host.development, "action------------>");
 
@@ -74,6 +75,21 @@ export function addDog(payload, idClient) {
       console.log(error);
     }
   };
+}
+
+export function addUser(payload){
+
+  return async function(dispatch){
+    try{
+      const newUser = await axios.post(
+        //`http://localhost:3002/api/addPerro/${idClient}`,
+        `${host.development}/api/addUser`,
+        payload
+      );
+    }catch(error){
+      console.log(error)
+    }
+  }
 }
 
 export function orderTurnos(payload) {

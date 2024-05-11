@@ -14,19 +14,9 @@
     margin: auto;
 }
 
-h1{
-    text-align: center;
-    margin-top: 15px;
-}
-
-h5{
-    text-align: center;
-
-}
 
 .container{
-    width: 85%;
- 
+    width: 50%;
 }
 
 .containerButton{
@@ -100,7 +90,7 @@ h5{
     "button5";
 } 
 
-.container button{
+.container3 button{
     text-align: center;
     background-color: black; 
     border: none;

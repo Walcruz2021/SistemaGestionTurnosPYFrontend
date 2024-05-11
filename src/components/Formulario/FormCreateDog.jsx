@@ -194,22 +194,17 @@ const Forms1 = () => {
             /* and other goodies */
           }) => (
             <Form onSubmit={handleSubmit}>
-              <InputContainer>
-                <Label>Nombre de Mascota</Label>
-                <Field className="input1" type="text" name="nameDog" />
-              </InputContainer>
+              <Label>Nombre de Mascota</Label>
+              <Field className="input1" type="text" name="nameDog" />
 
               <ErrorMessage
                 className="error"
                 name="nameDog"
                 component={() => <div className="error">{errors.nameDog}</div>}
               ></ErrorMessage>
-              <div></div>
 
-              <InputContainer>
-                <Label>Nota Dog</Label>
-                <Field className="input1" type="text" name="notaP" />
-              </InputContainer>
+              <Label>Nota Dog</Label>
+              <Field className="input1" type="text" name="notaP" />
 
               <ErrorMessage
                 className="error"

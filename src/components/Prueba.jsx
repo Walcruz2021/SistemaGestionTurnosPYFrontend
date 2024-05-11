@@ -2,7 +2,7 @@ import React from "react";
 import { LineChart} from "recharts";
 import {Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from "recharts"
 
-export default function ExampleChart() {
+export default function Prueba() {
   const data = [
     { name: "Enero", uv: 4000, pv: 2400, amt: 2400 },
     { name: "Febrero", uv: 3000, pv: 1398, amt: 2210 },

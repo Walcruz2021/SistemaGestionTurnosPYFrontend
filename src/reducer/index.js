@@ -22,7 +22,8 @@ import {
   VTAS_MES_ANIO_PARAMS,
   DELETE_DOG,
   UPDATE_DOG,
-  POST_BREAK
+  POST_BREAK,
+  ADD_USER,
 } from "./actions";
 
 const initialState = {
@@ -122,6 +123,11 @@ function rootReducer(state = initialState, action) {
       };
 
     case ADD_DOG:
+      return {
+        ...state,
+      };
+
+    case ADD_USER:
       return {
         ...state,
       };

@@ -155,7 +155,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             </Button>
           </Modal.Footer>
         </Modal>
-        )
+        
       </div>
     </>
   );

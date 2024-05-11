@@ -39,9 +39,12 @@ import { ButtonModal, CloseButton } from "../cssSyleComp/ModalStyles";
 import Button from "react-bootstrap/Button";
 import FormBoostrap from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/cssGeneral.css";
 import "./Dashboard.css";
 import ModalAddClient from "./Modal/ModalAddClient";
-
+import SideBar from "./Menues/SideBar";
+import SidebarMenu from "react-bootstrap-sidebar-menu";
+import SidebarMenuItem from "react-bootstrap-sidebar-menu";
 
 function AgendaTurnPrueba({ turnos }) {
   const listadoTurnos = turnos;
@@ -345,7 +348,7 @@ function AgendaTurnPrueba({ turnos }) {
     //EDIT DOG
 
     if (id === 10) {
-      e.preventDefault()
+      e.preventDefault();
       const payload = {};
       for (const key in stateInput) {
         if (stateInput[key] !== undefined) {
@@ -380,7 +383,8 @@ function AgendaTurnPrueba({ turnos }) {
   return (
     <>
       <div>
-        <div className="grid-container container">
+        {/* BUTTONS */}
+        <div className="container-fluid grid-container py-3 px-5">
           <button className="button2" onClick={() => setNewClient(!newClient)}>
             Crear Cliente
           </button>
@@ -399,13 +403,13 @@ function AgendaTurnPrueba({ turnos }) {
             </button>
           </Link>
 
-          {/* aqui se invoca el modal el cual de acuerdo al id enviado se renderizar el formato indicado */}
-          {/* de acuerdo al id que le envie se renderiza cierto tipo de modal */}
-
-          {/* MODAL QUE PERMITE CREAR UN CLIENTE */}
         </div>
 
-        <ModalAddClient state={newClient} setState={setNewClient}></ModalAddClient>
+        {/* MODALS */}
+        <ModalAddClient
+          state={newClient}
+          setState={setNewClient}
+        ></ModalAddClient>
 
         {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}
         <Modal
@@ -458,8 +462,10 @@ function AgendaTurnPrueba({ turnos }) {
       </div>
       {/* <AgendaInputs></AgendaInputs> */}
 
-      <div className="container">
-        <h5>AGREGAR TURNO CLIENTE</h5>
+      <div className="container-fluid table-responsive">
+        <div className="titGral">
+          <h2>AGREGAR TURNO CLIENTE</h2>
+        </div>
         {!stateInfo &&
         !newTurno &&
         !newClient &&
@@ -468,13 +474,12 @@ function AgendaTurnPrueba({ turnos }) {
         !newDog ? (
           <Formulario />
         ) : null}
-        {/*  */}
+      
         <br></br>
       </div>
 
-      <div className="container">
-        {/* <h5>AGREGAR DESCANSO</h5> */}
-        {/* {!stateInfo &&
+      {/* <h5>AGREGAR DESCANSO</h5> */}
+      {/* {!stateInfo &&
         !newTurno &&
         !newClient &&
         !newVentas &&
@@ -482,13 +487,14 @@ function AgendaTurnPrueba({ turnos }) {
         !newDog ? (
           <FormularioBreak />
         ) : null} */}
-        {/*  */}
-        <br></br>
-      </div>
+      {/*  */}
 
-        {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
-      <div className="container-lg table-responsive">
-        <h5>Tabla de Turnos</h5>
+      {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
+      <div className="container-fluid table-responsive">
+        <div className="titGral">
+          <h2>TABLA DE TURNOS</h2>
+        </div>
+
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
@@ -532,7 +538,8 @@ function AgendaTurnPrueba({ turnos }) {
 
                 <td>
                   <Options justify="space-between">
-                    <button className="buttonVtas"
+                    <button
+                      className="buttonVtas"
                       onClick={
                         (e) =>
                           handleVentas(e, {
@@ -554,7 +561,8 @@ function AgendaTurnPrueba({ turnos }) {
                     </button>
 
                     {/* handleClick permite editar en especifico */}
-                    <button className="buttonEdit"
+                    <button
+                      className="buttonEdit"
                       onClick={(e) =>
                         handleClick(e, {
                           _id: turn._id,
@@ -773,8 +781,12 @@ function AgendaTurnPrueba({ turnos }) {
 
       {/* SELECTOR DE MASCOTAS PARA EL HISTORIAL */}
       {!stateInfo && !newTurno && !newClient && !newVentas && !newDog ? (
-        <div className="container-lg P-2">
-          <Select placeholder="Seleccione Mascota a Buscar" options={Listdogs} onChange={ChangeDog} />
+        <div className="container-lg pb-2">
+          <Select
+            placeholder="Seleccione Mascota a Buscar"
+            options={Listdogs}
+            onChange={ChangeDog}
+          />
         </div>
       ) : null}
 

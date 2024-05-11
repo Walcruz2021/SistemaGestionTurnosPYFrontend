@@ -21,6 +21,7 @@ import { Label, InputContainer } from "../cssSyleComp/StyleForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "../api/axios";
+import "../css/cssGeneral.css"
 
 const REGISTER_URL = "/createUserRolUserClient";
 
@@ -281,13 +282,15 @@ function ListClients() {
 
   return (
     <div>
-      <h1>List of Clients</h1>
+      <div className="titGral">
+        <h1>Listado de Clientes</h1>
+      </div>
       <div className="grid-container container">
         <button className="button1" onClick={() => setNewClient(!newClient)}>
           Añadir Cliente
         </button>
         {/* <button className="button2">Back Home</button> */}
-        <Link to="/">
+        <Link to="/dashboard">
           <button className="button1">Back Home</button>
         </Link>
       </div>
@@ -313,7 +316,7 @@ function ListClients() {
         </div>
       </div>
 
-      <ModalAddClient state={newClient} setState={setNewClient}  />
+      <ModalAddClient state={newClient} setState={setNewClient} />
 
       {/* <AgendaInputs></AgendaInputs> */}
       <br />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const BASE_URL = 'http://localhost:3002';
-const BASE_URL ='https://peluqueriapichichu.onrender.com'
+const BASE_URL = 'http://localhost:3002';
+//const BASE_URL ='https://peluqueriapichichu.onrender.com'
 export const axiosInstance=axios.create({
     baseURL: BASE_URL
 });
