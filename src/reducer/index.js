@@ -24,6 +24,9 @@ import {
   UPDATE_DOG,
   POST_BREAK,
   ADD_USER,
+  ADD_COMPANY,
+  GET_USER,
+  VERIFICATION_COMPANY_EXISTS
 } from "./actions";
 
 const initialState = {
@@ -37,10 +40,12 @@ const initialState = {
   vtasxAnio: [],
   vtasxAnioandMesNow: [],
   vtasxAnioandMesParam: [],
+  arrayCompanies:[],
+  user: null,
 };
 
 function rootReducer(state = initialState, action) {
-  console.log(action.payload);
+console.log(action.payload,"reducer")
   // el action  es la respuesta que llega del archivo actions
   // si trae valos quiere decir que actions realizo la request como corresponde
   //console.log(action.payload, "reducer (valores del actions)");
@@ -48,6 +53,12 @@ function rootReducer(state = initialState, action) {
   // imprmiira esto de abajao,dependiendo de la accion que se haya elegido
   // Object { type: "GET_RECIPE", payload: (13) […] }
   switch (action.type) {
+    case GET_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
     case GET_TURNOS:
       return {
         ...state,
@@ -65,6 +76,12 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         allVentas: action.payload,
+      };
+
+    case VERIFICATION_COMPANY_EXISTS:
+      return {
+        ...state,
+        arrayCompanies: action.payload,
       };
 
     case GET_VENTAS_ID:
@@ -128,6 +145,11 @@ function rootReducer(state = initialState, action) {
       };
 
     case ADD_USER:
+      return {
+        ...state,
+      };
+
+    case ADD_COMPANY:
       return {
         ...state,
       };

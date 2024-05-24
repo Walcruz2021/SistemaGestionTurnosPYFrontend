@@ -1,5 +1,6 @@
 import axios from "axios";
 import host from "../components/ruteBack/vbledeploy";
+import { auth } from "../hooks/configFirebase";
 export const ADD_TODO = "ADD_TODO";
 export const ORDER_CONTACTS = "ORDER_CONTACTS";
 export const GET_TURNOS = "GET_TURNOS";
@@ -22,11 +23,30 @@ export const VTA_X_ANIO = "VTA_X_ANIO";
 export const VTAS_ANIO_MES_NOW = "VTAS_ANIO_MES_NOW";
 export const VTAS_MES_ANIO_PARAMS = "VTAS_MES_ANIO_PARAMS";
 export const DELETE_DOG = "DELETE_DOG";
-export const UPDATE_DOG="UPDATE_DOG"
-export const POST_BREAK="POST_BREAK"
-export const ADD_USER="ADD_USER"
+export const UPDATE_DOG = "UPDATE_DOG";
+export const POST_BREAK = "POST_BREAK";
+export const ADD_USER = "ADD_USER";
+export const ADD_COMPANY = "ADD_COMPANY";
+export const GET_USER = "GET_USER";
+export const VERIFICATION_COMPANY_EXISTS="VERIFICATION_COMPANY_EXISTS"
 
 console.log(host.development, "action------------>");
+
+export const setUser = (user) => ({
+  type: GET_USER,
+  payload: user,
+});
+
+export const listenToAuthChanges = () => (dispatch) => {
+  auth.onAuthStateChanged((userCred) => {
+    if (userCred) {
+      const { email, emailVerified, displayName } = userCred;
+      dispatch(setUser({ email, emailVerified, displayName }));
+    } else {
+      dispatch(setUser(null));
+    }
+  });
+};
 
 export function addTurnos(payload) {
   console.log(payload, "action");
@@ -77,23 +97,37 @@ export function addDog(payload, idClient) {
   };
 }
 
-export function addUser(payload){
-
-  return async function(dispatch){
-    try{
+export function addUser(payload) {
+  return async function (dispatch) {
+    try {
       const newUser = await axios.post(
         //`http://localhost:3002/api/addPerro/${idClient}`,
         `${host.development}/api/addUser`,
         payload
       );
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+}
+
+export function addCompany(payload) {
+  return async function (dispatch) {
+    try {
+      const newCompany = await axios.post(
+        //`http://localhost:3002/api/addPerro/${idClient}`,
+        `${host.development}/api/addCompany`,
+        payload
+      );
+      return newCompany
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 export function orderTurnos(payload) {
-  console.log(payload,"actions")
+  console.log(payload, "actions");
   return {
     type: ORDER_TURNOS,
     payload,
@@ -109,7 +143,7 @@ export function orderVentas(payload) {
 
 //funciona
 export function addClient(payload) {
-  console.log("action",payload);
+  console.log("action", payload);
   return async function (dispatch) {
     try {
       const newClient = await axios.post(
@@ -132,10 +166,10 @@ export function orderContacts(payload) {
 }
 
 //getTurnos trae el listado de turno
-export function getTurnos(payload) {
+export function getTurnos(idCompany) {
   return async function (dispatch) {
     const listTurnos = await axios.get(
-       `${host.development}/api/getTurnos`,
+      `${host.development}/api/getTurnos/${idCompany}`,
       //"http://localhost:3002/api/getTurnos",
       //"https://peluqueriapichichu.onrender.com/api/getTurnos",
       {}
@@ -154,7 +188,8 @@ export function getClients() {
   return async function (dispatch) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
-      `${host.development}/api/listClients`,
+      `${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
+      // `${host.development}/api/listClients/${idCompany}`,
       {}
     );
     return dispatch({
@@ -183,6 +218,20 @@ export function getVentas(payload) {
       type: GET_VENTAS,
       payload: listVentas.data.ventas,
     });
+  };
+}
+
+export function verificationCompaniesExist(email) {
+  console.log(email)
+  return async function (dispatch) {
+      const arrayCompanies = await axios.get(
+        `${host.development}/api/validationCompanyExist/${email}`
+      );
+      
+      return dispatch({
+        type:VERIFICATION_COMPANY_EXISTS,
+        payload:arrayCompanies
+      })
   };
 }
 
@@ -239,7 +288,6 @@ export function vtasMesandAnioxParam(dateFormat) {
 export function vtasxA(anio) {
   return async function (dispatch) {
     try {
-     
       const detail = await axios.get(
         //`http://localhost:3002/api/ventasxAnio/${anio}`
         `${host.development}/api/ventasxAnio/${anio}`
@@ -298,7 +346,7 @@ export function deleteClient(clientId) {
     await axios.delete(
       //`http://localhost:3002/api/deleteClient/${clientId}`
       `${host.development}/api/deleteClient/${clientId}`
-      );
+    );
     return dispatch({
       type: DELETE_CLIENT,
     });
@@ -311,7 +359,7 @@ export function deleteDog(idDog) {
     await axios.put(
       //`http://localhost:3002/api/deleteDog/${idDog}`
       `${host.development}/api/deleteDog/${idDog}`
-      );
+    );
     return dispatch({
       type: DELETE_DOG,
     });
@@ -321,16 +369,16 @@ export function deleteDog(idDog) {
 //funciona bien pero no se refresca la pagina
 
 export function deleteTurno(turnoId) {
-  console.log(turnoId,"actions")
+  console.log(turnoId, "actions");
   return async function (dispatch) {
     await axios.delete(
       //`http://localhost:3002/api/deleteTurno/${turnoId}`
       `${host.development}/api/deleteTurno/${turnoId}`
-      );
-     return dispatch({
-       type: DELETE_TURNO,
-     });
-   };
+    );
+    return dispatch({
+      type: DELETE_TURNO,
+    });
+  };
 }
 
 //no esta eliminando el turno al ingresar la venta
@@ -358,7 +406,7 @@ export function asignedVentas(payload, id_client) {
         .delete(
           //`http://localhost:3002/api/deleteTurno/${payload.idTurno}`
           `${host.development}/api/deleteTurno/${payload.idTurno}`
-          )
+        )
         .then((data) => {
           return dispatch({
             type: DELETE_TURNO,
@@ -370,7 +418,6 @@ export function asignedVentas(payload, id_client) {
     }
   };
 }
-
 
 //funciona bien
 export function updateClient(payload, idElement) {
@@ -421,11 +468,12 @@ export function updateDog(payload, idDog) {
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editDog/${idDog}`, payload
-      `${host.development}/api/editDog/${idDog}`,payload
-      );
+      `${host.development}/api/editDog/${idDog}`,
+      payload
+    );
     return dispatch({
-      type:UPDATE_DOG
-    })
+      type: UPDATE_DOG,
+    });
   };
 }
 

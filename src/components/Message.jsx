@@ -5,7 +5,7 @@ const Message=()=>{
 
     return(
         <>
-        <h1>Mensaje</h1>
+        <h1>Mensajexxx</h1>
         </>
     )
 }

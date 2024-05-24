@@ -51,7 +51,7 @@ const Sidebar = ({
                 Perfil
               </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/analytics" activeClassName="activeClicked">
+            <NavLink exact to="/listVentas" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="chart-line" className="text-secondary">
                 Informes
               </CDBSidebarMenuItem>

@@ -32,7 +32,7 @@ const Forms1 = () => {
 
   //LISTADO DE TURNOS
   const turnos = useSelector((state) => state.allTurnos);
-
+  const idCompany = "66465ac8c1212f4dc0088087";
   //comprobar pero no tiene sentido voolver a pedir los clientes
   //despues de apretar el boton de agregar turno
   //   useEffect(() => {
@@ -101,6 +101,7 @@ const Forms1 = () => {
     phone: "",
   });
 
+
   //console.log(stateInput)
 
   function handleChangeDog(selected) {
@@ -167,6 +168,8 @@ const Forms1 = () => {
   // 0: {label: 'jimena', value: '628ae836d66d1f4760a023a6'}
   // 1: {label: 'dalila 3', value: '628ae8c5d66d1f4760a023be'}
 
+  const company = "66465ac8c1212f4dc0088087";
+
   return (
     <div>
       <Select
@@ -226,19 +229,10 @@ const Forms1 = () => {
               idClient: stateInput.idClient,
               time: values.time,
               phone: stateInput.phone,
+              Company: company,
             })
           );
-          // const objetoEnviar = {
-          //   name: stateInput.name,
-          //   nameDog: stateInput.nameDog,
-          //   idDog: stateInput.idDog,
-          //   date: values.date,
-          //   notesTurn: values.notesTurn,
-          //   idClient: stateInput.idClient,
-          //   time: values.time,
-          //   phone: stateInput.phone,
-          // };
-          // console.log(objetoEnviar, "------>");
+
           MySwal.fire({
             title: "¡Turno creado correctamente!",
             icon: "success",
@@ -246,7 +240,7 @@ const Forms1 = () => {
             confirmButtonColor: "rgb(21, 151, 67)",
           }).then((result) => {
             if (result.isConfirmed) {
-              dispatch(getTurnos());
+              dispatch(getTurnos(idCompany));
               //dispatch(get_clients_id(stateInput.idClient));
               setStateInput({
                 name: "",
@@ -260,7 +254,7 @@ const Forms1 = () => {
               });
               //window.location.reload() RESFRESCA LA PAGINA
               window.location.reload();
-              setRefrescar(!refrescar);
+              //setRefrescar(!refrescar);
               resetForm();
             }
           });

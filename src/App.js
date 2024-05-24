@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./components/LandingPage.jsx";
 import AgendaTurnos from "./components/AgendaTurnos";
@@ -9,51 +9,82 @@ import CreateDog from "./components/CreateDog.jsx";
 import SettingClient from "./components/SettingClient.jsx";
 import FormRegister from "./components/Formulario/FormsRegister.jsx";
 import FormLoginNew from "./components/Formulario/FormLoginNew.jsx";
-import SideBar from "./components/Menues/SideBar.jsx";
-
+import NavBarLat from "./components/Menues/NavBarLat.jsx";
+import Prueba from "./components/Prueba.jsx";
+import FormAddCompany from "./components/Formulario/FormAddCompany.jsx";
+import LoginFirebase from "./components/LoginFirebase.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { listenToAuthChanges,verificationCompaniesExist } from "./reducer/actions.jsx";
 // display:flex (allows the sidebar component to be next to another)
 function App() {
+  const loginUser = useSelector((state) => state.user);
+  const companies = useSelector((state) => state.arrayCompanies.data);
+
+  
+  // if(typeof companies==="object"){
+  //   if(companies.companies !== undefined)
+  //   console.log(companies.companies[0])
+  // }else{
+  //   console.log("false")
+  // }
+
+  const dispatch = useDispatch();
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const sidebarWidth = "17rem"; // Ancho del sideBar cuando está abierto
   const sidebarWidth2 = "5rem";
 
+  useEffect(() => {
+    dispatch(listenToAuthChanges());
+    //dispatch(verificationCompaniesExist(loginUser.email))
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (loginUser) {
+      dispatch(verificationCompaniesExist(loginUser.email));
+    }
+  }, [dispatch, loginUser]);
+
   const routesContent = (
     <Routes>
       {/* Definir rutas comunes aquí */}
-      <Route path="/login" element={<FormLoginNew />} />
-      <Route path="/" element={<AgendaTurnos />} />
+      <Route path="/dashboard" element={<AgendaTurnos />} />
       <Route path="/listClient" element={<ListClients />} />
       <Route path="/listVentas" element={<ListVentas />} />
       <Route path="/Informe" element={<Informe />} />
       <Route path="/CreateDog" element={<CreateDog />} />
       <Route path="/settingClient" element={<SettingClient />} />
+      <Route path="/prueba" element={<Prueba />} />
+      <Route path="/addCompany" element={<FormAddCompany />} />
+    </Routes>
+  );
+
+  const routesContentInicio = (
+    <Routes>
       <Route path="/register" element={<FormRegister />} />
+      <Route path="/login" element={<FormLoginNew />} />
+      <Route path="/" element={<LoginFirebase />} />
     </Routes>
   );
 
   return (
-    <BrowserRouter>
-      <div style={{ display: "flex", height: "100vh" }}>
-        {/* Sidebar */}
-        <div style={{ flex: "0 0 auto" }}>
-          <SideBar
-            touchSide={isSideBarOpen}
-            setTouchSide={setIsSideBarOpen}
-          />
-        </div>
-
-        {/* Routes */}
-        <div style={{ flex: "1", paddingLeft: isSideBarOpen ? sidebarWidth : sidebarWidth2 }}>
-          {routesContent}
-        </div>
-      </div>
-    </BrowserRouter>
+    <>
+      {loginUser ? (
+        <BrowserRouter>
+          <div>
+            <NavBarLat userLogin={loginUser.displayName} companies={companies}/>
+            <div>{routesContent}</div>
+          </div>
+        </BrowserRouter>
+      ) : (
+        <BrowserRouter>
+          <div>{routesContentInicio}</div>
+        </BrowserRouter>
+      )}
+    </>
   );
 }
 
 export default App;
-
-
 
 /// //////////////////////////////////////////
 // import React from 'react';

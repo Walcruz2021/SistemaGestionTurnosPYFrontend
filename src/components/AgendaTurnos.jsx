@@ -8,75 +8,80 @@ import Dashboard from "./Dashboard";
 import { getClients } from "../reducer/actions";
 import "./AgendaTurnos.css";
 import SideBar from "././Menues/SideBar";
-
+import NavBarLat from "./Menues/NavBarLat";
 import axios from "axios";
+import { auth } from "../hooks/configFirebase";
+import { getUserLogin } from "../reducer/actions";
 
 function TodoList() {
   const dispatch = useDispatch();
-
-  //LISTADO DE TURNOS
-  //const turnos = useSelector((state) => state.allTurnos);
   const [loading, setLoading] = useState(false);
-  //console.log(loading);
-
-  //LISTADO DE CLIENTES
-
-  //*console.log(clientes);
-  // console.log(venta);
-  const cliBusc = useSelector((state) => state.clientBusc);
-
-  //console.log(selectedDog)
-
   const [db, setDb] = useState(null);
-  console.log(db);
+  console.log(db)
   const [error, setError] = useState(null);
-
+  const loginUser = useSelector((state) => state.user);
+  const companies = useSelector((state) => state.arrayCompanies.data);
+  
+//const idCompany="664fa827777c0f136cba108b"
   useEffect(() => {
     const getTurnosList = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          //"https://peluqueriapichichu.onrender.com/api/getTurnos"
-          `${linkBack.development}/api/getTurnos`
-        );
-        setDb(res.data.turnos);
-      } catch (err) {
-        setLoading(false);
+      if(typeof companies==="object"){
+        const idCompany = companies.companies[0]._id;
+        try {
+          const res = await axios.get(
+            `${linkBack.development}/api/getTurnos/${idCompany}`
+          );
+          console.log(res)
+          setLoading(true);
+          setDb(res.data.turnos);
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          setError(err);
+        }
       }
     };
     getTurnosList();
   }, []);
 
-  //console.log(db,"lisssttttado")
-
   useEffect(() => {
     dispatch(getClients());
   }, [dispatch]);
 
-  /// ///////////////////////////////
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged((userCred) => {
+  //     if (userCred) {
+  //       const { email, emailVerified, displayName } = userCred;
+  //       setLoginUser({ email, emailVerified, displayName });
+  //     } else {
+  //       setLoginUser(null);
+  //     }
+  //     setAuthLoading(false); // Autenticación completada
+  //   });
 
-  if (cliBusc.buscado) {
-    const arrayIdClient = cliBusc.buscado.pedidos;
-    // setCli(...cli,arrayIdClient)
-    // console.log(arrayIdClient, "array de id de pedidos");
-  }
+  //   return () => unsubscribe();
+  // }, []);
+
+  // if (authLoading) {
+  //   return <div>Loading authentication...</div>; // Mostrar un indicador de carga mientras se determina el estado de autenticación
+  // }
 
   return (
     <>
-      <div className="titGral">
-        <h1>DASHBOARD</h1>
-      </div>
       <>
-        {db ? (
-          <Dashboard turnos={db} />
-        
-        ) : (
-          <div className="loader-container">
-            {/* <div className="spinner"></div> */}
-            <div className="spinner"></div>
-          </div>
-        )}
-        {error && <Message />}
+        <div className="titGral">
+          <h1>DASHBOARD</h1>
+        </div>
+        <div>
+          {loading ? (
+            <div className="loader-container">
+              <div className="spinner"></div>
+            </div>
+          ) : (
+            db && <Dashboard turnos={db} /> 
+          )}
+          {error && <Message />}
+        </div>
       </>
     </>
   );

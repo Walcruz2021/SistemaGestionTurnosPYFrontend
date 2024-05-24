@@ -27,12 +27,12 @@ import {
 } from "../reducer/actions";
 import Swal from "sweetalert2";
 import Modal from "./Modal/Modal";
-import Formulario from "./Formulario/FormNewTurno";
+import FormNewTurno from "./Formulario/FormNewTurno";
 import FormularioBreak from "./Formulario/FormularioNewBreak";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-
+import ModalDescription from "././Modal/ModalDescription";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { ButtonModal, CloseButton } from "../cssSyleComp/ModalStyles";
 
@@ -45,8 +45,14 @@ import ModalAddClient from "./Modal/ModalAddClient";
 import SideBar from "./Menues/SideBar";
 import SidebarMenu from "react-bootstrap-sidebar-menu";
 import SidebarMenuItem from "react-bootstrap-sidebar-menu";
+import { PiDogThin } from "react-icons/pi";
+import addClient2 from "../icons/addClientSmall.png";
+import addPet from "../icons/addPet.png";
+import listClients from "../icons/listClients.png";
+import ModalBoostrap from "react-bootstrap/Modal";
 
 function AgendaTurnPrueba({ turnos }) {
+  console.log(turnos,"DASHBOARD")
   const listadoTurnos = turnos;
   //console.log(listadoTurnos, "viejo");
 
@@ -384,25 +390,45 @@ function AgendaTurnPrueba({ turnos }) {
     <>
       <div>
         {/* BUTTONS */}
-        <div className="container-fluid grid-container py-3 px-5">
-          <button className="button2" onClick={() => setNewClient(!newClient)}>
-            Crear Cliente
-          </button>
+        <div className="container py-3">
+          <div className="row justify-content-center">
+            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+              <div className="text-center">
+                <div className="card-body">
+                  <button
+                    className="btn btn-link"
+                    onClick={() => setNewClient(!newClient)}
+                  >
+                    <img src={addClient2} />
+                  </button>
+                </div>
+              </div>
+            </div>
 
-          <Link to="/listClient">
-            <button className="button4">Listado Cliente</button>
-          </Link>
+            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+              <div className="text-center">
+                <div className="card-body">
+                  <Link to="/listClient">
+                    <button className="btn btn-link">
+                      <img src={listClients} />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
 
-          <Link to="/listVentas">
-            <button className="button5">Listado de Ventas</button>
-          </Link>
-
-          <Link to="/createDog">
-            <button className="button3" id="dog" onClick={() => change()}>
-              Crear Perro
-            </button>
-          </Link>
-
+            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+              <div className="text-center">
+                <div className="card-body">
+                  <Link to="/createDog">
+                    <button className="btn btn-link">
+                      <img src={addPet} />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* MODALS */}
@@ -442,7 +468,7 @@ function AgendaTurnPrueba({ turnos }) {
         />
 
         {/* MODAL QUE PERMITE MOSTRAR INFORMACION ADICIONAL */}
-        <Modal
+        {/* <Modal
           idElement={inputState._id}
           id={4}
           state={stateInfo}
@@ -456,7 +482,22 @@ function AgendaTurnPrueba({ turnos }) {
           notesTurn={inputState.notesTurn}
           modalContainerBox
           showInSettings
-        />
+        /> */}
+        {stateInfo ? (
+          <>
+            <ModalBoostrap show={stateInfo} onHide={handleClose} centered>
+              <ModalBoostrap.Body>
+                <ModalDescription
+                  nameClient={inputState.name}
+                  phone={inputState.phone}
+                  notesTurn={inputState.notesTurn}
+                  state={stateInfo}
+                  setStateModal={setInfo}
+                />
+              </ModalBoostrap.Body>
+            </ModalBoostrap>
+          </>
+        ) : null}
 
         {/* MODAL PERMITE EDITAR UN TURNO */}
       </div>
@@ -472,9 +513,9 @@ function AgendaTurnPrueba({ turnos }) {
         !newVentas &&
         !editTurn &&
         !newDog ? (
-          <Formulario />
+          <FormNewTurno />
         ) : null}
-      
+
         <br></br>
       </div>
 
@@ -539,7 +580,7 @@ function AgendaTurnPrueba({ turnos }) {
                 <td>
                   <Options justify="space-between">
                     <button
-                      className="buttonVtas"
+                      className="btn"
                       onClick={
                         (e) =>
                           handleVentas(e, {
@@ -562,7 +603,7 @@ function AgendaTurnPrueba({ turnos }) {
 
                     {/* handleClick permite editar en especifico */}
                     <button
-                      className="buttonEdit"
+                      className="btn"
                       onClick={(e) =>
                         handleClick(e, {
                           _id: turn._id,
@@ -582,7 +623,7 @@ function AgendaTurnPrueba({ turnos }) {
                     </button>
 
                     <button
-                      className="buttonDelete"
+                      className="btn"
                       onClick={(e) =>
                         handleDelete(e, {
                           idTurn: turn._id,
