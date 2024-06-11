@@ -104,7 +104,7 @@ export default function Modal({
   setStateHist,
 
   stateListTurn,
-  setListTurn,
+  setListTurn, 
   stateInfo,
   setInfo,
 

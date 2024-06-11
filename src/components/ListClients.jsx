@@ -5,21 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getClients,
   deleteClient,
-  updateClient,
-  deleteDog,
 } from "../reducer/actions";
 import "./ListClients.css";
-
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";
 import { Link } from "react-router-dom";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { CloseButton } from "../cssSyleComp/ModalStyles";
-import { Label, InputContainer } from "../cssSyleComp/StyleForm";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "../api/axios";
 import "../css/cssGeneral.css";
 import back from "../../src/icons/back.png";
@@ -42,6 +34,7 @@ function ListClients() {
   const MySwal = withReactContent(Swal);
   var clients = useSelector((state) => state.allClients);
   //console.log(clients,"listado")
+  const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const [stateSearch, setSearch] = useState("");
   //console.log(stateSearch)
@@ -79,7 +72,7 @@ function ListClients() {
   //console.log(inputState);
 
   useEffect(() => {
-    dispatch(getClients());
+    dispatch(getClients(companySelectedMenu._id));
   }, []);
 
   useEffect(() => {
@@ -228,61 +221,61 @@ function ListClients() {
     console.log("se hizo click");
   };
 
-  const createHashRouter = (value) => {
-    //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
-    //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
-    //primera encontrada.
-    const userSinEsp = value.userName.replace(/\s/g, "");
-    MySwal.fire({
-      title: "¿Estas seguro?",
-      text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#1ABD53",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí",
-      cancelButtonText: "Cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
-        //que ocurra durante la peticion
-        try {
-          const response = await axios.post(
-            REGISTER_URL,
-            JSON.stringify({
-              userName: userSinEsp,
-              password: value.password.toString(),
-              idClient: value.idClient,
-              role: "userClient",
-            }),
-            {
-              headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
-              withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
-            }
-          );
-          console.log(response, "--->");
-          if (response.status === 200) {
-            MySwal.fire({
-              title: "Solicitud con Exito",
-              text: "User y Password creados",
-              icon: "success",
-              confirmButtonColor: "#00A0D2",
-            });
-            dispatch(getClients());
-          }
-        } catch (error) {
-          console.log(error);
-          if (error.response.status === 400) {
-            MySwal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "El usuario ya existe",
-            });
-          }
-        }
-      }
-    });
-  };
+  // const createHashRouter = (value) => {
+  //   //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
+  //   //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
+  //   //primera encontrada.
+  //   const userSinEsp = value.userName.replace(/\s/g, "");
+  //   MySwal.fire({
+  //     title: "¿Estas seguro?",
+  //     text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#1ABD53",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Sí",
+  //     cancelButtonText: "Cancelar",
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
+  //       //que ocurra durante la peticion
+  //       try {
+  //         const response = await axios.post(
+  //           REGISTER_URL,
+  //           JSON.stringify({
+  //             userName: userSinEsp,
+  //             password: value.password.toString(),
+  //             idClient: value.idClient,
+  //             role: "userClient",
+  //           }),
+  //           {
+  //             headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
+  //             withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
+  //           }
+  //         );
+  //         console.log(response, "--->");
+  //         if (response.status === 200) {
+  //           MySwal.fire({
+  //             title: "Solicitud con Exito",
+  //             text: "User y Password creados",
+  //             icon: "success",
+  //             confirmButtonColor: "#00A0D2",
+  //           });
+  //           dispatch(getClients(companySelectedMenu._id));
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //         if (error.response.status === 400) {
+  //           MySwal.fire({
+  //             icon: "error",
+  //             title: "Oops...",
+  //             text: "El usuario ya existe",
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  // };
 
   return (
     <div>
@@ -354,7 +347,7 @@ function ListClients() {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>Crear User</th>
+                {/* <th>Crear User</th> */}
                 {/* <th>Option</th> */}
               </tr>
             </thead>
@@ -383,7 +376,7 @@ function ListClients() {
                         </td>
                         <td>{cli.phone}</td>
                         <td>{cli.address}</td>
-                        <td className="marginIcon">
+                        {/* <td className="marginIcon">
                           {cli.userLogin === false ? (
                             <FontAwesomeIcon
                               icon={faUser}
@@ -396,7 +389,7 @@ function ListClients() {
                               }
                             />
                           ) : null}
-                        </td>
+                        </td> */}
                       </tr>
                     ) : null
                   )

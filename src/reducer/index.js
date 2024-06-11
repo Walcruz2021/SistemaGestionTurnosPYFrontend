@@ -26,7 +26,8 @@ import {
   ADD_USER,
   ADD_COMPANY,
   GET_USER,
-  VERIFICATION_COMPANY_EXISTS
+  VERIFICATION_COMPANY_EXISTS,
+  FUNCTION_COMPANY_SELECTED
 } from "./actions";
 
 const initialState = {
@@ -42,10 +43,11 @@ const initialState = {
   vtasxAnioandMesParam: [],
   arrayCompanies:[],
   user: null,
+  companySelected:null
 };
 
 function rootReducer(state = initialState, action) {
-console.log(action.payload,"reducer")
+
   // el action  es la respuesta que llega del archivo actions
   // si trae valos quiere decir que actions realizo la request como corresponde
   //console.log(action.payload, "reducer (valores del actions)");
@@ -250,6 +252,11 @@ console.log(action.payload,"reducer")
         vtaxClient: action.payload,
       };
 
+      case FUNCTION_COMPANY_SELECTED:
+        return{
+          ...state,
+          companySelected:action.payload
+        }
     default:
       return state;
   }

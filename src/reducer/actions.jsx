@@ -28,7 +28,9 @@ export const POST_BREAK = "POST_BREAK";
 export const ADD_USER = "ADD_USER";
 export const ADD_COMPANY = "ADD_COMPANY";
 export const GET_USER = "GET_USER";
-export const VERIFICATION_COMPANY_EXISTS="VERIFICATION_COMPANY_EXISTS"
+export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
+export const FUNCTION_COMPANY_SELECTED="FUNCTION_COMPANY_SELECTED"
+
 
 console.log(host.development, "action------------>");
 
@@ -119,7 +121,7 @@ export function addCompany(payload) {
         `${host.development}/api/addCompany`,
         payload
       );
-      return newCompany
+      return newCompany;
     } catch (error) {
       console.log(error);
     }
@@ -184,12 +186,13 @@ export function getTurnos(idCompany) {
 }
 
 //funciona bien
-export function getClients() {
+export function getClients(idCompany) {
+  console.log(idCompany,"action")
   return async function (dispatch) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
-      `${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
-      // `${host.development}/api/listClients/${idCompany}`,
+      //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
+      `${host.development}/api/listClientsCompany/${idCompany}`,
       {}
     );
     return dispatch({
@@ -222,16 +225,16 @@ export function getVentas(payload) {
 }
 
 export function verificationCompaniesExist(email) {
-  console.log(email)
+  console.log(email);
   return async function (dispatch) {
-      const arrayCompanies = await axios.get(
-        `${host.development}/api/validationCompanyExist/${email}`
-      );
-      
-      return dispatch({
-        type:VERIFICATION_COMPANY_EXISTS,
-        payload:arrayCompanies
-      })
+    const arrayCompanies = await axios.get(
+      `${host.development}/api/validationCompanyExist/${email}`
+    );
+
+    return dispatch({
+      type: VERIFICATION_COMPANY_EXISTS,
+      payload: arrayCompanies,
+    });
   };
 }
 
@@ -383,10 +386,11 @@ export function deleteTurno(turnoId) {
 
 //no esta eliminando el turno al ingresar la venta
 export function asignedVentas(payload, id_client) {
+
   console.log(payload, "actions");
   // date: "2022-05-30"
-  //mes:04
-  //año:2022
+  // mes:04
+  // año:2022
   // idTurno: "6282929c4ef1e8473854f09b" (idTurno)
   // name: "omar cruz"
   // nameDog: "ramonsito"
@@ -481,5 +485,13 @@ export function getNameClients(payload) {
   return {
     type: "GET_NAME_CLIENTS",
     payload,
+  };
+}
+
+export function functionCompanySelected(payload) {
+  console.log(payload,"actions")
+  return {
+    type:FUNCTION_COMPANY_SELECTED,
+    payload
   };
 }

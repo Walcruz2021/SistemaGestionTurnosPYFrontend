@@ -9,35 +9,24 @@ import { FaChartLine } from "react-icons/fa";
 import { FaCogs } from "react-icons/fa";
 import { signOut } from "@firebase/auth";
 import { auth } from "../../hooks/configFirebase";
+import { functionCompanySelected } from "../../reducer/actions";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-function NavBarLat({ userLogin,companies}) {
+function NavBarLat({ userLogin, listCompaniesAll, stateCompanyGralNav }) {
+  const dispatch = useDispatch();
+  const companySelected = useSelector((state) => state.companySelected);
 
-  // if(typeof companies==="object"){
-  //   companies.companies[0]
-  // }
+  const [stateCompanySelectedMenu, setCompanySelectedMenu] = useState();
+
+  useEffect(() => {
+    if (companySelected) {
+      setCompanySelectedMenu(companySelected);
+    }
+  }, []);
 
   const onCloseSesion = async () => {
-   
     try {
-      // Swal.fire({
-      //   title: "Are you sure?",
-      //   text: "You won't be able to revert this!",
-      //   icon: "warning",
-      //   showCancelButton: true,
-      //   confirmButtonColor: "#3085d6",
-      //   cancelButtonColor: "#d33",
-      //   confirmButtonText: "Yes, delete it!",
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     Swal.fire({
-      //       title: "Deleted!",
-      //       text: "Your file has been deleted.",
-      //       icon: "success",
-      //     });
-      //     signOut(auth);
-      //     window.location.href = "/login";
-      //   }
-      // });
       await signOut(auth);
       window.location.href = "/login";
     } catch (error) {
@@ -45,9 +34,22 @@ function NavBarLat({ userLogin,companies}) {
     }
   };
 
+  const listCompanies = () => {};
+
+  const changeCompany = (company) => {
+    setCompanySelectedMenu(company);
+    dispatch(functionCompanySelected(company));
+  };
+
+  const [stateStatus,setStatus]=useState(false)
+  const closeMenuLat = () => {
+    setStatus(!stateStatus);
+  };
+
   return (
     <>
       {[false].map((expand) => (
+      
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
           <Container fluid>
             <Navbar.Brand>GESTION DE TURNOS PYMESYA</Navbar.Brand>
@@ -57,11 +59,17 @@ function NavBarLat({ userLogin,companies}) {
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="end"
             >
-              <Offcanvas.Header closeButton>
+              <Offcanvas.Header closeButton onClick={closeMenuLat}>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                   MENU
                 </Offcanvas.Title>
+                {stateCompanySelectedMenu  && 'nameCompany' in stateCompanySelectedMenu ? (
+                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                    {stateCompanySelectedMenu.nameCompany}
+                  </Offcanvas.Title>
+                ) : null}
               </Offcanvas.Header>
+
               {/* <FaCogs className="mx-4" /> */}
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
@@ -88,11 +96,21 @@ function NavBarLat({ userLogin,companies}) {
                     title="Empresas"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    {typeof companies==="object" ? companies.companies.map(company=>
-                     //console.log(company.nameCompany)
-                     <NavDropdown.Item key={company._id} href="#action3">{company.nameCompany}</NavDropdown.Item>
-                    ):null}
-
+                    {typeof listCompaniesAll === "object"
+                      ? listCompaniesAll.companies.map((company) => (
+                          //console.log(company.nameCompany)
+                          <NavDropdown.Item
+                            key={company._id}
+                            onClick={() => changeCompany(company)}
+                          >
+                            {company.nameCompany}
+                          </NavDropdown.Item>
+                        ))
+                      : null}
+                    {/* <Nav.Link href="./listCompanies">
+                      <FaChartLine className="mx-4" />
+                      Listado de Empresas
+                    </Nav.Link> */}
                     {/* <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                     <NavDropdown.Item onClick={onCloseSesion}>
                       Cerrar Sesion
@@ -102,7 +120,6 @@ function NavBarLat({ userLogin,companies}) {
                       Something else here
                     </NavDropdown.Item> */}
                   </NavDropdown>
-
                 </Nav>
                 {/* <Form className="d-flex">
                   <Form.Control

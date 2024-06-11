@@ -1,70 +1,57 @@
 import React, { useState, useEffect } from "react";
-import helpHttp from "./ruteBack/helpHttp";
-import linkBack from "./ruteBack/vbledeploy";
-// import CardsItem from "./CardsItem";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import Dashboard from "./Dashboard";
-import { getClients } from "../reducer/actions";
+import {
+  getUserLogin,
+  verificationCompaniesExist,
+  companySelected,
+  getClients,
+  getTurnos,
+} from "../reducer/actions";
 import "./AgendaTurnos.css";
-import SideBar from "././Menues/SideBar";
-import NavBarLat from "./Menues/NavBarLat";
-import axios from "axios";
-import { auth } from "../hooks/configFirebase";
-import { getUserLogin } from "../reducer/actions";
+import linkBack from "./ruteBack/vbledeploy";
 
-function TodoList() {
+function AgendaTurnos({ stateCompanyGralNav }) {
+  // debugger
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [db, setDb] = useState(null);
-  console.log(db)
+  console.log(db);
+  const [listClients, setlistClients] = useState(null);
   const [error, setError] = useState(null);
   const loginUser = useSelector((state) => state.user);
   const companies = useSelector((state) => state.arrayCompanies.data);
-  
-//const idCompany="664fa827777c0f136cba108b"
+  const [companyFirst, setCompanyFirst] = useState({});
+  const companySelectedMenu = useSelector((state) => state.companySelected);
+
+  useEffect(() => {
+    dispatch(verificationCompaniesExist(loginUser.email));
+  }, [dispatch, loginUser]);
+
   useEffect(() => {
     const getTurnosList = async () => {
-      if(typeof companies==="object"){
-        const idCompany = companies.companies[0]._id;
+      if (companySelectedMenu) {
         try {
-          const res = await axios.get(
-            `${linkBack.development}/api/getTurnos/${idCompany}`
-          );
-          console.log(res)
           setLoading(true);
-          setDb(res.data.turnos);
-          setLoading(false);
+          const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
+          const listClientsResponse = await axios.get(
+            `${linkBack.development}/api/listClientsCompany/${companySelectedMenu._id}`
+          );
+          setlistClients(listClientsResponse.data);
+          setDb(turnosResponse.data); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
-          setLoading(false);
           setError(err);
+        } finally {
+          setLoading(false);
         }
       }
     };
-    getTurnosList();
-  }, []);
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((userCred) => {
-  //     if (userCred) {
-  //       const { email, emailVerified, displayName } = userCred;
-  //       setLoginUser({ email, emailVerified, displayName });
-  //     } else {
-  //       setLoginUser(null);
-  //     }
-  //     setAuthLoading(false); // Autenticación completada
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  // if (authLoading) {
-  //   return <div>Loading authentication...</div>; // Mostrar un indicador de carga mientras se determina el estado de autenticación
-  // }
+    if (companySelectedMenu) {
+      getTurnosList();
+    }
+  }, [companySelectedMenu, dispatch]);
 
   return (
     <>
@@ -77,14 +64,26 @@ function TodoList() {
             <div className="loader-container">
               <div className="spinner"></div>
             </div>
+          ) : error ? (
+            <Message /> // Aquí se muestra el componente de error si hay un error
+          ) : db ? (
+            <Dashboard
+              listClientsCompany={listClients}
+              setlistClients={setlistClients}
+              idCompsnySelected={companySelectedMenu._id}
+              onTurnoAdded={onTurnoAdded}
+            />
           ) : (
-            db && <Dashboard turnos={db} /> 
+            <Dashboard
+              turnos={db}
+              listClientsCompany={listClients}
+              setlistClients={setlistClients}
+            />
           )}
-          {error && <Message />}
         </div>
       </>
     </>
   );
 }
 
-export default TodoList;
+export default AgendaTurnos;

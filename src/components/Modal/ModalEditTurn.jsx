@@ -1,78 +1,71 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getClients, addClient } from "../../reducer/actions";
+import {getTurnos, updateTurno} from "../../reducer/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
-  const companySelectdMenu = useSelector((state) => state.companySelected);
-
-  const [companySelectedState,setCompanySelectedState]=useState()
- 
-  useEffect(() => {
-    if(companySelectdMenu){
-      setCompanySelectedState(companySelectdMenu)
-    }
-  });
-
+const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
+  const companySelectedMenu=useSelector((state)=>state.companySelected) 
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
-  const handleClose = () => setState(!state);
+  const handleClose = () => setStateEditTurn(!stateEditTurn);
   const [stateValue, setStateValue] = useState({
-    name: "",
-    phone: "",
-    address: "",
-    notesCli: "",
+    time: "",
+    date: "",
+    notesTurn: "",
   });
 
+  useEffect(() => {
+    if (turn) {
+      setStateValue({
+        notesTurn: turn.notesTurn,
+        time: turn.time,
+        date: turn.date
+      });
+    }
+  }, []);
+
   const handleChange = (e) => {
-    const { name, address, value } = e.target;
+    const { name, value } = e.target;
     setStateValue((prevState) => ({
       ...prevState,
       [name]: value,
-      [address]: value,
     }));
   };
 
   const handleSumbit = (e) => {
     if (
-      stateValue.name.trim() === "" ||
-      stateValue.phone.trim() === "" ||
-      stateValue.notesCli.trim() === "" ||
-      stateValue.address.trim() === ""
+      stateValue.time.trim() === "" ||
+      stateValue.date.trim() === "" ||
+      stateValue.notesTurn.trim() === ""
     ) {
       alert("valores vacios");
     }
     dispatch(
-      addClient({
-        name: stateValue.name,
-        address: stateValue.address,
-        notesClie: stateValue.notesCli,
-        phone: stateValue.phone,
-        status: true,
-        Company: companySelectedState._id,
-      })
+      updateTurno(
+        stateValue,
+        turn._id,
+      )
     );
     MySwal.fire({
-      title: "¡Cliente creado correctamente!",
+      title: "¡Turno Editado Correctamente!",
       icon: "success",
       confirmButtonText: "Aceptar",
       confirmButtonColor: "rgb(21, 151, 67)",
     }).then((result) => {
       if (result.isConfirmed) {
         setStateValue({
-          name: "",
-          address: "",
-          notesCli: "",
-          phone: "",
+          time: "",
+          date: "",
+          notesTurn: "",
         });
-        dispatch(getClients(companySelectedState._id));
+        dispatch(getTurnos(companySelectedMenu._id));
         handleClose();
       }
     });
@@ -81,9 +74,9 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
     <>
       {/* ADD CLIENT */}
       <div>
-        <Modal show={state} onHide={handleClose}>
+        <Modal show={stateEditTurn} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Adherir un Cliente</Modal.Title>
+            <Modal.Title>Editar Turno</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -91,14 +84,16 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nombre y Apellido</Form.Label>
+                <Form.Label lassName="text-xs">Nota Turno</Form.Label>
                 <Form.Control
+                  as="textarea"
+                  rows={3}
                   type="text"
-                  placeholder="Pepe Argento"
-                  name="name"
+                  // placeholder="Pepe Argento"
+                  name="notesTurn"
                   autoFocus
                   maxLength={30}
-                  value={stateValue.name}
+                  value={stateValue.notesTurn}
                   onChange={handleChange}
                   required
                 />
@@ -106,50 +101,30 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   Puedes ingresar hasta 15 caracteres.
                 </Form.Text> */}
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Teléfono Contacto</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="3876153799"
-                  name="phone"
-                  autoFocus
-                  maxLength={15}
-                  value={stateValue.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
+              <Form.Group>
                 <Form.Label>Domicilio</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Dean Funes 1235"
-                  name="address"
+                  type="time"
+                  name="time"
                   autoFocus
                   maxLength={40}
-                  value={stateValue.address}
+                  value={stateValue.time}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
+
               <Form.Group
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Nota Cliente</Form.Label>
+                <Form.Label>Fecha Turno</Form.Label>
                 <Form.Control
-                  as="textarea"
-                  rows={3}
-                  name="notesCli"
+                  type="date"
+                  name="date"
                   autoFocus
                   maxLength={100}
-                  value={stateValue.notesCli}
+                  value={stateValue.date}
                   onChange={handleChange}
                   required
                 />
@@ -161,7 +136,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                           Save Changes
                         </Button> */}
             <Button variant="primary" type="submit" onClick={handleSumbit}>
-              Agregar Cliente
+              Editar Turno
             </Button>
           </Modal.Footer>
         </Modal>
@@ -170,4 +145,4 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
   );
 };
 
-export default ModalAddClient;
+export default ModalEditTurn;
