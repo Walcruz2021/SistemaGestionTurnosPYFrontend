@@ -1,5 +1,5 @@
 
-.container{
+.containerB{
     width: 90%;
 }
 
@@ -7,7 +7,7 @@
     margin-top: 10px;
 }
 
-.container h1{
+.containerB h1{
     text-align: center;
     margin-top: 10px;
 }
@@ -26,38 +26,8 @@
 /* contenedor general que abarcar los elementos a acmomodar para su posterior responsive */
 /* DE ESTA FORMA button1 y button2 quedaran uno abajo de otro y abarcando toda la pantalla */
 
-.grid-container{
-    display:grid;
-    gap:10px;
-    text-align: center;
-    grid-template-areas: 
-    "button1",
-    "button2";
-}
 
 
-.grid-container button{
-    text-align: center;
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-right: 1rem;
-    width: 100%;
-
-}
-
-/* ESCRITORIO */
-@media (min-width: 900px){
-.grid-container{
-    grid-template-areas: 
-    "button1 button2";
-}
-}
 
 .classSelect{
     margin-top: 10px;

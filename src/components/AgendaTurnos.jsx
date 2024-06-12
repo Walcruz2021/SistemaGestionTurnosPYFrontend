@@ -1,82 +1,89 @@
 import React, { useState, useEffect } from "react";
-import helpHttp from "./ruteBack/helpHttp";
-import linkBack from "./ruteBack/vbledeploy";
-// import CardsItem from "./CardsItem";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import Dashboard from "./Dashboard";
-import { getClients } from "../reducer/actions";
+import {
+  getUserLogin,
+  verificationCompaniesExist,
+  companySelected,
+  getClients,
+  getTurnos,
+} from "../reducer/actions";
 import "./AgendaTurnos.css";
+import linkBack from "./ruteBack/vbledeploy";
 
-
-
-import axios from "axios";
-
-function TodoList() {
+function AgendaTurnos({ stateCompanyGralNav }) {
+  // debugger
   const dispatch = useDispatch();
-
-  //LISTADO DE TURNOS
-  //const turnos = useSelector((state) => state.allTurnos);
   const [loading, setLoading] = useState(false);
-  //console.log(loading);
-
-  //LISTADO DE CLIENTES
-
-  //*console.log(clientes);
-  // console.log(venta);
-  const cliBusc = useSelector((state) => state.clientBusc);
-
-  //console.log(selectedDog)
-
   const [db, setDb] = useState(null);
   console.log(db);
+  const [listClients, setlistClients] = useState(null);
   const [error, setError] = useState(null);
+  const loginUser = useSelector((state) => state.user);
+  const companies = useSelector((state) => state.arrayCompanies.data);
+  const [companyFirst, setCompanyFirst] = useState({});
+  const companySelectedMenu = useSelector((state) => state.companySelected);
 
+  useEffect(() => {
+    dispatch(verificationCompaniesExist(loginUser.email));
+  }, [dispatch, loginUser]);
 
   useEffect(() => {
     const getTurnosList = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          //"https://peluqueriapichichu.onrender.com/api/getTurnos"
-          `${linkBack.development}/api/getTurnos`
-        );
-        setDb(res.data.turnos);
-      } catch (err) {
-        setLoading(false);
+      if (companySelectedMenu) {
+        try {
+          setLoading(true);
+          const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
+          const listClientsResponse = await axios.get(
+            `${linkBack.development}/api/listClientsCompany/${companySelectedMenu._id}`
+          );
+          setlistClients(listClientsResponse.data);
+          setDb(turnosResponse.data); // Asegúrate de que turnosResponse.data contenga la información correcta
+        } catch (err) {
+          setError(err);
+        } finally {
+          setLoading(false);
+        }
       }
     };
-    getTurnosList();
-  }, []);
-
-  //console.log(db,"lisssttttado")
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch]);
-
-  /// ///////////////////////////////
-
-  if (cliBusc.buscado) {
-    const arrayIdClient = cliBusc.buscado.pedidos;
-    // setCli(...cli,arrayIdClient)
-    // console.log(arrayIdClient, "array de id de pedidos");
-  }
+    if (companySelectedMenu) {
+      getTurnosList();
+    }
+  }, [companySelectedMenu, dispatch]);
 
   return (
-    <div>
-      <h1>Turnos</h1>
-
-      {db ? <Dashboard turnos={db}/> :
-
-        <div className="loader-container">
-          {/* <div className="spinner"></div> */}
-          <div className="spinner"></div>
+    <>
+      <>
+        <div className="titGral">
+          <h1>DASHBOARD</h1>
         </div>
-      }
-      {error && <Message />}
-    </div>
+        <div>
+          {loading ? (
+            <div className="loader-container">
+              <div className="spinner"></div>
+            </div>
+          ) : error ? (
+            <Message /> // Aquí se muestra el componente de error si hay un error
+          ) : db ? (
+            <Dashboard
+              listClientsCompany={listClients}
+              setlistClients={setlistClients}
+              idCompsnySelected={companySelectedMenu._id}
+              onTurnoAdded={onTurnoAdded}
+            />
+          ) : (
+            <Dashboard
+              turnos={db}
+              listClientsCompany={listClients}
+              setlistClients={setlistClients}
+            />
+          )}
+        </div>
+      </>
+    </>
   );
 }
 
-export default TodoList;
+export default AgendaTurnos;

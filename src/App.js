@@ -1,162 +1,116 @@
-import React from "react";
-import ReactDOM from "react-dom";
-
-import { BrowserRouter, Route, Switch, Routes } from "react-router-dom";
-import LandingPage from "./components/LandingPage.jsx";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AgendaTurnos from "./components/AgendaTurnos";
 import ListClients from "./components/ListClients.jsx";
 import ListVentas from "./components/ListVentas.jsx";
 import Informe from "./components/Informe.jsx";
-import CreateDog from "./components/CreateDog.jsx";
 import SettingClient from "./components/SettingClient.jsx";
-import Register from "./components/Register.jsx";
-import Prueba from "./components/Prueba.jsx";
+import FormRegister from "./components/Formulario/FormsRegister.jsx";
+import FormLoginNew from "./components/Formulario/FormLoginNew.jsx";
+import LoginFirebase from "./components/LoginFirebase.jsx";
+import ListCompanies from "./components/ListCompanies.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  functionCompanySelected,
+  listenToAuthChanges,
+  verificationCompaniesExist,
+} from "./reducer/actions.jsx";
+import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
+import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx"
 
-// import AgendaTurnoxCliente from "./components/AgendaTurnoxCliente";
-// import Home from "./components/Home"
-//s
 function App() {
+  const loginUser = useSelector((state) => state.user);
+  const companiesList = useSelector((state) => state.arrayCompanies.data);
+
+  const [stateCompanyGralNav, setCompanyGralNav] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true); // Estado de carga
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(listenToAuthChanges());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (loginUser) {
+      dispatch(verificationCompaniesExist(loginUser.email));
+    }
+  }, [dispatch, loginUser]);
+
+  useEffect(() => {
+    if (companiesList && "companies" in companiesList) {
+      setCompanyGralNav(companiesList.companies[0]);
+      dispatch(functionCompanySelected(companiesList.companies[0]))
+      setIsLoading(false); // Cambiar estado de carga a falso
+    }
+  }, [companiesList]);
+
+  useEffect(() => {
+    if (stateCompanyGralNav) {
+      setIsLoading(false);
+    }
+  }, [stateCompanyGralNav]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Mostrar mensaje de carga mientras se obtienen los datos
+  }
+
+  const routesContent = (
+    <Routes>
+      <Route
+        path="/dashboard"
+        element={<AgendaTurnos stateCompanyGralNav={stateCompanyGralNav} />} // Condicional para asegurar que el prop no sea null
+      />
+      <Route path="/listClient" element={<ListClients />} />
+      <Route path="/listVentas" element={<ListVentas />} />
+      <Route path="/Informe" element={<Informe />} />
+      <Route path="/settingClient" element={<SettingClient />} />
+      {/* <Route path="/prueba" element={<Prueba />} /> */}
+      <Route path="/addCompany" element={<FormAddCompany />} />
+      <Route path="/listCompanies" element={<ListCompanies />}></Route>
+    </Routes>
+  );
+
+  const routesContentInicio = (
+    <Routes>
+      <Route path="/register" element={<FormRegister />} />
+      <Route path="/login" element={<FormLoginNew />} />
+      <Route path="/" element={<LoginFirebase />} />
+    </Routes>
+  );
+
   return (
     <BrowserRouter>
-      <div>
-        <Routes>
-          {/* <Route exact path='/' element={<LandingPage />} /> */}
-          <Route path="/" element={<AgendaTurnos />} />
-          <Route path="/listClient" element={<ListClients />} />
-          <Route path="/listVentas" element={<ListVentas />} />
-          <Route path="/Informe" element={<Informe />} />
-          <Route path="/CreateDog" element={<CreateDog />} />
-          <Route path="/settingClient" element={<SettingClient />} />
-          <Route path="/register" element={<Register />} />
-          {/* <Route path="/prueba" element={<Prueba />} /> */}
-          {/* <Route path="/home" element= {<AgendaTurnos/>}/>
-
-         */}
-        </Routes>
-      </div>
+      {loginUser ? (
+        <div>
+          <NavBarLat
+            userLogin={loginUser.displayName}
+            stateCompanyGralNav={stateCompanyGralNav}
+            listCompaniesAll={companiesList}
+            setCompanyGralNav={setCompanyGralNav}
+          />
+          <div>{routesContent}</div>
+        </div>
+      ) : (
+        <div>{routesContentInicio}</div>
+      )}
     </BrowserRouter>
   );
 }
 
 export default App;
 
-/// //////////////////////////////////////////
-// import React from 'react';
-// import axios from 'axios';
-
-// import './App.css';
-
-// class App extends React.Component {
-
-//   state = {
-//     title: '',
-//     body: '',
-//     posts: []
-//   };
-
-//   componentDidMount = () => {
-//     this.getBlogPost();
-//   };
-
-//   getBlogPost = () => {
-//     axios.get('/api')
-//       .then((response) => {
-//         const data = response.data;
-//         this.setState({ posts: data });
-//         console.log('Data has been received!!');
-//       })
-//       .catch(() => {
-//         alert('Error retrieving data!!!');
-//       });
-//   }
-
-//   handleChange = ({ target }) => {
-//     const { name, value } = target;
-//     this.setState({ [name]: value });
-//   };
-
-//   submit = (event) => {
-//     event.preventDefault();
-
-//     const payload = {
-//       title: this.state.title,
-//       body: this.state.body
-//     };
-
-//     axios({
-//       url: '/api/save',
-//       method: 'POST',
-//       data: payload
-//     })
-//       .then(() => {
-//         console.log('Data has been sent to the server');
-//         this.resetUserInputs();
-//         this.getBlogPost();
-//       })
-//       .catch(() => {
-//         console.log('Internal server error');
-//       });;
-//   };
-
-//   resetUserInputs = () => {
-//     this.setState({
-//       title: '',
-//       body: ''
-//     });
-//   };
-
-//   displayBlogPost = (posts) => {
-
-//     if (!posts.length) return null;
-
-//     return posts.map((post, index) => (
-//       <div key={index} className="blog-post__display">
-//         <h3>{post.title}</h3>
-//         <p>{post.body}</p>
-//       </div>
-//     ));
-//   };
-
-//   render() {
-
-//     console.log('State: ', this.state);
-
-//     //JSX
-//     return(
-//       <div className="app">
-//         <h2>BIENVENIDO FORMATO</h2>
-//         <form onSubmit={this.submit}>
-//           <div className="form-input">
-//             <input
-//               type="text"
-//               name="title"
-//               placeholder="Title"
-//               value={this.state.title}
-//               onChange={this.handleChange}
-//             />
-//           </div>
-//           <div className="form-input">
-//             <textarea
-//               placeholder="body"
-//               name="body"
-//               cols="30"
-//               rows="10"
-//               value={this.state.body}
-//               onChange={this.handleChange}
-//             >
-
-//             </textarea>
-//           </div>
-
-//           <button>Submit</button>
-//         </form>
-
-//         <div className="blog-">
-//           {this.displayBlogPost(this.state.posts)}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
+//  {selectedCompanyGral ? (
+//               <NavBarLat
+//                 userLogin={loginUser.displayName}
+//                 selectedCompanyGral={selectedCompanyGral}
+//                 listCompaniesAll={companies}
+//               />
+//             ) : (
+//               <NavBarLat
+//                 userLogin={loginUser.displayName}
+//                 selectedCompanyGral="null"
+//                 listCompaniesAll={companies}
+//               />
+//             )}

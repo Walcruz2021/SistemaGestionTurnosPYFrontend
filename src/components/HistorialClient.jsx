@@ -8,7 +8,7 @@ import {
   deleteDog,
 } from "../reducer/actions";
 import Swal from "sweetalert2";
-import Modal from "./Modal/Modal";
+import ModalEditDog from "./Modal/ModalEditDog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDog,
@@ -109,6 +109,7 @@ export default function HistorialClient({state,stateHist,setStateHist
   };
 
   const editDog = (id,nameDog,notaP,raza,tamaño) => {
+  
     setStateDog({
       idDog:id,
       nameDog:nameDog,
@@ -119,20 +120,15 @@ export default function HistorialClient({state,stateHist,setStateHist
     setEditDog(!stateEditDog);
   };
 
-
   //EDICION DE DOG
 
   return (
     <>
-      <Modal
+    <ModalEditDog 
     idDog={inputStateDog.idDog}
     id={10}
     state={stateEditDog}
     setStateModal={setEditDog}
-    label11="Nota Perro"
-    label10="Nombre Mascota"
-    label16="Raza"
-    label17="Tamaño"
     notaP={inputStateDog.notaP}
     value={inputStateDog.notaP}
     nameDog={inputStateDog.nameDog}
@@ -147,7 +143,6 @@ export default function HistorialClient({state,stateHist,setStateHist
       {state.arrayPedidos.length > 0 ? (
         <>
           <h5 className="tituloVentas">Total Servicios</h5>
-
           <div className="containerPed">
             <div className="contenedorSuma">
               <FontAwesomeIcon

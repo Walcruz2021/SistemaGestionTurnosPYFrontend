@@ -1,0 +1,53 @@
+
+
+
+.titGral h1 {
+  font-size: 2.2rem;
+  text-align: center;
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  padding: 0.5rem;
+}
+
+.titGral h2 {
+  font-size: 1.4rem;
+  text-align: center;
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  padding: 0.5rem;
+}
+
+.titGral h3 {
+  font-size: 1rem;
+  text-align: center;
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
+.marginGral {
+  margin: 1rem;
+}
+
+.containerGral {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.textGral{
+  font-size: 0.8rem;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .containerGral{
+    padding-left: 0.5rem;
+    padding-right:0.5rem
+  }
+
+}

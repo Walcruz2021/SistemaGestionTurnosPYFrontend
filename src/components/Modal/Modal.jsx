@@ -104,7 +104,7 @@ export default function Modal({
   setStateHist,
 
   stateListTurn,
-  setListTurn,
+  setListTurn, 
   stateInfo,
   setInfo,
 
@@ -324,44 +324,6 @@ export default function Modal({
 
     // Update client
 
-    //UPDATE TURNO
-    if (id === 8) {
-      // UPDATE TURNO
-    }
-
-    //EDIT DOG
-
-    if (id === 10) {
-      e.preventDefault();
-      const payload = {};
-      for (const key in stateInput) {
-        if (stateInput[key] !== undefined) {
-          payload[key] = stateInput[key];
-        }
-      }
-
-      //console.log(payload);
-      //dispatch(updateDog(payload, stateInput.idDog));
-
-      MySwal.fire({
-        title: "¡Mascota actualizada!",
-        icon: "success",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "rgb(21, 151, 67)",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setStateHist(false);
-          dispatch(getClients());
-          setStateModal(!state);
-          setStateInput({
-            nameDog: "",
-            raza: "",
-            tamaño: "",
-            notaP: "",
-          });
-        }
-      });
-    }
   }
 
   function handleClose(e) {
@@ -739,181 +701,173 @@ export default function Modal({
 
           {/* UPDATE DOG */}
           {id === 10 ? (
-            <Formik
-              initialValues={{
-                nameDog: "",
-                notaP: "",
-              }}
-              validate={(values) => {
-                const errors = {};
+            <></>
+            // <Formik
+            //   initialValues={{
+            //     nameDog: "",
+            //     notaP: "",
+            //   }}
+            //   validate={(values) => {
+            //     const errors = {};
 
-                if (!values.nameDog) {
-                  values.nameDog = stateInput.nameDog;
-                }
+            //     if (!values.nameDog) {
+            //       values.nameDog = stateInput.nameDog;
+            //     }
 
-                //Letras y espacios, pueden llevar acentos.y Mayusuclas
-                //Z0 es para numeros
+              
 
-                if (!/^[a-zA-ZÀ-ÿ\s]{3,10}$/.test(values.nameDog)) {
-                  errors.nameDog =
-                    "No permite caracteres especiales y numeros.Max 10";
-                }
+            //     if (!/^[a-zA-ZÀ-ÿ\s]{3,10}$/.test(values.nameDog)) {
+            //       errors.nameDog =
+            //         "No permite caracteres especiales y numeros.Max 10";
+            //     }
 
-                if (!values.notaP) {
-                  values.notaP = stateInput.notaP;
-                }
+            //     if (!values.notaP) {
+            //       values.notaP = stateInput.notaP;
+            //     }
 
-                //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
-                if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notaP)) {
-                  errors.notaP =
-                    "30 caracteres max y no permite caracteres especiales";
-                }
-                return errors;
-              }}
-              onSubmit={(values, { resetForm }) => {
-                //console.log(values)
+            //     //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
+            //     if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notaP)) {
+            //       errors.notaP =
+            //         "30 caracteres max y no permite caracteres especiales";
+            //     }
+            //     return errors;
+            //   }}
+            //   onSubmit={(values, { resetForm }) => {
+             
+            //     const payload = {
+            //       nameDog: values.nameDog,
+            //       notaP: values.notaP,
+            //       tamaño: stateInput.tamaño,
+            //       raza: stateInput.raza,
+            //     };
+            //     //console.log(payload)
+            //     dispatch(updateDog(payload, stateInput.idDog));
+            //     MySwal.fire({
+            //       title: "¡Mascota actualizada!",
+            //       icon: "success",
+            //       confirmButtonText: "Aceptar",
+            //       confirmButtonColor: "rgb(21, 151, 67)",
+            //     }).then((result) => {
+            //       if (result.isConfirmed) {
+            //         if (showInSettings) {
+            //           dispatch(getClients());
+            //         }
+            //         setStateModal(!state);
+            //         setStateHist(!stateHist);
+            //         setStateInput({
+            //           nameDog: "",
+            //           raza: "",
+            //           tamaño: "",
+            //           notaP: "",
+            //         });
+            //         resetForm();
+            //       }
+            //     });
+            //   }}
+            // >
+            //   {({
+            //     values,
+            //     errors,
+            //     touched,
+            //     handleChange,
+            //     handleBlur,
+            //     handleSubmit,
+            //     isSubmitting,
+            //     /* and other goodies */
+            //   }) => (
+            //     <Form onSubmit={handleSubmit}>
+            //       <InputContainer>
+            //         <Label>{label10}</Label>
+            //         <Field
+            //           className="input1"
+            //           type="text"
+            //           name="nameDog"
+            //           placeholder={stateInput.nameDog}
+            //         />
+            //       </InputContainer>
 
-                // const payload = {};
-                // for (const key in stateInput) {
-                //   if (stateInput[key] !== undefined) {
-                //     payload[key] = stateInput[key];
-                //   }
-                // }
-                const payload = {
-                  nameDog: values.nameDog,
-                  notaP: values.notaP,
-                  tamaño: stateInput.tamaño,
-                  raza: stateInput.raza,
-                };
-                //console.log(payload)
-                dispatch(updateDog(payload, stateInput.idDog));
-                MySwal.fire({
-                  title: "¡Mascota actualizada!",
-                  icon: "success",
-                  confirmButtonText: "Aceptar",
-                  confirmButtonColor: "rgb(21, 151, 67)",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    if (showInSettings) {
-                      dispatch(getClients());
-                    }
-                    setStateModal(!state);
-                    setStateHist(!stateHist);
-                    setStateInput({
-                      nameDog: "",
-                      raza: "",
-                      tamaño: "",
-                      notaP: "",
-                    });
-                    resetForm();
-                  }
-                });
-              }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form onSubmit={handleSubmit}>
-                  <InputContainer>
-                    <Label>{label10}</Label>
-                    <Field
-                      className="input1"
-                      type="text"
-                      name="nameDog"
-                      placeholder={stateInput.nameDog}
-                    />
-                  </InputContainer>
+            //       <ErrorMessage
+            //         className="error"
+            //         name="nameDog"
+            //         component={() => (
+            //           <div className="error">{errors.nameDog}</div>
+            //         )}
+            //       ></ErrorMessage>
 
-                  <ErrorMessage
-                    className="error"
-                    name="nameDog"
-                    component={() => (
-                      <div className="error">{errors.nameDog}</div>
-                    )}
-                  ></ErrorMessage>
+            //       <InputContainer>
+            //         <Label>{label11}</Label>
+            //         <Field
+            //           className="input1"
+            //           type="text"
+            //           name="notaP"
+            //           placeholder={stateInput.notaP}
+            //         />
+            //       </InputContainer>
 
-                  <InputContainer>
-                    <Label>{label11}</Label>
-                    <Field
-                      className="input1"
-                      type="text"
-                      name="notaP"
-                      placeholder={stateInput.notaP}
-                    />
-                  </InputContainer>
+            //       <ErrorMessage
+            //         className="error"
+            //         name="notaP"
+            //         component={() => (
+            //           <div className="error">{errors.notaP}</div>
+            //         )}
+            //       ></ErrorMessage>
 
-                  <ErrorMessage
-                    className="error"
-                    name="notaP"
-                    component={() => (
-                      <div className="error">{errors.notaP}</div>
-                    )}
-                  ></ErrorMessage>
-
-                  {/* ESTE SELECT AGARRA EL VALOR DE LA MASCOTA Y SE POSICIONA DINAMICAMENTEEN EL VALOR DEL MISMO(SE AUTOSELECCIONA) */}
-                  <Label>{label16}</Label>
-                  <SelectorStyle id="raza" onClick={handleChangeRaza}>
-                    {stateInput.raza === "doberman" ? (
-                      <option selected value="doberman">
-                        doberman
-                      </option>
-                    ) : (
-                      <option value="doberman">doberman</option>
-                    )}
-                    {stateInput.raza === "labrador" ? (
-                      <option selected value="labrador">
-                        labrador
-                      </option>
-                    ) : (
-                      <option value="labrador">labrador</option>
-                    )}
-                    {stateInput.raza === "caniche" ? (
-                      <option selected value="caniche">
-                        caniche
-                      </option>
-                    ) : (
-                      <option value="caniche">caniche</option>
-                    )}
-                  </SelectorStyle>
-                  <Label>{label17}</Label>
-                  <SelectorStyle
-                    id="tamaño"
-                    //value={stateInput.tamaño}
-                    onClick={handleChangeSize}
-                  >
-                    {stateInput.tamaño === "pequeño" ? (
-                      <option selected value="pequeño">
-                        pequeño
-                      </option>
-                    ) : (
-                      <option value="pequeño">pequeño</option>
-                    )}
-                    {stateInput.tamaño === "mediano" ? (
-                      <option selected value="mediano">
-                        mediano
-                      </option>
-                    ) : (
-                      <option value="mediano">mediano</option>
-                    )}
-                    {stateInput.tamaño === "grande" ? (
-                      <option selected value="grande">
-                        grande
-                      </option>
-                    ) : (
-                      <option value="grande">grande</option>
-                    )}
-                  </SelectorStyle>
-                  <ButtonModal type="submit">Modificar Mascota</ButtonModal>
-                </Form>
-              )}
-            </Formik>
+            //       <Label>{label16}</Label>
+            //       <SelectorStyle id="raza" onClick={handleChangeRaza}>
+            //         {stateInput.raza === "doberman" ? (
+            //           <option selected value="doberman">
+            //             doberman
+            //           </option>
+            //         ) : (
+            //           <option value="doberman">doberman</option>
+            //         )}
+            //         {stateInput.raza === "labrador" ? (
+            //           <option selected value="labrador">
+            //             labrador
+            //           </option>
+            //         ) : (
+            //           <option value="labrador">labrador</option>
+            //         )}
+            //         {stateInput.raza === "caniche" ? (
+            //           <option selected value="caniche">
+            //             caniche
+            //           </option>
+            //         ) : (
+            //           <option value="caniche">caniche</option>
+            //         )}
+            //       </SelectorStyle>
+            //       <Label>{label17}</Label>
+            //       <SelectorStyle
+            //         id="tamaño"
+            //         //value={stateInput.tamaño}
+            //         onClick={handleChangeSize}
+            //       >
+            //         {stateInput.tamaño === "pequeño" ? (
+            //           <option selected value="pequeño">
+            //             pequeño
+            //           </option>
+            //         ) : (
+            //           <option value="pequeño">pequeño</option>
+            //         )}
+            //         {stateInput.tamaño === "mediano" ? (
+            //           <option selected value="mediano">
+            //             mediano
+            //           </option>
+            //         ) : (
+            //           <option value="mediano">mediano</option>
+            //         )}
+            //         {stateInput.tamaño === "grande" ? (
+            //           <option selected value="grande">
+            //             grande
+            //           </option>
+            //         ) : (
+            //           <option value="grande">grande</option>
+            //         )}
+            //       </SelectorStyle>
+            //       <ButtonModal type="submit">Modificar Mascota</ButtonModal>
+            //     </Form>
+            //   )}
+            // </Formik>
           ) : null}
 
           {/* <ButtonModal width="100%" onClick={(e) => handleSubmit(e)}>

@@ -1,15 +1,35 @@
+import React from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTurnos, addTurnos } from "../../reducer/actions";
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import "./Formulario.css";
+import "bootstrap/dist/css/bootstrap.css";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import {getTurnos,addTurnos } from "../../reducer/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
-import Form from "react-bootstrap/Form";
+import Select from "react-select";
 
-const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
-  // const clients = useSelector((state) => state.clients);
+
+const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAddTurn, turn }) => {
+  const companySelectedMenu=useSelector((state)=>state.companySelected) 
+  const dispatch = useDispatch();
+  const MySwal = withReactContent(Swal);
+  const [optionsListSelect, setOptionsListSelect] = useState([]);
+
+  const handleClose = () => setStateAddTurn(!stateAddTurn);
+  const [stateInput, setStateInput] = useState({
+    date: "",
+    time: "",
+    notesTurn: "",
+    nameDog: "",
+    idDog: "",
+    idClient: "",
+    name: "",
+    arrayDogs: [],
+    phone: "",
+  });
+
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -25,11 +45,6 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
     }));
   }, []);
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
-  const MySwal = withReactContent(Swal);
-  const dispatch = useDispatch();
-  const [optionsListSelect, setOptionsListSelect] = useState([]);
-
   const updateOptionsList = (clients) => {
     const options = clients.map((cliente) => {
       let arrayDogs = [];
@@ -44,7 +59,7 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
       };
     });
     setOptionsListSelect(options);
-  };
+  }; 
 
   useEffect(() => {
     if (
@@ -56,24 +71,6 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
     }
   }, [listClientsCompany]);
 
-  // useEffect(() => {
-  //   if (clients) {
-  //     updateOptionsList(clients);
-  //   }
-  // }, [clients]);
-
-  const [stateInput, setStateInput] = useState({
-    date: "",
-    time: "",
-    notesTurn: "",
-    nameDog: "",
-    idDog: "",
-    idClient: "",
-    name: "",
-    arrayDogs: [],
-    phone: "",
-  });
-
   function handleChangeDog(selected) {
     setStateInput({
       ...stateInput,
@@ -81,6 +78,7 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
       idDog: selected.value,
     });
   }
+
 
   function handleChangeCli(selected) {
     setStateInput({
@@ -121,7 +119,11 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
         text: "Faltan Datos por Completar",
       });
     } else if (stateInput.date < getTodayDate()) {
-      alert("fecha incorrecta");
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Fecha Incorrecta",
+          });
     } else {
       dispatch(
         addTurnos({
@@ -144,6 +146,7 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
       }).then((result) => {
         if (result.isConfirmed) {
           dispatch(getTurnos(companySelectedMenu._id));
+          setStateAddTurn(!stateAddTurn)
           onTurnoAdded();
           // Update optionsListSelect after adding a turn
           updateOptionsList(listClientsCompany.clientes);
@@ -171,12 +174,16 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
   };
 
   return (
-    <div>
-      <MDBContainer className="gradient-form">
-        <MDBRow>
-          <MDBCol col="6">
-            <div className="d-flex flex-column ms-2">
-              <Select
+    <>
+      {/* ADD CLIENT */}
+      <div>
+        <Modal show={stateAddTurn} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Agregar Turno</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="pt-1 pb-1">
+            <Form>
+            <Select
                 className="classSelect"
                 placeholder="Seleccione Client"
                 onChange={(selected) => {
@@ -184,17 +191,6 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
                 }}
                 options={optionsListSelect}
               />
-
-              <Form.Select aria-label="Default select example">
-              <option value="">Insert option</option>
-                {optionsListSelect
-                  ? optionsListSelect.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))
-                  : null}
-              </Form.Select>
 
               <Select
                 className="classSelect"
@@ -205,60 +201,73 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
                 options={optionsList}
               />
 
-              <MDBInput
-                className="small"
-                wrapperClass="mb-2"
-                label="Fecha de Turno"
-                id="form1"
-                type="date"
-                name="date"
-                value={stateInput.date}
-                onChange={handleChange}
-                labelClass="mt-1 text-secondary"
-                min={getTodayDate()}
-              />
+              <Form.Group
+                className="mb-1"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Fecha Turno</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date"
+                  autoFocus
+                  value={stateInput.date}
+                  onChange={handleChange}
+                  required
+                  min={getTodayDate()}
+                />
+              </Form.Group>
 
-              <MDBInput
-                className="small"
-                wrapperClass="mb-2"
-                label="Hora Turno"
-                id="form1"
-                type="time"
-                name="time"
-                value={stateInput.time}
-                onChange={handleChange}
-                labelClass="mt-1 text-secondary"
-                min="07:00"
-                max="22:00"
-              />
-              <MDBInput
-                className="small"
-                wrapperClass="mb-2"
-                label="Nota Turno"
-                id="form1"
-                type="textarea"
-                name="notesTurn"
-                value={stateInput.notesTurn}
-                onChange={handleChange}
-                labelClass="mt-1 text-secondary"
-                maxLength={100}
-                rows={3}
-              />
-              <div>
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Agregar Turno
-                </button>
-              </div>
-            </div>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-    </div>
+              <Form.Group>
+                <Form.Label>Horario Turno</Form.Label>
+                <Form.Control
+                  type="time"
+                  name="time"
+                  autoFocus
+                  value={stateInput.time}
+                  onChange={handleChange}
+                  required
+                  min="07:00"
+                  max="22:00"
+                />
+              </Form.Group>
+              
+              
+              <Form.Group
+                className="mb-1"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label lassName="text-xs">Nota Turno</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  type="text"
+                  // placeholder="Pepe Argento"
+                  name="notesTurn"
+                  autoFocus
+                  maxLength={30}
+                  value={stateInput.notesTurn}
+                  onChange={handleChange}
+                  required
+                />
+                {/* <Form.Text className="textoError" muted>
+                  Puedes ingresar hasta 15 caracteres.
+                </Form.Text> */}
+              </Form.Group>
+
+            </Form>
+          </Modal.Body>
+          <Modal.Footer className="mt-0 pt-1 pb-1">
+            {/* <Button variant="primary" type="submit" onClick={handleClose}>
+                          Save Changes
+                        </Button> */}
+            <Button variant="primary" type="submit" onClick={handleSubmit}>
+              Agregar Turno
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </>
   );
 };
 
-export default Forms1;
+export default ModalAddTurn;

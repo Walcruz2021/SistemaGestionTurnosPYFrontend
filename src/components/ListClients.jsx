@@ -5,23 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getClients,
   deleteClient,
-  updateClient,
-  deleteDog,
 } from "../reducer/actions";
 import "./ListClients.css";
-
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";
 import { Link } from "react-router-dom";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { CloseButton } from "../cssSyleComp/ModalStyles";
-import { Label, InputContainer } from "../cssSyleComp/StyleForm";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "../api/axios";
-
+import "../css/cssGeneral.css";
+import back from "../../src/icons/back.png";
+import addClient from "../../src/icons/addClient.png";
+import deleteClientIcon from "../../src/icons/deleteClient.png";
+import editClientIcon from "../../src/icons/editClient.png";
+import ModalEditClient from "./Modal/ModalEditClient";
 const REGISTER_URL = "/createUserRolUserClient";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
@@ -37,6 +34,7 @@ function ListClients() {
   const MySwal = withReactContent(Swal);
   var clients = useSelector((state) => state.allClients);
   //console.log(clients,"listado")
+  const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const [stateSearch, setSearch] = useState("");
   //console.log(stateSearch)
@@ -74,7 +72,7 @@ function ListClients() {
   //console.log(inputState);
 
   useEffect(() => {
-    dispatch(getClients());
+    dispatch(getClients(companySelectedMenu._id));
   }, []);
 
   useEffect(() => {
@@ -223,73 +221,95 @@ function ListClients() {
     console.log("se hizo click");
   };
 
-  const createHashRouter = (value) => {
-    //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
-    //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
-    //primera encontrada.
-    const userSinEsp = value.userName.replace(/\s/g, "");
-    MySwal.fire({
-      title: "¿Estas seguro?",
-      text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#1ABD53",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí",
-      cancelButtonText: "Cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
-        //que ocurra durante la peticion
-        try {
-          const response = await axios.post(
-            REGISTER_URL,
-            JSON.stringify({
-              userName: userSinEsp,
-              password: value.password.toString(),
-              idClient: value.idClient,
-              role: "userClient",
-            }),
-            {
-              headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
-              withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
-            }
-          );
-          console.log(response, "--->");
-          if (response.status === 200) {
-            MySwal.fire({
-              title: "Solicitud con Exito",
-              text: "User y Password creados",
-              icon: "success",
-              confirmButtonColor: "#00A0D2",
-            });
-            dispatch(getClients());
-          }
-        } catch (error) {
-          console.log(error);
-          if (error.response.status === 400) {
-            MySwal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "El usuario ya existe",
-            });
-          }
-        }
-      }
-    });
-  };
+  // const createHashRouter = (value) => {
+  //   //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
+  //   //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
+  //   //primera encontrada.
+  //   const userSinEsp = value.userName.replace(/\s/g, "");
+  //   MySwal.fire({
+  //     title: "¿Estas seguro?",
+  //     text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#1ABD53",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Sí",
+  //     cancelButtonText: "Cancelar",
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
+  //       //que ocurra durante la peticion
+  //       try {
+  //         const response = await axios.post(
+  //           REGISTER_URL,
+  //           JSON.stringify({
+  //             userName: userSinEsp,
+  //             password: value.password.toString(),
+  //             idClient: value.idClient,
+  //             role: "userClient",
+  //           }),
+  //           {
+  //             headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
+  //             withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
+  //           }
+  //         );
+  //         console.log(response, "--->");
+  //         if (response.status === 200) {
+  //           MySwal.fire({
+  //             title: "Solicitud con Exito",
+  //             text: "User y Password creados",
+  //             icon: "success",
+  //             confirmButtonColor: "#00A0D2",
+  //           });
+  //           dispatch(getClients(companySelectedMenu._id));
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //         if (error.response.status === 400) {
+  //           MySwal.fire({
+  //             icon: "error",
+  //             title: "Oops...",
+  //             text: "El usuario ya existe",
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  // };
 
   return (
     <div>
-      <h1>List of Clients</h1>
-      <div className="grid-container container">
-        <button className="button1" onClick={() => setNewClient(!newClient)}>
-          Añadir Cliente
-        </button>
-        {/* <button className="button2">Back Home</button> */}
-        <Link to="/">
-          <button className="button1">Back Home</button>
-        </Link>
+      <div className="titGral">
+        <h1>Listado de Clientes</h1>
+      </div>
+
+      <div className="container py-3">
+        <div className="row justify-content-center">
+          <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+            <div className="text-center">
+              <div className="card-body">
+                <button
+                  className="btn"
+                  onClick={() => setNewClient(!newClient)}
+                >
+                  <img src={addClient} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-6 col-md-4 d-flex justify-content-center">
+            <div className="text-center">
+              <div className="card-body mt-3">
+                <Link to="/dashboard">
+                  <button className="btn btn-link">
+                    <img src={back} />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="container-lg table-responsive">
@@ -327,7 +347,7 @@ function ListClients() {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>Crear User</th>
+                {/* <th>Crear User</th> */}
                 {/* <th>Option</th> */}
               </tr>
             </thead>
@@ -356,7 +376,7 @@ function ListClients() {
                         </td>
                         <td>{cli.phone}</td>
                         <td>{cli.address}</td>
-                        <td className="marginIcon">
+                        {/* <td className="marginIcon">
                           {cli.userLogin === false ? (
                             <FontAwesomeIcon
                               icon={faUser}
@@ -369,7 +389,7 @@ function ListClients() {
                               }
                             />
                           ) : null}
-                        </td>
+                        </td> */}
                       </tr>
                     ) : null
                   )
@@ -387,230 +407,63 @@ function ListClients() {
             stateHist={stateHist}
             setStateHist={setStateHist}
           />
-          <div className="containerButton">
-            <button
-              onClick={() =>
-                handleDelete({
-                  idClient: inputState._id,
-                  index: inputState.index,
-                })
-              }
-              className="buttonDel"
-            >
-              Eliminar Cliente
-            </button>
-            <button
-              onClick={() =>
-                handleEdit({
-                  _id: inputState._id,
-                  name: inputState.name,
-                  // nameDog: el.nameDog,
-                  phone: inputState.phone,
-                  address: inputState.address,
-                  notesCli: inputState.notesCli,
-                })
-              }
-              className="buttonEdi"
-            >
-              Editar Cliente
-            </button>
+
+          <div className="container py-3">
+            <div className="row justify-content-center">
+              <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                <div className="card text-content">
+                  <div className="card-body">
+                    <button
+                      className="btn btn-link"
+                      onClick={() =>
+                        handleDelete({
+                          idClient: inputState._id,
+                          index: inputState.index,
+                        })
+                      }
+                    >
+                      <img src={deleteClientIcon} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                <div className="card text-content">
+                  <div className="card-body">
+                    <button
+                      className="btn btn-link"
+                      onClick={() =>
+                        handleEdit({
+                          _id: inputState._id,
+                          name: inputState.name,
+                          // nameDog: el.nameDog,
+                          phone: inputState.phone,
+                          address: inputState.address,
+                          notesCli: inputState.notesCli,
+                        })
+                      }
+                    >
+                      <img src={editClientIcon} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}
 
       {/* FORMULARIO PARA EDICION  */}
-      <div className="containerForm">
-        {editClient && stateInfo ? (
-          //<SettingClient/>
-          <div>
-            <Formik
-              initialValues={{
-                name: "",
-                phone: "",
-                address: "",
-                notesCli: "",
-              }}
-              validate={(values) => {
-                const errors = {};
-
-                //Letras y espacios, pueden llevar acentos.y Mayusuclas
-                //Z0 es para numeros
-                if (!values.name) {
-                  values.name = inputState.name;
-                }
-
-                if (!/^[a-zA-ZÀ-ÿ\s]{1,20}$/.test(values.name)) {
-                  errors.name =
-                    "No permite caracteres especiales y numeros.Max 15";
-                }
-
-                if (!values.phone) {
-                  values.phone = inputState.phone;
-                }
-
-                if (!/^\d{7,14}$/.test(values.phone)) {
-                  errors.phone = "Ingresar celular min 7 dig max 14";
-                }
-
-                if (!values.address) {
-                  values.address = inputState.address;
-                }
-
-                if (!/^[a-zA-Z0-ZÀ-ÿ\s]{4,30}$/.test(inputState.address)) {
-                  errors.address =
-                    "30 caracteres max.No permite caracteres especiales";
-                }
-
-                if (!values.notesCli) {
-                  values.notesCli = inputState.notesCli;
-                }
-
-                //Letras, numeros, guion y guion_bajo-espacios y Mayusculas
-                if (!/^[a-zA-Z0-9\_\-\s]{4,30}$/.test(values.notesCli)) {
-                  errors.notesCli =
-                    "30 caracteres max y no permite caracteres especiales";
-                }
-                //else if (
-                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                // ) {
-                //   errors.email = "correo invalido";
-                // }
-                return errors;
-              }}
-              onSubmit={(values, { resetForm }) => {
-                console.log(values);
-
-                //console.log(inputState._id)
-                dispatch(
-                  updateClient(
-                    {
-                      name: values.name,
-                      phone: values.phone,
-                      address: values.address,
-                      notesCli: values.notesCli,
-                    },
-                    inputState._id
-                  )
-                );
-                setInfo(!stateInfo);
-                MySwal.fire({
-                  title: "¡Cliente Actualizado!",
-                  icon: "success",
-                  confirmButtonText: "Aceptar",
-                  confirmButtonColor: "rgb(21, 151, 67)",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    dispatch(getClients());
-
-                    //si no comento esto al modificar un cliemte tira error de historial de cliente
-                    // setInputState({
-                    //   name: values.name,
-                    //   phone: values.phone,
-                    //   address: values.address,
-                    //   notesCli: values.notesCli,
-                    // });
-                    resetForm();
-                    //se cambia el estado de stateHisto al modificar un cliente de manera de que no se visualize
-                    //los datos anteriores previos al modificar el cliente, de lo contrario habia que hacer click en cualquier otro
-                    //lado para porder ver los cambios actuales
-                    setStateHist(!stateHist);
-                  }
-                });
-              }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form onSubmit={handleSubmit}>
-                  <CloseButton onClick={(e) => handleClose(e)}>
-                    <FontAwesomeIcon icon={faWindowClose} />
-                  </CloseButton>
-                  <InputContainer>
-                    <Label>Nombre Cliente</Label>
-                    <Field
-                      className="input1"
-                      placeholder={inputState.name}
-                      type="text"
-                      name="name"
-                    />
-                  </InputContainer>
-
-                  <ErrorMessage
-                    className="error"
-                    name="name"
-                    component={() => <div className="error">{errors.name}</div>}
-                  ></ErrorMessage>
-
-                  <InputContainer>
-                    <Label>Celular</Label>
-                    <Field
-                      className="input1"
-                      placeholder={inputState.phone}
-                      type="number"
-                      name="phone"
-                    />
-                  </InputContainer>
-
-                  <ErrorMessage
-                    className="error"
-                    name="phone"
-                    component={() => (
-                      <div className="error">{errors.phone}</div>
-                    )}
-                  ></ErrorMessage>
-
-                  <InputContainer>
-                    <Label>Direccion</Label>
-                    <Field
-                      className="input1"
-                      placeholder={inputState.address}
-                      type="text"
-                      name="address"
-                    />
-                  </InputContainer>
-
-                  <ErrorMessage
-                    className="error"
-                    name="address"
-                    component={() => (
-                      <div className="error">{errors.address}</div>
-                    )}
-                  ></ErrorMessage>
-
-                  <InputContainer>
-                    <Label>Nota Cliente</Label>
-                    <Field
-                      className="input1"
-                      placeholder={inputState.notesCli}
-                      type="text"
-                      name="notesCli"
-                    />
-                  </InputContainer>
-
-                  <ErrorMessage
-                    className="error"
-                    name="notesCli"
-                    component={() => (
-                      <div className="error">{errors.notesCli}</div>
-                    )}
-                  ></ErrorMessage>
-
-                  <button className="buttonEditClient" type="submit">
-                    Modificar Cliente
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        ) : null}
-      </div>
+      <ModalEditClient
+        idClient={inputState._id}
+        state={editClient}
+        setState={setEditClient}
+        name={inputState.name}
+        phone={inputState.phone}
+        address={inputState.address}
+        notesCli={inputState.notesCli}
+      />
     </div>
   );
 }

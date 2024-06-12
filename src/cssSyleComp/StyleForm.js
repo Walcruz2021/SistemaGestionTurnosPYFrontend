@@ -6,7 +6,7 @@ const Label = styled.label`
   font-weight: 400;
   padding: 2px;
   width:100%;
-  
+  margin-top:0
 
   ${(props) =>
     props.valido === 'false' &&

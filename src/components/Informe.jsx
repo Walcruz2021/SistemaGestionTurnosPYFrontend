@@ -14,6 +14,7 @@ import {
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
+import sale from "../icons/sale.png"
 
 function TodoList() {
   const ListAños = [
@@ -248,11 +249,25 @@ function TodoList() {
       {Array.isArray(arrayVtas) ? (
         <div>
           <div className="container-lg">
-            <h1>Informe Mensual</h1>
-            <div className="buttonInf">
-              <Link to="/listVentas">
-                <button>Listado Ventas</button>
-              </Link>
+            <div className="titGral">
+              <h1>Informe Mensual</h1>
+            </div>
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-6 col-md-4 text-center">
+                  <div className="tex-center">
+                    <div className="card-body">
+                      <div className="btn btn-link">
+                        <Link to="/listVentas">
+                          <button className="btn btn-link">
+                            <img src={sale}/>
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <Select
               placeholder="Seleccione Año"
@@ -266,7 +281,7 @@ function TodoList() {
             {ventas22 ? (
               <>
                 <div className="titInf">
-                  <h5>{arrayVtas[arrayVtas.length-1].anio}</h5>
+                  <h5>{arrayVtas[arrayVtas.length - 1].anio}</h5>
                 </div>
                 <table className="table table-bordered table-hover table-white">
                   <thead class="thead-light table-secondary">

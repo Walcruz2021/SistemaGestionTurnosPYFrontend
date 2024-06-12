@@ -1,0 +1,19 @@
+
+
+.containerLogin {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: auto;
+  padding-left: 10rem;
+  padding-right: 10rem;
+} 
+
+/* MOBILE */
+@media(max-width:900px){
+  .containerLogin{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

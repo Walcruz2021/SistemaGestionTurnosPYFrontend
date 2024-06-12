@@ -15,7 +15,8 @@ import Modal from "./Modal/Modal";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import back from "../icons/back.png";
+import infMonth from "../icons/infMonth.png";
 // import { Button} from "../cssSyleComp/index";
 
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
@@ -179,15 +180,35 @@ export default function TodoList() {
 
   return (
     <div>
-      <h1>Ventas</h1>
+      <div className="titGral">
+        <h1>Ventas</h1>
+      </div>
 
-      <div className="grid-container container">
-        <Link to="/Informe">
-          <button className="button1">Informe Mensual</button>
-        </Link>
-        <Link to="/">
-          <button className="button1">Back Home</button>
-        </Link>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-6 col-md-4 mb-3 justify-content-center">
+            <div className="text-center">
+              <div className="card-body">
+                <Link to="/Informe">
+                  <button className="btn btn-link">
+                    <img src={infMonth}/>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="col-6 col-md-4 mb-3 justify-content-center">
+            <div className="text-center">
+              <div className="card-body mt-1">
+                <Link to="/dashboard">
+                  <button className="btn btn-link">
+                    <img src={back} />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <br />
       {/* <AgendaInputs></AgendaInputs> */}
@@ -234,15 +255,27 @@ export default function TodoList() {
           </table>
         </div>
       ) : (
-        <h1>No existen Ingresos del Mes Actual</h1>
+        <div className="titGral">
+          <h2>No existen Ingresos del Mes Actual</h2>
+        </div>
       )}
 
       <div className="container-lg P-2">
-        <Select className="classSelect" placeholder="Seleccione Año" options={años} onChange={changeAño} />
+        <Select
+          className="classSelect"
+          placeholder="Seleccione Año"
+          options={años}
+          onChange={changeAño}
+        />
       </div>
 
       <div className="container-lg P-2">
-        <Select className="classSelect" placeholder="Seleccione Mes" options={meses} onChange={changeMeses} />
+        <Select
+          className="classSelect"
+          placeholder="Seleccione Mes"
+          options={meses}
+          onChange={changeMeses}
+        />
       </div>
       <div className="container-lg P-2">
         <button
@@ -293,11 +326,11 @@ export default function TodoList() {
             </tbody>
           </table>
         </div>
-      ) : vtasFiltered.status === 204?
-      <div className="container-lg P-2">
-        <h5 className="alertSearch">No se encontraron ventas</h5>
-      </div>:null
-      }
+      ) : vtasFiltered.status === 204 ? (
+        <div className="container-lg P-2">
+          <h5 className="alertSearch">No se encontraron ventas</h5>
+        </div>
+      ) : null}
     </div>
   );
 }

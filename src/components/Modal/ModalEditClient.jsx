@@ -1,66 +1,75 @@
-import React from "react";
-import { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getClients, addClient } from "../../reducer/actions";
+import { getClients, updateClient } from "../../reducer/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
-  const companySelectdMenu = useSelector((state) => state.companySelected);
-
-  const [companySelectedState,setCompanySelectedState]=useState()
- 
-  useEffect(() => {
-    if(companySelectdMenu){
-      setCompanySelectedState(companySelectdMenu)
-    }
-  });
+const ModalEditClient = ({
+  state,
+  setState,
+  idClient:initialIdClient,
+  name: initialName,
+  phone: initialPhone,
+  address: initialAddress,
+  notesCli: initialNotesCli
+}) => {
 
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
   const handleClose = () => setState(!state);
   const [stateValue, setStateValue] = useState({
-    name: "",
-    phone: "",
-    address: "",
-    notesCli: "",
+    idClient: "" || initialIdClient,
+    name: "" || initialName,
+    phone: "" || initialPhone,
+    address: "" || initialAddress,
+    notesCli: "" || initialNotesCli,
   });
 
+  useEffect(() => {
+    setStateValue({
+      idClient: "" || initialIdClient,
+      name: "" || initialName,
+      phone: "" || initialPhone,
+      address: "" || initialAddress,
+      notesCli: "" || initialNotesCli,
+    });
+  }, [initialName, initialPhone, initialAddress, initialNotesCli]);
+
   const handleChange = (e) => {
-    const { name, address, value } = e.target;
+    const { name, value } = e.target;
     setStateValue((prevState) => ({
       ...prevState,
       [name]: value,
-      [address]: value,
     }));
   };
 
   const handleSumbit = (e) => {
     if (
       stateValue.name.trim() === "" ||
-      stateValue.phone.trim() === "" ||
+    //   stateValue.phone.trim() === "" ||
       stateValue.notesCli.trim() === "" ||
       stateValue.address.trim() === ""
     ) {
       alert("valores vacios");
     }
     dispatch(
-      addClient({
-        name: stateValue.name,
-        address: stateValue.address,
-        notesClie: stateValue.notesCli,
-        phone: stateValue.phone,
-        status: true,
-        Company: companySelectedState._id,
-      })
+      updateClient(
+        {
+          name: stateValue.name,
+          phone: stateValue.phone,
+          address: stateValue.address,
+          notesCli: stateValue.notesCli,
+        },
+        stateValue.idClient
+      )
     );
     MySwal.fire({
-      title: "¡Cliente creado correctamente!",
+      title: "¡Cliente Modificado Correctamente!",
       icon: "success",
       confirmButtonText: "Aceptar",
       confirmButtonColor: "rgb(21, 151, 67)",
@@ -72,18 +81,19 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
           notesCli: "",
           phone: "",
         });
-        dispatch(getClients(companySelectedState._id));
+      
+        dispatch(getClients());
+    
         handleClose();
       }
     });
   };
   return (
     <>
-      {/* ADD CLIENT */}
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Adherir un Cliente</Modal.Title>
+            <Modal.Title>Editar Cliente</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -161,7 +171,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                           Save Changes
                         </Button> */}
             <Button variant="primary" type="submit" onClick={handleSumbit}>
-              Agregar Cliente
+              Modificar Cliente
             </Button>
           </Modal.Footer>
         </Modal>
@@ -170,4 +180,4 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
   );
 };
 
-export default ModalAddClient;
+export default ModalEditClient;
