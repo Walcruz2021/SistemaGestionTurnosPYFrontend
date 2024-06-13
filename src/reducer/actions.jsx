@@ -30,7 +30,7 @@ export const ADD_COMPANY = "ADD_COMPANY";
 export const GET_USER = "GET_USER";
 export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
 export const FUNCTION_COMPANY_SELECTED="FUNCTION_COMPANY_SELECTED"
-
+export const SEARCH_USER = "SEARCH_USER";
 
 console.log(host.development, "action------------>");
 
@@ -60,6 +60,23 @@ export function addTurnos(payload) {
         payload
       );
       return newTurno;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function searchUser(email) {
+  console.log(email, "ACTION");
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(
+        `${rutaBackend}/api/searchUser/${email}`
+      );
+      dispatch({
+        payload: response,
+        type: SEARCH_USER,
+      });
     } catch (error) {
       console.log(error);
     }

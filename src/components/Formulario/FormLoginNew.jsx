@@ -32,6 +32,7 @@ import {
 } from "mdb-react-ui-kit";
 import gmail from "../../icons/gmailLogin.png";
 import { addUser, verificationCompaniesExist } from "../../reducer/actions";
+import ModalRestPassword from "../Modal/ModalRestPassword"
 
 function FormLoginNew({ autUser }) {
   const loginUser = useSelector((state) => state.user);
@@ -42,7 +43,7 @@ function FormLoginNew({ autUser }) {
     email: "",
     password: "",
   });
-
+  const [show, setShow] = useState(false);
   //logIn with email of gmail
   const loginGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -72,6 +73,9 @@ function FormLoginNew({ autUser }) {
     }));
   };
 
+  const handleShow=()=>{
+    setShow(!show)
+  }
   const verificationCompanies = async (email) => {
     const response = await dispatch(verificationCompaniesExist(email));
 
@@ -313,12 +317,13 @@ function FormLoginNew({ autUser }) {
                   </button>
                 </div>
                 <div className="mt-2">
-                  <a className="text-muted" href="#!">
+                  <button variant onClick={handleShow} className="buttonModal">
                     Olvidó su Contraseña?
-                  </a>
+                  </button>
                 </div>
               </div>
 
+<ModalRestPassword show={show} setShow={setShow}/>
               <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
                 <p className="mb-0 px-2">¿No tiene una cuenta?</p>
                 <button

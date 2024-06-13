@@ -20,6 +20,7 @@ import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx"
 
 function App() {
   const loginUser = useSelector((state) => state.user);
+
   const companiesList = useSelector((state) => state.arrayCompanies.data);
 
   const [stateCompanyGralNav, setCompanyGralNav] = useState(null);
@@ -52,8 +53,15 @@ function App() {
     }
   }, [stateCompanyGralNav]);
 
+  useEffect(()=>{
+    if(!loginUser){
+      setIsLoading(!isLoading)
+    }
+  },[])
+
   if (isLoading) {
-    return <div>Loading...</div>; // Mostrar mensaje de carga mientras se obtienen los datos
+    return <div>Loading...</div>; // show message loading while upload data
+  
   }
 
   const routesContent = (
@@ -95,6 +103,7 @@ function App() {
       ) : (
         <div>{routesContentInicio}</div>
       )}
+  
     </BrowserRouter>
   );
 }

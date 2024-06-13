@@ -27,7 +27,8 @@ import {
   ADD_COMPANY,
   GET_USER,
   VERIFICATION_COMPANY_EXISTS,
-  FUNCTION_COMPANY_SELECTED
+  FUNCTION_COMPANY_SELECTED,
+  SEARCH_USER
 } from "./actions";
 
 const initialState = {
@@ -43,7 +44,8 @@ const initialState = {
   vtasxAnioandMesParam: [],
   arrayCompanies:[],
   user: null,
-  companySelected:null
+  companySelected:null,
+  userEmailSearch: null
 };
 
 function rootReducer(state = initialState, action) {
@@ -60,6 +62,12 @@ function rootReducer(state = initialState, action) {
         ...state,
         user: action.payload,
       };
+
+      case SEARCH_USER:
+        return {
+          ...state,
+          userEmailSearch: action.payload,
+        };
 
     case GET_TURNOS:
       return {
