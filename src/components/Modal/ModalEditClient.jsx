@@ -11,14 +11,14 @@ import withReactContent from "sweetalert2-react-content";
 const ModalEditClient = ({
   state,
   setState,
-  idClient:initialIdClient,
+  idClient: initialIdClient,
   name: initialName,
   phone: initialPhone,
   address: initialAddress,
-  notesCli: initialNotesCli
+  notesCli: initialNotesCli,
 }) => {
-
   const dispatch = useDispatch();
+  const companySelectedMenu = useSelector((state) => state.companySelected);
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
   const handleClose = () => setState(!state);
@@ -51,11 +51,14 @@ const ModalEditClient = ({
   const handleSumbit = (e) => {
     if (
       stateValue.name.trim() === "" ||
-    //   stateValue.phone.trim() === "" ||
       stateValue.notesCli.trim() === "" ||
       stateValue.address.trim() === ""
     ) {
-      alert("valores vacios");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Faltan Datos por Completar",
+      });
     }
     dispatch(
       updateClient(
@@ -81,9 +84,7 @@ const ModalEditClient = ({
           notesCli: "",
           phone: "",
         });
-      
-        dispatch(getClients());
-    
+        dispatch(getClients(companySelectedMenu._id));
         handleClose();
       }
     });

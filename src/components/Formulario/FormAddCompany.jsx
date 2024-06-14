@@ -35,6 +35,8 @@ import {
 const FormAddCompany = () => {
   const MySwal = withReactContent(Swal);
   const loginUser=useSelector((state)=>state.user)
+  const navigate = useNavigate();
+
   //const history = useHistory();
   const dispatch = useDispatch();
   const [stateValue, setStateValue] = useState({
@@ -82,7 +84,7 @@ const FormAddCompany = () => {
           confirmButtonColor: "rgb(21, 151, 67)",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "/dashboard";
+            navigate("/dashboard");
             //alert("add company")
           }
         });

@@ -37,6 +37,11 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
   //* *****************LISTADO CLIENT EN SELECT addDog ********************
 
   var arrayClients = [];
+  var arrayRazas=["doberman","labrador","caniche","callejero"]
+  var selectRazaArray=[]
+  var arrayTamaño=["grande","mediano","pequeño"]
+  var selectTamArray=[]
+
   if (Array.isArray(listClients)) {
     listClients.map((cliente, i) => {
       var option = {
@@ -44,6 +49,26 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
         label: cliente.name,
       };
       arrayClients.push(option);
+    });
+  }
+
+  if (Array.isArray(arrayRazas)) {
+    arrayRazas.map((raza, i) => {
+      var option = {
+        value: raza,
+        label: raza,
+      };
+      selectRazaArray.push(option);
+    });
+  }
+
+  if (Array.isArray(arrayTamaño)) {
+    arrayTamaño.map((tam, i) => {
+      var option = {
+        value: tam,
+        label: tam,
+      };
+      selectTamArray.push(option);
     });
   }
 
@@ -69,9 +94,14 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
   }
 
   const handleSumbit = (e) => {
-    if (stateValue.nameDog.trim() === "" || stateValue.notaP.trim() === "") {
-      alert("valores vacios");
+    if (stateValue.nameDog.trim() === "" || stateValue.notaP.trim() === "" || !stateValue.raza || !stateValue.tamaño || !stateValue.idClient) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Faltan Datos por Completar",
+      });
     } else {
+      //alert("datos completos")
       const payload = {};
       for (const key in stateValue) {
         if (stateValue[key] !== undefined) {
@@ -92,11 +122,10 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
         if (result.isConfirmed) {
           setStateValue({
             nameDog: "",
-            raza: "",
-            tamaño: "",
             notaP: "",
           });
           changeClients()
+          //dispatch(getClients(companySelectedMenu._id));
           handleClose();
         }
       });
@@ -107,6 +136,13 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
     setStateValue({ ...stateValue, idClient: selected.value });
   }
 
+  function handleChangeRaza(selected) {
+    setStateValue({ ...stateValue, raza: selected.value });
+  }
+
+  function handleChangeSize(selected) {
+    setStateValue({ ...stateValue, tamaño: selected.value });
+  }
   return (
     <>
       <Modal show={stateAddDog} onHide={handleClose}>
@@ -126,76 +162,34 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
                   options={arrayClients}
                 />
               </Form.Group>
+
               <Form.Group className="mt-2">
-                <Form.Label>Seleccione Tamaño</Form.Label>
-                <select
-                  id="tamaño"
-                  className="form-select"
-                  //value={stateInput.tamaño}
-                  onClick={handleChangeSize}
-                >
-                  {stateValue.tamaño === "pequeño" ? (
-                    <option selected value="pequeño">
-                      pequeño
-                    </option>
-                  ) : (
-                    <option value="pequeño">pequeño</option>
-                  )}
-                  {stateValue.tamaño === "mediano" ? (
-                    <option selected value="mediano">
-                      mediano
-                    </option>
-                  ) : (
-                    <option value="mediano">mediano</option>
-                  )}
-                  {stateValue.tamaño === "grande" ? (
-                    <option selected value="grande">
-                      grande
-                    </option>
-                  ) : (
-                    <option value="grande">grande</option>
-                  )}
-                </select>
+                {/* <Form.Label>Seleccione Raza</Form.Label> */}
+                <Select
+                  placeholder="Seleccione Raza"
+                  onChange={(e) => {
+                    handleChangeRaza(e);
+                  }}
+                  options={selectRazaArray}
+                />
+              </Form.Group>
+        
+              <Form.Group className="mt-2">
+                {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
+                <Select
+                  placeholder="Seleccione Tamaño"
+                  onChange={(e) => {
+                    handleChangeSize(e);
+                  }}
+                  options={selectTamArray}
+                />
               </Form.Group>
 
               {/* <Form.Text className="textoError" muted>
                   Puedes ingresar hasta 15 caracteres.
                 </Form.Text> */}
             </Form.Group>
-            <Form.Group className="mt-2">
-              <Form.Label>Seleccione Raza</Form.Label>
-              <select
-                className="form-select"
-                id="raza"
-                aria-label="Default select example"
-                onClick={handleChangeRaza}
-              >
-                {stateValue.raza === "doberman" ? (
-                  <option selected value="doberman">
-                    doberman
-                  </option>
-                ) : (
-                  <option selected value="doberman">
-                    doberman
-                  </option>
-                )}
-                {stateValue.raza === "labrador" ? (
-                  <option selected value="labrador">
-                    labrador
-                  </option>
-                ) : (
-                  <option value="labrador">labrador</option>
-                )}
-
-                {stateValue.raza === "caniche" ? (
-                  <option selected value="caniche">
-                    caniche
-                  </option>
-                ) : (
-                  <option value="caniche">caniche</option>
-                )}
-              </select>
-            </Form.Group>
+          
             <Form.Group className="mt-2">
               <Form.Label lassName="text-xs">Nombre Mascota</Form.Label>
               <Form.Control

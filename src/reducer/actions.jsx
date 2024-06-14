@@ -71,7 +71,7 @@ export function searchUser(email) {
   return async function (dispatch) {
     try {
       const response = await axios.get(
-        `${rutaBackend}/api/searchUser/${email}`
+        `${host.development}/api/searchUser/${email}`
       );
       dispatch({
         payload: response,
@@ -131,6 +131,7 @@ export function addUser(payload) {
 }
 
 export function addCompany(payload) {
+  console.log(payload,"actions")
   return async function (dispatch) {
     try {
       const newCompany = await axios.post(

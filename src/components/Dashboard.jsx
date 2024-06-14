@@ -45,7 +45,7 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 
-function Dashboard({ listClientsCompany, setlistClients, idCompanySelected }) {
+function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,changeClients}) {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
 
@@ -86,12 +86,6 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected }) {
     index: "",
   });
 
-  // useEffect(() => {
-  //   if(companySelectedMenu){
-
-  //     setListTurn(turnos);
-  //   }
-  // }, [turnos, setListTurn]);
 
   const onTurnoAdded = () => {
     dispatch(getTurnos(companySelectedMenu._id));
@@ -197,10 +191,7 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected }) {
     // console.log("se hizo click");
   };
 
-  const changeClients = () => {
-    dispatch(getClients(companySelectedMenu._id));
-  };
-
+ 
   return (
     <>
       <div>

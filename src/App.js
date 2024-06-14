@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import AgendaTurnos from "./components/AgendaTurnos";
 import ListClients from "./components/ListClients.jsx";
 import ListVentas from "./components/ListVentas.jsx";
@@ -9,22 +10,19 @@ import FormRegister from "./components/Formulario/FormsRegister.jsx";
 import FormLoginNew from "./components/Formulario/FormLoginNew.jsx";
 import LoginFirebase from "./components/LoginFirebase.jsx";
 import ListCompanies from "./components/ListCompanies.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
+import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx";
 import {
   functionCompanySelected,
   listenToAuthChanges,
   verificationCompaniesExist,
 } from "./reducer/actions.jsx";
-import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
-import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx"
 
-function App() {
+const AppRoutes = () => {
   const loginUser = useSelector((state) => state.user);
-
   const companiesList = useSelector((state) => state.arrayCompanies.data);
-
+  const navigate = useNavigate();
   const [stateCompanyGralNav, setCompanyGralNav] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
 
   const dispatch = useDispatch();
@@ -40,28 +38,30 @@ function App() {
   }, [dispatch, loginUser]);
 
   useEffect(() => {
-    if (companiesList && "companies" in companiesList) {
+    if (companiesList && companiesList.companies) {
       setCompanyGralNav(companiesList.companies[0]);
-      dispatch(functionCompanySelected(companiesList.companies[0]))
+      dispatch(functionCompanySelected(companiesList.companies[0]));
       setIsLoading(false); // Cambiar estado de carga a falso
+    }else{
+      navigate('/addCompany')
+      setIsLoading(!isLoading)
     }
-  }, [companiesList]);
+  }, [companiesList, dispatch]);
+  
+  useEffect(() => {
+    if (!loginUser) {
+      navigate('/login');
+    }
+  }, [loginUser, navigate]);
 
   useEffect(() => {
     if (stateCompanyGralNav) {
-      setIsLoading(false);
+      setIsLoading(false);  
     }
   }, [stateCompanyGralNav]);
 
-  useEffect(()=>{
-    if(!loginUser){
-      setIsLoading(!isLoading)
-    }
-  },[])
-
   if (isLoading) {
     return <div>Loading...</div>; // show message loading while upload data
-  
   }
 
   const routesContent = (
@@ -74,7 +74,6 @@ function App() {
       <Route path="/listVentas" element={<ListVentas />} />
       <Route path="/Informe" element={<Informe />} />
       <Route path="/settingClient" element={<SettingClient />} />
-      {/* <Route path="/prueba" element={<Prueba />} /> */}
       <Route path="/addCompany" element={<FormAddCompany />} />
       <Route path="/listCompanies" element={<ListCompanies />}></Route>
     </Routes>
@@ -89,7 +88,7 @@ function App() {
   );
 
   return (
-    <BrowserRouter>
+    <div>
       {loginUser ? (
         <div>
           <NavBarLat
@@ -103,23 +102,16 @@ function App() {
       ) : (
         <div>{routesContentInicio}</div>
       )}
-  
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
 
 export default App;
-
-//  {selectedCompanyGral ? (
-//               <NavBarLat
-//                 userLogin={loginUser.displayName}
-//                 selectedCompanyGral={selectedCompanyGral}
-//                 listCompaniesAll={companies}
-//               />
-//             ) : (
-//               <NavBarLat
-//                 userLogin={loginUser.displayName}
-//                 selectedCompanyGral="null"
-//                 listCompaniesAll={companies}
-//               />
-//             )}

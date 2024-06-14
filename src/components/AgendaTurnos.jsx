@@ -26,6 +26,16 @@ function AgendaTurnos({ stateCompanyGralNav }) {
   const [companyFirst, setCompanyFirst] = useState({});
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
+  const changeClients = () => {
+    dispatch(getClients(companySelectedMenu._id));
+  };
+
+  useEffect(() => {
+    if(companySelectedMenu){
+      changeClients()
+    }
+  }, [companySelectedMenu,changeClients]);
+
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
   }, [dispatch, loginUser]);
@@ -72,12 +82,15 @@ function AgendaTurnos({ stateCompanyGralNav }) {
               setlistClients={setlistClients}
               idCompsnySelected={companySelectedMenu._id}
               onTurnoAdded={onTurnoAdded}
+              changeClients={changeClients}
             />
           ) : (
+            //when not exists tuns
             <Dashboard
               turnos={db}
               listClientsCompany={listClients}
               setlistClients={setlistClients}
+              changeClients={changeClients}
             />
           )}
         </div>

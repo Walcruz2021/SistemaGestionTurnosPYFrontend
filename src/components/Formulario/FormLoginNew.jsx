@@ -32,10 +32,11 @@ import {
 } from "mdb-react-ui-kit";
 import gmail from "../../icons/gmailLogin.png";
 import { addUser, verificationCompaniesExist } from "../../reducer/actions";
-import ModalRestPassword from "../Modal/ModalRestPassword"
+import ModalRestPassword from "../Modal/ModalRestPassword";
 
 function FormLoginNew({ autUser }) {
   const loginUser = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   //const history = useHistory();
   const dispatch = useDispatch();
@@ -73,9 +74,9 @@ function FormLoginNew({ autUser }) {
     }));
   };
 
-  const handleShow=()=>{
-    setShow(!show)
-  }
+  const handleShow = () => {
+    setShow(!show);
+  };
   const verificationCompanies = async (email) => {
     const response = await dispatch(verificationCompaniesExist(email));
 
@@ -135,15 +136,19 @@ function FormLoginNew({ autUser }) {
             icon: "success",
             confirmButtonText: "Aceptar",
             confirmButtonColor: "rgb(21, 151, 67)",
-          }).then(async(result) => {
+          }).then(async (result) => {
             if (result.isConfirmed) {
-              const resVerification=await verificationCompanies(auth.currentUser.email)
-             
-              if(resVerification.payload.status===200){
-                window.location.href = "/dashboard";
-              }else if(resVerification.payload.status===204){
+              const resVerification = await verificationCompanies(
+                auth.currentUser.email
+              );
+
+              if (resVerification.payload.status === 200) {
+                //window.location.href = "/dashboard";
+                navigate('/dashboard');
+              } else if (resVerification.payload.status === 204) {
                 //alert("ingreso a addCompany")
-                window.location.href = "/addCompany";
+                //window.location.href = "/addCompany";
+                navigate('/addCompany');
               }
             }
           });
@@ -316,14 +321,9 @@ function FormLoginNew({ autUser }) {
                     <img src={gmail} />
                   </button>
                 </div>
-                <div className="mt-2">
-                  <button variant onClick={handleShow} className="buttonModal">
-                    Olvidó su Contraseña?
-                  </button>
-                </div>
               </div>
 
-<ModalRestPassword show={show} setShow={setShow}/>
+              <ModalRestPassword show={show} setShow={setShow} />
               <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
                 <p className="mb-0 px-2">¿No tiene una cuenta?</p>
                 <button

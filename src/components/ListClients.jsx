@@ -27,6 +27,7 @@ function searchCli(busc) {
   //console.log(busc)
   return function (x) {
     return x.name.toLowerCase().includes(busc) | !busc;
+    //return x.name.includes(busc) | !busc;
   };
 }
 
@@ -209,17 +210,17 @@ function ListClients() {
       });
   }
 
-  function handleChangeCli(selectedCli) {
-    //console.log(selectedCli)
-    setSearch(selectedCli.value);
-  }
+  // function handleChangeCli(selectedCli) {
+  //   //console.log(selectedCli)
+  //   setSearch(selectedCli.value);
+  // }
 
-  const handleClose = () => {
-    if (editClient) {
-      setEditClient(!editClient);
-    }
-    console.log("se hizo click");
-  };
+  // const handleClose = () => {
+  //   if (editClient) {
+  //     setEditClient(!editClient);
+  //   }
+  //   console.log("se hizo click");
+  // };
 
   // const createHashRouter = (value) => {
   //   //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
@@ -318,8 +319,8 @@ function ListClients() {
             className="inputBuscar"
             type="text"
             name="search"
-            placeholder="Buscar Cliente"
-            //value={stateSearch.busqueda}
+            placeholder="Busque un Cliente. Ingrese sólo valores en minúsculas"
+            value={stateSearch}
             onChange={(e) => setSearch(e.target.value)}
           />
           {/* <Select placeholder="Seleccione Client" 
@@ -347,6 +348,7 @@ function ListClients() {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Notes</th>
                 {/* <th>Crear User</th> */}
                 {/* <th>Option</th> */}
               </tr>
@@ -376,6 +378,7 @@ function ListClients() {
                         </td>
                         <td>{cli.phone}</td>
                         <td>{cli.address}</td>
+                        <td>{cli.notesCli}</td>
                         {/* <td className="marginIcon">
                           {cli.userLogin === false ? (
                             <FontAwesomeIcon

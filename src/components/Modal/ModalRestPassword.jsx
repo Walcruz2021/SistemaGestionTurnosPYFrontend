@@ -28,33 +28,33 @@ function ModalRestPassword({show,setShow}) {
   const MySwal = withReactContent(Swal);
 
   const handleChange = (event) => {
-    setEmail(event.target.value);
-    if (email) {
-      if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+  
+    if (newEmail) {
+      // Updated regular expression to be case-insensitive and allow for longer TLDs
+      const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (emailPattern.test(newEmail)) {
         setValidationEmail(true);
-      } else setValidationEmail(false);
+      } else {
+        setValidationEmail(false);
+      }
     }
   };
 
   const sendEmail = async () => {
   
-    dispatch(searchUser(email));
-    setEmail("");
+    //dispatch(searchUser(email));
+    //setEmail("");
 
-    // await sendPasswordResetEmail(auth, email)
-    //   .then(function () {
-    //     dispatch(searchUser(email))
-    //     if(userSearch){
-    //       alert("se encontro")
-    //     }else{
-    //       alert("no se encontro")
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     // Se produjo un error
-    //     console.error("Error al enviar el email de restablecimiento:", error);
-    //   });
-    // setShow(false);
+    await sendPasswordResetEmail(auth, email)
+      .then(function () {
+        dispatch(searchUser(email))
+      })
+      .catch(function (error) {
+        // Se produjo un error
+        console.error("Error al enviar el email de restablecimiento:", error);
+      });
     setShow(false);
     setAlertTemp(true);
   };
@@ -92,10 +92,10 @@ function ModalRestPassword({show,setShow}) {
   if (modalUser) {
     if (userSearch) {
       if (userSearch.status === 200) {
-        Swal.fire("SI ESTA!");
+        Swal.fire("Se envio Email de Reestablecimiento");
         setModalUser(false);
       } else {
-        Swal.fire("NO ESTA");
+        Swal.fire("Email No Registrado");
         setModalUser(false);
       }
     }

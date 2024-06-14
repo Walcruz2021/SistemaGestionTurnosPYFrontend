@@ -47,35 +47,40 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       stateValue.notesCli.trim() === "" ||
       stateValue.address.trim() === ""
     ) {
-      alert("valores vacios");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Faltan Datos por Completar",
+      });
+    }else{
+      dispatch(
+        addClient({
+          name: stateValue.name,
+          address: stateValue.address,
+          notesCli: stateValue.notesCli,
+          phone: stateValue.phone,
+          status: true,
+          Company: companySelectedState._id,
+        })
+      );
+      MySwal.fire({
+        title: "¡Cliente creado correctamente!",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(21, 151, 67)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setStateValue({
+            name: "",
+            address: "",
+            notesCli: "",
+            phone: "",
+          });
+          dispatch(getClients(companySelectedState._id));
+          handleClose();
+        }
+      });
     }
-    dispatch(
-      addClient({
-        name: stateValue.name,
-        address: stateValue.address,
-        notesClie: stateValue.notesCli,
-        phone: stateValue.phone,
-        status: true,
-        Company: companySelectedState._id,
-      })
-    );
-    MySwal.fire({
-      title: "¡Cliente creado correctamente!",
-      icon: "success",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: "rgb(21, 151, 67)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setStateValue({
-          name: "",
-          address: "",
-          notesCli: "",
-          phone: "",
-        });
-        dispatch(getClients(companySelectedState._id));
-        handleClose();
-      }
-    });
   };
   return (
     <>
