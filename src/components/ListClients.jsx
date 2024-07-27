@@ -1,11 +1,12 @@
 //https://www.youtube.com/watch?v=ZF8IL1ldfdo&ab_channel=SiCode
+
 import React, { useState, useEffect } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getClients,
   deleteClient,
-} from "../reducer/actions";
+} from "../reducer/actions/actions";
 import "./ListClients.css";
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";
@@ -23,6 +24,12 @@ const REGISTER_URL = "/createUserRolUserClient";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
+/** 
+ * This function searches for a client: Its used in filtered search ListClients
+ * @param {String} busc Client's Name as state
+ * @returns
+*/
+
 function searchCli(busc) {
   //console.log(busc)
   return function (x) {
@@ -38,25 +45,13 @@ function ListClients() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const [stateSearch, setSearch] = useState("");
-  //console.log(stateSearch)
-
-  //MANEJO DE ESTADO CON USEEFFECT DE CLIENTES TRAIDOS DEL BACK
-  // const [stateClients, setStateClients] = useState([]);
-  // console.log(stateClients)
-  // useEffect(() => {
-  //   setStateClients(clients);
-  // });
 
   const dispatch = useDispatch();
 
-  //ESTADOS QUE PERMITEN LA VISUALIZACIONES DE COMPONENTES
-  //cuando editCliente este activado se mostrara el formulario a completar
   const [editClient, setEditClient] = useState(false);
   //stateInfo es el que se acciona cada vez que se selecciona un cliente
   const [stateInfo, setInfo] = useState(false);
   const [stateHist, setStateHist] = useState(false);
-
-  //console.log(stateInfo,"stateInfo")
   const [inputState, setInputState] = useState({
     id: "",
     name: "",
@@ -70,7 +65,7 @@ function ListClients() {
     index: "",
     status: "",
   });
-  //console.log(inputState);
+
 
   useEffect(() => {
     dispatch(getClients(companySelectedMenu._id));
@@ -103,19 +98,17 @@ function ListClients() {
     });
   }
 
-  //console.log(arrayClients);
-
+/**
+ * This function is executed every time a client is clicked
+ */
   //esto se efectua cada vez que se aprieta un cliente
   function handleInfo(e, props) {
     e.preventDefault();
     //console.log(props,"carcateristica cliente")
 
-    //en caso que setInfo este en true se pasa a false
-    //esto ocurrira siempre que se apriete un cliente
     if (stateInfo) {
       setInfo(!stateInfo);
     }
-
     if (!stateHist) {
       setStateHist(!stateHist);
     }
@@ -132,11 +125,9 @@ function ListClients() {
     });
   }
 
-  //se efectua cuando se aprieta el boton EDITAR CLIENTE
+
   function handleEdit(e) {
     if (e.name) {
-      //de estos valores dependera de que el fomrulario se muestre
-      //ambos tienen que estar en true para que se visualize
       if (!editClient) {
         setEditClient(!editClient);
       }
@@ -154,7 +145,7 @@ function ListClients() {
   const [newClient, setNewClient] = useState(false);
 
   function handleDelete({ idClient, index }) {
-    //console.log(idClient)
+
     if (idClient) {
       MySwal.fire({
         title: "¿Estas seguro?",
@@ -168,9 +159,8 @@ function ListClients() {
       }).then((result) => {
         if (result.isConfirmed) {
           dispatch(deleteClient(idClient));
-          //clients[index].status=false
           clients.splice(index, 1);
-          //console.log(index)
+         
 
           //al eliminar el lciente se sambia el stateHist de manea de que no se visualize las mascotas pertenecientes al cliente eliminado
           //el cual previamente se habia seleccionado
@@ -210,73 +200,6 @@ function ListClients() {
       });
   }
 
-  // function handleChangeCli(selectedCli) {
-  //   //console.log(selectedCli)
-  //   setSearch(selectedCli.value);
-  // }
-
-  // const handleClose = () => {
-  //   if (editClient) {
-  //     setEditClient(!editClient);
-  //   }
-  //   console.log("se hizo click");
-  // };
-
-  // const createHashRouter = (value) => {
-  //   //se utiliza la expresión regular /\s/g dentro del método replace() para buscar y reemplazar todos los espacios
-  //   //en blanco de la cadena. El modificador g indica que se deben reemplazar todas las coincidencias y no solo la
-  //   //primera encontrada.
-  //   const userSinEsp = value.userName.replace(/\s/g, "");
-  //   MySwal.fire({
-  //     title: "¿Estas seguro?",
-  //     text: `USER: ${userSinEsp}   PASSWORD: ${value.password}`,
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#1ABD53",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Sí",
-  //     cancelButtonText: "Cancelar",
-  //   }).then(async (result) => {
-  //     if (result.isConfirmed) {
-  //       //si no le pondo el try catch no funciona el preguntar por erro.status ya que try catch captura cualquier error
-  //       //que ocurra durante la peticion
-  //       try {
-  //         const response = await axios.post(
-  //           REGISTER_URL,
-  //           JSON.stringify({
-  //             userName: userSinEsp,
-  //             password: value.password.toString(),
-  //             idClient: value.idClient,
-  //             role: "userClient",
-  //           }),
-  //           {
-  //             headers: { "Content-Type": "application/json" }, //establece el encabezado Content-Type como application/json-indica que el cuerpo de la solicitud contiene datos en formato JSON
-  //             withCredentials: true, //se establece en true para permitir el envío de cookies o credenciales en la solicitud.
-  //           }
-  //         );
-  //         console.log(response, "--->");
-  //         if (response.status === 200) {
-  //           MySwal.fire({
-  //             title: "Solicitud con Exito",
-  //             text: "User y Password creados",
-  //             icon: "success",
-  //             confirmButtonColor: "#00A0D2",
-  //           });
-  //           dispatch(getClients(companySelectedMenu._id));
-  //         }
-  //       } catch (error) {
-  //         console.log(error);
-  //         if (error.response.status === 400) {
-  //           MySwal.fire({
-  //             icon: "error",
-  //             title: "Oops...",
-  //             text: "El usuario ya existe",
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-  // };
 
   return (
     <div>
@@ -302,7 +225,7 @@ function ListClients() {
           <div className="col-6 col-md-4 d-flex justify-content-center">
             <div className="text-center">
               <div className="card-body mt-3">
-                <Link to="/dashboard">
+                <Link to="/">
                   <button className="btn btn-link">
                     <img src={back} />
                   </button>
@@ -323,20 +246,10 @@ function ListClients() {
             value={stateSearch}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {/* <Select placeholder="Seleccione Client" 
-           onChange={(e) => {
-            handleChangeCli(e);
-          }}
-          options={arrayClients} /> */}
-          {/* <button className="butBuscar" onClick={()=>FilterElements()}>  <FontAwesomeIcon icon={faSearch} size="1.5x" /> Buscar Cliente</button> */}
-          {/* aqui se invoca el modal el cual de acuerdo al id enviado se renderizar el formato indicado */}
-          {/* de acuerdo al id que le envie se renderiza cierto tipo de modal */}
         </div>
       </div>
 
       <ModalAddClient state={newClient} setState={setNewClient}  />
-
-      {/* <AgendaInputs></AgendaInputs> */}
       <br />
       {clients ? (
         // HOVER para que semarque con el cursor
@@ -349,8 +262,6 @@ function ListClients() {
                 <th>Phone</th>
                 <th>Address</th>
                 <th>Notes</th>
-                {/* <th>Crear User</th> */}
-                {/* <th>Option</th> */}
               </tr>
             </thead>
             <tbody>
@@ -379,20 +290,6 @@ function ListClients() {
                         <td>{cli.phone}</td>
                         <td>{cli.address}</td>
                         <td>{cli.notesCli}</td>
-                        {/* <td className="marginIcon">
-                          {cli.userLogin === false ? (
-                            <FontAwesomeIcon
-                              icon={faUser}
-                              onClick={() =>
-                                createHashRouter({
-                                  userName: cli.name,
-                                  password: cli.phone,
-                                  idClient: cli._id,
-                                })
-                              }
-                            />
-                          ) : null}
-                        </td> */}
                       </tr>
                     ) : null
                   )

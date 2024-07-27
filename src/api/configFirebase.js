@@ -11,7 +11,7 @@ import '@firebase/auth';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBApsf6EHTdQnjq5hY2xQTil76kxF8EAzc",
+  apiKey: process.env.REACT_APP_API_KEY_FIREBASE,
   authDomain: "loginpymesya.firebaseapp.com",
   projectId: "loginpymesya",
   storageBucket: "loginpymesya.appspot.com",

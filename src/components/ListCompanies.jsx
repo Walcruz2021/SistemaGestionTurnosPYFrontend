@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTurnos, functionCompanySelected } from "../reducer/actions";
+import { getTurnos, functionCompanySelected } from "../reducer/actions/actions";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from 'react-router-dom';
 

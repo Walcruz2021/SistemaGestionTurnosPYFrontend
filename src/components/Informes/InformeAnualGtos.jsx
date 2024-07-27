@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import "./Informe.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { orderVentas, vtasxA } from "../reducer/actions";
+import { gtosXanio } from "../../reducer/actions/actionsGastos";
+import {orderVentas} from "../../reducer/actions/actionsVentas"
 import { Link } from "react-router-dom";
+import back from "../../icons/back.png";
 
 import {
   faChartLine,
@@ -14,21 +14,24 @@ import {
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import sale from "../icons/sale.png"
+import sale from "../../icons/sale.png";
 
-function TodoList() {
+function InformeAnualGtos() {
+  const companySelectedMenu = useSelector((state) => state.companySelected);
   const ListAños = [
     { value: 2020, label: 2020 },
     { value: 2021, label: 2021 },
     { value: 2022, label: 2022 },
     { value: 2023, label: 2023 },
+    { value: 2024, label: 2024 },
   ];
 
-  const ventas22 = useSelector((state) => state.vtasxAnio);
+  const listGastosAnio = useSelector((state) => state.gtosxAnio);
+
   const [selectedAnio, setSelectedAnio] = useState();
 
   //segun el año seleccionado traera las ventas de todos los meses correspondiente a ese año
-  //console.log(ventas22, "Listventas");
+  //console.log(listGastosAnio, "Listventas");
   // [{Dog:"628ae644d66d1f4760a02319"
   // año:2022
   // client:"6287c8a0da18314e74b9325a"
@@ -166,37 +169,37 @@ function TodoList() {
     ],
   };
 
-  //se recorre el listado de todas las ventas. ventas22 sera especificamente referido al año 2022 y fechaN sera especificamente tambien al año 2022
-  if (ventas22) {
-    ventas22.map((vta) => {
-      const mes = vta.mes - 1; //es -1 poirque mes sera el indice en el array de meses
+  //se recorre el listado de todas las ventas. listGastosAnio sera especificamente referido al año 2022 y fechaN sera especificamente tambien al año 2022
+  if (listGastosAnio) {
+    listGastosAnio.map((gto) => {
+      const mes = gto.mes - 1; //es -1 poirque mes sera el indice en el array de meses
       //es decir mayo sera 4 en el array de meses
       //console.log(mes,"mes en curso")
-      if (vta.valorServ) {
+      if (gto.value) {
         if (fechaN.meses[mes]) {
-          fechaN.meses[mes].sumaMes = fechaN.meses[mes].sumaMes + vta.valorServ;
+          fechaN.meses[mes].sumaMes = fechaN.meses[mes].sumaMes + gto.value;
           //console.log(fechaN.meses[mes].sumaMes,mes,"suma Mes Curso")
         }
       }
 
-      if (vta.efectivo) {
+      if (gto.efectivo) {
         if (fechaN.meses[mes]) {
           fechaN.meses[mes].sumaEfectivo =
-            fechaN.meses[mes].sumaEfectivo + vta.efectivo;
+            fechaN.meses[mes].sumaEfectivo + gto.efectivo;
         }
       } //else fechaN.meses[mes].sumaEfectivo = fechaN.meses[mes].sumaEfectivo + 0;
 
-      if (vta.tarjeta) {
+      if (gto.tarjeta) {
         if (fechaN.meses[mes]) {
           fechaN.meses[mes].sumaTarjeta =
-            fechaN.meses[mes].sumaTarjeta + vta.tarjeta;
+            fechaN.meses[mes].sumaTarjeta + gto.tarjeta;
         }
       } //else fechaN.meses[mes].sumaTarjeta = fechaN.meses[mes].sumaTarjeta + 0;
 
-      if (vta.transferencia) {
+      if (gto.transferencia) {
         if (fechaN.meses[mes]) {
           fechaN.meses[mes].sumaTransferencia =
-            fechaN.meses[mes].sumaTransferencia + vta.transferencia;
+            fechaN.meses[mes].sumaTransferencia + gto.transferencia;
         }
       }
     });
@@ -204,7 +207,7 @@ function TodoList() {
 
   //hasta aqui se tendra el objecto fechaN con las sumas de todas las ventas por mes en (efectivo-tarjeta-transferencia)
 
-  const arrayVtas = [];
+  const arrayGtos = [];
   if (fechaN.meses) {
     var sumaTotalAnio = 0;
     var efectivoTotalAnio = 0;
@@ -213,17 +216,17 @@ function TodoList() {
     fechaN.meses.map((valor) => {
       if (valor.sumaMes != 0) {
         console.log(valor, "---Z");
-        arrayVtas.push(valor);
+        arrayGtos.push(valor);
         sumaTotalAnio = sumaTotalAnio + valor.sumaMes;
         efectivoTotalAnio = efectivoTotalAnio + valor.sumaEfectivo;
         bcoTotalAnio = bcoTotalAnio + valor.sumaTransferencia;
         tarjetaTotalAnio = tarjetaTotalAnio + valor.sumaTarjeta;
       }
     });
-    arrayVtas.push({ anio: fechaN.name });
+    arrayGtos.push({ anio: fechaN.name });
   }
 
-  //console.log(arrayVtas)
+  //console.log(arrayGtos)
 
   // (6) [{…}, {…}, {…}, {…}, {…}, 2022]
   // 0: {mes: 2, sumaMes: 2000, sumaEfectivo: 2000, sumaTarjeta: NaN, sumaTransferencia: NaN}
@@ -236,31 +239,29 @@ function TodoList() {
 
   const ChangeAnio = (value) => {
     setSelectedAnio(value.value);
-    SearchVtas(value.value);
+    SearchGtos(value.value);
   };
 
-  function SearchVtas(anio) {
+  function SearchGtos(anio) {
     //console.log(anio);
-    dispatch(vtasxA(anio));
+    dispatch(gtosXanio(companySelectedMenu._id, anio));
   }
 
   return (
     <div>
-      {Array.isArray(arrayVtas) ? (
+      {Array.isArray(arrayGtos) ? (
         <div>
           <div className="container-lg">
-            <div className="titGral">
-              <h1>Informe Mensual</h1>
-            </div>
+           
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-6 col-md-4 text-center">
                   <div className="tex-center">
                     <div className="card-body">
                       <div className="btn btn-link">
-                        <Link to="/listVentas">
+                        <Link to="/InformeGastos">
                           <button className="btn btn-link">
-                            <img src={sale}/>
+                            <img src={back} />
                           </button>
                         </Link>
                       </div>
@@ -268,6 +269,9 @@ function TodoList() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="titGral">
+              <h1>Informe Anual de Gastos</h1>
             </div>
             <Select
               placeholder="Seleccione Año"
@@ -278,29 +282,29 @@ function TodoList() {
           </div>
 
           <div className="container-lg table-responsive">
-            {ventas22 ? (
+            {listGastosAnio ? (
               <>
                 <div className="titInf">
-                  <h5>{arrayVtas[arrayVtas.length - 1].anio}</h5>
+                  <h5>{arrayGtos[arrayGtos.length - 1].anio}</h5>
                 </div>
                 <table className="table table-bordered table-hover table-white">
                   <thead class="thead-light table-secondary">
                     <tr>
                       <th>Mes</th>
-                      <th>Vendido</th>
+                      <th>Gastado</th>
                       <th>Efectivo</th>
                       <th>Tarjeta</th>
                       <th>Banco</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {arrayVtas.map((vta) => (
+                    {arrayGtos.map((gto) => (
                       <tr>
-                        <td>{vta.mesString}</td>
-                        <td>{vta.sumaMes}</td>
-                        <td>{vta.sumaEfectivo}</td>
-                        <td>{vta.sumaTarjeta}</td>
-                        <td>{vta.sumaTransferencia}</td>
+                        <td>{gto.mesString}</td>
+                        <td>{gto.sumaMes}</td>
+                        <td>{gto.sumaEfectivo}</td>
+                        <td>{gto.sumaTarjeta}</td>
+                        <td>{gto.sumaTransferencia}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -308,7 +312,7 @@ function TodoList() {
               </>
             ) : (
               <h5 className="alertVtas">
-                No existen Ventas para el año {selectedAnio}
+                No existen Gastos para el año {selectedAnio}
               </h5>
             )}
 
@@ -316,7 +320,7 @@ function TodoList() {
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faChartLine} size="lg" />
-                  <p>Total Vendido $ {sumaTotalAnio}</p>
+                  <p>Total Gastado $ {sumaTotalAnio}</p>
                 </div>
               </div>
               <div className="cardInf">
@@ -351,4 +355,4 @@ function TodoList() {
   );
 }
 
-export default TodoList;
+export default InformeAnualGtos;

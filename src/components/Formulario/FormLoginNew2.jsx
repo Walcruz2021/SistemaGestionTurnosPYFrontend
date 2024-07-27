@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Formik, Field, ErrorMessage, Form } from "formik";
 import { auth } from "../../api/configFirebase";
 import {
   signInWithEmailAndPassword,
@@ -7,31 +8,30 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "@firebase/auth";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
-import { MDBContainer, MDBInput } from "mdb-react-ui-kit";
-import gmail from "../../icons/gmailLogin.png";
-import { addUser, verificationCompaniesExist,listenToAuthChanges} from "../../reducer/actions/actions";
-import ModalRestPassword from "../Modal/ModalRestPassword";
-import "./FormLoginNew.css";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { FaUser } from "react-icons/fa";
-import { FaGoogle } from "react-icons/fa";
-import logoNew from "../../IMAGENES/LogoNew.png";
 
-function FormLoginNew({ autUser }) {
+import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
+import gmail from "../../icons/gmailLogin.png";
+import { addUser, verificationCompaniesExist } from "../../reducer/actions";
+import ModalRestPassword from "../Modal/ModalRestPassword";
+import "./FormLoginNew2.css";
+
+function FormLoginNew2({ autUser }) {
   const loginUser = useSelector((state) => state.user);
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+  //const history = useHistory();
   const dispatch = useDispatch();
   const [stateValue, setStateValue] = useState({
     email: "",
     password: "",
   });
   const [show, setShow] = useState(false);
-
+  //logIn with email of gmail
   const loginGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const credentials = await signInWithPopup(auth, provider);
@@ -63,21 +63,15 @@ function FormLoginNew({ autUser }) {
   const handleShow = () => {
     setShow(!show);
   };
-
   const verificationCompanies = async (email) => {
-    const response = dispatch(verificationCompaniesExist(email));
+    const response = await dispatch(verificationCompaniesExist(email));
+
     return response;
   };
 
   const handleSumbit = async (e) => {
     if (stateValue.email.trim() === "" || stateValue.password.trim() === "") {
-      MySwal.fire({
-        title: "Error Login",
-        text: "Usuario o Contraseña Incorrecto",
-        icon: "warning",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "rgb(255, 140, 0)",
-      });
+      alert("valores vacios");
     } else {
       try {
         await signInWithEmailAndPassword(
@@ -86,7 +80,7 @@ function FormLoginNew({ autUser }) {
           stateValue.password
         );
         if (auth.currentUser.emailVerified) {
-          
+          // Usuario logueado correctamente y correo electrónico verificado
           MySwal.fire({
             title: "¡Usuario Logueado Correctamente!",
             icon: "success",
@@ -94,13 +88,16 @@ function FormLoginNew({ autUser }) {
             confirmButtonColor: "rgb(21, 151, 67)",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              dispatch(listenToAuthChanges())
               const resVerification = await verificationCompanies(
                 auth.currentUser.email
               );
+
               if (resVerification.payload.status === 200) {
-                navigate("/");
+                //window.location.href = "/dashboard";
+                navigate("/dashboard");
               } else if (resVerification.payload.status === 204) {
+                //alert("ingreso a addCompany")
+                //window.location.href = "/addCompany";
                 navigate("/addCompany");
               }
             }
@@ -113,21 +110,13 @@ function FormLoginNew({ autUser }) {
             confirmButtonText: "Aceptar",
             confirmButtonColor: "rgb(255, 140, 0)",
           });
-          //resetForm();
+          resetForm();
         }
       } catch (error) {
         if (error.code === "auth/invalid-credential") {
           MySwal.fire({
             title: "Error Login",
             text: "Usuario o Contraseña Incorrecto",
-            icon: "warning",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(255, 140, 0)",
-          });
-        } else if (error.code === "auth/invalid-email") {
-          MySwal.fire({
-            title: "Error Login",
-            text: "Debe Ingresar un Email",
             icon: "warning",
             confirmButtonText: "Aceptar",
             confirmButtonColor: "rgb(255, 140, 0)",
@@ -139,99 +128,119 @@ function FormLoginNew({ autUser }) {
     }
   };
 
-  // const resetForm = () => {
-  //   setStateValue({
-  //     email: "",
-  //     password: "",
-  //   });
-  // };
-
   const RedirectLink = () => {
-    navigate("/register");
+    window.location.href = "/register";
   };
 
   return (
-    <>
-      <div className="login-wrap">
-        <div className="login-html">
-          <div className="text-center">
-            <img src={logoNew} style={{ width: "185px" }} alt="logo" />
-            <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
-          </div>
-
-          <p className="text-center">LOGIN AL SISTEMA</p>
-          <div className="login-form">
+    <div className="login-wrap">
+      <div className="login-html">
+        <input id="tab-1" type="radio" name="tab" className="sign-in" checked />
+        <label for="tab-1" className="tab">
+          Sign In
+        </label>
+        <input id="tab-2" type="radio" name="tab" className="sign-up" />
+        <label for="tab-2" className="tab">
+          Sign Up
+        </label>
+        <div className="login-form">
+          <div className="sign-in-htm">
             <div className="group">
-              <label className="form-label pt-3 pb-1">
-                <FaUser /> CORREO ELECTRONICO
+              <label for="user" className="label">
+                Correo Electronico
               </label>
               <MDBInput
-                className="form-input mb-2"
+                className="group label input"
+                wrapperClass="mb-2"
                 id="form1"
                 type="email"
                 name="email"
                 value={stateValue.email}
                 onChange={handleChange}
-                required
               />
-              <label className="form-label pt-3 pb-1 .anton-sc-regular">
-                <RiLockPasswordFill /> PASSWORD
+            </div>
+            <div className="group">
+              <label for="pass" className="label">
+                Password
               </label>
+
               <MDBInput
-                className="form-input mb-2"
+                className="input"
+                wrapperClass="mb-2"
                 id="form2"
                 type="password"
                 name="password"
                 value={stateValue.password}
                 onChange={handleChange}
-                required
               />
-              <div className="pt-2">
-                {!stateValue.email || !stateValue.password ? (
-                  <button
-                    className="btn btn-outline-dark form-button"
-                    type="submit"
-                    onClick={handleSumbit}
-                    disabled
-                  >
-                    Inicio de Sesión
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-outline-dark form-button"
-                    type="submit"
-                    onClick={handleSumbit}
-                  >
-                    Inicio de Sesión
-                  </button>
-                )}
-              </div>
-
-              {/* this code is commented because it does not work correctly */}
-              {/* <div className="pt-2"></div>
-              <button
-                className="btn btn-outline-dark form-button"
-                onClick={loginGoogle}
-              >
-                <FaGoogle />
-              </button> */}
-
-              <ModalRestPassword show={show} setShow={setShow} />
-              <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
-                <p className="mb-0 px-2">¿No tiene una cuenta?</p>
-                <button
-                  className="btn btn-outline-secondary btn-custom"
-                  onClick={RedirectLink}
-                >
-                  Registrarse
-                </button>
-              </div>
+            </div>
+            <div className="group">
+              <input id="check" type="checkbox" className="check" checked />
+              <label for="check">
+                <span className="icon"></span> Keep me Signed in
+              </label>
+            </div>
+            <div className="group">
+              <button className="button" type="submit" onClick={handleSumbit}>
+                Inicio de Sesión
+              </button>{" "}
+              <button className="button" onClick={loginGoogle}>
+                <img src={gmail} />
+              </button>
+            </div>
+            <div className="hr"></div>
+            <div className="foot-lnk">
+              <a href="#forgot">Forgot Password?</a>
             </div>
           </div>
+
+          {/* <div className="sign-up-htm">
+            <div className="group">
+              <label for="user" className="label">
+                Username
+              </label>
+              <input id="user" type="text" className="input" />
+            </div>
+            <div className="group">
+              <label for="pass" className="label">
+                Password
+              </label>
+              <input
+                id="pass"
+                type="password"
+                className="input"
+                data-type="password"
+              />
+            </div>
+            <div className="group">
+              <label for="pass" className="label">
+                Repeat Password
+              </label>
+              <input
+                id="pass"
+                type="password"
+                className="input"
+                data-type="password"
+              />
+            </div>
+            <div className="group">
+              <label for="pass" className="label">
+                Email Address
+              </label>
+              <input id="pass" type="text" className="input" />
+            </div>
+            <div className="group">
+              <input type="submit" className="button" value="Sign Up" />
+            </div>
+            <div className="hr"></div>
+            <div className="foot-lnk">
+              <label for="tab-1">Already Member?></label>
+            </div>
+          </div> */}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default FormLoginNew;
+export default FormLoginNew2;

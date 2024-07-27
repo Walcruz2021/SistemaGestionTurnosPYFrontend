@@ -6,7 +6,8 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useSelector, useDispatch } from "react-redux";
-import {asignedVentas} from "../../reducer/actions"
+import { deleteTurno, getTurnos } from "../../reducer/actions/actions";
+import { asignedVentas} from "../../reducer/actions/actionsVentas";
 
 const ModalAddVtas = ({
   state,
@@ -17,9 +18,9 @@ const ModalAddVtas = ({
   nameCli,
   nameDog,
   date,
-  idTurno
+  idTurno,
 }) => {
-
+  const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const [visibleCheckE, setVisibleCheckE] = useState(false);
   const [visibleCheckT, setVisibleCheckT] = useState(false);
@@ -40,7 +41,7 @@ const ModalAddVtas = ({
     transferencia: "",
     tarjeta: "",
     efectivo: "",
-    tipoServ: ""
+    tipoServ: "",
   });
 
   const handleClose = () => {
@@ -70,26 +71,37 @@ const ModalAddVtas = ({
     }));
   };
 
+  const handleChangeNumber = (e) => {
+    const { name, value } = e.target;
+    setStateValue((prevState) => ({
+      ...prevState,
+      [name]: Number(value),
+    }));
+  };
+
   const handleSumbit = () => {
     const fecha = new Date(date);
     const año = fecha.getFullYear();
     const mes = fecha.getMonth() + 1;
     const valorServ =
-      stateValue.efectivo + stateValue.tarjeta + stateValue.transferencia;
+      Number(stateValue.efectivo) +
+      Number(stateValue.tarjeta) +
+      Number(stateValue.transferencia);
     const dataVta = {
-      date,
+      mes,
+      año,
       idTurno: idTurno,
-      nameCli: nameCli,
+      name: nameCli,
       nameDog: nameDog,
-      idDog: idDog,
       notesTurn: notesTurn,
       tipoServ: stateValue.tipoServ,
+      date,
       valorServ: valorServ,
+      idCompany: companySelectedMenu._id,
+      idDog: idDog,
       transferencia: stateValue.transferencia,
       tarjeta: stateValue.tarjeta,
       efectivo: stateValue.efectivo,
-      año,
-      mes,
     };
     dispatch(asignedVentas(dataVta, idClient));
     MySwal.fire({
@@ -99,10 +111,29 @@ const ModalAddVtas = ({
       confirmButtonColor: "rgb(21, 151, 67)",
     }).then((result) => {
       if (result.isConfirmed) {
-      setState(!state)
+        dispatch(deleteTurno(idTurno)).then(() => {
+          dispatch(getTurnos(companySelectedMenu._id));
+        });
+        setState(!state);
+        setStateValue({
+          transferencia: "",
+          tarjeta: "",
+          efectivo: "",
+          tipoServ: "",
+        });
       }
     });
   };
+
+  const isButtonValid = () => {
+    return (
+      stateValue.tipoServ &&
+      (stateValue.efectivo > 0 ||
+        stateValue.transferencia > 0 ||
+        stateValue.tarjeta > 0)
+    );
+  };
+
   return (
     <>
       <Modal show={state} onHide={handleClose}>
@@ -142,7 +173,7 @@ const ModalAddVtas = ({
                     required
                     className="mt-2"
                     value={stateValue.efectivo}
-                    onChange={handleChange}
+                    onChange={handleChangeNumber}
                   />
                 </>
               )}
@@ -164,7 +195,7 @@ const ModalAddVtas = ({
                     required
                     className="mt-2"
                     value={stateValue.transferencia}
-                    onChange={handleChange}
+                    onChange={handleChangeNumber}
                   />
                 </>
               )}
@@ -186,7 +217,7 @@ const ModalAddVtas = ({
                     required
                     className="mt-2 mb-2"
                     value={stateValue.tarjeta}
-                    onChange={handleChange}
+                    onChange={handleChangeNumber}
                   />
                 </>
               )}
@@ -194,7 +225,12 @@ const ModalAddVtas = ({
           </Form>
         </Modal.Body>
         <Modal.Footer className="mt-0 pt-1 pb-1">
-          <Button variant="primary" type="submit" onClick={handleSumbit}>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSumbit}
+            disabled={!isButtonValid()}
+          >
             Agregar Venta
           </Button>
         </Modal.Footer>
@@ -202,13 +238,6 @@ const ModalAddVtas = ({
     </>
   );
 };
-// const ModalAddVtas=()=>{
-//   return(
-//     <>
-//     <h1>zzzzzzzz</h1>
-//     </>
-//   )
 
-// }
 
 export default ModalAddVtas;

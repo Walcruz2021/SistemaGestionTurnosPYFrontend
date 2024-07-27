@@ -17,3 +17,18 @@
     padding-right: 0;
   }
 }
+
+.msgAlertInput{
+  font-size: 0.7rem;
+}
+
+.login-wrap-reg {
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 900px;
+  position: relative;
+  background: url("../../IMAGENES/escritorio.avif") no-repeat center;
+  box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),
+    0 17px 50px 0 rgba(32, 192, 99, 0.19);
+}

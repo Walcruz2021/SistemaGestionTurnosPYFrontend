@@ -5,42 +5,52 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.css";
-import { addDog, getClients} from "../../reducer/actions";
+import { addDog, getClients } from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import "./Modal.css";
 
-const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
+const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
+  const dispatch = useDispatch();
   const [stateValue, setStateValue] = useState({
     idClient: "",
     nameDog: "",
     notaP: "",
     raza: "",
     tamaño: "",
-    status: true,
   });
 
   const listClients = useSelector((state) => state.allClients);
+
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
-  useEffect(()=>{
-    if(companySelectedMenu){
-      dispatch(getClients(companySelectedMenu._id))
+  useEffect(() => {
+    if (!listClients) {
+      if(companySelectedMenu){
+        dispatch(getClients(companySelectedMenu._id));
+      }
     }
-  },[companySelectedMenu])
+  },[listClients,dispatch]);
 
   const handleClose = () => {
     setStateAddDog(!stateAddDog);
+    setStateValue({
+      idClient: "",
+      nameDog: "",
+      notaP: "",
+      raza: "",
+      tamaño: "",
+    });
   };
 
   //* *****************LISTADO CLIENT EN SELECT addDog ********************
 
   var arrayClients = [];
-  var arrayRazas=["doberman","labrador","caniche","callejero"]
-  var selectRazaArray=[]
-  var arrayTamaño=["grande","mediano","pequeño"]
-  var selectTamArray=[]
+  var arrayRazas = ["doberman", "labrador", "caniche", "callejero"];
+  var selectRazaArray = [];
+  var arrayTamaño = ["grande", "mediano", "pequeño"];
+  var selectTamArray = [];
 
   if (Array.isArray(listClients)) {
     listClients.map((cliente, i) => {
@@ -73,7 +83,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
   }
 
   const MySwal = withReactContent(Swal);
-  const dispatch = useDispatch();
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +104,12 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
   }
 
   const handleSumbit = (e) => {
-    if (stateValue.nameDog.trim() === "" || stateValue.notaP.trim() === "" || !stateValue.raza || !stateValue.tamaño || !stateValue.idClient) {
+    if (
+      stateValue.nameDog.trim() === "" ||
+      !stateValue.raza ||
+      !stateValue.tamaño ||
+      !stateValue.idClient
+    ) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -112,7 +127,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
         }
       }
       dispatch(addDog(payload, stateValue.idClient));
-      
+
       MySwal.fire({
         title: "¡Mascota Agregada!",
         icon: "success",
@@ -124,8 +139,8 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
             nameDog: "",
             notaP: "",
           });
-          changeClients()
-          //dispatch(getClients(companySelectedMenu._id));
+          //changeClients()
+          dispatch(getClients(companySelectedMenu._id));
           handleClose();
         }
       });
@@ -173,7 +188,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
                   options={selectRazaArray}
                 />
               </Form.Group>
-        
+
               <Form.Group className="mt-2">
                 {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
                 <Select
@@ -189,7 +204,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
                   Puedes ingresar hasta 15 caracteres.
                 </Form.Text> */}
             </Form.Group>
-          
+
             <Form.Group className="mt-2">
               <Form.Label lassName="text-xs">Nombre Mascota</Form.Label>
               <Form.Control
@@ -219,9 +234,23 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog,changeClients}) => {
           </Form>
         </Modal.Body>
         <Modal.Footer className="mt-2 pt-1 pb-1">
-          <Button variant="primary" type="submit" onClick={handleSumbit}>
-            Agregar Mascota
-          </Button>
+          {!stateValue.idClient ||
+          !stateValue.nameDog ||
+          !stateValue.raza ||
+          !stateValue.tamaño ? (
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={handleSumbit}
+              disabled
+            >
+              Agregar Mascota
+            </Button>
+          ) : (
+            <Button variant="primary" type="submit" onClick={handleSumbit}>
+              Agregar Mascota
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

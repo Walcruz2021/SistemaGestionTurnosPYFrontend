@@ -1,22 +1,22 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getClients, addClient } from "../../reducer/actions";
+import { getClients, addClient } from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
   const companySelectdMenu = useSelector((state) => state.companySelected);
 
-  const [companySelectedState,setCompanySelectedState]=useState()
- 
+  const [companySelectedState, setCompanySelectedState] = useState();
+
   useEffect(() => {
-    if(companySelectdMenu){
-      setCompanySelectedState(companySelectdMenu)
+    if (companySelectdMenu) {
+      setCompanySelectedState(companySelectdMenu);
     }
   });
 
@@ -52,7 +52,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
         title: "Oops...",
         text: "Faltan Datos por Completar",
       });
-    }else{
+    } else {
       dispatch(
         addClient({
           name: stateValue.name,
@@ -102,7 +102,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   placeholder="Pepe Argento"
                   name="name"
                   autoFocus
-                  maxLength={30}
+                  maxLength={25}
                   value={stateValue.name}
                   onChange={handleChange}
                   required
@@ -153,7 +153,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   rows={3}
                   name="notesCli"
                   autoFocus
-                  maxLength={100}
+                  maxLength={150}
                   value={stateValue.notesCli}
                   onChange={handleChange}
                   required
@@ -165,9 +165,18 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}
-            <Button variant="primary" type="submit" onClick={handleSumbit}>
-              Agregar Cliente
-            </Button>
+            {!stateValue.name ||
+            !stateValue.phone ||
+            !stateValue.address ||
+            !stateValue.notesCli ? (
+              <Button variant="primary" type="submit" onClick={handleSumbit} disabled>
+                Agregar Cliente
+              </Button>
+            ) : (
+              <Button variant="primary" type="submit" onClick={handleSumbit}>
+                Agregar Cliente
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>

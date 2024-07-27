@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.css";
 
-import { getClients, updateDog } from "../../reducer/actions";
+import { getClients, updateDog } from "../../reducer/actions/actions";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";

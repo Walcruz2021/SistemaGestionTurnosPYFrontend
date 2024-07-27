@@ -1,0 +1,39 @@
+.anton-sc-regular {
+  font-family: "Anton SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.anton-regular {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.login-wrap {
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 700px;
+  position: relative;
+  background: url("../../IMAGENES/escritorio.avif") no-repeat center;
+  box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),
+    0 17px 50px 0 rgba(32, 192, 99, 0.19);
+}
+
+.login-html {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 0px 70px 50px 70px;
+  background: rgba(250, 251, 252, 0.9);
+}
+
+.form-label {
+  color: rgb(42, 42, 42);
+  font-size: 1rem;
+}
+
+.form-button {
+  width: 100%;
+}

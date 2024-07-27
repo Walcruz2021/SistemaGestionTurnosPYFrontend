@@ -1,40 +1,24 @@
 import React from "react";
-import { useDispatch,useSelector} from "react-redux";
-import { Formik, Field, ErrorMessage, Form } from "formik";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../api/configFirebase";
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  updateProfile,
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-} from "@firebase/auth";
+
 //import ButtonBarBoostrap from "../components/ButtonBar/ButtonBarBoostrap";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 //import { initializeApp } from "@firebase/app";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 //import ModalRestPassword from "../modals/ModalRestPassword";
-import { addCompany } from "../../reducer/actions";
+import { addCompany } from "../../reducer/actions/actions";
 import "../../css/cssGeneral.css";
 import "./FormsLoginAndRegister.css";
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBInput,
-} from "mdb-react-ui-kit";
+import { MDBInput } from "mdb-react-ui-kit";
+import logoNew from "../../IMAGENES/LogoNew.png";
 
 const FormAddCompany = () => {
   const MySwal = withReactContent(Swal);
-  const loginUser=useSelector((state)=>state.user)
+  const loginUser = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   //const history = useHistory();
@@ -42,10 +26,10 @@ const FormAddCompany = () => {
   const [stateValue, setStateValue] = useState({
     nameCompany: "",
     address: "",
-    cuit: ""
+    cuit: "",
   });
 
-  console.log(stateValue);
+  //console.log(stateValue);
   //logIn with email of gmail
 
   const handleChange = (e) => {
@@ -62,21 +46,25 @@ const FormAddCompany = () => {
       stateValue.nameCompany.trim() === "" ||
       stateValue.cuit.trim() === ""
     ) {
-      alert("valores vacios");
+      MySwal.fire({
+        title: "Error Login",
+        text: "Se deben Completar Todos los Datos",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(255, 140, 0)",
+      });
     } else {
-    
       try {
-
         dispatch(
-            addCompany({
-              nameCompany: stateValue.nameCompany,
-              address: stateValue.address,
-              cuit: stateValue.cuit,
-              province:"Salta",
-              country:"Argentina",
-              emailUser:loginUser.email
-            })
-          );
+          addCompany({
+            nameCompany: stateValue.nameCompany,
+            address: stateValue.address,
+            cuit: stateValue.cuit,
+            province: "Salta",
+            country: "Argentina",
+            emailUser: loginUser.email,
+          })
+        );
         MySwal.fire({
           title: "¡Empresa Creada!",
           icon: "success",
@@ -84,84 +72,94 @@ const FormAddCompany = () => {
           confirmButtonColor: "rgb(21, 151, 67)",
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate("/dashboard");
+            navigate("/");
             //alert("add company")
           }
         });
       } catch (error) {
         console.error(error.code, error.message);
-    
       }
     }
   };
 
-//   const RedirectLink = () => {
-//     window.location.href = "/login";
-//   };
+  //   const RedirectLink = () => {
+  //     window.location.href = "/login";
+  //   };
   return (
-    <MDBContainer className="my-5 gradient-form">
-      <MDBRow>
- 
-        <MDBCol col="6" className="mb-5">
-          <div className="d-flex flex-column ms-2">
-            <div className="text-center">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                style={{ width: "185px" }}
-                alt="logo"
-              />
-              <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
-            </div>
+    <div className="login-wrap">
+      <div className="login-html">
+        <div className="text-center">
+          <img src={logoNew} style={{ width: "185px" }} alt="logo" />
+          <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
+        </div>
 
-            <p className="text-center">ADHERIR UNA EMPRESA</p>
+        <p className="text-center">ADHERIR UNA EMPRESA</p>
 
-            <MDBInput
-              className="small"
-              wrapperClass="mb-2"
-              label="Nombre de Empresa"
-              id="form1"
-              type="text"
-              name="nameCompany"
-              value={stateValue.nameCompany}
-              onChange={handleChange}
-            />
+        <label className="form-label">Nombre de la Empresa *</label>
 
-            <MDBInput
-              className="small"
-              wrapperClass="mb-2"
-              label="Domicilio"
-              id="form1"
-              type="text"
-              name="address"
-              value={stateValue.address}
-              onChange={handleChange}
-            />
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          id="form1"
+          type="text"
+          name="nameCompany"
+          value={stateValue.nameCompany}
+          onChange={handleChange}
+          maxLength="25"
+        />
 
-            <MDBInput
-              className="small"
-              wrapperClass="mb-2"
-              label="Cuit"
-              id="form1"
-              type="Number"
-              name="cuit"
-              value={stateValue.cuit}
-              onChange={handleChange}
-            />
+        <label className="form-label">Domicilio *</label>
 
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          id="form1"
+          type="text"
+          name="address"
+          value={stateValue.address}
+          onChange={handleChange}
+          maxLength="30"
+        />
 
-            <div className="text-center pt-1 mb-5 pb-1">
-              <button
-                className="btn btn-primary"
-                type="submit"
-                onClick={handleSumbit}
-              >
-                Adherir Empresa
-              </button>
-            </div>
-          </div>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+        <label className="form-label">Cuit *</label>
+
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          id="form1"
+          type="Number"
+          name="cuit"
+          value={stateValue.cuit}
+          onChange={handleChange}
+          maxLength="8"
+        />
+
+        <div className="text-danger msgAlertInput">* Valores Obligatorios</div>
+        <div className="text-center pt-2 mb-5 pb-1">
+          {!stateValue.nameCompany || 
+          !stateValue.address ||
+          !stateValue.cuit
+          ? (
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={handleSumbit}
+              disabled
+            >
+              Adherir Empresa
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={handleSumbit}
+            >
+              Adherir Empresa
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

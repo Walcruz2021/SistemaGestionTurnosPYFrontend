@@ -1,31 +1,28 @@
-
-
 import React, { useState, useEffect } from "react";
 
 // import AgendaItem from "./AgendaItem";
 // import CardsItem from "./CardsItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  vtasAnioMesNow,
-  orderVentas,
-  vtasMesandAnioxParam,
-} from "../reducer/actions/actionsVentas";
-import "./ListVentas.css";
+  orderGastos,
+  gastosXanioandMesNow,
+  gastosXanioandMesParam,
+} from "../../reducer/actions/actionsGastos";
+import ModalBoostrap from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from "react-select";
-import Modal from "./Modal/Modal";
+import Modal from "../Modal/Modal";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import back from "../icons/back.png";
-import infMonth from "../icons/infMonth.png";
-// import { Button} from "../cssSyleComp/index";
-
+import back from "../../icons/back.png";
+import infMonth from "../../icons/infMonth.png";
+import ModalTypeGasto from "../Modal/ModalTypeGasto";
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 
 // import { Chart } from "primereact/chart";
 
-export default function TodoList() {
+export default function InformeGastos() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
   //devolucion decha actual
@@ -37,19 +34,25 @@ export default function TodoList() {
   //console.log(anio)
 
   const MySwal = withReactContent(Swal);
-  const ventas = useSelector((state) => state.vtasxAnioandMesNow);
+  const gastos = useSelector((state) => state.gastosXanioandMesNow);
+  //console.log(gastos, 'Listgastos')
 
+  const gastosFiltered = useSelector((state) => state.gastosXanioandMesParam);
 
-  const vtasFiltered = useSelector((state) => state.vtasxAnioandMesParam);
-
-  //console.log(vtaFilterDateNow,"vtas filtradas")
+  //console.log(gastosFiltered,"vtas filtradas")
   const dispatch = useDispatch();
 
-  const productsInv3 = useSelector((state) => state.allVentas);
-  // console.log(productsInv3, "listVentas");
+  const productsInv3 = useSelector((state) => state.allGastos);
+  // console.log(productsInv3, "listgastos");
   const [newTurno, setNewTurno] = useState(false);
-  const [newClient, setNewClient] = useState(false);
-  const [newVentas, setNewVentas] = useState(false);
+  const [stateDetailsGasto, setStateDetailsGasto] = useState({
+    transferencia: "",
+    tarjeta: "",
+    efectivo: "",
+    description: "",
+  });
+
+  const [stateInfo, setInfo] = useState(false);
   const [editClient, setEditClient] = useState(false);
   const [inputState, setInputState] = useState({
     id: "",
@@ -63,13 +66,13 @@ export default function TodoList() {
 
   useEffect(() => {
     if (companySelectedMenu) {
-      dispatch(vtasAnioMesNow(companySelectedMenu._id));
+      dispatch(gastosXanioandMesNow(companySelectedMenu._id));
     }
   }, [dispatch, companySelectedMenu]);
 
-  function SearchVentas() {
+  function Searchgastos() {
     const date = "" + seletedAño + seletedMeses;
-    dispatch(vtasMesandAnioxParam(companySelectedMenu._id, date));
+    dispatch(gastosXanioandMesParam(companySelectedMenu._id, date));
   }
 
   //**************SELECTOR MESES**************************/
@@ -134,11 +137,11 @@ export default function TodoList() {
   //******************************************** */
   const [order, setOrder] = useState(false);
 
-  const listadoVentas = ventas;
+  const listadoGastos = gastos;
 
   function handleOrder(e) {
     setOrder(!order);
-    dispatch(orderVentas(order));
+    dispatch(orderGastos(order));
   }
 
   let labels = [];
@@ -146,9 +149,9 @@ export default function TodoList() {
 
   if (productsInv3) {
     labels = productsInv3.map((e) => e.name);
-    //console.log(labels, "listVentas1");
+    //console.log(labels, "listgastos1");
     data3 = productsInv3.map((e) => e.valorServ);
-    //console.log(data3, "listVentas2");
+    //console.log(data3, "listgastos2");
   }
 
   const data = {
@@ -183,14 +186,40 @@ export default function TodoList() {
     return info;
   }
 
+  function handleInfo(e, description, efectivo, tarjeta, transferencia) {
+    setStateDetailsGasto({
+      efectivo: efectivo,
+      tarjeta: tarjeta,
+      transferencia: transferencia,
+      description: description,
+    });
+    setInfo(!stateInfo);
+  }
+
   return (
     <div>
+      {stateInfo ? (
+        <>
+          <ModalBoostrap show={stateInfo} centered>
+            <ModalBoostrap.Body>
+              <ModalTypeGasto
+                state={stateInfo}
+                setStateModal={setInfo}
+                descripcion={stateDetailsGasto.description}
+                efectivo={stateDetailsGasto.efectivo}
+                tarjeta={stateDetailsGasto.tarjeta}
+                transferencia={stateDetailsGasto.transferencia}
+              />
+            </ModalBoostrap.Body>
+          </ModalBoostrap>
+        </>
+      ) : null}
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-6 col-md-4 mb-3 justify-content-center">
             <div className="text-center">
               <div className="card-body">
-                <Link to="/InformeAnualVtas">
+                <Link to="/InformeAnualGtos">
                   <button className="btn btn-link">
                     <img src={infMonth} />
                   </button>
@@ -201,7 +230,7 @@ export default function TodoList() {
           <div className="col-6 col-md-4 mb-3 justify-content-center">
             <div className="text-center">
               <div className="card-body mt-1">
-                <Link to="/">
+                <Link to="/gastos">
                   <button className="btn btn-link">
                     <img src={back} />
                   </button>
@@ -214,10 +243,10 @@ export default function TodoList() {
       <br />
       {/* <AgendaInputs></AgendaInputs> */}
       <div className="titGral">
-        <h2>Ventas del Mes Actual</h2>
+        <h2>Gastos del Mes Actual</h2>
       </div>
-      
-      {Array.isArray(ventas) ? (
+
+      {Array.isArray(gastos) ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -234,26 +263,52 @@ export default function TodoList() {
                     style={{ cursor: "pointer" }}
                   />
                 </th>
-                <th>ValueService</th>
-                <th>Efectivo</th>
+                <th>Categoria Gasto</th>
+                <th>Tipo de Gasto</th>
+                <th>Valor de Gasto</th>
+                {/* <th>Efectivo</th>
                 <th>Banco</th>
-                <th>Tarjeta</th>
-                <th>NameClient</th>
+                <th>Tarjeta</th> */}
               </tr>
             </thead>
             <tbody>
-              {ventas.map((vta) => (
-                <tr key={vta._id}>
-                  <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>$ {vta.valorServ}</td> : <td>$ 0</td>}
-                  {vta.efectivo ? <td>$ {vta.efectivo}</td> : <td>$ 0</td>}
-                  {vta.transferencia ? (
-                    <td>$ {vta.transferencia}</td>
+              {gastos.map((gtos) => (
+                <tr key={gtos._id}>
+                  <td>{convertDateFormat(gtos.date)}</td>
+                  {gtos.categoryGasto ? (
+                    <td> {gtos.categoryGasto}</td>
+                  ) : (
+                    <td>" "</td>
+                  )}
+                  {gtos.typeGasto ? <td> {gtos.typeGasto}</td> : <td>" "</td>}
+                  {gtos.value ? (
+                    <td
+                      onClick={
+                        (e) =>
+                          handleInfo(
+                            e,
+                            gtos.description,
+                            gtos.efectivo,
+                            gtos.tarjeta,
+                            gtos.transferencia
+                          )
+                        // console.log(turn.notesTurn,"-->notes")
+                      }
+                      style={{ cursor: "pointer" }}
+                      title="Ver Detalles"
+                    >
+                      $ {gtos.value}
+                    </td>
                   ) : (
                     <td>$ 0</td>
                   )}
-                  {vta.tarjeta ? <td>$ {vta.tarjeta}</td> : <td>$ 0</td>}
-                  <td>{vta.name}</td>
+                  {/* {gtos.efectivo ? <td>$ {gtos.efectivo}</td> : <td>$ 0</td>}
+                  {gtos.transferencia ? (
+                    <td>$ {gtos.transferencia}</td>
+                  ) : (
+                    <td>$ 0</td>
+                  )}
+                  {gtos.tarjeta ? <td>$ {gtos.tarjeta}</td> : <td>$ 0</td>} */}
                 </tr>
               ))}
             </tbody>
@@ -285,16 +340,16 @@ export default function TodoList() {
       <div className="container-lg P-2">
         <button
           className="container-lg P-2 buttonBusc"
-          onClick={() => SearchVentas()}
+          onClick={() => Searchgastos()}
         >
           Buscar Listado
         </button>
       </div>
 
-      {vtasFiltered && vtasFiltered.vtas? (
+      {gastosFiltered && gastosFiltered.gtos? (
         <div className="container-lg table-responsive">
           <div className="titGral">
-            <h2>Ventas del Mes Seleccionado</h2>
+            <h2>Gastos del Mes Seleccionado</h2>
           </div>
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-dark">
@@ -309,26 +364,39 @@ export default function TodoList() {
                     style={{ cursor: "pointer" }}
                   />
                 </th>
-                <th>ValueService</th>
-                <th>Efectivo</th>
-                <th>Banco</th>
-                <th>Tarjeta</th>
-                <th>NameClient</th>
+                <th>Categoria Gasto</th>
+                <th>Tipo de Gasto</th>
+                <th>Valor de Gasto</th>
               </tr>
             </thead>
             <tbody>
-            {vtasFiltered.vtas.map((vta) => (
-                <tr key={vta._id}>
-                  <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>$ {vta.valorServ}</td> : <td>$ 0</td>}
-                  {vta.efectivo ? <td>$ {vta.efectivo}</td> : <td>$ 0</td>}
-                  {vta.transferencia ? (
-                    <td>$ {vta.transferencia}</td>
+              {gastosFiltered.gtos.map((gtos) => (
+                <tr key={gtos._id}>
+                  <td>{convertDateFormat(gtos.date)}</td>
+                  {gtos.categoryGasto ? (
+                    <td> {gtos.categoryGasto}</td>
                   ) : (
-                    <td>$ 0</td>
+                    <td>" "</td>
                   )}
-                  {vta.tarjeta ? <td>$ {vta.tarjeta}</td> : <td>$ 0</td>}
-                  <td>{vta.name}</td>
+                  
+                  {gtos.typeGasto ? <td> {gtos.typeGasto}</td> : <td>" "</td>}
+                  
+                  {gtos.value ? (
+                  <td
+                   onClick={
+                    (e) =>
+                      handleInfo(
+                        e,
+                        gtos.description,
+                        gtos.efectivo,
+                        gtos.tarjeta,
+                        gtos.transferencia
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                      title="Ver Detalles"
+                  >$ {gtos.value}</td>) :( <td>$ 0</td>)}
+                  
                 </tr>
               ))}
             </tbody>
@@ -336,10 +404,9 @@ export default function TodoList() {
         </div>
       ) : (
         <div className="container-lg P-2">
-          <h5 className="alertSearch">No se encontraron ventas</h5>
+          <h5 className="alertSearch">No se encontraron gastos</h5>
         </div>
       )}
     </div>
   );
 }
-

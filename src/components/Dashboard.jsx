@@ -20,7 +20,7 @@ import {
   deleteTurno,
   getClients,
   getTurnos,
-} from "../reducer/actions";
+} from "../reducer/actions/actions";
 import Swal from "sweetalert2";
 import Modal from "./Modal/Modal";
 import FormNewTurno from "./Formulario/FormNewTurno";

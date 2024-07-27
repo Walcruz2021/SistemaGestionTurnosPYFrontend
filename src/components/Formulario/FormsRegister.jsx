@@ -1,71 +1,72 @@
-import React from "react";
-import { useDispatch,useSelector } from "react-redux";
-import { Formik, Field, ErrorMessage, Form } from "formik";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../api/configFirebase";
 import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
   signInWithPopup,
+  GoogleAuthProvider,
   onAuthStateChanged,
   updateProfile,
-  getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  sendPasswordResetEmail,
 } from "@firebase/auth";
-//import ButtonBarBoostrap from "../components/ButtonBar/ButtonBarBoostrap";
-import { useEffect, useState } from "react";
-//import { initializeApp } from "@firebase/app";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Link } from "react-router-dom";
-//import ModalRestPassword from "../modals/ModalRestPassword";
-import { addUser } from "../../reducer/actions";
+import { addUser } from "../../reducer/actions/actions";
 import "../../css/cssGeneral.css";
 import "./FormsLoginAndRegister.css";
 import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
   MDBInput,
 } from "mdb-react-ui-kit";
-import gmail from "../../icons/gmailLogin.png"
+import { FaGoogle } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import logoNew from "../../IMAGENES/LogoNew.png"
+import { FaUser } from "react-icons/fa";
 
 function FormRegister({ autUser }) {
+  const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
-  //const history = useHistory();
   const dispatch = useDispatch();
   const [stateValue, setStateValue] = useState({
     email: "",
     password: "",
     firstName: "",
     lastName: "",
+    passwordDuplicated: "",
   });
 
-  console.log(stateValue);
-  //logIn with email of gmail
-  const loginUser = useSelector((state) => state.user);
+  const [emailState, setEmailState] = useState("");
+  const [validationEmail, setValidationEmail] = useState(false);
+  const [validationPassw, setValidationPassw] = useState(false);
+  const [validationName, setValidationName] = useState(true);
+  const [validationLastName, setValidationLastName] = useState(false);
+  const [isInputFocusedName, setIsInputFocusedName] = useState(false);
+  const [isInputFocusedLastName, setIsInputFocusedLastName] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const loginGoogle = async () => {
+    if (isPopupOpen) return;
+    setIsPopupOpen(true);
     const provider = new GoogleAuthProvider();
-    const credentials = await signInWithPopup(auth, provider);
-    const emailUserNew = credentials.user.email;
-    const fullNameUserNew = credentials.user.displayName;
-    const newUserService = {
-      fullName: fullNameUserNew,
-      status: true,
-      email: emailUserNew,
-    };
-    dispatch(addUser(newUserService));
     try {
+      const credentials = await signInWithPopup(auth, provider);
+      const emailUserNew = credentials.user.email;
+      const fullNameUserNew = credentials.user.displayName;
+      const newUserService = {
+        fullName: fullNameUserNew,
+        status: true,
+        email: emailUserNew,
+      };
+      dispatch(addUser(newUserService));
       onAuthStateChanged(auth, async (user) => {
-        console.log(user);
-        window.location.href = "/dashboard"
+        if (user) {
+          navigate("/");
+        }
       });
     } catch (error) {
-      console.log(error.message, error.code);
+      console.error("Authentication error:", error);
+    } finally {
+      setIsPopupOpen(false);
     }
   };
 
@@ -77,47 +78,52 @@ function FormRegister({ autUser }) {
     }));
   };
 
+  const resetForm = () => {
+    setStateValue({
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      passwordDuplicated: "",
+    });
+    setEmailState("");
+    setValidationEmail(false);
+    setValidationPassw(false);
+    setValidationName(true);
+    setValidationLastName(false);
+    setIsInputFocusedName(false);
+    setIsInputFocusedLastName(false);
+  };
+
   const handleSumbit = async (e) => {
     if (
-      stateValue.email.trim() === "" ||
       stateValue.password.trim() === "" ||
+      stateValue.passwordDuplicated.trim() === "" ||
       stateValue.firstName.trim() === "" ||
       stateValue.lastName.trim() === ""
     ) {
-      alert("valores vacios");
+      MySwal.fire({
+        title: "Error Datos",
+        text: "Faltan Datos Por Completar",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(255, 140, 0)",
+      });
     } else {
-      // dispatch(
-      //   addClient({
-      //     name: stateValue.name,
-      //     address: stateValue.address,
-      //     notesClie: stateValue.notesCli,
-      //     phone: stateValue.phone,
-      //     status:true
-      //   })
-      // );
-
       try {
-        await createUserWithEmailAndPassword(
-          auth,
-          stateValue.email,
-          stateValue.password
-        ).then(async (userCred) => {
-          const user = userCred.user;
-          await sendEmailVerification(user);
-          await updateProfile(user, {
-            displayName: `${stateValue.firstName} ${stateValue.lastName}`,
+        await createUserWithEmailAndPassword(auth, emailState, stateValue.password)
+          .then(async (userCred) => {
+            const user = userCred.user;
+            await sendEmailVerification(user);
+            await updateProfile(user, {
+              displayName: `${stateValue.firstName} ${stateValue.lastName}`,
+            });
           });
-        });
 
         const newUser = {
           fullName: `${stateValue.firstName} ${stateValue.lastName}`,
-          //phone:values.phone,
-          // phone2:values.phone2,
-          //country: "Argentina",
-          //cityName: "Salta",
-          //address: values.address,
           status: true,
-          email: stateValue.email,
+          email: emailState,
         };
         dispatch(addUser(newUser));
         MySwal.fire({
@@ -127,20 +133,19 @@ function FormRegister({ autUser }) {
           confirmButtonColor: "rgb(21, 151, 67)",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "/login";
+            //resetForm(); // Reiniciar el formulario aquí
+            navigate("/login");
           }
         });
       } catch (error) {
         console.error(error.code, error.message);
         if (error.code === "auth/weak-password") {
-          //alertToastify();
           alert("password has few characters");
         } else if (error.code === "auth/email-already-in-use") {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "El Email ya se encuentra Registrado",
-            // footer: '<a href="#">Why do I have this issue?</a>'
           });
         }
       }
@@ -148,117 +153,203 @@ function FormRegister({ autUser }) {
   };
 
   const RedirectLink = () => {
-    window.location.href = "/login";
+    //alert("se activo esto")
+    navigate("/login");
   };
-  
-  
+
+  const handleChangeEmail = (event) => {
+    const newEmail = event.target.value;
+    setEmailState(newEmail);
+
+    if (newEmail) {
+      const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      setValidationEmail(emailPattern.test(newEmail));
+    }
+  };
+
+  const handleChangeName = (event) => {
+    const newData = event.target.value;
+    setStateValue((prevState) => ({
+      ...prevState,
+      firstName: newData,
+    }));
+    setValidationName(newData.length > 4);
+  };
+
+  const handleChangeLastName = (event) => {
+    const newData = event.target.value;
+    setStateValue((prevState) => ({
+      ...prevState,
+      lastName: newData,
+    }));
+    setValidationLastName(newData.length > 4);
+  };
+
+  const handleChangePassword = (event) => {
+    const newPassword = event.target.value;
+    setStateValue((prevState) => ({
+      ...prevState,
+      password: newPassword,
+    }));
+    validatePasswords(newPassword, stateValue.passwordDuplicated);
+  };
+
+  const handleChangePasswordDuplicated = (event) => {
+    const newPasswordDuplicated = event.target.value;
+    setStateValue((prevState) => ({
+      ...prevState,
+      passwordDuplicated: newPasswordDuplicated,
+    }));
+    validatePasswords(stateValue.password, newPasswordDuplicated);
+  };
+
+  const validatePasswords = (password1, password2) => {
+    setValidationPassw(password1 === password2);
+  };
+
+  const handleFocusName = () => {
+    setIsInputFocusedName(true);
+  };
+
+  const handleFocusLastName = () => {
+    setIsInputFocusedLastName(true);
+  };
 
   return (
-    <>
-      {loginUser ? (
-        (window.location.href = "/dashboard")
-      ) : (
-        <MDBContainer className="my-5 gradient-form">
-          <MDBRow>
-            <MDBCol col="6" className="mb-5 bg-primary">
-              <div className="d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4">
-                <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                  <h4 class="mb-4">We are more than just a company</h4>
-                  <p class="small mb-0">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </p>
-                </div>
-              </div>
-            </MDBCol>
-            <MDBCol col="6" className="mb-5">
-              <div className="d-flex flex-column ms-2">
-                <div className="text-center">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                    style={{ width: "185px" }}
-                    alt="logo"
-                  />
-                  <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
-                </div>
+    <div className="login-wrap-reg">
+      <div className="login-html">
+        <div className="text-center">
+          <img src={logoNew} style={{ width: "185px" }} alt="logo" />
+          <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
+        </div>
 
-                <p className="text-center">REGISTRO AL SISTEMA</p>
+        <p className="text-center">REGISTRO AL SISTEMA</p>
 
-                <MDBInput
-                  className="small"
-                  wrapperClass="mb-2"
-                  label="Nombre"
-                  id="form1"
-                  type="text"
-                  name="firstName"
-                  value={stateValue.firstName}
-                  onChange={handleChange}
-                />
+        <label className="form-label">Nombre *</label>
 
-                <MDBInput
-                  className="small"
-                  wrapperClass="mb-2"
-                  label="Apellido"
-                  id="form1"
-                  type="text"
-                  name="lastName"
-                  value={stateValue.lastName}
-                  onChange={handleChange}
-                />
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          type="text"
+          name="firstName"
+          maxLength="30"
+          onFocus={handleFocusName}
+          onChange={handleChangeName}
+        />
+        {!validationName && isInputFocusedName && (
+          <div className="text-danger msgAlertInput">Mayor a 4 letras</div>
+        )}
 
-                <MDBInput
-                  className="small"
-                  wrapperClass="mb-2"
-                  label="Correo Electrónico"
-                  id="form1"
-                  type="email"
-                  name="email"
-                  value={stateValue.email}
-                  onChange={handleChange}
-                />
+        <label className="form-label">Apellido *</label>
 
-                <MDBInput
-                  wrapperClass="mb-2"
-                  label="Password"
-                  id="form2"
-                  type="password"
-                  name="password"
-                  value={stateValue.password}
-                  onChange={handleChange}
-                />
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          type="text"
+          name="lastName"
+          maxLength="30"
+          onChange={handleChangeLastName}
+          onFocus={handleFocusLastName}
+        />
+        {!validationLastName && isInputFocusedLastName && (
+          <div className="text-danger msgAlertInput">Mayor a 4 letras</div>
+        )}
 
-                <div className="text-center pt-1 mb-5 pb-1">
-                  <button
-                    className="btn btn-outline-dark px-2"
-                    type="submit"
-                    onClick={handleSumbit}
-                  >
-                    Registrarse
-                  </button>
+       
+        {/* <label className="form-label pt-2">
+          <FaUser /> CORREO ELECTRONICO *
+        </label> */}
 
-                  <button className="btn btn-link px-2 m-0" onClick={loginGoogle}>
-                    <img src={gmail}/>
-                  </button>
-                </div>
+        <MDBInput
+          className="small"
+          wrapperClass="mb-2"
+          type="email"
+          name="email"
+          maxLength="50"
+          onChange={handleChangeEmail}
+        />
+        {!validationEmail && (
+          <div className="text-danger msgAlertInput">Debe ingresar Email</div>
+        )}
 
-                <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
-                  <p className="mb-0 px-2">Ya tiene una cuenta?</p>
-                  <button
-                    outline
-                    className="btn btn-outline-secondary"
-                    onClick={RedirectLink}
-                  >
-                    Inicio de Sesión
-                  </button>
-                </div>
-              </div>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      )}
-    </>
+        <label className="form-label pt-2">
+          <RiLockPasswordFill /> PASSWORD *
+        </label>
+
+        <MDBInput
+          wrapperClass="mb-2"
+          type="password"
+          name="password"
+          maxLength="30"
+          value={stateValue.password}
+          onChange={handleChangePassword}
+        />
+
+        <label className="form-label pt-2">
+          <RiLockPasswordFill /> REINGRESE PASSWORD *
+        </label>
+
+        <MDBInput
+          wrapperClass="mb-2"
+          type="password"
+          name="passwordDuplicated"
+          maxLength="30"
+          onChange={handleChangePasswordDuplicated}
+        />
+        {!validationPassw && (
+          <div className="text-danger msgAlertInput">
+            Las Contraseñas deben ser iguales
+          </div>
+        )}
+
+        <div>
+          {!stateValue.firstName.trim("") ||
+          !stateValue.lastName.trim("") ||
+          !validationLastName ||
+          !validationEmail ||
+          !validationPassw ||
+          !validationName ? (
+            <button
+              className="btn btn-outline-dark form-button mt-1"
+              type="submit"
+              onClick={handleSumbit}
+              disabled
+            >
+              Registrarse
+            </button>
+          ) : (
+            <button
+              className="btn btn-outline-dark form-button"
+              type="submit"
+              onClick={handleSumbit}
+            >
+              Registrarse
+            </button>
+          )}
+        </div>
+         {/* this code is commented because it does not work correctly*/}
+        {/* <div className="pt-2">
+          <button
+            className="btn btn-outline-dark form-button"
+            onClick={loginGoogle}
+          >
+            <FaGoogle />
+          </button>
+        </div> */}
+
+        <div className="d-flex flex-row align-items-center justify-content-center pb-2 mb-1 pt-2">
+          <p className="mb-0 px-2">Ya tiene una cuenta?</p>
+          <button
+            outline
+            className="btn btn-outline-secondary"
+            onClick={RedirectLink}
+          >
+            Inicio de Sesión
+          </button>
+        </div>
+        <div className="text-danger msgAlertInput">(*) Campos Obligatorios</div>
+      </div>
+    </div>
   );
 }
 

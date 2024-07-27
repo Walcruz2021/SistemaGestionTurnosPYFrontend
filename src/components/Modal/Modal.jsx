@@ -34,12 +34,11 @@ import {
   addClient,
   getTurnos,
   getClients,
-  asignedVentas,
   get_clients_id,
   addDog,
   updateDog,
-} from "../../reducer/actions";
-
+} from "../../reducer/actions/actions";
+import {asignedVentas} from "../../reducer/actions/actionsVentas"
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";

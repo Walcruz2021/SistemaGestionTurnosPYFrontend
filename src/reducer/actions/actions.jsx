@@ -1,6 +1,6 @@
 import axios from "axios";
-import host from "../components/ruteBack/vbledeploy";
-import { auth } from "../hooks/configFirebase";
+import host from "../../components/ruteBack/vbledeploy";
+import { auth } from "../../api/configFirebase";
 export const ADD_TODO = "ADD_TODO";
 export const ORDER_CONTACTS = "ORDER_CONTACTS";
 export const GET_TURNOS = "GET_TURNOS";
@@ -12,16 +12,11 @@ export const UPDATE_CLIENT = "UPDATE_CLIENT";
 export const UPDATE_TURNO = "UPDATE_TURNO";
 export const GET_CLIENTXNAME = "GET_CLIENTXNAME";
 export const ORDER_TURNOS = "ORDER_TURNOS";
-export const ORDER_VENTAS = "ORDER_VENTAS";
 export const ASIGNED_VENTAS = "ASIGNED_VENTAS";
-export const GET_VENTAS = "GET_VENTAS";
-export const GET_VENTAS_ID = "GET_VENTAS_ID";
 export const GET_CLIENTS_ID = "GET_CLIENTS_ID";
 export const ADD_DOG = "ADD_DOG";
 export const SEARCH_VTA_CLIENT = "SEARCH_VTA_CLIENT";
-export const VTA_X_ANIO = "VTA_X_ANIO";
-export const VTAS_ANIO_MES_NOW = "VTAS_ANIO_MES_NOW";
-export const VTAS_MES_ANIO_PARAMS = "VTAS_MES_ANIO_PARAMS";
+
 export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG = "UPDATE_DOG";
 export const POST_BREAK = "POST_BREAK";
@@ -29,17 +24,22 @@ export const ADD_USER = "ADD_USER";
 export const ADD_COMPANY = "ADD_COMPANY";
 export const GET_USER = "GET_USER";
 export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
-export const FUNCTION_COMPANY_SELECTED="FUNCTION_COMPANY_SELECTED"
+export const FUNCTION_COMPANY_SELECTED = "FUNCTION_COMPANY_SELECTED";
 export const SEARCH_USER = "SEARCH_USER";
 
-console.log(host.development, "action------------>");
+
+export const RESET_COMPANY_SELECTED = "RESET_COMPANY_SELECTED";
+export const RESET_ALL_CLIENTS = "RESET_ALL_CLIENTS";
+
 
 export const setUser = (user) => ({
   type: GET_USER,
   payload: user,
 });
 
+
 export const listenToAuthChanges = () => (dispatch) => {
+ 
   auth.onAuthStateChanged((userCred) => {
     if (userCred) {
       const { email, emailVerified, displayName } = userCred;
@@ -66,8 +66,17 @@ export function addTurnos(payload) {
   };
 }
 
+export const resetCompanySelected = () => ({
+
+  type: RESET_COMPANY_SELECTED,
+});
+
+export const resetAllClients = () => ({
+  
+  type: RESET_ALL_CLIENTS,
+});
+
 export function searchUser(email) {
-  console.log(email, "ACTION");
   return async function (dispatch) {
     try {
       const response = await axios.get(
@@ -131,7 +140,7 @@ export function addUser(payload) {
 }
 
 export function addCompany(payload) {
-  console.log(payload,"actions")
+  console.log(payload, "actions");
   return async function (dispatch) {
     try {
       const newCompany = await axios.post(
@@ -154,12 +163,6 @@ export function orderTurnos(payload) {
   };
 }
 
-export function orderVentas(payload) {
-  return {
-    type: ORDER_VENTAS,
-    payload,
-  };
-}
 
 //funciona
 export function addClient(payload) {
@@ -205,7 +208,7 @@ export function getTurnos(idCompany) {
 
 //funciona bien
 export function getClients(idCompany) {
-  console.log(idCompany,"action")
+
   return async function (dispatch) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
@@ -228,22 +231,24 @@ export function getClients(idCompany) {
   };
 }
 
-export function getVentas(payload) {
-  return async function (dispatch) {
-    const listVentas = await axios.get(
-      //"http://localhost:3002/api/listVentas",
-      `${host.development}/api/listVentas`,
-      {}
-    );
-    return dispatch({
-      type: GET_VENTAS,
-      payload: listVentas.data.ventas,
-    });
-  };
-}
 
+/**
+ * 
+ * @param {*} email 
+ * @returns companies:{[
+    {
+        "_id": "66872b3a0945d93a4c124c05",
+        "nameCompany": "Empresa Prueba 1a",
+        "cuit": "21312321"
+    },
+    {
+        "_id": "66872b500945d93a4c124c11",
+        "nameCompany": "Empresa Prueba 1b",
+        "cuit": "34234532432"
+    }
+]}
+ */
 export function verificationCompaniesExist(email) {
-  console.log(email);
   return async function (dispatch) {
     const arrayCompanies = await axios.get(
       `${host.development}/api/validationCompanyExist/${email}`
@@ -256,73 +261,8 @@ export function verificationCompaniesExist(email) {
   };
 }
 
-export function get_ventas_id(id_vta) {
-  return async function (dispatch) {
-    try {
-      // const detail=await axios.get("/api/listVentas/"+id_vta)
-      const detail = await axios.get(
-        //`http://localhost:3002/api/listVentas/${id_vta}`
-        `${host.development}/api/listVentas/${id_vta}`
-      );
-      // console.log(detail,"resultado request en actions")
-      return dispatch({
-        type: GET_VENTAS_ID,
-        payload: detail.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
 
-//funciona bien
-export function vtasAnioMesNow() {
-  return async function (dispatch) {
-    const vtas = await axios.get(
-      //"http://localhost:3002/api/vtasxAnioandMesNow",
-      `${host.development}/api/vtasxAnioandMesNow`,
-      {}
-    );
-    return dispatch({
-      type: VTAS_ANIO_MES_NOW,
-      payload: vtas.data.vtas,
-    });
-  };
-}
 
-//funciona bien
-export function vtasMesandAnioxParam(dateFormat) {
-  //console.log(dateFormat) 20225
-  return async function (dispatch) {
-    const vtas = await axios.get(
-      //`http://localhost:3002/api/vtasxAnioandMesParam/${dateFormat}`
-      `${host.development}/api/vtasxAnioandMesParam/${dateFormat}`
-    );
-    return dispatch({
-      type: VTAS_MES_ANIO_PARAMS,
-      payload: vtas,
-    });
-  };
-}
-
-//no funciona
-export function vtasxA(anio) {
-  return async function (dispatch) {
-    try {
-      const detail = await axios.get(
-        //`http://localhost:3002/api/ventasxAnio/${anio}`
-        `${host.development}/api/ventasxAnio/${anio}`
-      );
-      // console.log(detail,"resultado request en actions")
-      return dispatch({
-        type: VTA_X_ANIO,
-        payload: detail.data.ventas,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
 
 //funciona bien
 export function searchHistorialDog(payload) {
@@ -402,44 +342,7 @@ export function deleteTurno(turnoId) {
   };
 }
 
-//no esta eliminando el turno al ingresar la venta
-export function asignedVentas(payload, id_client) {
 
-  console.log(payload, "actions");
-  // date: "2022-05-30"
-  // mes:04
-  // año:2022
-  // idTurno: "6282929c4ef1e8473854f09b" (idTurno)
-  // name: "omar cruz"
-  // nameDog: "ramonsito"
-  // notesTurn: "es grande y viejo"
-  // tipoServ: "caminito"
-  // valorServ: "231"
-  // ----> id_client
-  return async function (dispatch) {
-    try {
-      const newVentas = await axios.post(
-        // "http://localhost:3002/api/addVentas",
-        //`http://localhost:3002/api/addVentas/${id_client}`,
-        `${host.development}/api/addVentas/${id_client}`,
-        payload
-      );
-      await axios
-        .delete(
-          //`http://localhost:3002/api/deleteTurno/${payload.idTurno}`
-          `${host.development}/api/deleteTurno/${payload.idTurno}`
-        )
-        .then((data) => {
-          return dispatch({
-            type: DELETE_TURNO,
-          });
-        });
-      return newVentas;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
 
 //funciona bien
 export function updateClient(payload, idElement) {
@@ -507,9 +410,9 @@ export function getNameClients(payload) {
 }
 
 export function functionCompanySelected(payload) {
-  console.log(payload,"actions")
+
   return {
-    type:FUNCTION_COMPANY_SELECTED,
-    payload
+    type: FUNCTION_COMPANY_SELECTED,
+    payload,
   };
 }

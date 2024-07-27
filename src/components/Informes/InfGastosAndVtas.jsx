@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
   BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import gastos from "../icons/gastos.png";
-import ventas from "../icons/ventas.png";
-import { Link } from "react-router-dom";
-import {gtosXanio,vtasxA} from "../reducer/actions"
-import filterSumaValues from "../functions/filterSumaValues"
+import gastos from "../../icons/gastos.png";
+import ventas from "../../icons/ventas.png";
+import VtasGast from "../../icons/VtasGast.png";
+import { gtosXanio} from "../../reducer/actions/actionsGastos";
+import {vtasxA } from "../../reducer/actions/actionsVentas";
+
+import filterSumaValues from "../../functions/filterSumaValues";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
   BarElement,
   Title,
   Tooltip,
@@ -28,50 +34,60 @@ ChartJS.register(
 const InfGastosAndVtas = () => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listGtosAnio = useSelector((state) => state.gtosxAnio);
-  const listVtasAnio = useSelector((state)=>state.vtasxAnio)
+  const listVtasAnio = useSelector((state) => state.vtasxAnio);
+
+
   const [stateGtosValue, setStateGtosValue] = useState([]);
+ 
   const [stateVtasValue, setStateVtasValue] = useState([]);
+
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let now = new Date();
-    let anio = now.getFullYear();
-    dispatch(gtosXanio(companySelectedMenu._id, anio));
-  }, [companySelectedMenu._id]);
-  
+    if(companySelectedMenu){
+      let now = new Date();
+      let anio = now.getFullYear();
+      dispatch(gtosXanio(companySelectedMenu._id, anio));
+    }
+  }, [companySelectedMenu, dispatch]);
+
   useEffect(() => {
     if (listGtosAnio) {
-      const arrayData=filterSumaValues(listGtosAnio)
+      const arrayData = filterSumaValues(listGtosAnio);
       setStateGtosValue(sumaValueFilteredXmes(arrayData));
+    }else{
+      setStateGtosValue([])
     }
   }, [listGtosAnio]);
-  
+
   useEffect(() => {
-    let now = new Date();
-    let anio = now.getFullYear();
-    dispatch(vtasxA(companySelectedMenu._id, anio));
-  }, [companySelectedMenu._id]);
-  
+    if(companySelectedMenu){
+      let now = new Date();
+      let anio = now.getFullYear();
+      dispatch(vtasxA(companySelectedMenu._id, anio));
+    }
+  }, [companySelectedMenu, dispatch]);
+
   useEffect(() => {
+    var arrayData=[]
     if (listVtasAnio) {
-      const arrayData=filterSumaValues(listVtasAnio)
+      arrayData = filterSumaValues(listVtasAnio);
       setStateVtasValue(sumaValueFilteredXmes(arrayData));
+    }else{
+      setStateVtasValue([])
     }
   }, [listVtasAnio]);
-  /**
-   * 
-   * @param {*} arrayData array with values filtered y adds (totals) of transfer, tarjeta, and efectivo 
-   * @returns array with sumaMes's values(sumaMes is property object arrayData) [12522,1545,21,etc]
-   */
+
   const sumaValueFilteredXmes = (arrayData) => {
-    
     const arraySumaValue = [];
     if (Array.isArray(arrayData)) {
-      arrayData.map((data) => {
+      arrayData.forEach((data) => {
         arraySumaValue.push(data.sumaMes);
       });
       return arraySumaValue;
     }
+    return arraySumaValue;
   };
 
   const dataG = {
@@ -122,6 +138,37 @@ const InfGastosAndVtas = () => {
     ],
   };
 
+  const dataVyG = {
+    labels: [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+    datasets: [
+      {
+        label: "Gastos",
+        data: stateGtosValue,
+        backgroundColor: "rgba(255, 0, 0, 0.6)",
+        borderColor: "rgba(255, 0, 0, 0.6)",
+      },
+      {
+        label: "Ventas",
+        data: stateVtasValue,
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 0.6)",
+      },
+    ],
+  };
+
   const options = {
     responsive: true,
     plugins: {
@@ -134,17 +181,27 @@ const InfGastosAndVtas = () => {
       },
     },
   };
-  const [activeGastos, setActiveGastos] = useState(true);
-  const [activeVentas, setActiveVentas] = useState(false);
+
+  const [activeVentas, setActiveVentas] = useState(true);
+  const [activeGastos, setActiveGastos] = useState(false);
+  const [activeVtasGtos, setActiveVtasGtos] = useState(false);
 
   const changeVisibleV = () => {
-    setActiveVentas(!activeVentas);
-    setActiveGastos(!activeGastos);
+    setActiveVentas(true);
+    setActiveGastos(false);
+    setActiveVtasGtos(false);
   };
 
   const changeVisibleG = () => {
-    setActiveVentas(!activeVentas);
-    setActiveGastos(!activeGastos);
+    setActiveVentas(false);
+    setActiveGastos(true);
+    setActiveVtasGtos(false);
+  };
+
+  const changeVisibleVyG = () => {
+    setActiveVentas(false);
+    setActiveGastos(false);
+    setActiveVtasGtos(true);
   };
 
   return (
@@ -154,7 +211,7 @@ const InfGastosAndVtas = () => {
           <div className="text-center">
             <div className="card-body">
               <button className="btn btn-link" onClick={changeVisibleV}>
-                <img src={ventas} />
+                <img src={ventas} alt="Ventas" />
               </button>
             </div>
           </div>
@@ -164,16 +221,29 @@ const InfGastosAndVtas = () => {
           <div className="text-center">
             <div className="card-body">
               <button className="btn btn-link" onClick={changeVisibleG}>
-                <img src={gastos} />
+                <img src={gastos} alt="Gastos" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+          <div className="text-center">
+            <div className="card-body">
+              <button className="btn btn-link" onClick={changeVisibleVyG}>
+                <img src={VtasGast} alt="Ventas y Gastos" />
               </button>
             </div>
           </div>
         </div>
       </div>
+
       {activeGastos ? (
+        <Bar data={dataG} options={options} />
+      ) : activeVentas ? (
         <Bar data={dataV} options={options} />
       ) : (
-        <Bar data={dataG} options={options} />
+        <Line data={dataVyG} options={options} />
       )}
     </div>
   );

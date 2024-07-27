@@ -9,32 +9,29 @@ import {
   companySelected,
   getClients,
   getTurnos,
-} from "../reducer/actions";
+} from "../reducer/actions/actions";
 import "./AgendaTurnos.css";
 import linkBack from "./ruteBack/vbledeploy";
 
-function AgendaTurnos({ stateCompanyGralNav }) {
+function AgendaTurnos() {
   // debugger
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [db, setDb] = useState(null);
-  console.log(db);
+
   const [listClients, setlistClients] = useState(null);
   const [error, setError] = useState(null);
   const loginUser = useSelector((state) => state.user);
   const companies = useSelector((state) => state.arrayCompanies.data);
   const [companyFirst, setCompanyFirst] = useState({});
   const companySelectedMenu = useSelector((state) => state.companySelected);
+  const listAllClients=useSelector((state)=>state.allClients)
+
 
   const changeClients = () => {
-    dispatch(getClients(companySelectedMenu._id));
+    dispatch(getClients(companySelectedMenu._id)); 
   };
 
-  useEffect(() => {
-    if(companySelectedMenu){
-      changeClients()
-    }
-  }, [companySelectedMenu,changeClients]);
 
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));

@@ -6,7 +6,7 @@ import {
   deleteClient,
   updateClient,
   deleteDog,
-} from "../reducer/actions";
+} from "../reducer/actions/actions";
 import Swal from "sweetalert2";
 import ModalEditDog from "./Modal/ModalEditDog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

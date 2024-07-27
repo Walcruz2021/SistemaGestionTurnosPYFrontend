@@ -3,14 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { sendPasswordResetEmail } from "@firebase/auth";
-import { auth } from "../../hooks/configFirebase";
+import { auth } from "../../api/configFirebase";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUser } from "../../reducer/actions";
+import { searchUser } from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-
-function ModalRestPassword({show,setShow}) {
+function ModalRestPassword({ show, setShow }) {
   const dispatch = useDispatch();
   const userSearch = useSelector((state) => state.userEmailSearch);
   //console.log(userSearch);
@@ -22,15 +21,16 @@ function ModalRestPassword({show,setShow}) {
   const handleShow = () => setShow(true);
   const [modalUser, setModalUser] = useState(false);
   const [email, setEmail] = useState();
-  console.log(email);
+
   const [alertTemp, setAlertTemp] = useState(false);
   const [validationEmail, setValidationEmail] = useState(false);
   const MySwal = withReactContent(Swal);
+  const userEmailSearch = useSelector((state) => state.userEmailSearch);
 
   const handleChange = (event) => {
     const newEmail = event.target.value;
     setEmail(newEmail);
-  
+
     if (newEmail) {
       // Updated regular expression to be case-insensitive and allow for longer TLDs
       const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -42,67 +42,57 @@ function ModalRestPassword({show,setShow}) {
     }
   };
 
-  const sendEmail = async () => {
-  
-    //dispatch(searchUser(email));
-    //setEmail("");
-
-    await sendPasswordResetEmail(auth, email)
-      .then(function () {
-        dispatch(searchUser(email))
-      })
-      .catch(function (error) {
-        // Se produjo un error
-        console.error("Error al enviar el email de restablecimiento:", error);
-      });
+  const sendEmail = () => {
+    dispatch(searchUser(email));
+    functionAlertUser();
     setShow(false);
-    setAlertTemp(true);
   };
 
-  if (alertTemp === true) {
-    let timerInterval;
-    Swal.fire({
-      title: "Revisando el Email!",
-      html: "La ventana se cerrará en <b></b> milliseconds.",
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading();
-        const timer = Swal.getPopup().querySelector("b");
-        timerInterval = setInterval(() => {
-          timer.textContent = `${Swal.getTimerLeft()}`;
-        }, 100);
-      },
-      willClose: () => {
-        setAlertTemp(false);
-        clearInterval(timerInterval);
-      },
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        functionAlertUser();
-      }
-    });
-  }
-
-  const functionAlertUser = () => {
+  const functionAlertUser = async () => {
     setModalUser(true);
-  };
+    if (modalUser) {
+      if (userSearch) {
+        if (userSearch.status === 200) {
+          
+          let timerInterval;
+          Swal.fire({
+            title: "Revisando el Email!",
+            html: "La ventana se cerrará en <b></b> milliseconds.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 100);
+            },
+            willClose: () => {
+              setAlertTemp(false);
+              clearInterval(timerInterval);
+            },
+          }).then(async(result)=> {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              await sendPasswordResetEmail(auth, email)
+              Swal.fire("Se envio Email de Reestablecimiento");
+              setModalUser(false);
+            }
+          });
 
-  if (modalUser) {
-    if (userSearch) {
-      if (userSearch.status === 200) {
-        Swal.fire("Se envio Email de Reestablecimiento");
-        setModalUser(false);
-      } else {
-        Swal.fire("Email No Registrado");
-        setModalUser(false);
+          //*console.log("se ingresa a buscar")
+        } else {
+          Swal.fire("Email No Registrado");
+          alert("no se envia mail");
+          setModalUser(false);
+        }
       }
     }
-  }
+  };
+
   return (
     <>
-      <Button variant onClick={handleShow} className="buttonModal">
+      <Button variant onClick={handleShow} className="buttonModal anton-regular">
         ¿Olvidaste la Contraseña?
       </Button>
 

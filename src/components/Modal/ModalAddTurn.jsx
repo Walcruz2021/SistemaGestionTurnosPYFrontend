@@ -5,17 +5,22 @@ import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {getTurnos,addTurnos } from "../../reducer/actions";
+import { getTurnos, addTurnos } from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
-
-const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAddTurn, turn }) => {
-  const companySelectedMenu=useSelector((state)=>state.companySelected) 
+const ModalAddTurn = ({
+  onTurnoAdded,
+  stateAddTurn,
+  setStateAddTurn,
+  turn,
+}) => {
+  const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
+  const listClientsAll = useSelector((state) => state.allClients);
 
   const handleClose = () => setStateAddTurn(!stateAddTurn);
   const [stateInput, setStateInput] = useState({
@@ -59,17 +64,13 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
       };
     });
     setOptionsListSelect(options);
-  }; 
+  };
 
   useEffect(() => {
-    if (
-      listClientsCompany &&
-      typeof listClientsCompany === "object" &&
-      "clientes" in listClientsCompany
-    ) {
-      updateOptionsList(listClientsCompany.clientes);
+    if (listClientsAll) {
+      updateOptionsList(listClientsAll);
     }
-  }, [listClientsCompany]);
+  }, [listClientsAll]);
 
   function handleChangeDog(selected) {
     setStateInput({
@@ -78,7 +79,6 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
       idDog: selected.value,
     });
   }
-
 
   function handleChangeCli(selected) {
     setStateInput({
@@ -110,7 +110,6 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
       stateInput.name.trim() === "" ||
       stateInput.nameDog.trim() === "" ||
       stateInput.date.trim() === "" ||
-      stateInput.notesTurn.trim() === "" ||
       stateInput.time.trim() === ""
     ) {
       Swal.fire({
@@ -119,11 +118,11 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
         text: "Faltan Datos por Completar",
       });
     } else if (stateInput.date < getTodayDate()) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Fecha Incorrecta",
-          });
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Fecha Incorrecta",
+      });
     } else {
       dispatch(
         addTurnos({
@@ -146,10 +145,10 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
       }).then((result) => {
         if (result.isConfirmed) {
           dispatch(getTurnos(companySelectedMenu._id));
-          setStateAddTurn(!stateAddTurn)
+          setStateAddTurn(!stateAddTurn);
           onTurnoAdded();
           // Update optionsListSelect after adding a turn
-          updateOptionsList(listClientsCompany.clientes);
+          //updateOptionsList(listClientsCompany.clientes);
           setStateInput({
             name: "",
             nameDog: "",
@@ -183,7 +182,7 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
-            <Select
+              <Select
                 className="classSelect"
                 placeholder="Seleccione Client"
                 onChange={(selected) => {
@@ -230,8 +229,7 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
                   max="22:00"
                 />
               </Form.Group>
-              
-              
+
               <Form.Group
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
@@ -244,7 +242,7 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
                   // placeholder="Pepe Argento"
                   name="notesTurn"
                   autoFocus
-                  maxLength={30}
+                  maxLength={150}
                   value={stateInput.notesTurn}
                   onChange={handleChange}
                   required
@@ -253,16 +251,26 @@ const ModalAddTurn = ({ listClientsCompany,onTurnoAdded,stateAddTurn, setStateAd
                   Puedes ingresar hasta 15 caracteres.
                 </Form.Text> */}
               </Form.Group>
-
             </Form>
           </Modal.Body>
           <Modal.Footer className="mt-0 pt-1 pb-1">
-            {/* <Button variant="primary" type="submit" onClick={handleClose}>
-                          Save Changes
-                        </Button> */}
-            <Button variant="primary" type="submit" onClick={handleSubmit}>
-              Agregar Turno
-            </Button>
+            {!stateInput.date ||
+            !stateInput.time ||
+            !stateInput.nameDog ||
+            !stateInput.idClient ? (
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={handleSubmit}
+                disabled
+              >
+                Agregar Turno
+              </Button>
+            ) : (
+              <Button variant="primary" type="submit" onClick={handleSubmit}>
+                Agregar Turno
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>
