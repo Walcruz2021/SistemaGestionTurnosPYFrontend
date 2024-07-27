@@ -88,7 +88,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Adherir un Cliente</Modal.Title>
+            <Modal.Title>Adherir Cliente</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>

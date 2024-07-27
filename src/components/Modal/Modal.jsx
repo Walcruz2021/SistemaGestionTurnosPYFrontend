@@ -24,7 +24,7 @@ import {
   TitleAndButton,
   ButtonModal,
 } from "../../cssSyleComp/ModalStyles";
-import axios from "../../api/axios";
+//import axios from "../../api/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import {

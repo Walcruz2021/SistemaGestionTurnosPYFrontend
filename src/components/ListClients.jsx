@@ -13,7 +13,7 @@ import ModalAddClient from "./Modal/ModalAddClient";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import axios from "../api/axios";
+//import axios from "../api/axios";
 import "../css/cssGeneral.css";
 import back from "../../src/icons/back.png";
 import addClient from "../../src/icons/addClient.png";
