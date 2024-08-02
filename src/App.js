@@ -223,7 +223,7 @@ const AppRoutes = () => {
       <Route path="/listCompanies" element={<ListCompanies />}></Route>
       <Route path="/InformeGastos" element={<InformeGastos />}></Route>
       <Route path="/informes" element={<InfGastosAndVtas />}></Route>
-      <Route path="*" element={<div>404 Not Found</div>} />
+      <Route path="*" element={<div>*404 Not Found</div>} />
     </Routes>
   );
 
