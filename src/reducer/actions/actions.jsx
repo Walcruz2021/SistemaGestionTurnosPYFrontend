@@ -251,7 +251,7 @@ export function getClients(idCompany) {
 export function verificationCompaniesExist(email) {
   return async function (dispatch) {
     const arrayCompanies = await axios.get(
-      `${host.development}/api/validationCompanyExist/${email}`
+      `${host.development}/api/validationCompanyExist/${email}`,{withCredentials: true}
     );
 
     return dispatch({

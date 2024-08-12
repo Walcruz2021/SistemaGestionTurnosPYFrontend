@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3002';
+const BASE_URL = 'https://backend-app-peluqueria-lk7q7jcw4-walcruz198821s-projects.vercel.app';
 //const BASE_URL ='https://peluqueriapichichu.onrender.com'
 export const axiosInstance=axios.create({
     baseURL: BASE_URL
