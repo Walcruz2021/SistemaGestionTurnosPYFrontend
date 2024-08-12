@@ -29,13 +29,13 @@ export function asignedVentas(payload, id_client) {
       const newVentas = await axios.post(
         // "http://localhost:3002/api/addVentas",
         //`http://localhost:3002/api/addVentas/${id_client}`,
-        `${host.development}/api/addVentas/${id_client}`,
+        `${host}/api/addVentas/${id_client}`,
         payload
       );
       await axios
         .delete(
           //`http://localhost:3002/api/deleteTurno/${payload.idTurno}`
-          `${host.development}/api/deleteTurno/${payload.idTurno}`
+          `${host}/api/deleteTurno/${payload.idTurno}`
         )
         .then((data) => {
           return dispatch({
@@ -54,7 +54,7 @@ export function vtasxA(idCompany, anio) {
     try {
       const detail = await axios.get(
         //`http://localhost:3002/api/ventasxAnio/${anio}`
-        `${host.development}/api/ventasxAnio/${idCompany}`,
+        `${host}/api/ventasxAnio/${idCompany}`,
         {
           params: {
             anio: anio,
@@ -75,7 +75,7 @@ export function vtasxA(idCompany, anio) {
 export function vtasMesandAnioxParam(idCompany, date) {
   return async function (dispatch) {
     const vtas = await axios.get(
-      `${host.development}/api/vtasxAnioandMesParam/${idCompany}`,
+      `${host}/api/vtasxAnioandMesParam/${idCompany}`,
       {
         params: {
           date: date,
@@ -95,7 +95,7 @@ export function vtasAnioMesNow(idCompany) {
   return async function (dispatch) {
     const vtas = await axios.get(
       //"http://localhost:3002/api/vtasxAnioandMesNow",
-      `${host.development}/api/vtasxAnioandMesNow/${idCompany}`,
+      `${host}/api/vtasxAnioandMesNow/${idCompany}`,
       {}
     );
     return dispatch({
@@ -111,7 +111,7 @@ export function get_ventas_id(id_vta) {
       // const detail=await axios.get("/api/listVentas/"+id_vta)
       const detail = await axios.get(
         //`http://localhost:3002/api/listVentas/${id_vta}`
-        `${host.development}/api/listVentas/${id_vta}`
+        `${host}/api/listVentas/${id_vta}`
       );
       // console.log(detail,"resultado request en actions")
       return dispatch({
@@ -128,7 +128,7 @@ export function getVentas(payload) {
   return async function (dispatch) {
     const listVentas = await axios.get(
       //"http://localhost:3002/api/listVentas",
-      `${host.development}/api/listVentas`,
+      `${host}/api/listVentas`,
       {}
     );
     return dispatch({

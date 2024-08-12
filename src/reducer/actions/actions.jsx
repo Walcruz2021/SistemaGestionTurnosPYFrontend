@@ -56,7 +56,7 @@ export function addTurnos(payload) {
     try {
       const newTurno = await axios.post(
         //"http://localhost:3002/api/turno",
-        `${host.development}/api/turno`,
+        `${host}/api/turno`,
         payload
       );
       return newTurno;
@@ -80,7 +80,7 @@ export function searchUser(email) {
   return async function (dispatch) {
     try {
       const response = await axios.get(
-        `${host.development}/api/searchUser/${email}`
+        `${host}/api/searchUser/${email}`
       );
       dispatch({
         payload: response,
@@ -97,7 +97,7 @@ export function addBreak(payload) {
   return async function (dispatch) {
     try {
       const newBreak = await axios.post(
-        `${host.development}/api/addBreak`,
+        `${host}/api/addBreak`,
         payload
       );
       return newBreak;
@@ -115,7 +115,7 @@ export function addDog(payload, idClient) {
     try {
       const newDog = await axios.post(
         //`http://localhost:3002/api/addPerro/${idClient}`,
-        `${host.development}/api/addPerro/${idClient}`,
+        `${host}/api/addPerro/${idClient}`,
         payload
       );
       return newDog;
@@ -130,7 +130,7 @@ export function addUser(payload) {
     try {
       const newUser = await axios.post(
         //`http://localhost:3002/api/addPerro/${idClient}`,
-        `${host.development}/api/addUser`,
+        `${host}/api/addUser`,
         payload
       );
     } catch (error) {
@@ -145,7 +145,7 @@ export function addCompany(payload) {
     try {
       const newCompany = await axios.post(
         //`http://localhost:3002/api/addPerro/${idClient}`,
-        `${host.development}/api/addCompany`,
+        `${host}/api/addCompany`,
         payload
       );
       return newCompany;
@@ -171,7 +171,7 @@ export function addClient(payload) {
     try {
       const newClient = await axios.post(
         //"http://localhost:3002/api/client",
-        `${host.development}/api/client`,
+        `${host}/api/client`,
         payload
       );
       return newClient;
@@ -192,7 +192,7 @@ export function orderContacts(payload) {
 export function getTurnos(idCompany) {
   return async function (dispatch) {
     const listTurnos = await axios.get(
-      `${host.development}/api/getTurnos/${idCompany}`,
+      `${host}/api/getTurnos/${idCompany}`,
       //"http://localhost:3002/api/getTurnos",
       //"https://peluqueriapichichu.onrender.com/api/getTurnos",
       {}
@@ -213,7 +213,7 @@ export function getClients(idCompany) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
       //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
-      `${host.development}/api/listClientsCompany/${idCompany}`,
+      `${host}/api/listClientsCompany/${idCompany}`,
       {}
     );
     return dispatch({
@@ -251,7 +251,7 @@ export function getClients(idCompany) {
 export function verificationCompaniesExist(email) {
   return async function (dispatch) {
     const arrayCompanies = await axios.get(
-      `${host.development}/api/validationCompanyExist/${email}`,{withCredentials: true}
+      `${host}/api/validationCompanyExist/${email}`
     );
 
     return dispatch({
@@ -271,7 +271,7 @@ export function searchHistorialDog(payload) {
   return async function (dispatch) {
     const vtaxClient = await axios.get(
       //`http://localhost:3002/api/ventaCli/${payload}`
-      `${host.development}/api/ventaCli/${payload}`
+      `${host}/api/ventaCli/${payload}`
     );
     console.log(vtaxClient, "resultado");
     return dispatch({
@@ -287,7 +287,7 @@ export function get_clients_id(id_cli) {
     try {
       // const detail=await axios.get("/api/listVentas/"+id_vta)
       const cliBusc = await axios.get(
-        `http://localhost:3002/api/listClients/${id_cli}`
+        `${host}/api/listClients/${id_cli}`
       );
       // console.log(detail,"resultado request en actions")
       return dispatch({
@@ -306,7 +306,7 @@ export function deleteClient(clientId) {
   return async function (dispatch) {
     await axios.delete(
       //`http://localhost:3002/api/deleteClient/${clientId}`
-      `${host.development}/api/deleteClient/${clientId}`
+      `${host}/api/deleteClient/${clientId}`
     );
     return dispatch({
       type: DELETE_CLIENT,
@@ -319,7 +319,7 @@ export function deleteDog(idDog) {
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/deleteDog/${idDog}`
-      `${host.development}/api/deleteDog/${idDog}`
+      `${host}/api/deleteDog/${idDog}`
     );
     return dispatch({
       type: DELETE_DOG,
@@ -334,7 +334,7 @@ export function deleteTurno(turnoId) {
   return async function (dispatch) {
     await axios.delete(
       //`http://localhost:3002/api/deleteTurno/${turnoId}`
-      `${host.development}/api/deleteTurno/${turnoId}`
+      `${host}/api/deleteTurno/${turnoId}`
     );
     return dispatch({
       type: DELETE_TURNO,
@@ -351,7 +351,7 @@ export function updateClient(payload, idElement) {
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editClient/${idElement}`,
-      `${host.development}/api/editClient/${idElement}`,
+      `${host}/api/editClient/${idElement}`,
       payload
     );
     // await axios.get("http://localhost:3002/api/listClients").then((data) => {
@@ -372,7 +372,7 @@ export function updateTurno(payload, idElement) {
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editTurno/${idElement}`,
-      `${host.development}/api/editTurno/${idElement}`,
+      `${host}/api/editTurno/${idElement}`,
       payload
     );
     // await axios.get("http://localhost:3002/api/listClients").then((data) => {
@@ -393,7 +393,7 @@ export function updateDog(payload, idDog) {
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editDog/${idDog}`, payload
-      `${host.development}/api/editDog/${idDog}`,
+      `${host}/api/editDog/${idDog}`,
       payload
     );
     return dispatch({

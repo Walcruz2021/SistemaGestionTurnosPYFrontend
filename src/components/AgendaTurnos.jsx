@@ -44,7 +44,7 @@ function AgendaTurnos() {
           setLoading(true);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
           const listClientsResponse = await axios.get(
-            `${linkBack.development}/api/listClientsCompany/${companySelectedMenu._id}`
+            `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
           );
           setlistClients(listClientsResponse.data);
           setDb(turnosResponse.data); // Asegúrate de que turnosResponse.data contenga la información correcta

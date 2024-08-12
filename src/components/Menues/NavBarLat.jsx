@@ -13,10 +13,10 @@ import { auth } from "../../api/configFirebase";
 import {
   functionCompanySelected,
   resetCompanySelected,
-  resetAllClients 
+  resetAllClients,
 } from "../../reducer/actions/actions";
-import {resetGastosXanioandMesParam} from "../../reducer/actions/actionsGastos"
-import {resetVentasXanioandMesParam} from "../../reducer/actions/actionsVentas"
+import { resetGastosXanioandMesParam } from "../../reducer/actions/actionsGastos";
+import { resetVentasXanioandMesParam } from "../../reducer/actions/actionsVentas";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -24,13 +24,11 @@ import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 function NavBarLat({ listCompaniesAll }) {
-  
   const userLogin = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const CompanyMenuReducer = useSelector((state) => state.companySelected);
-
 
   const [stateCompanySelected, setCompanySelectedMenu] = useState();
 
@@ -43,9 +41,9 @@ function NavBarLat({ listCompaniesAll }) {
   const onCloseSesion = async () => {
     try {
       dispatch(resetCompanySelected());
-      dispatch(resetAllClients())
-      dispatch(resetGastosXanioandMesParam())
-      dispatch(resetVentasXanioandMesParam())
+      dispatch(resetAllClients());
+      dispatch(resetGastosXanioandMesParam());
+      dispatch(resetVentasXanioandMesParam());
       await signOut(auth);
       navigate("/login");
     } catch (error) {
@@ -56,10 +54,10 @@ function NavBarLat({ listCompaniesAll }) {
   const changeCompany = (company) => {
     setCompanySelectedMenu(company);
     dispatch(functionCompanySelected(company));
-    dispatch(resetAllClients())
-    dispatch(resetGastosXanioandMesParam())
-    dispatch(resetVentasXanioandMesParam())
-    navigate("/")
+    dispatch(resetAllClients());
+    dispatch(resetGastosXanioandMesParam());
+    dispatch(resetVentasXanioandMesParam());
+    navigate("/");
   };
 
   const [stateStatus, setStatus] = useState(false);
@@ -83,8 +81,7 @@ function NavBarLat({ listCompaniesAll }) {
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="end"
             >
-              {CompanyMenuReducer &&
-              "nameCompany" in CompanyMenuReducer ? (
+              {CompanyMenuReducer && "nameCompany" in CompanyMenuReducer ? (
                 <Offcanvas.Header closeButton onClick={closeMenuLat}>
                   <Offcanvas.Title
                     as={Link}
@@ -96,8 +93,7 @@ function NavBarLat({ listCompaniesAll }) {
                 </Offcanvas.Header>
               ) : null}
 
-              {CompanyMenuReducer &&
-              "nameCompany" in CompanyMenuReducer ? (
+              {CompanyMenuReducer && "nameCompany" in CompanyMenuReducer ? (
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
                     <Nav.Link as={Link} to="./listVentas">
@@ -145,6 +141,9 @@ function NavBarLat({ listCompaniesAll }) {
                 </Offcanvas.Body>
               ) : (
                 <Offcanvas.Body>
+                  <Offcanvas.Header closeButton onClick={closeMenuLat}>
+                  </Offcanvas.Header>
+
                   <Nav className="justify-content-end flex-grow-1 pe-3">
                     <NavDropdown
                       title={userLogin.displayName || userLogin.email}

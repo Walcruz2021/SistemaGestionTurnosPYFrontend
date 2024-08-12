@@ -29,7 +29,7 @@ export const GTO_X_ANIO = "GTO_X_ANIO";
 
 export function addGastos(payload) {
   return async function (dispatch) {
-    await axios.post(`${host.development}/api/addGastos`, payload);
+    await axios.post(`${host}/api/addGastos`, payload);
     return dispatch({
       type: ADD_GASTOS,
     });
@@ -41,7 +41,7 @@ export function gtosXanio(idCompany, anio) {
     try {
       const detail = await axios.get(
         //`http://localhost:3002/api/ventasxAnio/${anio}`
-        `${host.development}/api/gtosXanio/${idCompany}`,
+        `${host}/api/gtosXanio/${idCompany}`,
         {
           params: {
             anio: anio,
@@ -73,7 +73,7 @@ export function gastosXanioandMesParam(idCompany, date) {
   console.log(idCompany);
   return async function (dispatch) {
     const gtos = await axios.get(
-      `${host.development}/api/gastosXanioandMesParam/${idCompany}`,
+      `${host}/api/gastosXanioandMesParam/${idCompany}`,
       {
         params: {
           date: date,
@@ -92,7 +92,7 @@ export function gastosXanioandMesNow(idCompany) {
   return async function (dispatch) {
     const gtos = await axios.get(
       //"http://localhost:3002/api/vtasxAnioandMesNow",
-      `${host.development}/api/gastosXanioandMesNow/${idCompany}`,
+      `${host}/api/gastosXanioandMesNow/${idCompany}`,
       {}
     );
     return dispatch({
