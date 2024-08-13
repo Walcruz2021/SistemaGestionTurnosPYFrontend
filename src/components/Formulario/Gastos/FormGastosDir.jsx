@@ -273,6 +273,7 @@ const FormGastosDir = () => {
           atribuirse directamente al proceso de producción.
         </p>
       </div> */}
+      
     </>
   );
 };

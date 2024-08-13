@@ -42,8 +42,8 @@ const Gastos = () => {
   };
 
   return (
-    <>
-      <div className="container py-1">
+    <div className="mb-2 py-2">
+      <div className="container py-1 pb-2">
         <div className="row justify-content-center">
           <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
             <div className="text-center">
@@ -110,7 +110,7 @@ const Gastos = () => {
       <FormGastosFij />
       <FormGastosDir />
       <FormGastosInd /> */}
-    </>
+    </div>
   );
 };
 

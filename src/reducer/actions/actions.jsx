@@ -140,7 +140,7 @@ export function addUser(payload) {
 }
 
 export function addCompany(payload) {
-  console.log(payload, "actions");
+  
   return async function (dispatch) {
     try {
       const newCompany = await axios.post(
