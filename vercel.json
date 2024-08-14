@@ -11,7 +11,6 @@
     "env": {
       "NODE_VERSION": "20.x"
     },
-    // this code is used to fix error 404:NOT FOUND when refresh screen in a page diferent file index 
     "rewrites": [
       {
         "source": "/(.*)",
