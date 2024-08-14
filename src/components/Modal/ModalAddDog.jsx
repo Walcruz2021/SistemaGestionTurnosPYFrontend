@@ -178,8 +178,8 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 />
               </Form.Group>
 
-              <Form.Group className="mt-2">
-                {/* <Form.Label>Seleccione Raza</Form.Label> */}
+              {/* <Form.Group className="mt-2">
+              
                 <Select
                   placeholder="Seleccione Raza"
                   onChange={(e) => {
@@ -187,7 +187,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                   }}
                   options={selectRazaArray}
                 />
-              </Form.Group>
+              </Form.Group> */}
 
               <Form.Group className="mt-2">
                 {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
