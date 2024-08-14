@@ -236,7 +236,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
         <Modal.Footer className="mt-2 pt-1 pb-1">
           {!stateValue.idClient ||
           !stateValue.nameDog ||
-          !stateValue.raza ||
+          // !stateValue.raza ||
           !stateValue.tamaño ? (
             <Button
               variant="primary"
