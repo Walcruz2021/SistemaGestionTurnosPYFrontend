@@ -205,7 +205,7 @@ const InfGastosAndVtas = () => {
   };
 
   return (
-    <div className="container py-3">
+    <div className="container-lg mb-4">
       <div className="row justify-content-center">
         <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
           <div className="text-center">
@@ -237,7 +237,7 @@ const InfGastosAndVtas = () => {
           </div>
         </div>
       </div>
-
+      <div className="container mb-4">
       {activeGastos ? (
         <Bar data={dataG} options={options} />
       ) : activeVentas ? (
@@ -245,6 +245,8 @@ const InfGastosAndVtas = () => {
       ) : (
         <Line data={dataVyG} options={options} />
       )}
+
+      </div>
     </div>
   );
 };

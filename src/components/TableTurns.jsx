@@ -157,110 +157,112 @@ const TableTurns = ({
 
   return (
     <>
-      <table className="table table-bordered table-hover table-white">
-        <thead className="thead-light table-secondary">
-          <tr>
-            <th>NameDog</th>
-            <th>
-              Date{" "}
-              <FontAwesomeIcon
-                onClick={(e) => handleOrder(e)}
-                color={order ? "#FF846A" : "#A2DFFF"}
-                icon={faSortAlphaDown}
-                size="lg"
-                style={{ cursor: "pointer" }}
-              />
-            </th>
-            <th>Time</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listTurnos
-            ? listTurnos.map((turn, index) => (
-                <tr key={turn._id}>
-                  <td
-                    onClick={
-                      (e) => handleInfo(e, turn)
-                      // console.log(turn.notesTurn,"-->notes")
-                    }
-                    style={{ cursor: "pointer" }}
-                    title="Informe Cliente"
-                  >
-                    {turn.nameDog}
-                  </td>
-                  <td>
-                    {convertDateFormat(turn.date)} - {convertDay(turn.date)}
-                  </td>
-                  <td>{turn.time}</td>
+      <div className="container-lg table-responsive mb-4">
+        <table className="table table-bordered table-hover table-white">
+          <thead className="thead-light table-secondary">
+            <tr>
+              <th>Nombre Mascota</th>
+              <th>
+                Fecha{" "}
+                <FontAwesomeIcon
+                  onClick={(e) => handleOrder(e)}
+                  color={order ? "#FF846A" : "#A2DFFF"}
+                  icon={faSortAlphaDown}
+                  size="lg"
+                  style={{ cursor: "pointer" }}
+                />
+              </th>
+              <th>Horario</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listTurnos
+              ? listTurnos.map((turn, index) => (
+                  <tr key={turn._id}>
+                    <td
+                      onClick={
+                        (e) => handleInfo(e, turn)
+                        // console.log(turn.notesTurn,"-->notes")
+                      }
+                      style={{ cursor: "pointer" }}
+                      title="Informe Cliente"
+                    >
+                      {turn.nameDog}
+                    </td>
+                    <td>
+                      {convertDateFormat(turn.date)} - {convertDay(turn.date)}
+                    </td>
+                    <td>{turn.time}</td>
 
-                  <td>
-                    <Options justify="space-between">
-                      <button
-                        className="btn"
-                        onClick={
-                          (e) => handleVentas(e)
-                          // console.log(turn.notesTurn,"----------> notyes 2")
-                        }
-                      >
-                        <FontAwesomeIcon icon={faHandHoldingUsd} size="lg" />
-                      </button>
+                    <td>
+                      <Options justify="space-between">
+                        <button
+                          className="btn"
+                          onClick={
+                            (e) => handleVentas(e)
+                            // console.log(turn.notesTurn,"----------> notyes 2")
+                          }
+                        >
+                          <FontAwesomeIcon icon={faHandHoldingUsd} size="lg" />
+                        </button>
 
-                      {/* handleEditTurn permite editar en especifico */}
-                      <button
-                        className="btn"
-                        onClick={(e) => handleEditTurn(e, turn)}
-                      >
-                        <FontAwesomeIcon icon={faPenSquare} size="lg" />
-                      </button>
+                        {/* handleEditTurn permite editar en especifico */}
+                        <button
+                          className="btn"
+                          onClick={(e) => handleEditTurn(e, turn)}
+                        >
+                          <FontAwesomeIcon icon={faPenSquare} size="lg" />
+                        </button>
 
-                      <button
-                        className="btn"
-                        onClick={(e) =>
-                          handleDelete(e, {
-                            idTurn: turn._id,
-                            index: index,
-                          })
-                        }
-                        width="2rem"
-                        height="2rem"
-                        buttonColor="rgba(255, 0, 0, 1)"
-                      >
-                        <FontAwesomeIcon icon={faTrash} size="lg" />
-                      </button>
-                    </Options>
-                  </td>
-                  <ModalAddVtas
-                    state={newVentas}
-                    setState={setNewVentas}
-                    date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-                    // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-                    // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-                    nameCli={turn.name}
-                    nameDog={turn.nameDog}
-                    idClient={turn.Client}
-                    notesTurn={turn.notesTurn}
-                    idDog={turn.idDog}
-                    idTurno={turn._id}
-                  />
-                  <ModalEditTurn
-                    stateEditTurn={stateEditTurn}
-                    setStateEditTurn={setStateEditTurn}
-                    // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-                    // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-                    // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-                    // nameCli={turn.name}
-                    // nameDog={turn.nameDog}
-                    // idClient={turn.Client}
-                    // idDog={turn.idDog}
-                    // idTurno={turn._id}
-                    turn={turn}
-                  />
-                </tr>
-              ))
-            : null}
-        </tbody>
-      </table>
+                        <button
+                          className="btn"
+                          onClick={(e) =>
+                            handleDelete(e, {
+                              idTurn: turn._id,
+                              index: index,
+                            })
+                          }
+                          width="2rem"
+                          height="2rem"
+                          buttonColor="rgba(255, 0, 0, 1)"
+                        >
+                          <FontAwesomeIcon icon={faTrash} size="lg" />
+                        </button>
+                      </Options>
+                    </td>
+                    <ModalAddVtas
+                      state={newVentas}
+                      setState={setNewVentas}
+                      date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
+                      // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
+                      // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
+                      nameCli={turn.name}
+                      nameDog={turn.nameDog}
+                      idClient={turn.Client}
+                      notesTurn={turn.notesTurn}
+                      idDog={turn.idDog}
+                      idTurno={turn._id}
+                    />
+                    <ModalEditTurn
+                      stateEditTurn={stateEditTurn}
+                      setStateEditTurn={setStateEditTurn}
+                      // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
+                      // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
+                      // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
+                      // nameCli={turn.name}
+                      // nameDog={turn.nameDog}
+                      // idClient={turn.Client}
+                      // idDog={turn.idDog}
+                      // idTurno={turn._id}
+                      turn={turn}
+                    />
+                  </tr>
+                ))
+              : null}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

@@ -144,7 +144,7 @@ const ModalEditDog = ({
               />
             </Form.Group>
 
-            <Form.Group className="mt-2">
+            {/* <Form.Group className="mt-2">
               <Form.Label>Seleccione Raza</Form.Label>
               <select
                 className="form-select"
@@ -175,7 +175,7 @@ const ModalEditDog = ({
                   <option value="caniche">caniche</option>
                 )}
               </select>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group className="mt-2">
               <Form.Label>Seleccione Tamaño</Form.Label>

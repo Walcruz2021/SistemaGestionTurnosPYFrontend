@@ -30,13 +30,15 @@ export default function HistorialClient({state,stateHist,setStateHist
 
   var arrayDog = [];
 
-  arrayDog = state.arrayDogs;
 
-  const [stateDog, setDog] = useState({
-    listDog: [],
-  });
+  const [stateDog, setDog] = useState(
+    state.arrayDogs,
+  );
 
-
+  useEffect(()=>{
+    console.log('El estado stateDog ha cambiado:', stateDog);
+  
+  },[stateDog])
 
   const [stateEditDog, setEditDog] = useState(false);
   const[inputStateDog,setStateDog]=useState({
@@ -91,13 +93,13 @@ export default function HistorialClient({state,stateHist,setStateHist
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteDog(idDog));
-        pruebaConsole(state.state.arrayDogs[index]);
-        setTimeout(() => {
-          arrayDog.splice(index, 1);
+      //  pruebaConsole(state.state.arrayDogs[index]);
+        const array=stateDog.splice(index, 1);
           setDog({
-            listDog: arrayDog,
+            array
           });
-        }, 300);
+        
+
         MySwal.fire({
           title: "Perro Eliminado",
           text: "El Perro fue eliminado",
@@ -184,14 +186,14 @@ export default function HistorialClient({state,stateHist,setStateHist
       </div>
 
       <div className="containerGralDog">
-        {arrayDog
-          ? arrayDog.map((dog, index) =>
+        {stateDog && stateDog.length
+          ? stateDog.map((dog, index) =>
               dog.status === true ? (
                 <div className="container-description">
                   <div>
                     <h5 className="titulo">{dog.nameDog}</h5>
                     <h5 className="descripcion">Nota: {dog.notaP}</h5>
-                    <h5 className="descripcion">Raza: {dog.raza}</h5>
+                    {/* <h5 className="descripcion">Raza: {dog.raza}</h5> */}
                     <h5 className="descripcion">Tamaño: {dog.tamaño}</h5>
 
                     <button className="buttonDleteDog"onClick={() => DogDelete(dog._id, index)}>

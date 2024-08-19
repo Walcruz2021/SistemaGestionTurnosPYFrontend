@@ -45,7 +45,12 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 
-function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,changeClients}) {
+function Dashboard({
+  listClientsCompany,
+  setlistClients,
+  idCompanySelected,
+  changeClients,
+}) {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
 
@@ -85,7 +90,6 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
     tarjeta: "",
     index: "",
   });
-
 
   const onTurnoAdded = () => {
     dispatch(getTurnos(companySelectedMenu._id));
@@ -191,7 +195,6 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
     // console.log("se hizo click");
   };
 
- 
   return (
     <>
       <div>
@@ -308,7 +311,7 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
 
           {/* SELECTOR DE MASCOTAS PARA EL HISTORIAL */}
           {!stateInfo && !newTurno && !newClient && !newDog ? (
-            <div className="container-lg pb-2">
+            <div className="container-lg pb-4">
               <Select
                 placeholder="Seleccione Mascota a Buscar"
                 options={Listdogs}
@@ -316,6 +319,9 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
               />
             </div>
           ) : null}
+          <div className="titGral">
+            <h1 className="mt-1">Historial de Mascota</h1>
+          </div>
         </>
       </div>
 
@@ -350,12 +356,12 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
                       <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
                     </div>
 
-                    <div className="grid-item">
+                    {/* <div className="grid-item">
                       <p>
                         <FontAwesomeIcon icon={faShieldDog} size="lg" />
                       </p>
                       <p>{vtaxClient.data.vta[0].Dog.raza}</p>
-                    </div>
+                    </div> */}
 
                     <div className="grid-item">
                       <p>
@@ -366,17 +372,18 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
                   </div>
                 </>
               ) : null}
+            
             </div>
 
-            <div className="container-lg table-responsive">
+            <div className="container-lg table-responsive mb-4">
               {/* <td>{selectedDog.selectedDog.label}</td> */}
 
               <table className="table table-bordered table-hover table-dark">
                 <thead class="thead-light table-secondary">
                   <tr>
-                    <th>Value Serv</th>
+                    <th>Valor Servicio</th>
                     <th>
-                      Date{" "}
+                      Fecha{" "}
                       <FontAwesomeIcon
                         onClick={(e) => handleOrderHistDog(e)}
                         color={order ? "#FF846A" : "#A2DFFF"}
@@ -385,8 +392,8 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
                         style={{ cursor: "pointer" }}
                       />
                     </th>
-                    <th>Note Turne</th>
-                    <th>Type Serv</th>
+                    <th>Nota Turno</th>
+                    <th>Tipo de Servicio</th>
                     {/* <th>Info</th> */}
                   </tr>
                 </thead>
@@ -410,7 +417,7 @@ function Dashboard({ listClientsCompany, setlistClients, idCompanySelected,chang
           </>
         ) : (
           <>
-            <div className="container-lg P-2">
+            <div className="container-lg p-2 mb-2">
               <h5 className="alertHist">No existe historial de Mascota</h5>
             </div>
           </>

@@ -270,6 +270,7 @@ function ListClients() {
                     cli.status === true ? (
                       <tr key={cli._id}>
                         <td
+                          style={{ cursor: "pointer" }}
                           onClick={(e) =>
                             handleInfo(e, {
                               _id: cli._id,
@@ -285,6 +286,7 @@ function ListClients() {
                             })
                           }
                         >
+                          
                           {cli.name}
                         </td>
                         <td>{cli.phone}</td>

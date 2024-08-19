@@ -106,7 +106,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
   const handleSumbit = (e) => {
     if (
       stateValue.nameDog.trim() === "" ||
-      !stateValue.raza ||
+      // !stateValue.raza ||
       !stateValue.tamaño ||
       !stateValue.idClient
     ) {
