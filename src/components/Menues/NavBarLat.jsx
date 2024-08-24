@@ -24,6 +24,7 @@ import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import "./NavBarLat.css";
 import "../../css/cssGeneral.css";
+import { BiSupport } from "react-icons/bi";
 
 function NavBarLat({ listCompaniesAll }) {
   const userLogin = useSelector((state) => state.user);
@@ -118,6 +119,11 @@ function NavBarLat({ listCompaniesAll }) {
                     <Nav.Link as={Link} to="./informes">
                       <FaChartLine className="mx-4" />
                       Informes
+                    </Nav.Link>
+
+                    <Nav.Link as={Link} to="./support">
+                      <BiSupport className="mx-4"/>
+                      Soporte
                     </Nav.Link>
 
                     <NavDropdown

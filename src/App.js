@@ -17,6 +17,7 @@ import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx";
 import Gastos from "./components/Gastos.jsx";
 import InformeGastos from "./components/Informes/InformeGastos.jsx";
 import InfGastosAndVtas from "./components/Informes/InfGastosAndVtas.jsx";
+import FormSoporteContact from "./components/Formulario/FormSoporteContact.jsx"
 
 import {
   functionCompanySelected,
@@ -86,6 +87,7 @@ const AppRoutes = () => {
       <Route path="/InformeGastos" element={<InformeGastos />}></Route>
       <Route path="/informes" element={<InfGastosAndVtas />}></Route>
       <Route path="*" element={<div>*404 Not Found</div>} />
+      <Route path="/support" element={<FormSoporteContact/>}></Route>
     </Routes>
   );
 

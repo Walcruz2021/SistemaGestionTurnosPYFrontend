@@ -84,7 +84,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nota Turno</Form.Label>
+                <Form.Label lassName="text-xs">Nota de Turno</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={3}
@@ -102,7 +102,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                 </Form.Text> */}
               </Form.Group>
               <Form.Group>
-                <Form.Label>Domicilio</Form.Label>
+                <Form.Label>Horario</Form.Label>
                 <Form.Control
                   type="time"
                   name="time"
@@ -118,7 +118,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Fecha Turno</Form.Label>
+                <Form.Label>Fecha</Form.Label>
                 <Form.Control
                   type="date"
                   name="date"
