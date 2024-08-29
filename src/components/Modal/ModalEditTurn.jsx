@@ -9,7 +9,8 @@ import {getTurnos, updateTurno} from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
+const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,setStateDataEdit }) => {
+console.log(stateDataEdit)
   const companySelectedMenu=useSelector((state)=>state.companySelected) 
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -21,19 +22,19 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
     notesTurn: "",
   });
 
-  useEffect(() => {
-    if (turn) {
-      setStateValue({
-        notesTurn: turn.notesTurn,
-        time: turn.time,
-        date: turn.date
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (stateDataEdit) {
+  //     setStateValue({
+  //       notesTurn: stateDataEdit.notesTurn,
+  //       time: stateDataEdit.time,
+  //       date: stateDataEdit.date
+  //     });
+  //   }
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setStateValue((prevState) => ({
+    setStateDataEdit((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -41,16 +42,15 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
 
   const handleSumbit = (e) => {
     if (
-      stateValue.time.trim() === "" ||
-      stateValue.date.trim() === "" ||
-      stateValue.notesTurn.trim() === ""
+      !stateDataEdit.time.trim() === "" ||
+      !stateDataEdit.date.trim() === "" 
     ) {
       alert("valores vacios");
     }
     dispatch(
       updateTurno(
-        stateValue,
-        turn._id,
+        stateDataEdit,
+        stateDataEdit._id,
       )
     );
     MySwal.fire({
@@ -60,7 +60,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
       confirmButtonColor: "rgb(21, 151, 67)",
     }).then((result) => {
       if (result.isConfirmed) {
-        setStateValue({
+        setStateDataEdit({
           time: "",
           date: "",
           notesTurn: "",
@@ -93,7 +93,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                   name="notesTurn"
                   autoFocus
                   maxLength={30}
-                  value={stateValue.notesTurn}
+                  value={stateDataEdit?stateDataEdit.notesTurn:null}
                   onChange={handleChange}
                   required
                 />
@@ -108,7 +108,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                   name="time"
                   autoFocus
                   maxLength={40}
-                  value={stateValue.time}
+                  value={stateDataEdit?stateDataEdit.time:null}
                   onChange={handleChange}
                   required
                 />
@@ -124,7 +124,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn }) => {
                   name="date"
                   autoFocus
                   maxLength={100}
-                  value={stateValue.date}
+                  value={stateDataEdit?stateDataEdit.date:null}
                   onChange={handleChange}
                   required
                 />

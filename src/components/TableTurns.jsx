@@ -29,6 +29,7 @@ const TableTurns = ({
   const listTurnos = useSelector((state) => state.allTurnos);
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
+const [stateDataEdit,setStateDataEdit]=useState()
 
   useEffect(() => {
     if (companySelectedMenu) {
@@ -84,8 +85,9 @@ const TableTurns = ({
     });
   }
 
-  function handleEditTurn() {
+  function handleEditTurn(e, turn) {
     setStateEditTurn(!stateEditTurn);
+    setStateDataEdit(turn)
   }
 
   function handleVentas(e, props) {
@@ -244,24 +246,26 @@ const TableTurns = ({
                       idDog={turn.idDog}
                       idTurno={turn._id}
                     />
-                    <ModalEditTurn
-                      stateEditTurn={stateEditTurn}
-                      setStateEditTurn={setStateEditTurn}
-                      // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-                      // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-                      // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-                      // nameCli={turn.name}
-                      // nameDog={turn.nameDog}
-                      // idClient={turn.Client}
-                      // idDog={turn.idDog}
-                      // idTurno={turn._id}
-                      turn={turn}
-                    />
                   </tr>
                 ))
               : null}
           </tbody>
         </table>
+        <ModalEditTurn
+        stateEditTurn={stateEditTurn}
+        setStateEditTurn={setStateEditTurn}
+        stateDataEdit={stateDataEdit}
+        setStateDataEdit={setStateDataEdit}
+        // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
+        // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
+        // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
+        //nameCli={turn.name}
+        // nameDog={turn.nameDog}
+        // idClient={turn.Client}
+        // idDog={turn.idDog}
+        // idTurno={turn._id}
+        //turn={turn}
+      />
       </div>
     </>
   );
