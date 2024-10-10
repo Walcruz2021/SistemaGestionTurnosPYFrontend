@@ -3,10 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getClients,
-  deleteClient,
-} from "../reducer/actions/actions";
+import { getClients, deleteClient } from "../reducer/actions/actions";
 import "./ListClients.css";
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";
@@ -16,19 +13,22 @@ import withReactContent from "sweetalert2-react-content";
 //import axios from "../api/axios";
 import "../css/cssGeneral.css";
 import back from "../../src/icons/back.png";
+import importMas from "../../src/icons/importMas.png";
 import addClient from "../../src/icons/addClient.png";
 import deleteClientIcon from "../../src/icons/deleteClient.png";
 import editClientIcon from "../../src/icons/editClient.png";
 import ModalEditClient from "./Modal/ModalEditClient";
+import ModalImportClients from "./Modal/ModalImportClients";
+import ImportMasivaInforme from "../components/ImportMasivaInforme"
 const REGISTER_URL = "/createUserRolUserClient";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
-/** 
+/**
  * This function searches for a client: Its used in filtered search ListClients
  * @param {String} busc Client's Name as state
  * @returns
-*/
+ */
 
 function searchCli(busc) {
   //console.log(busc)
@@ -47,7 +47,7 @@ function ListClients() {
   const [stateSearch, setSearch] = useState("");
 
   const dispatch = useDispatch();
-
+  const [stateVisibleModalImpCli, setVisibleModalImpCli] = useState(false);
   const [editClient, setEditClient] = useState(false);
   //stateInfo es el que se acciona cada vez que se selecciona un cliente
   const [stateInfo, setInfo] = useState(false);
@@ -65,7 +65,6 @@ function ListClients() {
     index: "",
     status: "",
   });
-
 
   useEffect(() => {
     dispatch(getClients(companySelectedMenu._id));
@@ -98,9 +97,9 @@ function ListClients() {
     });
   }
 
-/**
- * This function is executed every time a client is clicked
- */
+  /**
+   * This function is executed every time a client is clicked
+   */
   //esto se efectua cada vez que se aprieta un cliente
   function handleInfo(e, props) {
     e.preventDefault();
@@ -125,7 +124,6 @@ function ListClients() {
     });
   }
 
-
   function handleEdit(e) {
     if (e.name) {
       if (!editClient) {
@@ -145,7 +143,6 @@ function ListClients() {
   const [newClient, setNewClient] = useState(false);
 
   function handleDelete({ idClient, index }) {
-
     if (idClient) {
       MySwal.fire({
         title: "¿Estas seguro?",
@@ -160,7 +157,6 @@ function ListClients() {
         if (result.isConfirmed) {
           dispatch(deleteClient(idClient));
           clients.splice(index, 1);
-         
 
           //al eliminar el lciente se sambia el stateHist de manea de que no se visualize las mascotas pertenecientes al cliente eliminado
           //el cual previamente se habia seleccionado
@@ -200,7 +196,6 @@ function ListClients() {
       });
   }
 
-
   return (
     <div>
       <div className="titGral">
@@ -233,128 +228,148 @@ function ListClients() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="container-lg table-responsive">
-        <div className="containerSearch">
-          <input
-            className="inputBuscar"
-            type="text"
-            name="search"
-            placeholder="Busque un Cliente. Ingrese sólo valores en minúsculas"
-            value={stateSearch}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <ModalAddClient state={newClient} setState={setNewClient}  />
-      <br />
-      {clients ? (
-        // HOVER para que semarque con el cursor
-        // BODERED para que se marquen los bordes de las columnas
-        <div className="container-lg table-responsive">
-          <table className="table table-bordered table-hover table-white">
-            <thead class="thead-light table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {clients
-                ? clients.filter(searchCli(stateSearch)).map((cli, index) =>
-                    cli.status === true ? (
-                      <tr key={cli._id}>
-                        <td
-                          style={{ cursor: "pointer" }}
-                          onClick={(e) =>
-                            handleInfo(e, {
-                              _id: cli._id,
-                              notesCli: cli.notesCli,
-                              arrayDogs: cli.perros,
-                              name: cli.name,
-                              phone: cli.phone,
-                              address: cli.address,
-                              notesCli: cli.notesCli,
-                              arrayPedidos: cli.pedidos,
-                              index: index,
-                              status: cli.status,
-                            })
-                          }
-                        >
-                          
-                          {cli.name}
-                        </td>
-                        <td>{cli.phone}</td>
-                        <td>{cli.address}</td>
-                        <td>{cli.notesCli}</td>
-                      </tr>
-                    ) : null
-                  )
-                : null}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
-
-      {stateHist ? (
-        <div className="container-lg table-responsive">
-          <h5 className="tituloH">Historial del Cliente: {inputState.name}</h5>
-          <HistorialClient
-            state={inputState}
-            stateHist={stateHist}
-            setStateHist={setStateHist}
-          />
-
-          <div className="container py-3">
-            <div className="row justify-content-center">
-              <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                <div className="card text-content">
-                  <div className="card-body">
-                    <button
-                      className="btn btn-link"
-                      onClick={() =>
-                        handleDelete({
-                          idClient: inputState._id,
-                          index: inputState.index,
-                        })
-                      }
-                    >
-                      <img src={deleteClientIcon} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                <div className="card text-content">
-                  <div className="card-body">
-                    <button
-                      className="btn btn-link"
-                      onClick={() =>
-                        handleEdit({
-                          _id: inputState._id,
-                          name: inputState.name,
-                          // nameDog: el.nameDog,
-                          phone: inputState.phone,
-                          address: inputState.address,
-                          notesCli: inputState.notesCli,
-                        })
-                      }
-                    >
-                      <img src={editClientIcon} />
-                    </button>
-                  </div>
-                </div>
+          <div className="col-6 col-md-4 d-flex justify-content-center">
+            <div className="text-center">
+              <div className="card-body mt-3">
+                <button
+                  className="btn btn-link"
+                  onClick={() => {
+                    setVisibleModalImpCli(!stateVisibleModalImpCli);
+                  }}
+                >
+                  <img src={importMas} />
+                </button>
               </div>
             </div>
           </div>
         </div>
-      ) : null}
+      </div>
+
+      <ModalAddClient state={newClient} setState={setNewClient} />
+      {stateVisibleModalImpCli ? (
+        <ImportMasivaInforme stateVisible={stateVisibleModalImpCli}/>
+      ) : (
+        <>
+          <div className="container-lg table-responsive pb-3">
+            <div className="containerSearch">
+              <input
+                className="inputBuscar"
+                type="text"
+                name="search"
+                placeholder="Busque un Cliente. Ingrese sólo valores en minúsculas"
+                value={stateSearch}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+          {clients ? (
+            // HOVER para que semarque con el cursor
+            // BODERED para que se marquen los bordes de las columnas
+            <div className="container-lg table-responsive">
+              <table className="table table-bordered table-hover table-white">
+                <thead class="thead-light table-dark">
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clients
+                    ? clients.filter(searchCli(stateSearch)).map((cli, index) =>
+                        cli.status === true ? (
+                          <tr key={cli._id}>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) =>
+                                handleInfo(e, {
+                                  _id: cli._id,
+                                  notesCli: cli.notesCli,
+                                  arrayDogs: cli.perros,
+                                  name: cli.name,
+                                  phone: cli.phone,
+                                  address: cli.address,
+                                  notesCli: cli.notesCli,
+                                  arrayPedidos: cli.pedidos,
+                                  index: index,
+                                  status: cli.status,
+                                })
+                              }
+                            >
+                              {cli.name}
+                            </td>
+                            <td>{cli.phone}</td>
+                            <td>{cli.address}</td>
+                            <td>{cli.notesCli}</td>
+                          </tr>
+                        ) : null
+                      )
+                    : null}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+
+          {stateHist ? (
+            <div className="container-lg table-responsive">
+              <h5 className="tituloH">
+                Historial del Cliente: {inputState.name}
+              </h5>
+              <HistorialClient
+                state={inputState}
+                stateHist={stateHist}
+                setStateHist={setStateHist}
+              />
+
+              <div className="container py-3">
+                <div className="row justify-content-center">
+                  <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="card text-content">
+                      <div className="card-body">
+                        <button
+                          className="btn btn-link"
+                          onClick={() =>
+                            handleDelete({
+                              idClient: inputState._id,
+                              index: inputState.index,
+                            })
+                          }
+                        >
+                          <img src={deleteClientIcon} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="card text-content">
+                      <div className="card-body">
+                        <button
+                          className="btn btn-link"
+                          onClick={() =>
+                            handleEdit({
+                              _id: inputState._id,
+                              name: inputState.name,
+                              // nameDog: el.nameDog,
+                              phone: inputState.phone,
+                              address: inputState.address,
+                              notesCli: inputState.notesCli,
+                            })
+                          }
+                        >
+                          <img src={editClientIcon} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </>
+      )}
 
       {/* FORMULARIO PARA EDICION  */}
       <ModalEditClient
@@ -366,6 +381,9 @@ function ListClients() {
         address={inputState.address}
         notesCli={inputState.notesCli}
       />
+
+      {/* FORM FOR IMPORT CLIENTS FROM EXCEL */}
+    
     </div>
   );
 }

@@ -95,7 +95,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/register" element={<FormRegister />} />
       <Route className="bg-primary" path="/login" element={<FormLoginNew />} />
-      <Route path="*" element={<FormLoginNew />} />
+      {/* <Route path="*" element={<FormLoginNew />} /> */}
       {/* <Route path="/" element={<LoginFirebase />} /> */}
     </Routes>
   );

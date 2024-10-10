@@ -30,6 +30,16 @@
   font-style: normal;
 }
 
+.textGral li,p{
+  font-size: 1.2rem;
+  color:#9c9c9c;
+  text-align: justify;
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
 .marginGral {
   margin: 1rem;
 }

@@ -262,8 +262,6 @@ export function verificationCompaniesExist(email) {
 }
 
 
-
-
 //funciona bien
 export function searchHistorialDog(payload) {
   //console.log(payload)

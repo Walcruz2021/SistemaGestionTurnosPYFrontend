@@ -51,7 +51,7 @@ function ModalDescription({
             {phone}
           </ListGroup.Item>
 
-          <Card.Text style={{ color: "#424242" }} className="m-2 px-4">
+          <Card.Text style={{ color: "#dbdbdb" }} className="m-2 px-4">
             <RiStickyNoteAddFill
               style={{ marginRight: "10px", fontSize: "24px"}}
             />

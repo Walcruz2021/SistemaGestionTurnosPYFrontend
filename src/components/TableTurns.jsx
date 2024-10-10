@@ -161,7 +161,7 @@ const TableTurns = ({
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th>Nombre Mascota</th>
+              <th>Nombre Mascotaxx</th>
               <th>
                 Fecha{" "}
                 <FontAwesomeIcon
