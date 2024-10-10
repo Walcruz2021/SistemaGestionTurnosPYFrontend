@@ -37,3 +37,11 @@
 .form-button {
   width: 100%;
 }
+
+.bannerInf ol {
+  text-align: left;
+}
+
+.bannerInf ol{
+  margin-top: 2.5rem;
+}
