@@ -32,3 +32,9 @@
   box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),
     0 17px 50px 0 rgba(32, 192, 99, 0.19);
 }
+
+.label-input-container label {
+  min-width: 80px; /* Tamaño uniforme de las etiquetas */
+  margin-top: auto; /* Alineación vertical */
+  
+}

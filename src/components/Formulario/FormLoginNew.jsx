@@ -28,7 +28,7 @@ import { BsWatch } from "react-icons/bs";
 import { BsFileEarmarkBarGraph } from "react-icons/bs";
 import { RiExchangeDollarFill } from "react-icons/ri";
 import { BsPeople } from "react-icons/bs";
-import supportLogin from "../../icons/supportLogin.png" 
+import supportLogin from "../../icons/supportLogin.png";
 import { PiDog } from "react-icons/pi";
 
 function FormLoginNew({ autUser }) {
@@ -159,10 +159,13 @@ function FormLoginNew({ autUser }) {
     navigate("/register");
   };
 
+  const RedirectLinkContact = () => {
+    navigate("/supportForm");
+  };
   return (
     <div className="container py-3 mt-2">
       <div className="row justify-content-center">
-      <div className="col-md-6">
+        <div className="col-md-6">
           <div className="text-center">
             <div className="card-body">
               <div className="login-wrap">
@@ -230,7 +233,7 @@ function FormLoginNew({ autUser }) {
               </button> */}
 
                       <ModalRestPassword show={show} setShow={setShow} />
-                      <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
+                      <div className="d-flex flex-row align-items-center justify-content-center pb-4 pt-3 mt-3">
                         <p className="mb-0 px-2">¿No tiene una cuenta?</p>
                         <button
                           className="btn btn-outline-secondary btn-custom"
@@ -246,38 +249,41 @@ function FormLoginNew({ autUser }) {
             </div>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 pt-5">
           <div className="text-center">
             <div className="card-body">
               <div className="bannerInf">
                 <h2>Gestion de Turnos PY</h2>
-                <p>
-                  Con Sistema de Gestión de Turnos de PymesYa, podrás:
-                </p>
-                <ol> <PiDog size={30}/> Administrar tus turnos</ol>
-
+                <p>Con Sistema de Gestión de Turnos de PymesYa, podrás:</p>
                 <ol>
-                  <BsPeople size={30} />  Administrar tus Clientes
+                  {" "}
+                  <PiDog size={30} /> Administrar tus turnos
                 </ol>
 
                 <ol>
-                  <BsWatch size={30} />  Ahorrar Tiempo
+                  <BsPeople size={30} /> Administrar tus Clientes
                 </ol>
 
                 <ol>
-                  <BsFileEarmarkBarGraph size={30}/>  Detalle de tus Ingresos y Gastos
+                  <BsWatch size={30} /> Ahorrar Tiempo
                 </ol>
 
                 <ol>
-                  <RiExchangeDollarFill size={30} />  Completamente Gratuito
+                  <BsFileEarmarkBarGraph size={30} /> Detalle de tus Ingresos y
+                  Gastos
                 </ol>
-                
-                <img src={supportLogin}/>
+
+                <ol>
+                  <RiExchangeDollarFill size={30} /> Completamente Gratuito
+                </ol>
+
+                <button onClick={RedirectLinkContact} className="border-0">
+                  <img src={supportLogin} alt="Contact Support" width="100" height="100"/>
+                </button>
               </div>
             </div>
           </div>
         </div>
-       
       </div>
     </div>
   );

@@ -15,13 +15,19 @@ import withReactContent from "sweetalert2-react-content";
 import { addUser } from "../../reducer/actions/actions";
 import "../../css/cssGeneral.css";
 import "./FormsLoginAndRegister.css";
-import {
-  MDBInput,
-} from "mdb-react-ui-kit";
+import { MDBInput } from "mdb-react-ui-kit";
 import { FaGoogle } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
-import logoNew from "../../IMAGENES/LogoNew.png"
+import logoNew from "../../IMAGENES/LogoNew.png";
 import { FaUser } from "react-icons/fa";
+import { PiDog } from "react-icons/pi";
+import { BsPeople } from "react-icons/bs";
+import { BsWatch } from "react-icons/bs";
+import { BsFileEarmarkBarGraph } from "react-icons/bs";
+import { RiExchangeDollarFill } from "react-icons/ri";
+import { MdOutlineMailLock } from "react-icons/md";
+
+import supportLogin from "../../icons/supportLogin.png";
 
 function FormRegister({ autUser }) {
   const navigate = useNavigate();
@@ -111,14 +117,17 @@ function FormRegister({ autUser }) {
       });
     } else {
       try {
-        await createUserWithEmailAndPassword(auth, emailState, stateValue.password)
-          .then(async (userCred) => {
-            const user = userCred.user;
-            await sendEmailVerification(user);
-            await updateProfile(user, {
-              displayName: `${stateValue.firstName} ${stateValue.lastName}`,
-            });
+        await createUserWithEmailAndPassword(
+          auth,
+          emailState,
+          stateValue.password
+        ).then(async (userCred) => {
+          const user = userCred.user;
+          await sendEmailVerification(user);
+          await updateProfile(user, {
+            displayName: `${stateValue.firstName} ${stateValue.lastName}`,
           });
+        });
 
         const newUser = {
           fullName: `${stateValue.firstName} ${stateValue.lastName}`,
@@ -216,138 +225,190 @@ function FormRegister({ autUser }) {
   };
 
   return (
-    <div className="login-wrap-reg">
-      <div className="login-html">
-        <div className="text-center">
-          <img src={logoNew} style={{ width: "185px" }} alt="logo" />
-          <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
-        </div>
+    <div className="container py-3 mt-2">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="text-center">
+            <div className="card-body">
+              <div className="login-wrap">
+                <div className="login-html">
+                  <img src={logoNew} style={{ width: "185px" }} alt="logo" />
+                  <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
 
-        <p className="text-center">REGISTRO AL SISTEMA</p>
+                  <p className="text-center">REGISTRO AL SISTEMA</p>
 
-        <label className="form-label">Nombre *</label>
+                  <div className="d-flex align-items-center label-input-container">
+                    <label className="form-label">Nombre</label>
 
-        <MDBInput
-          className="small"
-          wrapperClass="mb-2"
-          type="text"
-          name="firstName"
-          maxLength="30"
-          onFocus={handleFocusName}
-          onChange={handleChangeName}
-        />
-        {!validationName && isInputFocusedName && (
-          <div className="text-danger msgAlertInput">Mayor a 4 letras</div>
-        )}
+                    <MDBInput
+                      className="small"
+                      wrapperClass="mb-2 ms-3 w-100"
+                      type="text"
+                      name="firstName"
+                      maxLength="30"
+                      onFocus={handleFocusName}
+                      onChange={handleChangeName}
+                    />
+                  </div>
 
-        <label className="form-label">Apellido *</label>
+                  {!validationName && isInputFocusedName && (
+                    <div className="text-danger msgAlertInput">
+                      Mayor a 4 letras
+                    </div>
+                  )}
 
-        <MDBInput
-          className="small"
-          wrapperClass="mb-2"
-          type="text"
-          name="lastName"
-          maxLength="30"
-          onChange={handleChangeLastName}
-          onFocus={handleFocusLastName}
-        />
-        {!validationLastName && isInputFocusedLastName && (
-          <div className="text-danger msgAlertInput">Mayor a 4 letras</div>
-        )}
+                  <div className="d-flex align-items-center label-input-container">
+                    <label className="form-label">Apellido</label>
 
-       
-        {/* <label className="form-label pt-2">
-          <FaUser /> CORREO ELECTRONICO *
-        </label> */}
+                    <MDBInput
+                      className="small"
+                      wrapperClass="mb-2 ms-3 w-100 mt-1"
+                      type="text"
+                      name="lastName"
+                      maxLength="30"
+                      onChange={handleChangeLastName}
+                      onFocus={handleFocusLastName}
+                    />
+                  </div>
+                  {!validationLastName && isInputFocusedLastName && (
+                    <div className="text-danger msgAlertInput">
+                      Mayor a 4 letras
+                    </div>
+                  )}
 
-        <MDBInput
-          className="small"
-          wrapperClass="mb-2"
-          type="email"
-          name="email"
-          maxLength="50"
-          onChange={handleChangeEmail}
-        />
-        {!validationEmail && (
-          <div className="text-danger msgAlertInput">Debe ingresar Email</div>
-        )}
+                  <div className="d-flex align-items-center label-input-container">
+                    <label className="form-label">
+                      <MdOutlineMailLock size="1.7rem" />
+                    </label>
 
-        <label className="form-label pt-2">
-          <RiLockPasswordFill /> PASSWORD *
-        </label>
+                    <MDBInput
+                      className="small"
+                      wrapperClass="mb-2 ms-3 w-100 mt-1"
+                      type="email"
+                      name="email"
+                      maxLength="50"
+                      onChange={handleChangeEmail}
+                    />
+                  </div>
+                  {!validationEmail && (
+                    <div className="text-danger msgAlertInput">
+                      Debe ingresar Email
+                    </div>
+                  )}
 
-        <MDBInput
-          wrapperClass="mb-2"
-          type="password"
-          name="password"
-          maxLength="30"
-          value={stateValue.password}
-          onChange={handleChangePassword}
-        />
+                  <div className="d-flex align-items-center label-input-container">
+                    <label className="form-label">
+                      <RiLockPasswordFill size="1.7rem" />
+                    </label>
 
-        <label className="form-label pt-2">
-          <RiLockPasswordFill /> REINGRESE PASSWORD *
-        </label>
+                    <MDBInput
+                      wrapperClass="mb-2 ms-3 w-100 mt-1"
+                      type="password"
+                      name="password"
+                      maxLength="30"
+                      value={stateValue.password}
+                      onChange={handleChangePassword}
+                      placeHolder="Ingrese Password"
+                    />
+                  </div>
 
-        <MDBInput
-          wrapperClass="mb-2"
-          type="password"
-          name="passwordDuplicated"
-          maxLength="30"
-          onChange={handleChangePasswordDuplicated}
-        />
-        {!validationPassw && (
-          <div className="text-danger msgAlertInput">
-            Las Contraseñas deben ser iguales
+                  <div className="d-flex align-items-center label-input-container">
+                    <label className="form-label">
+                      <RiLockPasswordFill size="1.7rem" />
+                    </label>
+
+                    <MDBInput
+                      wrapperClass="mb-2 ms-3 w-100 mt-1"
+                      type="password"
+                      name="passwordDuplicated"
+                      maxLength="30"
+                      onChange={handleChangePasswordDuplicated}
+                      placeHolder="Ingrese Nuevamente Password"
+                    />
+                  </div>
+                  {!validationPassw && (
+                    <div className="text-danger msgAlertInput">
+                      Las Contraseñas deben ser iguales
+                    </div>
+                  )}
+
+                  <div>
+                    {!stateValue.firstName.trim("") ||
+                    !stateValue.lastName.trim("") ||
+                    !validationLastName ||
+                    !validationEmail ||
+                    !validationPassw ||
+                    !validationName ? (
+                      <button
+                        className="btn btn-outline-dark form-button mt-2"
+                        type="submit"
+                        onClick={handleSumbit}
+                        disabled
+                      >
+                        Registrarse
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-outline-dark form-button"
+                        type="submit"
+                        onClick={handleSumbit}
+                      >
+                        Registrarse
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="d-flex flex-row align-items-center justify-content-center pb-2 mb-1 pt-3">
+                    <p className="mb-0 px-2">Ya tiene una cuenta?</p>
+                    <button
+                      outline
+                      className="btn btn-outline-secondary"
+                      onClick={RedirectLink}
+                    >
+                      Inicio de Sesión
+                    </button>
+                  </div>
+                  {/* <div className="text-danger msgAlertInput">
+                    (*) Campos Obligatorios
+                  </div> */}
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        <div>
-          {!stateValue.firstName.trim("") ||
-          !stateValue.lastName.trim("") ||
-          !validationLastName ||
-          !validationEmail ||
-          !validationPassw ||
-          !validationName ? (
-            <button
-              className="btn btn-outline-dark form-button mt-1"
-              type="submit"
-              onClick={handleSumbit}
-              disabled
-            >
-              Registrarse
-            </button>
-          ) : (
-            <button
-              className="btn btn-outline-dark form-button"
-              type="submit"
-              onClick={handleSumbit}
-            >
-              Registrarse
-            </button>
-          )}
         </div>
-         {/* this code is commented because it does not work correctly*/}
-        {/* <div className="pt-2">
-          <button
-            className="btn btn-outline-dark form-button"
-            onClick={loginGoogle}
-          >
-            <FaGoogle />
-          </button>
-        </div> */}
+        <div className="col-md-4 pt-5">
+          <div className="text-center">
+            <div className="card-body">
+              <div className="bannerInf">
+                <h2>Gestion de Turnos PY</h2>
+                <p>Con Sistema de Gestión de Turnos de PymesYa, podrás:</p>
+                <ol>
+                  {" "}
+                  <PiDog size={30} /> Administrar tus turnos
+                </ol>
 
-        <div className="d-flex flex-row align-items-center justify-content-center pb-2 mb-1 pt-2">
-          <p className="mb-0 px-2">Ya tiene una cuenta?</p>
-          <button
-            outline
-            className="btn btn-outline-secondary"
-            onClick={RedirectLink}
-          >
-            Inicio de Sesión
-          </button>
+                <ol>
+                  <BsPeople size={30} /> Administrar tus Clientes
+                </ol>
+
+                <ol>
+                  <BsWatch size={30} /> Ahorrar Tiempo
+                </ol>
+
+                <ol>
+                  <BsFileEarmarkBarGraph size={30} /> Detalle de tus Ingresos y
+                  Gastos
+                </ol>
+
+                <ol>
+                  <RiExchangeDollarFill size={30} /> Completamente Gratuito
+                </ol>
+
+                <img src={supportLogin} width="100" height="100" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="text-danger msgAlertInput">(*) Campos Obligatorios</div>
       </div>
     </div>
   );
