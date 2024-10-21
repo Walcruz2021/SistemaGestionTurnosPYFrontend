@@ -19,13 +19,13 @@ import Select from "react-select";
 import { useForm, ValidationError } from "@formspree/react";
 
 const FormSoporteContactLoginReg = () => {
-  //console.log(loginUser.email)
-  const navigate = useNavigate();
 
-  // //const history = useHistory();
-  // const dispatch = useDispatch();
+  
+  const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
   const [stateValue, setStateValue] = useState({
     message: "",
+    email:""
   });
 
   const handleChange = (e) => {
@@ -40,7 +40,7 @@ const FormSoporteContactLoginReg = () => {
 
   if (state.succeeded) {
     MySwal.fire({
-      title: "¡Comentario Enviado!",
+      title: "¡Te enviaremos un Mensaje!",
       icon: "success",
       confirmButtonText: "Aceptar",
       confirmButtonColor: "rgb(21, 151, 67)",
@@ -53,7 +53,6 @@ const FormSoporteContactLoginReg = () => {
   }
 
   const Redirect = () => {
-
     navigate("/login");
   };
 
@@ -69,7 +68,7 @@ const FormSoporteContactLoginReg = () => {
           <p className="text-center">FORMULARIO DE CONTACTO</p>
 
           <label className="mb-2" htmlFor="email">
-            Email Address
+            Email Address *
           </label>
           <ValidationError prefix="Email" field="email" errors={state.errors} />
 
@@ -79,11 +78,11 @@ const FormSoporteContactLoginReg = () => {
             id="email"
             type="email"
             name="email"
-            maxLength="400"
-            value={""}
+            maxLength="50"
+            onChange={handleChange}
           />
 
-          <label className="form-label">Ingrese su Comentario</label>
+          <label className="form-label">Ingrese su Comentario *</label>
 
           <MDBTextArea
             className="small"
@@ -91,7 +90,7 @@ const FormSoporteContactLoginReg = () => {
             id="message"
             type="text"
             name="message"
-            maxLength="300"
+            maxLength="200"
             rows={5} // Aumenta el número de filas para hacer el input más alto
             cols={50}
             onChange={handleChange}
