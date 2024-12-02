@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,setStateDataEdit }) => {
-console.log(stateDataEdit)
+
   const companySelectedMenu=useSelector((state)=>state.companySelected) 
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);

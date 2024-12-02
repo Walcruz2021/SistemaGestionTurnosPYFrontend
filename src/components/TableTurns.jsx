@@ -27,9 +27,11 @@ const TableTurns = ({
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listTurnos = useSelector((state) => state.allTurnos);
+  
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
-const [stateDataEdit,setStateDataEdit]=useState()
+  const [stateDataEdit, setStateDataEdit] = useState();
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
     if (companySelectedMenu) {
@@ -87,7 +89,7 @@ const [stateDataEdit,setStateDataEdit]=useState()
 
   function handleEditTurn(e, turn) {
     setStateEditTurn(!stateEditTurn);
-    setStateDataEdit(turn)
+    setStateDataEdit(turn);
   }
 
   function handleVentas(e, props) {
@@ -157,6 +159,9 @@ const [stateDataEdit,setStateDataEdit]=useState()
     return info;
   }
 
+  function functionIsCheck() {
+    setIsCheck(!isCheck);
+  }
   return (
     <>
       <div className="container-lg table-responsive mb-4">
@@ -176,6 +181,7 @@ const [stateDataEdit,setStateDataEdit]=useState()
               </th>
               <th>Horario</th>
               <th>Opciones</th>
+              <th>Send</th>
             </tr>
           </thead>
           <tbody>
@@ -246,26 +252,45 @@ const [stateDataEdit,setStateDataEdit]=useState()
                       idDog={turn.idDog}
                       idTurno={turn._id}
                     />
+
+                    {turn.isNotifications ? (
+                      <td>
+                        <input
+                          type="checkbox"
+                          onClick={functionIsCheck}
+                          checked
+                          //onChange={(e) => setIsCheck(e.target.checked)}
+                        />
+                      </td>
+                    ) : (
+                      <td>
+                        <input
+                          type="checkbox"
+                          onClick={functionIsCheck}
+                          //onChange={(e) => setIsCheck(e.target.checked)}
+                        />
+                      </td>
+                    )}
                   </tr>
                 ))
               : null}
           </tbody>
         </table>
         <ModalEditTurn
-        stateEditTurn={stateEditTurn}
-        setStateEditTurn={setStateEditTurn}
-        stateDataEdit={stateDataEdit}
-        setStateDataEdit={setStateDataEdit}
-        // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-        // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-        // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-        //nameCli={turn.name}
-        // nameDog={turn.nameDog}
-        // idClient={turn.Client}
-        // idDog={turn.idDog}
-        // idTurno={turn._id}
-        //turn={turn}
-      />
+          stateEditTurn={stateEditTurn}
+          setStateEditTurn={setStateEditTurn}
+          stateDataEdit={stateDataEdit}
+          setStateDataEdit={setStateDataEdit}
+          // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
+          // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
+          // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
+          //nameCli={turn.name}
+          // nameDog={turn.nameDog}
+          // idClient={turn.Client}
+          // idDog={turn.idDog}
+          // idTurno={turn._id}
+          //turn={turn}
+        />
       </div>
     </>
   );

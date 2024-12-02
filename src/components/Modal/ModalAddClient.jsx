@@ -29,6 +29,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
     phone: "",
     address: "",
     notesCli: "",
+    email:""
   });
 
   const handleChange = (e) => {
@@ -61,6 +62,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
           phone: stateValue.phone,
           status: true,
           Company: companySelectedState._id,
+          email:stateValue.email
         })
       );
       MySwal.fire({
@@ -75,6 +77,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             address: "",
             notesCli: "",
             phone: "",
+            email:""
           });
           dispatch(getClients(companySelectedState._id));
           handleClose();
@@ -157,6 +160,21 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   value={stateValue.notesCli}
                   onChange={handleChange}
                   required
+                />
+              </Form.Group>
+              <Form.Group
+                className="mb-1"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Email Cliente</Form.Label>
+                <Form.Control
+                  rows={3}
+                  name="email"
+                  type="email"
+                  autoFocus
+                  maxLength={100}
+                  value={stateValue.email}
+                  onChange={handleChange}
                 />
               </Form.Group>
             </Form>
