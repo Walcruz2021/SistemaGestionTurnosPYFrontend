@@ -91,7 +91,7 @@ function ModalRestPassword({ show, setShow }) {
   };
 
   return (
-    <>
+    <div className="mt-2 mb-2">
       <Button variant onClick={handleShow} className="buttonModal anton-regular">
         ¿Olvidaste la Contraseña?
       </Button>
@@ -125,7 +125,7 @@ function ModalRestPassword({ show, setShow }) {
           ) : null}
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
 

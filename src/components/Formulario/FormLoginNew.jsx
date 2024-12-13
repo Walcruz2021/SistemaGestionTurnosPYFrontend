@@ -13,13 +13,23 @@ import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import { MDBContainer, MDBInput } from "mdb-react-ui-kit";
 import gmail from "../../icons/gmailLogin.png";
-import { addUser, verificationCompaniesExist,listenToAuthChanges} from "../../reducer/actions/actions";
+import {
+  addUser,
+  verificationCompaniesExist,
+  listenToAuthChanges,
+} from "../../reducer/actions/actions";
 import ModalRestPassword from "../Modal/ModalRestPassword";
 import "./FormLoginNew.css";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import logoNew from "../../IMAGENES/LogoNew.png";
+import { BsWatch } from "react-icons/bs";
+import { BsFileEarmarkBarGraph } from "react-icons/bs";
+import { RiExchangeDollarFill } from "react-icons/ri";
+import { BsPeople } from "react-icons/bs";
+import supportLogin from "../../icons/supportLogin.png";
+import { PiDog } from "react-icons/pi";
 
 function FormLoginNew({ autUser }) {
   const loginUser = useSelector((state) => state.user);
@@ -86,7 +96,6 @@ function FormLoginNew({ autUser }) {
           stateValue.password
         );
         if (auth.currentUser.emailVerified) {
-          
           MySwal.fire({
             title: "¡Usuario Logueado Correctamente!",
             icon: "success",
@@ -94,7 +103,7 @@ function FormLoginNew({ autUser }) {
             confirmButtonColor: "rgb(21, 151, 67)",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              dispatch(listenToAuthChanges())
+              dispatch(listenToAuthChanges());
               const resVerification = await verificationCompanies(
                 auth.currentUser.email
               );
@@ -150,65 +159,72 @@ function FormLoginNew({ autUser }) {
     navigate("/register");
   };
 
+  const RedirectLinkContact = () => {
+    navigate("/supportForm");
+  };
   return (
-    <>
-      <div className="login-wrap">
-        <div className="login-html">
+    <div className="container py-3 mt-2">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
           <div className="text-center">
-            <img src={logoNew} style={{ width: "185px" }} alt="logo" />
-            <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
-          </div>
+            <div className="card-body">
+              <div className="login-wrap">
+                <div className="login-html">
+                  <div className="text-center">
+                    <img src={logoNew} style={{ width: "185px" }} alt="logo" />
+                    <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
+                  </div>
 
-          <p className="text-center">LOGIN AL SISTEMA</p>
-          <div className="login-form">
-            <div className="group">
-              <label className="form-label pt-3 pb-1">
-                <FaUser /> CORREO ELECTRONICO
-              </label>
-              <MDBInput
-                className="form-input mb-2"
-                id="form1"
-                type="email"
-                name="email"
-                value={stateValue.email}
-                onChange={handleChange}
-                required
-              />
-              <label className="form-label pt-3 pb-1 .anton-sc-regular">
-                <RiLockPasswordFill /> PASSWORD
-              </label>
-              <MDBInput
-                className="form-input mb-2"
-                id="form2"
-                type="password"
-                name="password"
-                value={stateValue.password}
-                onChange={handleChange}
-                required
-              />
-              <div className="pt-2">
-                {!stateValue.email || !stateValue.password ? (
-                  <button
-                    className="btn btn-outline-dark form-button"
-                    type="submit"
-                    onClick={handleSumbit}
-                    disabled
-                  >
-                    Inicio de Sesión
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-outline-dark form-button"
-                    type="submit"
-                    onClick={handleSumbit}
-                  >
-                    Inicio de Sesión
-                  </button>
-                )}
-              </div>
+                  <p className="text-center">LOGIN AL SISTEMA</p>
+                  <div className="login-form">
+                    <div className="group">
+                      <label className="form-label pt-3 pb-1">
+                        <FaUser /> CORREO ELECTRONICO
+                      </label>
+                      <MDBInput
+                        className="form-input mb-2"
+                        id="form1"
+                        type="email"
+                        name="email"
+                        value={stateValue.email}
+                        onChange={handleChange}
+                        required
+                      />
+                      <label className="form-label pt-3 pb-1 .anton-sc-regular">
+                        <RiLockPasswordFill /> PASSWORD
+                      </label>
+                      <MDBInput
+                        className="form-input mb-2"
+                        id="form2"
+                        type="password"
+                        name="password"
+                        value={stateValue.password}
+                        onChange={handleChange}
+                        required
+                      />
+                      <div className="pt-2">
+                        {!stateValue.email || !stateValue.password ? (
+                          <button
+                            className="btn btn-outline-dark form-button"
+                            type="submit"
+                            onClick={handleSumbit}
+                            disabled
+                          >
+                            Inicio de Sesión
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-outline-dark form-button"
+                            type="submit"
+                            onClick={handleSumbit}
+                          >
+                            Inicio de Sesión
+                          </button>
+                        )}
+                      </div>
 
-              {/* this code is commented because it does not work correctly */}
-              {/* <div className="pt-2"></div>
+                      {/* this code is commented because it does not work correctly */}
+                      {/* <div className="pt-2"></div>
               <button
                 className="btn btn-outline-dark form-button"
                 onClick={loginGoogle}
@@ -216,21 +232,60 @@ function FormLoginNew({ autUser }) {
                 <FaGoogle />
               </button> */}
 
-              <ModalRestPassword show={show} setShow={setShow} />
-              <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-1">
-                <p className="mb-0 px-2">¿No tiene una cuenta?</p>
-                <button
-                  className="btn btn-outline-secondary btn-custom"
-                  onClick={RedirectLink}
-                >
-                  Registrarse
+                      <ModalRestPassword show={show} setShow={setShow} />
+                      <div className="d-flex flex-row align-items-center justify-content-center pb-4 pt-3 mt-3">
+                        <p className="mb-0 px-2">¿No tiene una cuenta?</p>
+                        <button
+                          className="btn btn-outline-secondary btn-custom"
+                          onClick={RedirectLink}
+                        >
+                          Registrarse
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4 pt-5">
+          <div className="text-center">
+            <div className="card-body">
+              <div className="bannerInf">
+                <h2>Gestion de Turnos PY</h2>
+                <p>Con Sistema de Gestión de Turnos de PymesYa, podrás:</p>
+                <ol>
+                  {" "}
+                  <PiDog size={30} /> Administrar tus turnos
+                </ol>
+
+                <ol>
+                  <BsPeople size={30} /> Administrar tus Clientes
+                </ol>
+
+                <ol>
+                  <BsWatch size={30} /> Ahorrar Tiempo
+                </ol>
+
+                <ol>
+                  <BsFileEarmarkBarGraph size={30} /> Detalle de tus Ingresos y
+                  Gastos
+                </ol>
+
+                <ol>
+                  <RiExchangeDollarFill size={30} /> Completamente Gratuito
+                </ol>
+
+                <button onClick={RedirectLinkContact} className="border-0">
+                  <img src={supportLogin} alt="Contact Support" width="100" height="100"/>
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

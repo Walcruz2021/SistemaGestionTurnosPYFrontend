@@ -18,6 +18,7 @@ import Gastos from "./components/Gastos.jsx";
 import InformeGastos from "./components/Informes/InformeGastos.jsx";
 import InfGastosAndVtas from "./components/Informes/InfGastosAndVtas.jsx";
 import FormSoporteContact from "./components/Formulario/FormSoporteContact.jsx"
+import FormSoporteContactLoginReg from "./components/Formulario/FormSoporteContactLoginReg.jsx"
 
 import {
   functionCompanySelected,
@@ -97,6 +98,7 @@ const AppRoutes = () => {
       <Route className="bg-primary" path="/login" element={<FormLoginNew />} />
       <Route path="*" element={<FormLoginNew />} />
       {/* <Route path="/" element={<LoginFirebase />} /> */}
+      <Route path="/supportForm" element={<FormSoporteContactLoginReg/>}></Route>
     </Routes>
   );
 
