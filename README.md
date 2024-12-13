@@ -1,68 +1,63 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Build a MERN (MongoDB | Express | ReactJS | Nodejs)
 
-## Available Scripts
+<p align="center">
+  <a href="https://www.pymesya.com/tecnologias/sistemaGestionTurnos/" target="blank"><img src="../BackendAppOmar/LogoNew.png" width="200" alt="SISTEMA DE GESTION DE TURNO PY" /></a>
+</p>
 
-In the project directory, you can run:
+# Ejecutar en desarrollo
 
-### `yarn start`
+1. Clonar el repositorio
+2. Ejecutar
+```
+npm install
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+5 Paquetes Instalados
+```
+boostrap
+firebase
+redux
+```
+6 Clonar el archivo ```.env.template``` y renombrar la copia a ```.env```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+7 Llenar las variables de entorno definidas en el
+```
+.env
+```
+8 Ejecutar la aplicacion en dev
+```
+npm start
+```
 
-### `yarn test`
+# 📂 Descripción Proyecto
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Sistema de Gestion de Turnos PY optimiza la administración en establecimientos dedicados al cuidado de mascotas, incluyendo:
 
-### `yarn build`
+- ✅ **Gestión de turnos**:  Programación eficiente y automatizada para clientes..  
+- ✅ **Manejo de clientes**: Base de datos organizada para un seguimiento detallado..  
+- ✅ **Control de inventarios**: Gestión precisa de productos y suministros.  
+- ✅ **Generación de informes**: Análisis de gastos, ventas y rendimiento del negocio.   
+- 🚀 **Impacto**: Este sistema mejora significativamente la productividad y la experiencia del cliente, aportando herramientas clave para la toma de decisiones estratégicas. 
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 📝 Características del Frontend
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- ✅ **Framework**: React y Redux.  
+- ✅ **Pruebas automatizadas**: Configuración con **Jest** para pruebas unitarias e integración continua.  
+- ✅ **Control de acceso**: Autenticación y Autorización con **Firebase**.  
+- ✅ **Gestión de errores**: Sistema centralizado para manejo de errores en el servidor.  
+- ✅ **Despliegue**: Frontend implementado en servidores escalables con soporte para ambientes de desarrollo y producción.  
+  
+# 🚀 Implementaciones Nuevas
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ Para mejorar la calidad y escalabilidad del frontend, se han introducido las siguientes implementaciones en ramas dedicadas, las cuales posteriormente se integran a la rama principal (master):  
 
-### `yarn eject`
+1. **Notificacion Automática**:  
+  -Se está implementando un sistema automatizado para enviar notificaciones a los clientes, recordándoles la fecha de su turno. Este sistema utiliza la biblioteca Nodemailer en el backend para gestionar el envío de correos electrónicos de manera eficiente y confiable.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   **Estrategias de control de versiones y colaboración**:  
+   - Todas las nuevas características se desarrollan en ramas específicas siguiendo las mejores prácticas de control de versiones con **Git**.  
+   - Esto asegura que los cambios sean revisados, probados, y fusionados de manera estructurada.  
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

@@ -11,7 +11,7 @@ import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
 const ModalAddTurn = ({
-  onTurnoAdded,
+  
   stateAddTurn,
   setStateAddTurn,
   turn,
@@ -146,7 +146,7 @@ const ModalAddTurn = ({
         if (result.isConfirmed) {
           dispatch(getTurnos(companySelectedMenu._id));
           setStateAddTurn(!stateAddTurn);
-          onTurnoAdded();
+          //onTurnoAdded();
           // Update optionsListSelect after adding a turn
           //updateOptionsList(listClientsCompany.clientes);
           setStateInput({

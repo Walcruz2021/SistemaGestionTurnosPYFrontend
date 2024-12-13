@@ -20,7 +20,8 @@
 // export default host
 
 
-const rutaBackend="https://backend-app-peluqueria.vercel.app"
+//const rutaBackend="https://backend-app-peluqueria.vercel.app"
+const rutaBackend="http://localhost:3002"
 
 
 export default rutaBackend

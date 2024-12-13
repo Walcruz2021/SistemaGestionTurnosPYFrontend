@@ -41,13 +41,14 @@ function AgendaTurnos() {
     const getTurnosList = async () => {
       if (companySelectedMenu) {
         try {
-          setLoading(true);
+          setLoading(false);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
+          console.log(turnosResponse.payload,"agenta turnos base de datos")
           const listClientsResponse = await axios.get(
             `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
           );
           setlistClients(listClientsResponse.data);
-          setDb(turnosResponse.data); // Asegúrate de que turnosResponse.data contenga la información correcta
+          setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
           setError(err);
         } finally {
@@ -78,7 +79,7 @@ function AgendaTurnos() {
               listClientsCompany={listClients}
               setlistClients={setlistClients}
               idCompsnySelected={companySelectedMenu._id}
-              onTurnoAdded={onTurnoAdded}
+              //onTurnoAdded={onTurnoAdded}
               changeClients={changeClients}
             />
           ) : (

@@ -91,9 +91,9 @@ function Dashboard({
     index: "",
   });
 
-  const onTurnoAdded = () => {
-    dispatch(getTurnos(companySelectedMenu._id));
-  };
+  // const onTurnoAdded = () => {
+  //   dispatch(getTurnos(companySelectedMenu._id));
+  // };
 
   const addTurn = () => {
     setNewTurno(!newTurno);
@@ -283,7 +283,7 @@ function Dashboard({
 
       <div className="container-fluid table-responsive">
         <ModalAddTurn
-          onTurnoAdded={onTurnoAdded}
+          // onTurnoAdded={onTurnoAdded}
           stateAddTurn={newTurno}
           setStateAddTurn={setNewTurno}
           listClientsCompany={listClientsCompany}

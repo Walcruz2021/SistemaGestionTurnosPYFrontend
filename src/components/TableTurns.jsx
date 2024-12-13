@@ -14,22 +14,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteTurno, getTurnos } from "../reducer/actions/actions";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 
-const TableTurns = ({
-  stateListTurn,
-  setInputState,
-  order,
-  setEditTurn,
-  editTurn,
-  setInfo,
-  stateInfo,
-  setOrder,
-}) => {
+const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listTurnos = useSelector((state) => state.allTurnos);
+
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
-const [stateDataEdit,setStateDataEdit]=useState()
+  const [stateDataEdit, setStateDataEdit] = useState();
+  const [checkedState, setCheckedState] = useState(
+    listTurnos.map(turno => turno.isNotifications)
+  )
 
   useEffect(() => {
     if (companySelectedMenu) {
@@ -87,7 +82,7 @@ const [stateDataEdit,setStateDataEdit]=useState()
 
   function handleEditTurn(e, turn) {
     setStateEditTurn(!stateEditTurn);
-    setStateDataEdit(turn)
+    setStateDataEdit(turn);
   }
 
   function handleVentas(e, props) {
@@ -157,6 +152,37 @@ const [stateDataEdit,setStateDataEdit]=useState()
     return info;
   }
 
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+    console.log(updatedCheckedState);
+    setCheckedState(updatedCheckedState);
+
+    // MySwal.fire({
+    //   title: "¿Estas seguro?",
+    //   text: "¡El turno será borrado de la base de datos!",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#1ABD53",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Sí",
+    //   cancelButtonText: "Cancelar",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     dispatch(deleteTurno(props.idTurn)).then(() => {
+    //       dispatch(getTurnos(companySelectedMenu._id));
+    //     });
+    //     MySwal.fire({
+    //       title: "Turno borrado",
+    //       text: "El Turno se borró correctamente.",
+    //       icon: "success",
+    //       confirmButtonColor: "#00A0D2",
+    //     });
+    //   }
+    // });
+  };
+
   return (
     <>
       <div className="container-lg table-responsive mb-4">
@@ -176,6 +202,7 @@ const [stateDataEdit,setStateDataEdit]=useState()
               </th>
               <th>Horario</th>
               <th>Opciones</th>
+              <th>Aviso</th>
             </tr>
           </thead>
           <tbody>
@@ -246,26 +273,34 @@ const [stateDataEdit,setStateDataEdit]=useState()
                       idDog={turn.idDog}
                       idTurno={turn._id}
                     />
+                    <td>
+                      <input
+                        type="checkbox"
+                        id={`custom-checkbox-${index}`}
+                        checked={checkedState[index]}
+                        onChange={() => handleOnChange(index)}
+                      />{" "}
+                    </td>
                   </tr>
                 ))
               : null}
           </tbody>
         </table>
         <ModalEditTurn
-        stateEditTurn={stateEditTurn}
-        setStateEditTurn={setStateEditTurn}
-        stateDataEdit={stateDataEdit}
-        setStateDataEdit={setStateDataEdit}
-        // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-        // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-        // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-        //nameCli={turn.name}
-        // nameDog={turn.nameDog}
-        // idClient={turn.Client}
-        // idDog={turn.idDog}
-        // idTurno={turn._id}
-        //turn={turn}
-      />
+          stateEditTurn={stateEditTurn}
+          setStateEditTurn={setStateEditTurn}
+          stateDataEdit={stateDataEdit}
+          setStateDataEdit={setStateDataEdit}
+          // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
+          // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
+          // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
+          //nameCli={turn.name}
+          // nameDog={turn.nameDog}
+          // idClient={turn.Client}
+          // idDog={turn.idDog}
+          // idTurno={turn._id}
+          //turn={turn}
+        />
       </div>
     </>
   );

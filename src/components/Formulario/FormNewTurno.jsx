@@ -8,7 +8,7 @@ import withReactContent from "sweetalert2-react-content";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
 import Form from "react-bootstrap/Form";
 
-const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
+const Forms1 = ({ listClientsCompany}) => {
   // const clients = useSelector((state) => state.clients);
   const getTodayDate = () => {
     const today = new Date();
@@ -144,7 +144,7 @@ const Forms1 = ({ listClientsCompany, onTurnoAdded }) => {
       }).then((result) => {
         if (result.isConfirmed) {
           dispatch(getTurnos(companySelectedMenu._id));
-          onTurnoAdded();
+          //onTurnoAdded();
           // Update optionsListSelect after adding a turn
           updateOptionsList(listClientsCompany.clientes);
           setStateInput({

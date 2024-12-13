@@ -16,7 +16,6 @@ export const ASIGNED_VENTAS = "ASIGNED_VENTAS";
 export const GET_CLIENTS_ID = "GET_CLIENTS_ID";
 export const ADD_DOG = "ADD_DOG";
 export const SEARCH_VTA_CLIENT = "SEARCH_VTA_CLIENT";
-
 export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG = "UPDATE_DOG";
 export const POST_BREAK = "POST_BREAK";
@@ -26,8 +25,6 @@ export const GET_USER = "GET_USER";
 export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
 export const FUNCTION_COMPANY_SELECTED = "FUNCTION_COMPANY_SELECTED";
 export const SEARCH_USER = "SEARCH_USER";
-
-
 export const RESET_COMPANY_SELECTED = "RESET_COMPANY_SELECTED";
 export const RESET_ALL_CLIENTS = "RESET_ALL_CLIENTS";
 
@@ -156,7 +153,7 @@ export function addCompany(payload) {
 }
 
 export function orderTurnos(payload) {
-  console.log(payload, "actions");
+  //console.log(payload, "actions");
   return {
     type: ORDER_TURNOS,
     payload,
@@ -192,7 +189,8 @@ export function orderContacts(payload) {
 export function getTurnos(idCompany) {
   return async function (dispatch) {
     const listTurnos = await axios.get(
-      `${host}/api/getTurnos/${idCompany}`,
+      //`${host}/api/getTurnos/${idCompany}`,
+      `http://localhost:3002/api/getTurnos/${idCompany}`,
       //"http://localhost:3002/api/getTurnos",
       //"https://peluqueriapichichu.onrender.com/api/getTurnos",
       {}
