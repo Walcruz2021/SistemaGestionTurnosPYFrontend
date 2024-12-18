@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik, Field, ErrorMessage, Form } from "formik";
-import { Label, InputContainer } from "../cssSyleComp/StyleForm";
+
 import {
   faSortAlphaDown,
   faPenSquare,
@@ -13,7 +13,7 @@ import {
   faShieldDog,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Options } from "../cssSyleComp/Table";
+
 import {
   //tra los turnos
   searchHistorialDog,
@@ -33,7 +33,6 @@ import { ButtonModal, CloseButton } from "../cssSyleComp/ModalStyles";
 import ModalAddDog from "../components/Modal/ModalAddDog";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/cssGeneral.css";
-import "./Dashboard.css";
 import ModalAddClient from "./Modal/ModalAddClient";
 import addClient2 from "../icons/addClientSmall.png";
 import addPet from "../icons/addPet.png";
@@ -48,7 +47,6 @@ import ModalAddTurn from "../components/Modal/ModalAddTurn";
 function Dashboard({
   listClientsCompany,
   setlistClients,
-  idCompanySelected,
   changeClients,
 }) {
   const companySelectedMenu = useSelector((state) => state.companySelected);

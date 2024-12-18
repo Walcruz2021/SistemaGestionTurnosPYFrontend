@@ -6,7 +6,7 @@ import {
   faTrash,
   faHandHoldingUsd,
 } from "@fortawesome/free-solid-svg-icons";
-import { Options } from "../cssSyleComp/Table";
+
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
@@ -225,7 +225,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                     <td>{turn.time}</td>
 
                     <td>
-                      <Options justify="space-between">
+                      <>
                         <button
                           className="btn"
                           onClick={
@@ -254,11 +254,11 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                           }
                           width="2rem"
                           height="2rem"
-                          buttonColor="rgba(255, 0, 0, 1)"
+                          buttoncolor="rgba(255, 0, 0, 1)"
                         >
                           <FontAwesomeIcon icon={faTrash} size="lg" />
                         </button>
-                      </Options>
+                      </>
                     </td>
                     <ModalAddVtas
                       state={newVentas}

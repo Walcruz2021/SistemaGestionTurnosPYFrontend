@@ -43,7 +43,7 @@ function AgendaTurnos() {
         try {
           setLoading(false);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
-          console.log(turnosResponse.payload,"agenta turnos base de datos")
+          //console.log(turnosResponse.payload,"agenta turnos base de datos")
           const listClientsResponse = await axios.get(
             `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
           );
@@ -78,7 +78,6 @@ function AgendaTurnos() {
             <Dashboard
               listClientsCompany={listClients}
               setlistClients={setlistClients}
-              idCompsnySelected={companySelectedMenu._id}
               //onTurnoAdded={onTurnoAdded}
               changeClients={changeClients}
             />
