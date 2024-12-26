@@ -46,7 +46,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       stateValue.name.trim() === "" ||
       stateValue.phone.trim() === "" ||
       stateValue.notesCli.trim() === "" ||
-      stateValue.address.trim() === ""
+      stateValue.address.trim() === "" 
     ) {
       Swal.fire({
         icon: "error",

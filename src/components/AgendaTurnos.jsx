@@ -43,7 +43,7 @@ function AgendaTurnos() {
         try {
           setLoading(false);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
-          console.log(turnosResponse)
+         
           const listClientsResponse = await axios.get(
             `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
           );

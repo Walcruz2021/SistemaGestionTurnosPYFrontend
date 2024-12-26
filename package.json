@@ -30,6 +30,7 @@
     "faker": "^6.6.6",
     "formik": "^2.4.6",
     "mdb-react-ui-kit": "^8.0.0",
+    "openai": "^4.77.0",
     "react": "^18.1.0",
     "react-aria": "^3.33.0",
     "react-bootstrap": "^2.10.2",

@@ -367,8 +367,8 @@ export function updateClient(payload, idElement) {
 }
 
 export function updateTurno(payload, idElement) {
-  console.log("action", payload);
-  // console.log("action", idElement)id del turno
+
+  console.log("action", payload)
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editTurno/${idElement}`,

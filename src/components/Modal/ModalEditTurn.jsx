@@ -5,32 +5,49 @@ import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {getTurnos, updateTurno} from "../../reducer/actions/actions";
+import { getTurnos, updateTurno } from "../../reducer/actions/actions";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Select from "react-select";
+import { FormGroup } from "react-bootstrap";
 
-const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,setStateDataEdit }) => {
+const ModalEditTurn = ({
+  stateEditTurn,
+  setStateEditTurn,
+  stateDataEdit,
+  setStateDataEdit,
+}) => {
+  const [stateCheck, setStateCheck] = useState({
+    isNotifications: null, // Estado inicial
+  });
 
-  const companySelectedMenu=useSelector((state)=>state.companySelected) 
+  const [newData, setNewData] = useState();
+
+  useEffect(() => {
+    if (stateDataEdit) {
+      setStateCheck({
+        isNotifications: stateDataEdit.isNotifications, // Usa el valor inicial de `stateDataEdit`
+      });
+    }
+  }, [stateDataEdit]);
+
+  useEffect(() => {
+    if (stateDataEdit) {
+      setNewData(stateDataEdit);
+    }
+  }, [stateDataEdit]);
+
+  const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
+
   const handleClose = () => setStateEditTurn(!stateEditTurn);
   const [stateValue, setStateValue] = useState({
     time: "",
     date: "",
     notesTurn: "",
   });
-
-  // useEffect(() => {
-  //   if (stateDataEdit) {
-  //     setStateValue({
-  //       notesTurn: stateDataEdit.notesTurn,
-  //       time: stateDataEdit.time,
-  //       date: stateDataEdit.date
-  //     });
-  //   }
-  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,18 +58,10 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,set
   };
 
   const handleSumbit = (e) => {
-    if (
-      !stateDataEdit.time.trim() === "" ||
-      !stateDataEdit.date.trim() === "" 
-    ) {
+    if (!newData.time.trim() === "" || !newData.date.trim() === "") {
       alert("valores vacios");
     }
-    dispatch(
-      updateTurno(
-        stateDataEdit,
-        stateDataEdit._id,
-      )
-    );
+    dispatch(updateTurno(newData, stateDataEdit._id));
     MySwal.fire({
       title: "¡Turno Editado Correctamente!",
       icon: "success",
@@ -93,7 +102,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,set
                   name="notesTurn"
                   autoFocus
                   maxLength={30}
-                  value={stateDataEdit?stateDataEdit.notesTurn:null}
+                  value={stateDataEdit ? stateDataEdit.notesTurn : null}
                   onChange={handleChange}
                   required
                 />
@@ -108,7 +117,7 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,set
                   name="time"
                   autoFocus
                   maxLength={40}
-                  value={stateDataEdit?stateDataEdit.time:null}
+                  value={stateDataEdit ? stateDataEdit.time : null}
                   onChange={handleChange}
                   required
                 />
@@ -124,15 +133,39 @@ const ModalEditTurn = ({ stateEditTurn, setStateEditTurn, turn,stateDataEdit,set
                   name="date"
                   autoFocus
                   maxLength={100}
-                  value={stateDataEdit?stateDataEdit.date:null}
+                  value={stateDataEdit ? stateDataEdit.date : null}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer className="mt-0 pt-1 pb-1">
-            {/* <Button variant="primary" type="submit" onClick={handleClose}>
+
+              <FormGroup>
+                <Form.Label className="p-2">
+                  Activacion de Notificaciones
+                </Form.Label>
+                {stateDataEdit && (
+                  <input
+                    type="checkbox"
+                    name="notifications"
+                    checked={stateCheck.isNotifications ?? false} 
+                    onChange={(e) => {
+                        setStateCheck({
+                        ...stateCheck,
+                        isNotifications: e.target.checked, 
+                        }),
+                        setNewData({
+                          ...newData,
+                          isNotifications: !stateCheck.isNotifications,
+                        });
+                      }}
+                      />
+                    )}
+                    </FormGroup>
+                    <p className="text-danger" style={{ fontSize: '12px' }}>(*) Al activar el cliente debe tener un email</p>
+                  </Form>
+                  </Modal.Body>
+                  <Modal.Footer className="mt-0 pt-1 pb-1">
+                  {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}
             <Button variant="primary" type="submit" onClick={handleSumbit}>
