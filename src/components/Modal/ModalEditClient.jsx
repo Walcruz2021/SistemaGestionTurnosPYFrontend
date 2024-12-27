@@ -16,6 +16,7 @@ const ModalEditClient = ({
   phone: initialPhone,
   address: initialAddress,
   notesCli: initialNotesCli,
+  email: initialEmail,
 }) => {
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
@@ -28,6 +29,7 @@ const ModalEditClient = ({
     phone: "" || initialPhone,
     address: "" || initialAddress,
     notesCli: "" || initialNotesCli,
+    email:"" || initialEmail
   });
 
   useEffect(() => {
@@ -37,8 +39,9 @@ const ModalEditClient = ({
       phone: "" || initialPhone,
       address: "" || initialAddress,
       notesCli: "" || initialNotesCli,
+      email: "" || initialEmail,
     });
-  }, [initialName, initialPhone, initialAddress, initialNotesCli]);
+  }, [initialName, initialPhone, initialAddress, initialNotesCli,initialEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +70,7 @@ const ModalEditClient = ({
           phone: stateValue.phone,
           address: stateValue.address,
           notesCli: stateValue.notesCli,
+          email:stateValue.email
         },
         stateValue.idClient
       )
@@ -163,6 +167,19 @@ const ModalEditClient = ({
                   value={stateValue.notesCli}
                   onChange={handleChange}
                   required
+                />
+              </Form.Group>
+              <Form.Group
+                className="mb-1"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  name="email"
+                  autoFocus
+                  maxLength={100}
+                  value={stateValue.email}
+                  onChange={handleChange}
                 />
               </Form.Group>
             </Form>

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
+
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import clientInfo from "../../icons/clientInfo.png";
 import { IoPersonAdd } from "react-icons/io5";
 import { MdOutlinePhonelinkLock } from "react-icons/md";
-import { PiNotepadLight } from "react-icons/pi";
+import { MdOutlineEmail } from "react-icons/md";
 import { RiStickyNoteAddFill } from "react-icons/ri";
 
 function ModalDescription({
@@ -18,7 +14,9 @@ function ModalDescription({
   nameClient,
   phone,
   notesTurn,
+  email,
 }) {
+
   const closeModal = () => {
     setStateModal(!state);
   };
@@ -50,12 +48,17 @@ function ModalDescription({
             />
             {phone}
           </ListGroup.Item>
-
+          <ListGroup.Item style={{ color: "#424242" }}>
+            <MdOutlineEmail
+              style={{ marginRight: "10px", fontSize: "24px" }}
+            />
+            {email?email:<lt className="text-danger">"Email no cargado en el turno"</lt>}
+          </ListGroup.Item>
           <Card.Text style={{ color: "#424242" }} className="m-2 px-4">
             <RiStickyNoteAddFill
-              style={{ marginRight: "10px", fontSize: "24px"}}
+              style={{ marginRight: "10px", fontSize: "24px" }}
             />
-            {notesTurn}
+            {notesTurn?notesTurn:<lt className="text-danger">"Notas no cargadas en el turno"</lt>}
           </Card.Text>
           {/* <ListGroup.Item></ListGroup.Item> */}
         </ListGroup>

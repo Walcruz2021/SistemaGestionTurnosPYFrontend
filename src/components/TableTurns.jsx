@@ -11,20 +11,24 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTurno, getTurnos } from "../reducer/actions/actions";
+import { deleteTurno, getTurnos,updateTurno } from "../reducer/actions/actions";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 
-const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
+const TableTurns = ({
+  setInputState,
+  order,
+  setInfo,
+  stateInfo,
+  setOrder,
+}) => {
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listTurnos = useSelector((state) => state.allTurnos);
-
+  
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
   const [stateDataEdit, setStateDataEdit] = useState();
-  const [checkedState, setCheckedState] = useState(
-    listTurnos.map(turno => turno.isNotifications)
-  )
+
 
   useEffect(() => {
     if (companySelectedMenu) {
@@ -81,8 +85,8 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleEditTurn(e, turn) {
-    setStateEditTurn(!stateEditTurn);
-    setStateDataEdit(turn);
+    setStateEditTurn(!stateEditTurn); //display the modal ModalEdit
+    setStateDataEdit(turn); //data of turn selected
   }
 
   function handleVentas(e, props) {
@@ -141,6 +145,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
       name: props.name,
       phone: props.phone,
       notesTurn: props.notesTurn,
+      email: props.email,
     });
   }
 
@@ -273,14 +278,20 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                       idDog={turn.idDog}
                       idTurno={turn._id}
                     />
-                    <td>
-                      <input
-                        type="checkbox"
-                        id={`custom-checkbox-${index}`}
-                        checked={checkedState[index]}
-                        onChange={() => handleOnChange(index)}
-                      />{" "}
-                    </td>
+
+                    {turn.isNotifications ? (
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked
+                        
+                        />
+                      </td>
+                    ) : (
+                      <td>
+                     
+                      </td>
+                    )}
                   </tr>
                 ))
               : null}
@@ -291,15 +302,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
           setStateEditTurn={setStateEditTurn}
           stateDataEdit={stateDataEdit}
           setStateDataEdit={setStateDataEdit}
-          // date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-          // // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-          // // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-          //nameCli={turn.name}
-          // nameDog={turn.nameDog}
-          // idClient={turn.Client}
-          // idDog={turn.idDog}
-          // idTurno={turn._id}
-          //turn={turn}
+  
         />
       </div>
     </>

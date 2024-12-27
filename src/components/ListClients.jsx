@@ -3,10 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getClients,
-  deleteClient,
-} from "../reducer/actions/actions";
+import { getClients, deleteClient } from "../reducer/actions/actions";
 import "./ListClients.css";
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";
@@ -24,11 +21,11 @@ const REGISTER_URL = "/createUserRolUserClient";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
-/** 
+/**
  * This function searches for a client: Its used in filtered search ListClients
  * @param {String} busc Client's Name as state
  * @returns
-*/
+ */
 
 function searchCli(busc) {
   //console.log(busc)
@@ -64,8 +61,8 @@ function ListClients() {
     visible: true,
     index: "",
     status: "",
+    email: "",
   });
-
 
   useEffect(() => {
     dispatch(getClients(companySelectedMenu._id));
@@ -83,6 +80,7 @@ function ListClients() {
       arrayPedidos: [],
       visible: true,
       status: "",
+      email: "",
     });
   }, []);
 
@@ -98,9 +96,9 @@ function ListClients() {
     });
   }
 
-/**
- * This function is executed every time a client is clicked
- */
+  /**
+   * This function is executed every time a client is clicked
+   */
   //esto se efectua cada vez que se aprieta un cliente
   function handleInfo(e, props) {
     e.preventDefault();
@@ -122,9 +120,9 @@ function ListClients() {
       arrayPedidos: props.arrayPedidos,
       index: props.index,
       status: props.status,
+      email: props.email,
     });
   }
-
 
   function handleEdit(e) {
     if (e.name) {
@@ -145,7 +143,6 @@ function ListClients() {
   const [newClient, setNewClient] = useState(false);
 
   function handleDelete({ idClient, index }) {
-
     if (idClient) {
       MySwal.fire({
         title: "¿Estas seguro?",
@@ -160,7 +157,6 @@ function ListClients() {
         if (result.isConfirmed) {
           dispatch(deleteClient(idClient));
           clients.splice(index, 1);
-         
 
           //al eliminar el lciente se sambia el stateHist de manea de que no se visualize las mascotas pertenecientes al cliente eliminado
           //el cual previamente se habia seleccionado
@@ -199,7 +195,6 @@ function ListClients() {
         text: "Debe elegir el cliente a eliminar!",
       });
   }
-
 
   return (
     <div>
@@ -249,7 +244,7 @@ function ListClients() {
         </div>
       </div>
 
-      <ModalAddClient state={newClient} setState={setNewClient}  />
+      <ModalAddClient state={newClient} setState={setNewClient} />
       <br />
       {clients ? (
         // HOVER para que semarque con el cursor
@@ -283,10 +278,10 @@ function ListClients() {
                               arrayPedidos: cli.pedidos,
                               index: index,
                               status: cli.status,
+                              email: cli.email,
                             })
                           }
                         >
-                          
                           {cli.name}
                         </td>
                         <td>{cli.phone}</td>
@@ -343,6 +338,7 @@ function ListClients() {
                           phone: inputState.phone,
                           address: inputState.address,
                           notesCli: inputState.notesCli,
+                          email: inputState.email,
                         })
                       }
                     >
@@ -365,6 +361,7 @@ function ListClients() {
         phone={inputState.phone}
         address={inputState.address}
         notesCli={inputState.notesCli}
+        email={inputState.email}
       />
     </div>
   );

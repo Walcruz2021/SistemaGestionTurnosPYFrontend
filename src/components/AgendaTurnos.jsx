@@ -16,7 +16,7 @@ import linkBack from "./ruteBack/vbledeploy";
 function AgendaTurnos() {
   // debugger
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [db, setDb] = useState(null);
 
   const [listClients, setlistClients] = useState(null);
@@ -43,7 +43,7 @@ function AgendaTurnos() {
         try {
           setLoading(false);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
-          //console.log(turnosResponse.payload,"agenta turnos base de datos")
+         
           const listClientsResponse = await axios.get(
             `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
           );
