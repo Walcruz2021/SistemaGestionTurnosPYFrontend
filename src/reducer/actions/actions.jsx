@@ -189,8 +189,8 @@ export function orderContacts(payload) {
 export function getTurnos(idCompany) {
   return async function (dispatch) {
     const listTurnos = await axios.get(
-      //`${host}/api/getTurnos/${idCompany}`,
-      `http://localhost:3002/api/getTurnos/${idCompany}`,
+      `${host}/api/getTurnos/${idCompany}`,
+      //`http://localhost:3002/api/getTurnos/${idCompany}`,
       //"http://localhost:3002/api/getTurnos",
       //"https://peluqueriapichichu.onrender.com/api/getTurnos",
       {}
