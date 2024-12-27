@@ -145,6 +145,7 @@ const TableTurns = ({
       name: props.name,
       phone: props.phone,
       notesTurn: props.notesTurn,
+      email: props.email,
     });
   }
 

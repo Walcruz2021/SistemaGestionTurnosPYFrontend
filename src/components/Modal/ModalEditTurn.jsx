@@ -161,7 +161,7 @@ const ModalEditTurn = ({
                       />
                     )}
                     </FormGroup>
-                    <p className="text-danger" style={{ fontSize: '12px' }}>(*) Al activar el cliente debe tener un email</p>
+                    <p className="text-danger" style={{ fontSize: '12px' }}>(*) Al activar notificaciones, el cliente debe tener un email</p>
                   </Form>
                   </Modal.Body>
                   <Modal.Footer className="mt-0 pt-1 pb-1">

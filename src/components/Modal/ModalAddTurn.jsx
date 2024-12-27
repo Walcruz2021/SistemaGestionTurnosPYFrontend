@@ -61,6 +61,7 @@ const ModalAddTurn = ({
         label: cliente.name,
         label2: cliente.phone,
         label3: arrayDogs,
+        label4: cliente.email
       };
     });
     setOptionsListSelect(options);
@@ -81,6 +82,7 @@ const ModalAddTurn = ({
   }
 
   function handleChangeCli(selected) {
+    console.log(selected)
     setStateInput({
       ...stateInput,
       idClient: selected.value,

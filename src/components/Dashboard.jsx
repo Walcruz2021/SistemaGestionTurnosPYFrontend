@@ -89,7 +89,9 @@ function Dashboard({
     transferencia: "",
     tarjeta: "",
     index: "",
+    email:""
   });
+
 
   const onTurnoAdded = () => {
     dispatch(getTurnos(companySelectedMenu._id));
@@ -269,6 +271,7 @@ function Dashboard({
                   nameClient={inputState.name}
                   phone={inputState.phone}
                   notesTurn={inputState.notesTurn}
+                  email={inputState.email}
                   state={stateInfo}
                   setStateModal={setInfo}
                 />
