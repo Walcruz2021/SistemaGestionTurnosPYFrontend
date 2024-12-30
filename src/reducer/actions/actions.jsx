@@ -28,15 +28,12 @@ export const SEARCH_USER = "SEARCH_USER";
 export const RESET_COMPANY_SELECTED = "RESET_COMPANY_SELECTED";
 export const RESET_ALL_CLIENTS = "RESET_ALL_CLIENTS";
 
-
 export const setUser = (user) => ({
   type: GET_USER,
   payload: user,
 });
 
-
 export const listenToAuthChanges = () => (dispatch) => {
- 
   auth.onAuthStateChanged((userCred) => {
     if (userCred) {
       const { email, emailVerified, displayName } = userCred;
@@ -64,27 +61,33 @@ export function addTurnos(payload) {
 }
 
 export const resetCompanySelected = () => ({
-
   type: RESET_COMPANY_SELECTED,
 });
 
 export const resetAllClients = () => ({
-  
   type: RESET_ALL_CLIENTS,
 });
 
 export function searchUser(email) {
   return async function (dispatch) {
     try {
-      const response = await axios.get(
-        `${host}/api/searchUser/${email}`
-      );
+      const response = await axios.get(`${host}/api/searchUser/${email}`);
+
       dispatch({
         payload: response,
         type: SEARCH_USER,
       });
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        // Si hay una respuesta con un código de error
+
+        dispatch({
+          type: SEARCH_USER,
+          payload: error.response, // Enviamos la respuesta de error a Redux
+        });
+      } else {
+        console.log("Error general:", error);
+      }
     }
   };
 }
@@ -93,10 +96,7 @@ export function addBreak(payload) {
   console.log(payload, "action");
   return async function (dispatch) {
     try {
-      const newBreak = await axios.post(
-        `${host}/api/addBreak`,
-        payload
-      );
+      const newBreak = await axios.post(`${host}/api/addBreak`, payload);
       return newBreak;
     } catch (error) {
       console.log(error);
@@ -137,7 +137,6 @@ export function addUser(payload) {
 }
 
 export function addCompany(payload) {
-  
   return async function (dispatch) {
     try {
       const newCompany = await axios.post(
@@ -159,7 +158,6 @@ export function orderTurnos(payload) {
     payload,
   };
 }
-
 
 //funciona
 export function addClient(payload) {
@@ -206,7 +204,6 @@ export function getTurnos(idCompany) {
 
 //funciona bien
 export function getClients(idCompany) {
-
   return async function (dispatch) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
@@ -228,7 +225,6 @@ export function getClients(idCompany) {
     //   });
   };
 }
-
 
 /**
  * 
@@ -259,9 +255,6 @@ export function verificationCompaniesExist(email) {
   };
 }
 
-
-
-
 //funciona bien
 export function searchHistorialDog(payload) {
   //console.log(payload)
@@ -284,9 +277,7 @@ export function get_clients_id(id_cli) {
   return async function (dispatch) {
     try {
       // const detail=await axios.get("/api/listVentas/"+id_vta)
-      const cliBusc = await axios.get(
-        `${host}/api/listClients/${id_cli}`
-      );
+      const cliBusc = await axios.get(`${host}/api/listClients/${id_cli}`);
       // console.log(detail,"resultado request en actions")
       return dispatch({
         type: GET_CLIENTS_ID,
@@ -340,8 +331,6 @@ export function deleteTurno(turnoId) {
   };
 }
 
-
-
 //funciona bien
 export function updateClient(payload, idElement) {
   // console.log("action", payload)
@@ -365,8 +354,7 @@ export function updateClient(payload, idElement) {
 }
 
 export function updateTurno(payload, idElement) {
-
-  console.log("action", payload)
+  console.log("action", payload);
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editTurno/${idElement}`,
@@ -408,7 +396,6 @@ export function getNameClients(payload) {
 }
 
 export function functionCompanySelected(payload) {
-
   return {
     type: FUNCTION_COMPANY_SELECTED,
     payload,
