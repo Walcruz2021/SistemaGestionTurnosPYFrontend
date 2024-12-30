@@ -71,7 +71,6 @@ function rootReducer(state = initialState, action) {
   // el action  es la respuesta que llega del archivo actions
   // si trae valos quiere decir que actions realizo la request como corresponde
   //console.log(action.payload, "reducer (valores del actions)");
-
   // imprmiira esto de abajao,dependiendo de la accion que se haya elegido
   // Object { type: "GET_RECIPE", payload: (13) […] }
   switch (action.type) {
@@ -86,7 +85,7 @@ function rootReducer(state = initialState, action) {
         ...state,
         userEmailSearch: action.payload,
       };
-
+  
     case GET_TURNOS:
       return {
         ...state,
