@@ -27,6 +27,7 @@ export const FUNCTION_COMPANY_SELECTED = "FUNCTION_COMPANY_SELECTED";
 export const SEARCH_USER = "SEARCH_USER";
 export const RESET_COMPANY_SELECTED = "RESET_COMPANY_SELECTED";
 export const RESET_ALL_CLIENTS = "RESET_ALL_CLIENTS";
+export const RESET_USER_SEARCH="RESET_USER_SEARCH"
 
 export const setUser = (user) => ({
   type: GET_USER,
@@ -91,6 +92,10 @@ export function searchUser(email) {
     }
   };
 }
+
+export const resetUserSearch = () => ({
+  type: RESET_USER_SEARCH,
+});
 
 export function addBreak(payload) {
   console.log(payload, "action");

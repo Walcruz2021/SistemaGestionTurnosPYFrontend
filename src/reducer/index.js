@@ -25,6 +25,7 @@ import {
   SEARCH_USER,
   RESET_COMPANY_SELECTED,
   RESET_ALL_CLIENTS,
+  RESET_USER_SEARCH
 } from "./actions/actions";
 
 import {
@@ -85,7 +86,13 @@ function rootReducer(state = initialState, action) {
         ...state,
         userEmailSearch: action.payload,
       };
-  
+
+    case RESET_USER_SEARCH:
+      return {
+        ...state,
+        userEmailSearch: null,
+      };
+
     case GET_TURNOS:
       return {
         ...state,
@@ -338,11 +345,10 @@ function rootReducer(state = initialState, action) {
       };
 
     case RESET_COMPANY_SELECTED:
-      
       return {
         ...state,
         companySelected: null,
-        arrayCompanies:[]
+        arrayCompanies: [],
       };
 
     case RESET_ALL_CLIENTS:

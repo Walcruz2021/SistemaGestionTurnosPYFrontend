@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { sendPasswordResetEmail } from "@firebase/auth";
 import { auth } from "../../api/configFirebase";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUser } from "../../reducer/actions/actions";
+import { searchUser , resetUserSearch} from "../../reducer/actions/actions"; // Mantenemos la acción de buscar usuario
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -18,20 +18,17 @@ function ModalRestPassword({ show, setShow }) {
     setEmail("");
   };
   const handleShow = () => setShow(true);
-  //const [modalUser, setModalUser] = useState(false);
-  const [email, setEmail] = useState();
 
-  const [alertTemp, setAlertTemp] = useState(false);
+  const [email, setEmail] = useState();
   const [validationEmail, setValidationEmail] = useState(false);
+  const [alertTemp, setAlertTemp] = useState(false);
   const MySwal = withReactContent(Swal);
-  const userEmailSearch = useSelector((state) => state.userEmailSearch);
 
   const handleChange = (event) => {
     const newEmail = event.target.value;
     setEmail(newEmail);
 
     if (newEmail) {
-      // Updated regular expression to be case-insensitive and allow for longer TLDs
       const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
       if (emailPattern.test(newEmail)) {
         setValidationEmail(true);
@@ -42,55 +39,67 @@ function ModalRestPassword({ show, setShow }) {
   };
 
   const sendEmail = () => {
-    dispatch(searchUser(email));
     functionAlertUser();
     setShow(false);
   };
 
-
   const functionAlertUser = async () => {
-    if (userSearch && userSearch.status) {
-      // Asegurarse de que userSearch está definido
-      if (userSearch.status === 200) {
-        let timerInterval;
-        Swal.fire({
-          title: "Revisando el Email!",
-          html: "La ventana se cerrará en <b></b> milliseconds.",
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-            const timer = Swal.getPopup().querySelector("b");
-            timerInterval = setInterval(() => {
-              timer.textContent = `${Swal.getTimerLeft()}`;
-            }, 100);
-          },
-          willClose: () => {
-            setAlertTemp(false);
-            clearInterval(timerInterval);
-          },
-        }).then(async (result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-            await sendPasswordResetEmail(auth, email);
-            Swal.fire("Se envió Email de Reestablecimiento");
-            //setModalUser(false);
-          }
-        });
+    let timerInterval;
+    Swal.fire({
+      title: "Revisando el Email!",
+      html: "La ventana se cerrará en <b></b> milliseconds.",
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        setAlertTemp(false);
+        clearInterval(timerInterval);
+      },
+    }).then(async (result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        // Realizamos la búsqueda
+        dispatch(searchUser(email));
 
-      } else if (userSearch.status === 404) {
-        Swal.fire("Email No Registrado");
-       // setModalUser(true);
+        // Después de realizar la búsqueda, podemos esperar un ciclo de renderizado y actualizar el estado de userSearch
       }
-    }
+    });
   };
+
+  // Esta función se ejecuta cuando el valor de userSearch cambia, y la siguiente búsqueda debe restablecer el valor de userSearch a null.
+  useEffect(() => {
+    if (userSearch) {
+      const handleResetPassword = async () => {
+        if (userSearch.status === 200) {
+          try {
+            await sendPasswordResetEmail(auth, email); // Resetear contraseña
+            Swal.fire("Se envió Email de Reestablecimiento");
+          } catch (error) {
+            console.error("Error al enviar el correo de reestablecimiento:", error);
+            Swal.fire("Error al enviar el Email de Reestablecimiento");
+          }
+        } else if (userSearch.status === 404) {
+          Swal.fire("Email No Registrado");
+        }
+
+        // Limpiamos userSearch después de procesar la respuesta.
+        setTimeout(() => {
+          dispatch(resetUserSearch());
+        }, 500); // Limpiar después de un pequeño retraso
+      };
+
+      handleResetPassword();
+    }
+  }, [userSearch, dispatch, email]); // Añadir 'email' en las dependencias
 
   return (
     <div className="mt-2 mb-2">
-      <Button
-        variant
-        onClick={handleShow}
-        className="buttonModal anton-regular"
-      >
+      <Button variant onClick={handleShow} className="buttonModal anton-regular">
         ¿Olvidaste la Contraseña?
       </Button>
 
@@ -106,7 +115,6 @@ function ModalRestPassword({ show, setShow }) {
                 type="email"
                 placeholder="name@example.com"
                 autoFocus
-                //value={email}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -117,7 +125,7 @@ function ModalRestPassword({ show, setShow }) {
             Cerrar
           </Button>
           {email && validationEmail ? (
-            <Button variant="primary" onClick={(handleClose, sendEmail)}>
+            <Button variant="primary" onClick={sendEmail}>
               Buscar Email
             </Button>
           ) : null}
