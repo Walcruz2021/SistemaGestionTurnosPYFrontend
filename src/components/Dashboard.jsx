@@ -44,11 +44,7 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 
-function Dashboard({
-  listClientsCompany,
-  setlistClients,
-  changeClients,
-}) {
+function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
 
@@ -87,9 +83,8 @@ function Dashboard({
     transferencia: "",
     tarjeta: "",
     index: "",
-    email:""
+    email: "",
   });
-
 
   // const onTurnoAdded = () => {
   //   dispatch(getTurnos(companySelectedMenu._id));
@@ -337,43 +332,52 @@ function Dashboard({
               {vtaxClient.data.vta ? (
                 <>
                   <div className="titDetails">
-                    <h5>Detalle Mascota</h5>
+                    <h5 className="text-center">Detalle Mascota</h5>
                   </div>
-                  <div className="containerHistDog">
-                    <div
-                      className="grid-item "
-                      key={vtaxClient.data.vta[0].Dog._id}
-                    >
-                      <p>
-                        <FontAwesomeIcon icon={faBone} size="lg" />
-                      </p>
-                      <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
-                    </div>
+                  <div className="container py-3">
+                    <div className="row justify-content-center">
+                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1"
+                        key={vtaxClient.data.vta[0].Dog._id}
+                      >
+                        <div className="card-body text-center">
+                          <p>
+                            <FontAwesomeIcon icon={faBone} size="lg" />
+                          </p>
+                          <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                        </div>
+                      </div>
 
-                    <div className="grid-item">
-                      <p>
-                        <FontAwesomeIcon icon={faScaleBalanced} size="lg" />
-                      </p>
-                      <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
-                    </div>
+                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                        <div className="card-body text-center">
+                          <p>
+                            <FontAwesomeIcon icon={faScaleBalanced} size="lg" />
+                          </p>
+                          <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
+                        </div>
+                      </div>
 
-                    {/* <div className="grid-item">
-                      <p>
-                        <FontAwesomeIcon icon={faShieldDog} size="lg" />
-                      </p>
-                      <p>{vtaxClient.data.vta[0].Dog.raza}</p>
-                    </div> */}
+                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                        <div className="card-body text-center">
+                          <p>
+                            <FontAwesomeIcon icon={faShieldDog} size="lg" />
+                          </p>
+                          <p>{vtaxClient.data.vta[0].Dog.raza}</p>
+                        </div>
+                      </div>
 
-                    <div className="grid-item">
-                      <p>
-                        <FontAwesomeIcon icon={faNoteSticky} size="lg" />
-                      </p>
-                      <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
+                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                        <div className="card-body  text-center">
+                          <p>
+                            <FontAwesomeIcon icon={faNoteSticky} size="lg" />
+                          </p>
+                          <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </>
               ) : null}
-            
             </div>
 
             <div className="container-lg table-responsive mb-4">

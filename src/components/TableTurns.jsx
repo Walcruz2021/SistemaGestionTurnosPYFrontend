@@ -230,7 +230,7 @@ const TableTurns = ({
                     <td>{turn.time}</td>
 
                     <td>
-                      <>
+                      <div className="d-flex justify-content-between w-100">
                         <button
                           className="btn"
                           onClick={
@@ -263,8 +263,9 @@ const TableTurns = ({
                         >
                           <FontAwesomeIcon icon={faTrash} size="lg" />
                         </button>
-                      </>
+                      </div>
                     </td>
+
                     <ModalAddVtas
                       state={newVentas}
                       setState={setNewVentas}

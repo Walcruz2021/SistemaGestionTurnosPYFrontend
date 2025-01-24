@@ -6,6 +6,7 @@ export const GET_VENTAS = "GET_VENTAS";
 export const ORDER_VENTAS = "ORDER_VENTAS";
 export const DELETE_DOG = "DELETE_DOG";
 export const RESET_VENTASxANIOandPARAM="RESET_VENTASxANIOandPARAM"
+export const DELETE_TURNO="DELETE_TURNO"
 import axios from 'axios';
 import host from "../../components/ruteBack/vbledeploy";
 
@@ -32,16 +33,7 @@ export function asignedVentas(payload, id_client) {
         `${host}/api/addVentas/${id_client}`,
         payload
       );
-      await axios
-        .delete(
-          //`http://localhost:3002/api/deleteTurno/${payload.idTurno}`
-          `${host}/api/deleteTurno/${payload.idTurno}`
-        )
-        .then((data) => {
-          return dispatch({
-            type: DELETE_TURNO,
-          });
-        });
+   
       return newVentas;
     } catch (error) {
       console.log(error);
