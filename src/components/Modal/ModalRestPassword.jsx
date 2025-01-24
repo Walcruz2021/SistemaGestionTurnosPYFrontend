@@ -95,7 +95,7 @@ function ModalRestPassword({ show, setShow }) {
 
       handleResetPassword();
     }
-  }, [userSearch, dispatch, email]); // Añadir 'email' en las dependencias
+  }, [userSearch, dispatch, email]); 
 
   return (
     <div className="mt-2 mb-2">
