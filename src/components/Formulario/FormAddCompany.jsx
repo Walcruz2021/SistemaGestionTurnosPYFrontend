@@ -29,7 +29,9 @@ const FormAddCompany = () => {
     cuit: "",
   });
 
-  //console.log(stateValue);
+  const [selectedOption,setSelectedOption]=useState("")
+
+
   //logIn with email of gmail
 
   const handleChange = (e) => {
@@ -39,6 +41,10 @@ const FormAddCompany = () => {
       [name]: value,
     }));
   };
+
+const handleChangeRadioB=(event)=>{
+  setSelectedOption(event.target.value);
+}
 
   const handleSumbit = async (e) => {
     if (
@@ -63,6 +69,7 @@ const FormAddCompany = () => {
             province: "Salta",
             country: "Argentina",
             emailUser: loginUser.email,
+            category:selectedOption
           })
         );
         MySwal.fire({
@@ -134,11 +141,24 @@ const FormAddCompany = () => {
           maxLength="8"
         />
 
+        <div className="d-flex justify-content-between w-100">
+          <label className="p-2">
+            <input className="m-2" type="radio" value="medicina" checked={selectedOption==="medicina"} onChange={handleChangeRadioB}  />
+            Medicina General
+          </label>
+
+          <label className="p-2">
+            <input className="m-2" type="radio" value="peluAndVet" checked={selectedOption==="peluAndVet"} onChange={handleChangeRadioB} />
+            Veterinaria o Peluqueria
+          </label>
+        </div>
+
         <div className="text-danger msgAlertInput">* Valores Obligatorios</div>
         <div className="text-center pt-2 mb-5 pb-1">
-          {!stateValue.nameCompany || 
+          {!stateValue.nameCompany ||
           !stateValue.address ||
-          !stateValue.cuit
+          !stateValue.cuit ||
+          !selectedOption
           ? (
             <button
               className="btn btn-primary"

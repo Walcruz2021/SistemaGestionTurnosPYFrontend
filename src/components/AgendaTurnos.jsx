@@ -43,11 +43,6 @@ function AgendaTurnos() {
         try {
           setLoading(false);
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
-         
-          const listClientsResponse = await axios.get(
-            `${linkBack}/api/listClientsCompany/${companySelectedMenu._id}`
-          );
-          setlistClients(listClientsResponse.data);
           setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
           setError(err);
@@ -67,30 +62,7 @@ function AgendaTurnos() {
         <div className="titGral">
           <h1>DASHBOARD</h1>
         </div>
-        <div>
-          {loading ? (
-            <div className="loader-container">
-              <div className="spinner"></div>
-            </div>
-          ) : error ? (
-            <Message /> // Aquí se muestra el componente de error si hay un error
-          ) : db ? (
-            <Dashboard
-              listClientsCompany={listClients}
-              setlistClients={setlistClients}
-              //onTurnoAdded={onTurnoAdded}
-              changeClients={changeClients}
-            />
-          ) : (
-            //when not exists tuns
-            <Dashboard
-              turnos={db}
-              listClientsCompany={listClients}
-              setlistClients={setlistClients}
-              changeClients={changeClients}
-            />
-          )}
-        </div>
+        < Dashboard setlistClients={setlistClients} changeClients={changeClients} />
       </>
     </>
   );

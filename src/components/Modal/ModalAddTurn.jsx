@@ -82,7 +82,7 @@ const ModalAddTurn = ({
   }
 
   function handleChangeCli(selected) {
-    console.log(selected)
+  
     setStateInput({
       ...stateInput,
       idClient: selected.value,

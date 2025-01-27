@@ -37,16 +37,17 @@ import ModalAddClient from "./Modal/ModalAddClient";
 import addClient2 from "../icons/addClientSmall.png";
 import addPet from "../icons/addPet.png";
 import iconAddTurn from "../icons/addTurn.png";
-import listClients from "../icons/listClients.png";
+import iconClients from "../icons/listClients.png";
 import ModalBoostrap from "react-bootstrap/Modal";
 import TableTurns from "./TableTurns";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 
-function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
+function Dashboard({ changeClients }) {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
+  const listClients = useSelector((state) => state.allClients);
 
   const [stateListTurn, setListTurn] = useState([]);
   const vtaxClient = useSelector((state) => state.vtaxClient);
@@ -86,13 +87,17 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
     email: "",
   });
 
-  // const onTurnoAdded = () => {
-  //   dispatch(getTurnos(companySelectedMenu._id));
-  // };
+  const onTurnoAdded = () => {
+    dispatch(getTurnos(companySelectedMenu._id));
+  };
 
   const addTurn = () => {
     setNewTurno(!newTurno);
   };
+
+  // useEffect(() => {
+  //     dispatch(getClients(companySelectedMenu._id));
+  //   }, []);
 
   const [stateAddTurn, setStateAddTurn] = useState(false);
 
@@ -190,6 +195,14 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
     // console.log("se hizo click");
   };
 
+  const messageClient = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Debe Ingresar un Cliente!",
+    });
+  };
+
   return (
     <>
       <div>
@@ -209,42 +222,73 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
               </div>
             </div>
 
-            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-              <div className="text-center">
-                <div className="card-body">
-                  <Link to="/listClient">
+            {listClients ? (
+              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="text-center">
+                  <div className="card-body">
+                    <Link to="/listClient">
+                      <button className="btn btn-link">
+                        <img src={iconClients} />
+                      </button>
+                    </Link>
+                  </div>
+            
+                </div>
+              </div>
+            ) : (
+              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="text-center">
+                  <div className="card-body">
                     <button className="btn btn-link">
-                      <img src={listClients} />
+                      <img src={iconClients} onClick={messageClient} />
                     </button>
-                  </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-              <div className="text-center">
-                <div className="card-body">
-                  <button className="btn btn-link">
-                    <img src={addPet} onClick={ModalAddDogActive} />
-                  </button>
-                  <ModalAddDog
-                    stateAddDog={stateAddDog}
-                    setStateAddDog={setStateAddDog}
-                    changeClients={changeClients}
-                  />
+            {listClients ? (
+              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="text-center">
+                  <div className="card-body">
+                    <button className="btn btn-link">
+                      <img src={addPet} onClick={ModalAddDogActive} />
+                    </button>
+                    <ModalAddDog
+                      stateAddDog={stateAddDog}
+                      setStateAddDog={setStateAddDog}
+                      changeClients={changeClients}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="text-center">
+                  <div className="card-body">
+                    <button className="btn btn-link">
+                      <img src={addPet} onClick={messageClient} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
-            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-              <div className="text-center">
-                <div className="card-body">
-                  <button className="btn btn-link" onClick={addTurn}>
-                    <img src={iconAddTurn} />
-                  </button>
+            {listClients ? (
+              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="text-center">
+                  <div className="card-body">
+                    <button className="btn btn-link" onClick={addTurn}>
+                      <img src={iconAddTurn} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <button className="btn btn-link" onClick={messageClient}>
+                <img src={iconAddTurn} />
+              </button>
+            )}
           </div>
         </div>
 
@@ -282,7 +326,6 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
           // onTurnoAdded={onTurnoAdded}
           stateAddTurn={newTurno}
           setStateAddTurn={setNewTurno}
-          listClientsCompany={listClientsCompany}
         />
       </div>
 
@@ -302,10 +345,8 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
             stateInfo={stateInfo}
           />
 
-          {/* SE DEBE CONFECCIONAR */}
           <ModalEditTurn />
 
-          {/* SELECTOR DE MASCOTAS PARA EL HISTORIAL */}
           {!stateInfo && !newTurno && !newClient && !newDog ? (
             <div className="container-lg pb-4">
               <Select
@@ -336,7 +377,8 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
                   </div>
                   <div className="container py-3">
                     <div className="row justify-content-center">
-                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1"
+                      <div
+                        className="col-12 col-md-4 d-flex justify-content-center mb-1"
                         key={vtaxClient.data.vta[0].Dog._id}
                       >
                         <div className="card-body text-center">
@@ -373,7 +415,6 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
                           <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </>
@@ -422,7 +463,7 @@ function Dashboard({ listClientsCompany, setlistClients, changeClients }) {
           </>
         ) : (
           <>
-            <div className="container-lg p-2 mb-2">
+            <div className="container-lg p-2 mb-2 text-center">
               <h5 className="alertHist">No existe historial de Mascota</h5>
             </div>
           </>

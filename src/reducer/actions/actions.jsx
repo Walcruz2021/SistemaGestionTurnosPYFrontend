@@ -46,7 +46,7 @@ export const listenToAuthChanges = () => (dispatch) => {
 };
 
 export function addTurnos(payload) {
-  console.log(payload, "action");
+
   return async function (dispatch) {
     try {
       const newTurno = await axios.post(
@@ -98,7 +98,7 @@ export const resetUserSearch = () => ({
 });
 
 export function addBreak(payload) {
-  console.log(payload, "action");
+
   return async function (dispatch) {
     try {
       const newBreak = await axios.post(`${host}/api/addBreak`, payload);
@@ -111,7 +111,7 @@ export function addBreak(payload) {
 
 //funciona
 export function addDog(payload, idClient) {
-  console.log(payload, "action");
+
   // console.log(id,"action")
   return async function (dispatch) {
     try {
@@ -142,6 +142,7 @@ export function addUser(payload) {
 }
 
 export function addCompany(payload) {
+  
   return async function (dispatch) {
     try {
       const newCompany = await axios.post(
@@ -166,7 +167,7 @@ export function orderTurnos(payload) {
 
 //funciona
 export function addClient(payload) {
-  console.log("action", payload);
+
   return async function (dispatch) {
     try {
       const newClient = await axios.post(
@@ -213,7 +214,7 @@ export function getClients(idCompany) {
     const listCli = await axios.get(
       //"http://localhost:3002/api/listClients",
       //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
-      `${host}/api/listClientsCompany/${idCompany}`,
+      `${host}/api/listClientsCompany/${idCompany}`,   
       {}
     );
     return dispatch({
@@ -269,7 +270,7 @@ export function searchHistorialDog(payload) {
       //`http://localhost:3002/api/ventaCli/${payload}`
       `${host}/api/ventaCli/${payload}`
     );
-    console.log(vtaxClient, "resultado");
+
     return dispatch({
       type: SEARCH_VTA_CLIENT,
       payload: vtaxClient,
@@ -324,7 +325,7 @@ export function deleteDog(idDog) {
 //funciona bien pero no se refresca la pagina
 
 export function deleteTurno(turnoId) {
-  console.log(turnoId, "actions");
+
   return async function (dispatch) {
     await axios.delete(
       //`http://localhost:3002/api/deleteTurno/${turnoId}`
@@ -359,7 +360,7 @@ export function updateClient(payload, idElement) {
 }
 
 export function updateTurno(payload, idElement) {
-  console.log("action", payload);
+
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editTurno/${idElement}`,
@@ -380,7 +381,7 @@ export function updateTurno(payload, idElement) {
 
 //se edita pero no se guardan los cambios de select
 export function updateDog(payload, idDog) {
-  console.log("action", payload);
+
   return async function (dispatch) {
     await axios.put(
       //`http://localhost:3002/api/editDog/${idDog}`, payload
