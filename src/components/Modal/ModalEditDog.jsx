@@ -34,7 +34,7 @@ const ModalEditDog = ({
     tamaño: "" || initialTam,
   });
 
-  console.log(stateValue.raza)
+ 
   useEffect(() => {
     setStateValue({
       idDog: "" || initialIdDog,
@@ -44,7 +44,6 @@ const ModalEditDog = ({
       tamaño:""||initialTam
     });
   },[initialIdDog,initialNameDog,initialNotaP,initialRaza,initialTam]);
-  console.log(stateValue);
   const handleClose = () => {
     setStateModal(!state);
   };

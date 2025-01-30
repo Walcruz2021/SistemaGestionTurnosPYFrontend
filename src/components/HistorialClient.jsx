@@ -36,7 +36,7 @@ export default function HistorialClient({state,stateHist,setStateHist
   );
 
   useEffect(()=>{
-    console.log('El estado stateDog ha cambiado:', stateDog);
+    //console.log('El estado stateDog ha cambiado:', stateDog);
   
   },[stateDog])
 

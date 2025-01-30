@@ -42,6 +42,7 @@ function AgendaTurnos() {
       if (companySelectedMenu) {
         try {
           setLoading(false);
+          dispatch(getClients(companySelectedMenu._id)); 
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
           setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
