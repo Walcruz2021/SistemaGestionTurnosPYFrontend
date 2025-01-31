@@ -29,18 +29,24 @@ import {
 const AppRoutes = () => {
   const loginUser = useSelector((state) => state.user);
 
+  //companiesList es el listado de empresas que tiene el user logueado
   const companiesList = useSelector((state) => state.arrayCompanies.data);
-  //console.log(companiesList);
+
+
+  //companySelected es la empresa que se elije del listado de empresas visualizado en el sideBar
   const companySelected = useSelector((state) => state.companySelected);
+
 
   const navigate = useNavigate();
   const [stateCompanyGralNav, setCompanyGralNav] = useState(null);
+
+
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listenToAuthChanges());
+    dispatch(listenToAuthChanges())
   }, [dispatch]);
 
   useEffect(() => {
@@ -53,7 +59,6 @@ const AppRoutes = () => {
   useEffect(() => {
       if (companiesList && companiesList.companies) {
         if (!companySelected) {
-          
           setCompanyGralNav(companiesList.companies[0]);
           dispatch(functionCompanySelected(companiesList.companies[0]));
           setIsLoading(false); // Cambiar estado de carga a falso

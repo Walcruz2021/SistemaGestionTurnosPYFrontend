@@ -44,7 +44,7 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 
-function Dashboard({ changeClients }) {
+function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
   const listClients = useSelector((state) => state.allClients);
@@ -95,9 +95,11 @@ function Dashboard({ changeClients }) {
     setNewTurno(!newTurno);
   };
 
-  // useEffect(() => {
-  //     dispatch(getClients(companySelectedMenu._id));
-  //   }, []);
+  useEffect(() => {
+    if (companySelectedMenu) {
+      dispatch(getClients(companySelectedMenu._id));
+    }
+  }, [companySelectedMenu]);
 
   const [stateAddTurn, setStateAddTurn] = useState(false);
 
@@ -232,7 +234,6 @@ function Dashboard({ changeClients }) {
                       </button>
                     </Link>
                   </div>
-            
                 </div>
               </div>
             ) : (
@@ -257,7 +258,6 @@ function Dashboard({ changeClients }) {
                     <ModalAddDog
                       stateAddDog={stateAddDog}
                       setStateAddDog={setStateAddDog}
-                      changeClients={changeClients}
                     />
                   </div>
                 </div>

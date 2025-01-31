@@ -28,10 +28,6 @@ function AgendaTurnos() {
   const listAllClients=useSelector((state)=>state.allClients)
 
 
-  const changeClients = () => {
-    dispatch(getClients(companySelectedMenu._id)); 
-  };
-
 
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
@@ -42,7 +38,6 @@ function AgendaTurnos() {
       if (companySelectedMenu) {
         try {
           setLoading(false);
-          dispatch(getClients(companySelectedMenu._id)); 
           const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
           setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
@@ -63,7 +58,7 @@ function AgendaTurnos() {
         <div className="titGral">
           <h1>DASHBOARD</h1>
         </div>
-        < Dashboard setlistClients={setlistClients} changeClients={changeClients} />
+        < Dashboard setlistClients={setlistClients} />
       </>
     </>
   );
