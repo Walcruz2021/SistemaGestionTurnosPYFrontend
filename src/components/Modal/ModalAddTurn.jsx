@@ -69,11 +69,10 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   }, [listClientsAll]);
 
   useEffect(() => {
-    if (
-      companySelectedMenu.category &&
-      companySelectedMenu.category === "medicina"
-    ) {
-      setStateCategory("Paciente");
+ if (companySelectedMenu) {
+      if (companySelectedMenu.category) {
+        setStateCategory("Paciente");
+      }
     }
   }, [companySelectedMenu]);
 

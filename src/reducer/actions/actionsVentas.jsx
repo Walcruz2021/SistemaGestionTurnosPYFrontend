@@ -12,7 +12,7 @@ import host from "../../components/ruteBack/vbledeploy";
 
 //no esta eliminando el turno al ingresar la venta
 export function asignedVentas(payload, id_client) {
-  console.log(payload, "actions");
+
   // date: "2022-05-30"
   // mes:04
   // año:2022

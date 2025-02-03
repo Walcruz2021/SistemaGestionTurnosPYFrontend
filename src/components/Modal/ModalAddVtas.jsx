@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteTurno, getTurnos } from "../../reducer/actions/actions";
-import { asignedVentas} from "../../reducer/actions/actionsVentas";
+import { asignedVentas } from "../../reducer/actions/actionsVentas";
 
 const ModalAddVtas = ({
   state,
@@ -21,10 +21,18 @@ const ModalAddVtas = ({
   idTurno,
 }) => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
+
   const dispatch = useDispatch();
   const [visibleCheckE, setVisibleCheckE] = useState(false);
   const [visibleCheckT, setVisibleCheckT] = useState(false);
   const [visibleCheckB, setVisibleCheckB] = useState(false);
+  const [stateCategory, setStateCategory] = useState("Cliente");
+
+  useEffect(() => {
+    if (companySelectedMenu.category) {
+      setStateCategory("Paciente");
+    }
+  }, [companySelectedMenu, dispatch]);
 
   const handleCheckChange = (type) => {
     if (type === "Efectivo") {
@@ -102,6 +110,7 @@ const ModalAddVtas = ({
       transferencia: stateValue.transferencia,
       tarjeta: stateValue.tarjeta,
       efectivo: stateValue.efectivo,
+      category:stateCategory
     };
     dispatch(asignedVentas(dataVta, idClient));
     MySwal.fire({
@@ -238,6 +247,5 @@ const ModalAddVtas = ({
     </>
   );
 };
-
 
 export default ModalAddVtas;
