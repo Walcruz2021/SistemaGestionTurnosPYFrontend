@@ -11,28 +11,31 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTurno, getTurnos,updateTurno } from "../reducer/actions/actions";
+import {
+  deleteTurno,
+  getTurnos,
+  updateTurno,
+} from "../reducer/actions/actions";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 
-const TableTurns = ({
-  setInputState,
-  order,
-  setInfo,
-  stateInfo,
-  setOrder,
-}) => {
+const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
+
   const listTurnos = useSelector((state) => state.allTurnos);
-  
+
+  const [stateCategory, setStateCategory] = useState("Cliente");
+
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
   const [stateDataEdit, setStateDataEdit] = useState();
 
-
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(getTurnos(companySelectedMenu._id));
+      if (companySelectedMenu.category) {
+        setStateCategory("Paciente");
+      }
     }
   }, [companySelectedMenu, dispatch]);
 
@@ -194,7 +197,8 @@ const TableTurns = ({
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th>Nombre Mascota</th>
+              <th>Nombre {stateCategory}</th>
+
               <th>
                 Fecha{" "}
                 <FontAwesomeIcon
@@ -222,7 +226,7 @@ const TableTurns = ({
                       style={{ cursor: "pointer" }}
                       title="Informe Cliente"
                     >
-                      {turn.nameDog}
+                      {stateCategory==="Paciente"?turn.name : turn.nameDog }
                     </td>
                     <td>
                       {convertDateFormat(turn.date)} - {convertDay(turn.date)}
@@ -282,16 +286,10 @@ const TableTurns = ({
 
                     {turn.isNotifications ? (
                       <td>
-                        <input
-                          type="checkbox"
-                          checked
-                        
-                        />
+                        <input type="checkbox" checked />
                       </td>
                     ) : (
-                      <td>
-                     
-                      </td>
+                      <td></td>
                     )}
                   </tr>
                 ))
@@ -303,7 +301,6 @@ const TableTurns = ({
           setStateEditTurn={setStateEditTurn}
           stateDataEdit={stateDataEdit}
           setStateDataEdit={setStateDataEdit}
-  
         />
       </div>
     </>

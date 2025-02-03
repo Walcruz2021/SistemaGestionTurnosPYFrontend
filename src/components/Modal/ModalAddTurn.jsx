@@ -10,18 +10,13 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
-const ModalAddTurn = ({
-  
-  stateAddTurn,
-  setStateAddTurn,
-  turn,
-}) => {
+const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const listClientsAll = useSelector((state) => state.allClients);
-
+  const [stateCategory, setStateCategory] = useState("Cliente");
   const handleClose = () => setStateAddTurn(!stateAddTurn);
   const [stateInput, setStateInput] = useState({
     date: "",
@@ -61,7 +56,7 @@ const ModalAddTurn = ({
         label: cliente.name,
         label2: cliente.phone,
         label3: arrayDogs,
-        label4: cliente.email
+        label4: cliente.email,
       };
     });
     setOptionsListSelect(options);
@@ -73,6 +68,15 @@ const ModalAddTurn = ({
     }
   }, [listClientsAll]);
 
+  useEffect(() => {
+    if (
+      companySelectedMenu.category &&
+      companySelectedMenu.category === "medicina"
+    ) {
+      setStateCategory("Paciente");
+    }
+  }, [companySelectedMenu]);
+
   function handleChangeDog(selected) {
     setStateInput({
       ...stateInput,
@@ -82,7 +86,6 @@ const ModalAddTurn = ({
   }
 
   function handleChangeCli(selected) {
-  
     setStateInput({
       ...stateInput,
       idClient: selected.value,
@@ -110,7 +113,8 @@ const ModalAddTurn = ({
   const handleSubmit = () => {
     if (
       stateInput.name.trim() === "" ||
-      stateInput.nameDog.trim() === "" ||
+      stateCategory==="Cliente"?
+      stateInput.nameDog.trim() === "" :null ||
       stateInput.date.trim() === "" ||
       stateInput.time.trim() === ""
     ) {
@@ -186,21 +190,23 @@ const ModalAddTurn = ({
             <Form>
               <Select
                 className="classSelect"
-                placeholder="Seleccione Client"
+                placeholder={`Seleccione ${stateCategory}`}
                 onChange={(selected) => {
                   handleChangeCli(selected);
                 }}
                 options={optionsListSelect}
               />
 
-              <Select
-                className="classSelect"
-                placeholder="Seleccione Mascota"
-                onChange={(e) => {
-                  handleChangeDog(e);
-                }}
-                options={optionsList}
-              />
+              {stateCategory === "Cliente" ? (
+                <Select
+                  className="classSelect"
+                  placeholder="Seleccione Mascota"
+                  onChange={(e) => {
+                    handleChangeDog(e);
+                  }}
+                  options={optionsList}
+                />
+              ) : null}
 
               <Form.Group
                 className="mb-1"
@@ -258,7 +264,8 @@ const ModalAddTurn = ({
           <Modal.Footer className="mt-0 pt-1 pb-1">
             {!stateInput.date ||
             !stateInput.time ||
-            !stateInput.nameDog ||
+            stateCategory ==="Cliente"?
+            !stateInput.nameDog :null ||
             !stateInput.idClient ? (
               <Button
                 variant="primary"

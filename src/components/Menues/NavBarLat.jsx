@@ -27,6 +27,7 @@ import "../../css/cssGeneral.css";
 import { BiSupport } from "react-icons/bi";
 
 function NavBarLat({ listCompaniesAll }) {
+
   const userLogin = useSelector((state) => state.user);
   const navigate = useNavigate();
 

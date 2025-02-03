@@ -11,12 +11,18 @@ import withReactContent from "sweetalert2-react-content";
 
 const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
   const companySelectdMenu = useSelector((state) => state.companySelected);
-
+  const [stateCategory, setStateCategory] = useState("Cliente");
   const [companySelectedState, setCompanySelectedState] = useState();
 
   useEffect(() => {
     if (companySelectdMenu) {
       setCompanySelectedState(companySelectdMenu);
+      if (
+        companySelectdMenu.category &&
+        companySelectdMenu.category === "medicina"
+      ) {
+        setStateCategory("Paciente");
+      }
     }
   });
 
@@ -29,7 +35,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
     phone: "",
     address: "",
     notesCli: "",
-    email:""
+    email: "",
   });
 
   const handleChange = (e) => {
@@ -46,7 +52,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       stateValue.name.trim() === "" ||
       stateValue.phone.trim() === "" ||
       stateValue.notesCli.trim() === "" ||
-      stateValue.address.trim() === "" 
+      stateValue.address.trim() === ""
     ) {
       Swal.fire({
         icon: "error",
@@ -62,11 +68,11 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
           phone: stateValue.phone,
           status: true,
           Company: companySelectedState._id,
-          email:stateValue.email
+          email: stateValue.email,
         })
       );
       MySwal.fire({
-        title: "¡Cliente creado correctamente!",
+        title: `¡${stateCategory} creado correctamente!`,
         icon: "success",
         confirmButtonText: "Aceptar",
         confirmButtonColor: "rgb(21, 151, 67)",
@@ -77,7 +83,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             address: "",
             notesCli: "",
             phone: "",
-            email:""
+            email: "",
           });
           dispatch(getClients(companySelectedState._id));
           handleClose();
@@ -91,7 +97,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Adherir Cliente</Modal.Title>
+            <Modal.Title>Adherir {stateCategory}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -150,7 +156,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Nota Cliente</Form.Label>
+                <Form.Label>Nota {stateCategory}</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={3}
@@ -166,7 +172,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Email Cliente</Form.Label>
+                <Form.Label>Email {stateCategory}</Form.Label>
                 <Form.Control
                   rows={3}
                   name="email"
@@ -187,12 +193,17 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             !stateValue.phone ||
             !stateValue.address ||
             !stateValue.notesCli ? (
-              <Button variant="primary" type="submit" onClick={handleSumbit} disabled>
-                Agregar Cliente
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={handleSumbit}
+                disabled
+              >
+                Agregar {stateCategory}
               </Button>
             ) : (
               <Button variant="primary" type="submit" onClick={handleSumbit}>
-                Agregar Cliente
+                Agregar {stateCategory}
               </Button>
             )}
           </Modal.Footer>

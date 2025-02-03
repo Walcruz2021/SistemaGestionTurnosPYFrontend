@@ -50,6 +50,8 @@ function Dashboard() {
   const listClients = useSelector((state) => state.allClients);
 
   const [stateListTurn, setListTurn] = useState([]);
+  const [stateCategory, setStateCategory] = useState("Cliente");
+
   const vtaxClient = useSelector((state) => state.vtaxClient);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -98,6 +100,12 @@ function Dashboard() {
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(getClients(companySelectedMenu._id));
+      if (
+        companySelectedMenu.category &&
+        companySelectedMenu.category === "medicina"
+      ) {
+        setStateCategory("Paciente");
+      }
     }
   }, [companySelectedMenu]);
 
@@ -201,7 +209,7 @@ function Dashboard() {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Debe Ingresar un Cliente!",
+      text: `Debe Ingresar un ${stateCategory}`,
     });
   };
 
@@ -248,7 +256,7 @@ function Dashboard() {
               </div>
             )}
 
-            {listClients ? (
+            {listClients && stateCategory === "Cliente" ? (
               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">
                   <div className="card-body">
@@ -262,7 +270,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : !listClients & (stateCategory === "Cliente") ? (
               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">
                   <div className="card-body">
@@ -272,7 +280,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {listClients ? (
               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
@@ -347,7 +355,8 @@ function Dashboard() {
 
           <ModalEditTurn />
 
-          {!stateInfo && !newTurno && !newClient && !newDog ? (
+          {/* SE DEBE ARREGLAR ESTO DEBIDO A QUE SI ES PACIENTE DEB TRAER LISTADO DE PACIENTES       */}
+          {/* {!stateInfo && !newTurno && !newClient && !newDog && stateCategory==="Cliente"? (
             <div className="container-lg pb-4">
               <Select
                 placeholder="Seleccione Mascota a Buscar"
@@ -355,10 +364,17 @@ function Dashboard() {
                 onChange={ChangeDog}
               />
             </div>
-          ) : null}
-          <div className="titGral">
-            <h1 className="mt-1">Historial de Mascota</h1>
-          </div>
+          ) :  null} */}
+
+          {stateCategory === "Paciente" ? (
+            <div className="titGral">
+              <h1 className="mt-1">{`Historial de ${stateCategory}`}</h1>
+            </div>
+          ) : (
+            <div className="titGral">
+              <h1 className="mt-1">{`Historial de Mascota`}</h1>
+            </div>
+          )}
         </>
       </div>
 
