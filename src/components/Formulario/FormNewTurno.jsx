@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getTurnos, addTurnos } from "../../reducer/actions/actions";
+import { getTurnos, addTurnos } from "../../reducer/actions/actionsTurnos";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./Formulario.css";

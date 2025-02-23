@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import Dashboard from "./Dashboard";
 import {
-  getUserLogin,
+  getTurnos,
+} from "../reducer/actions/actionsTurnos";
+
+
+import {
   verificationCompaniesExist,
   companySelected,
-  getClients,
-  getTurnos,
-} from "../reducer/actions/actions";
+} from "../reducer/actions/actionsCompany";
 import "./AgendaTurnos.css";
 import linkBack from "./ruteBack/vbledeploy";
 
@@ -25,9 +27,7 @@ function AgendaTurnos() {
   const companies = useSelector((state) => state.arrayCompanies.data);
   const [companyFirst, setCompanyFirst] = useState({});
   const companySelectedMenu = useSelector((state) => state.companySelected);
-  const listAllClients=useSelector((state)=>state.allClients)
-
-
+  const listAllClients = useSelector((state) => state.allClients);
 
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
@@ -38,7 +38,9 @@ function AgendaTurnos() {
       if (companySelectedMenu) {
         try {
           setLoading(false);
-          const turnosResponse = await dispatch(getTurnos(companySelectedMenu._id));
+          const turnosResponse = await dispatch(
+            getTurnos(companySelectedMenu._id)
+          );
           setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
         } catch (err) {
           setError(err);
@@ -58,7 +60,7 @@ function AgendaTurnos() {
         <div className="titGral">
           <h1>DASHBOARD</h1>
         </div>
-        < Dashboard setlistClients={setlistClients} />
+        <Dashboard setlistClients={setlistClients} />
       </>
     </>
   );

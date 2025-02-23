@@ -5,7 +5,8 @@ import Modal from "react-bootstrap/Modal";
 import { sendPasswordResetEmail } from "@firebase/auth";
 import { auth } from "../../api/configFirebase";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUser , resetUserSearch} from "../../reducer/actions/actions"; // Mantenemos la acción de buscar usuario
+import { searchUser , resetUserSearch} from "../../reducer/actions/actionsUser"// Mantenemos la acción de buscar usuario
+
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 

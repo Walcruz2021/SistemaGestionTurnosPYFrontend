@@ -5,14 +5,13 @@ export const GET_VENTAS_ID = "GET_VENTAS_ID";
 export const GET_VENTAS = "GET_VENTAS";
 export const ORDER_VENTAS = "ORDER_VENTAS";
 export const DELETE_DOG = "DELETE_DOG";
-export const RESET_VENTASxANIOandPARAM="RESET_VENTASxANIOandPARAM"
-export const DELETE_TURNO="DELETE_TURNO"
-import axios from 'axios';
+export const RESET_VENTASxANIOandPARAM = "RESET_VENTASxANIOandPARAM";
+export const DELETE_TURNO = "DELETE_TURNO";
+import axios from "axios";
 import host from "../../components/ruteBack/vbledeploy";
 
 //no esta eliminando el turno al ingresar la venta
 export function asignedVentas(payload, id_client) {
-
   // date: "2022-05-30"
   // mes:04
   // año:2022
@@ -25,6 +24,10 @@ export function asignedVentas(payload, id_client) {
   //Company:idCompany
   //idDog:"444444"
   // ----> id_client
+  //receta:xxx,
+  // tratamiento:xxx,
+  //vacunas:ccc,
+  //peso:25
   return async function (dispatch) {
     try {
       const newVentas = await axios.post(
@@ -33,7 +36,7 @@ export function asignedVentas(payload, id_client) {
         `${host}/api/addVentas/${id_client}`,
         payload
       );
-   
+
       return newVentas;
     } catch (error) {
       console.log(error);

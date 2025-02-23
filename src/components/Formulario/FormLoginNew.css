@@ -14,7 +14,8 @@
   width: 100%;
   margin: auto;
   max-width: 525px;
-  min-height: 700px;
+  /* altura form */
+  min-height: 650px;
   position: relative;
   background: url("../../IMAGENES/escritorio.avif") no-repeat center;
   box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),

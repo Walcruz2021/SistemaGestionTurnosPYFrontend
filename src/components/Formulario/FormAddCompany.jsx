@@ -10,9 +10,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 //import ModalRestPassword from "../modals/ModalRestPassword";
-import { addCompany } from "../../reducer/actions/actions";
+import { addCompany } from "../../reducer/actions/actionsCompany";
 import "../../css/cssGeneral.css";
-import "./FormsLoginAndRegister.css";
+import "./FormAddCompany.css";
 import { MDBInput } from "mdb-react-ui-kit";
 import logoNew from "../../IMAGENES/LogoNew.png";
 
@@ -93,7 +93,7 @@ const handleChangeRadioB=(event)=>{
   //     window.location.href = "/login";
   //   };
   return (
-    <div className="login-wrap">
+    <div className="login-wrapAddComp">
       <div className="login-html">
         <div className="text-center">
           <img src={logoNew} style={{ width: "185px" }} alt="logo" />
@@ -143,13 +143,13 @@ const handleChangeRadioB=(event)=>{
 
         <div className="d-flex justify-content-between w-100">
           <label className="p-2">
-            <input className="m-2" type="radio" value="medicina" checked={selectedOption==="medicina"} onChange={handleChangeRadioB}  />
-            Medicina General
+            <input className="m-2" type="radio" value="pelu" checked={selectedOption==="pelu"} onChange={handleChangeRadioB}  />
+            Peluqueria
           </label>
 
           <label className="p-2">
             <input className="m-2" type="radio" value="peluAndVet" checked={selectedOption==="peluAndVet"} onChange={handleChangeRadioB} />
-            Veterinaria o Peluqueria
+            Veterinaria y Peluqueria
           </label>
         </div>
 

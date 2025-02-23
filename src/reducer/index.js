@@ -1,32 +1,43 @@
 import { bindActionCreators } from "redux";
 import {
   ADD_TODO,
-  GET_TURNOS,
   GET_CLIENTXNAME,
-  GET_CLIENTS,
-  GET_NAME_CLIENTS,
-  DELETE_CLIENT,
+  ASIGNED_VENTAS,
+  SEARCH_VTA_CLIENT,
+  POST_BREAK,
+  VERIFICATION_CONECTION,
+} from "./actions/actions";
+
+import {
+  GET_TURNOS,
   DELETE_TURNO,
-  UPDATE_CLIENT,
   UPDATE_TURNO,
   ORDER_TURNOS,
-  ASIGNED_VENTAS,
-  GET_CLIENTS_ID,
-  SEARCH_VTA_CLIENT,
-  ADD_DOG,
-  DELETE_DOG,
-  UPDATE_DOG,
-  POST_BREAK,
-  ADD_USER,
-  ADD_COMPANY,
+} from "./actions/actionsTurnos";
+
+import {
   GET_USER,
+  ADD_USER,
+  RESET_USER_SEARCH,
+  SEARCH_USER,
+} from "./actions/actionsUser";
+
+import { DELETE_DOG, UPDATE_DOG, ADD_DOG } from "./actions/actionsDog";
+import {
+  ADD_COMPANY,
   VERIFICATION_COMPANY_EXISTS,
   FUNCTION_COMPANY_SELECTED,
-  SEARCH_USER,
   RESET_COMPANY_SELECTED,
+} from "./actions/actionsCompany";
+
+import {
+  GET_CLIENTS,
+  DELETE_CLIENT,
+  GET_NAME_CLIENTS,
+  GET_CLIENTS_ID,
   RESET_ALL_CLIENTS,
-  RESET_USER_SEARCH
-} from "./actions/actions";
+  UPDATE_CLIENT,
+} from "./actions/actionsClients";
 
 import {
   GTO_X_ANIO,
@@ -66,6 +77,7 @@ const initialState = {
   user: null,
   companySelected: null,
   userEmailSearch: null,
+  conectionMongo: null,
 };
 
 function rootReducer(state = initialState, action) {
@@ -75,6 +87,12 @@ function rootReducer(state = initialState, action) {
   // imprmiira esto de abajao,dependiendo de la accion que se haya elegido
   // Object { type: "GET_RECIPE", payload: (13) […] }
   switch (action.type) {
+    case VERIFICATION_CONECTION:
+      return {
+        ...state,
+        conectionMongo: action.payload,
+      };
+
     case GET_USER:
       return {
         ...state,

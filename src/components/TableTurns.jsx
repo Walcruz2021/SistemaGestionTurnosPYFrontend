@@ -6,16 +6,17 @@ import {
   faTrash,
   faHandHoldingUsd,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { FaFileAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
+import ModalAddFicha from "../components/Modal/ModalAddFicha";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteTurno,
   getTurnos,
   updateTurno,
-} from "../reducer/actions/actions";
+} from "../reducer/actions/actionsTurnos";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 
 const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
@@ -28,13 +29,15 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
 
   const [newVentas, setNewVentas] = useState(false);
   const [stateEditTurn, setStateEditTurn] = useState(false);
+  const [stateCargaFich, setStateCargaFich] = useState(false);
   const [stateDataEdit, setStateDataEdit] = useState();
+  const [stateNewFicha, setStateNewFicha] = useState();
+  const [stateNewVta, setStateNewVta] = useState();
 
   useEffect(() => {
     if (companySelectedMenu) {
-      dispatch(getTurnos(companySelectedMenu._id));
       if (companySelectedMenu.category) {
-        setStateCategory("Paciente");
+        setStateCategory(companySelectedMenu.category);
       }
     }
   }, [companySelectedMenu, dispatch]);
@@ -92,18 +95,14 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
     setStateDataEdit(turn); //data of turn selected
   }
 
-  function handleVentas(e, props) {
-    e.preventDefault();
-    // console.log(props.idDog)
-    // ESTOS DATOS SE TRAEN LLAMANDO A LA FUNCION getTurnos PARA QUE SE RENDERIZEN EN LA TABLA A MOSTRAR
-    // ESTOS DATOS SOLO SE MUESTRAN UNA VEZ QUE SE REALIZAN CLICK EN EL ICONO DE ALGUNA FILA
-    //     date: "15-01-1988"
-    //     name: "omar"
-    //     valorServ: undefined
-    //     _id: "61f332036a0a2a71c9de7bc7"
-    //  console.log(props.notesTurn,"si llega")
+  function handleCargaFicha(e, turn) {
+    setStateNewFicha(turn);
+    setStateCargaFich(!stateCargaFich); //display the modal ModalEdit
+  }
+
+  function handleVentas(e, turn) {
+    setStateNewVta(turn);
     setNewVentas(!newVentas);
-    // console.log(props.idClient);
   }
 
   function handleOrder(e) {
@@ -197,7 +196,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th>Nombre {stateCategory}</th>
+              <th>Nombre Cliente</th>
 
               <th>
                 Fecha{" "}
@@ -226,7 +225,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                       style={{ cursor: "pointer" }}
                       title="Informe Cliente"
                     >
-                      {stateCategory==="Paciente"?turn.name : turn.nameDog }
+                      {turn.nameDog}
                     </td>
                     <td>
                       {convertDateFormat(turn.date)} - {convertDay(turn.date)}
@@ -238,7 +237,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                         <button
                           className="btn"
                           onClick={
-                            (e) => handleVentas(e)
+                            (e) => handleVentas(e, turn)
                             // console.log(turn.notesTurn,"----------> notyes 2")
                           }
                         >
@@ -267,22 +266,17 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
                         >
                           <FontAwesomeIcon icon={faTrash} size="lg" />
                         </button>
+
+                        {stateCategory && stateCategory === "peluAndVet" ? (
+                          <button
+                            className="btn"
+                            onClick={(e) => handleCargaFicha(e, turn)}
+                          >
+                            <FaFileAlt size="22" />
+                          </button>
+                        ) : null}
                       </div>
                     </td>
-
-                    <ModalAddVtas
-                      state={newVentas}
-                      setState={setNewVentas}
-                      date={turn.date} // al realizarse click en el icono ADHERIR VENTA se traen los datos y parte de
-                      // estos se pasan como parametros para que se renderize este modal. Estos parametros (DATE Y NAME)
-                      // se envian al archivo MODAL. Posteriormente se envian estos datos al action para que se pasen al backend
-                      nameCli={turn.name}
-                      nameDog={turn.nameDog}
-                      idClient={turn.Client}
-                      notesTurn={turn.notesTurn}
-                      idDog={turn.idDog}
-                      idTurno={turn._id}
-                    />
 
                     {turn.isNotifications ? (
                       <td>
@@ -296,11 +290,26 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
               : null}
           </tbody>
         </table>
+
         <ModalEditTurn
           stateEditTurn={stateEditTurn}
           setStateEditTurn={setStateEditTurn}
           stateDataEdit={stateDataEdit}
           setStateDataEdit={setStateDataEdit}
+        />
+
+        <ModalAddFicha
+          state={stateCargaFich}
+          setState={setStateCargaFich}
+          stateNewFicha={stateNewFicha}
+          setStateNewFicha={setStateNewFicha}
+        />
+
+        <ModalAddVtas
+          state={newVentas}
+          setState={setNewVentas}
+          stateNewVta={stateNewVta}
+          setStateNewVta={setStateNewVta}
         />
       </div>
     </>

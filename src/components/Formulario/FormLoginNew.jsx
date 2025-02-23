@@ -13,11 +13,10 @@ import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import { MDBContainer, MDBInput } from "mdb-react-ui-kit";
 import gmail from "../../icons/gmailLogin.png";
-import {
-  addUser,
-  verificationCompaniesExist,
-  listenToAuthChanges,
-} from "../../reducer/actions/actions";
+import { verificationCompaniesExist } from "../../reducer/actions/actionsCompany";
+import { listenToAuthChanges } from "../../reducer/actions/actions";
+
+import { addUser } from "../../reducer/actions/actionsUser";
 import ModalRestPassword from "../Modal/ModalRestPassword";
 import "./FormLoginNew.css";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -223,15 +222,6 @@ function FormLoginNew({ autUser }) {
                         )}
                       </div>
 
-                      {/* this code is commented because it does not work correctly */}
-                      {/* <div className="pt-2"></div>
-              <button
-                className="btn btn-outline-dark form-button"
-                onClick={loginGoogle}
-              >
-                <FaGoogle />
-              </button> */}
-
                       <ModalRestPassword show={show} setShow={setShow} />
                       <div className="d-flex flex-row align-items-center justify-content-center pb-4 pt-3 mt-3">
                         <p className="mb-0 px-2">¿No tiene una cuenta?</p>
@@ -278,7 +268,12 @@ function FormLoginNew({ autUser }) {
                 </ol>
 
                 <button onClick={RedirectLinkContact} className="border-0">
-                  <img src={supportLogin} alt="Contact Support" width="100" height="100"/>
+                  <img
+                    src={supportLogin}
+                    alt="Contact Support"
+                    width="100"
+                    height="100"
+                  />
                 </button>
               </div>
             </div>

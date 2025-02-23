@@ -18,14 +18,14 @@ import logoNew from "../../IMAGENES/LogoNew.png";
 import Select from "react-select";
 import { useForm, ValidationError } from "@formspree/react";
 
+/**
+ * This form is used for send comentaries or report errors when user is logued 
+ */
 const FormSoporteContact = () => {
   const MySwal = withReactContent(Swal);
   const loginUser = useSelector((state) => state.user);
   //console.log(loginUser.email)
   const navigate = useNavigate();
-
-  // //const history = useHistory();
-  // const dispatch = useDispatch();
   const [stateValue, setStateValue] = useState({
     message: "",
   });

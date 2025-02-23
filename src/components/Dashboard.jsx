@@ -14,13 +14,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  //tra los turnos
-  searchHistorialDog,
-  deleteTurno,
-  getClients,
-  getTurnos,
-} from "../reducer/actions/actions";
+import { searchHistorialDog } from "../reducer/actions/actionsDog";
+
+import { getTurnos, deleteTurno } from "../reducer/actions/actionsTurnos";
+import { getClients } from "../reducer/actions/actionsClients";
 import Swal from "sweetalert2";
 import Modal from "./Modal/Modal";
 import FormNewTurno from "./Formulario/FormNewTurno";
@@ -43,16 +40,19 @@ import TableTurns from "./TableTurns";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
-
+import carpetaMedica from "../icons/carpeta-medica.png";
 function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
+
   const listClients = useSelector((state) => state.allClients);
 
+
   const [stateListTurn, setListTurn] = useState([]);
-  const [stateCategory, setStateCategory] = useState("Cliente");
+  const [stateCategory, setStateCategory] = useState("");
 
   const vtaxClient = useSelector((state) => state.vtaxClient);
+
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [selectedDog, setSelectedDog] = useState(null);
@@ -65,6 +65,7 @@ function Dashboard() {
   const [order, setOrder] = useState(false);
   const [changeTurn, setChangeTurn] = useState(false);
   const [stateInfo, setInfo] = useState(false);
+  const [stateClientSelected, setStateClientSeleted] = useState();
   const [editTurn, setEditTurn] = useState(false);
   const [stateAddDog, setStateAddDog] = useState(false);
   const [inputState, setInputState] = useState({
@@ -99,12 +100,9 @@ function Dashboard() {
 
   useEffect(() => {
     if (companySelectedMenu) {
-      dispatch(getClients(companySelectedMenu._id));
-      if (
-        companySelectedMenu.category &&
-        companySelectedMenu.category === "medicina"
-      ) {
-        setStateCategory("Paciente");
+      dispatch(getClients(companySelectedMenu._id))
+      if (companySelectedMenu.category) {
+        setStateCategory(companySelectedMenu.category);
       }
     }
   }, [companySelectedMenu]);
@@ -117,17 +115,21 @@ function Dashboard() {
   //ARRAY DE MASCOTAS PARA SELECT (HISTORIAL)
   const Listdogs = [];
   if (listadoTurnos) {
-    listadoTurnos.map((dog) => {
-      const optionDog = { value: dog.idDog, label: dog.nameDog };
+    listadoTurnos.map((data) => {
+      const optionDog = {
+        valueIdDog: data.idDog,
+        label: data.nameDog,
+        idClient: data.Client,
+      };
       Listdogs.push(optionDog);
       return Listdogs;
     });
-    //console.log(Listdogs);
   }
 
-  const ChangeDog = (value) => {
-    setSelectedDog(value.value);
-    SearchDog(value.value);
+  const ChangeDog = (data) => {
+    setSelectedDog(data.valueIdDog);
+    setStateClientSeleted(data.idClient);
+    SearchDog(data.valueIdDog);
   };
 
   const cliBusc = useSelector((state) => state.clientBusc);
@@ -137,7 +139,6 @@ function Dashboard() {
   }
 
   function SearchDog(idDog) {
-    //console.log(idDog);
     dispatch(searchHistorialDog(idDog));
   }
 
@@ -202,15 +203,19 @@ function Dashboard() {
 
   const handleClose = () => {
     setEditTurn(!editTurn);
-    // console.log("se hizo click");
   };
 
   const messageClient = () => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: `Debe Ingresar un ${stateCategory}`,
+      text: `Debe Ingresar un Cliente`,
     });
+  };
+
+  const openHistorial = () => {
+    localStorage.setItem("historialData", JSON.stringify(stateClientSelected));
+    window.open("/historialPet", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -256,7 +261,7 @@ function Dashboard() {
               </div>
             )}
 
-            {listClients && stateCategory === "Cliente" ? (
+            {listClients ? (
               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">
                   <div className="card-body">
@@ -270,7 +275,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            ) : !listClients & (stateCategory === "Cliente") ? (
+            ) : !listClients ? (
               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">
                   <div className="card-body">
@@ -343,6 +348,7 @@ function Dashboard() {
           <div className="titGral">
             <h2>TABLA DE TURNOS</h2>
           </div>
+
           <TableTurns
             setOrder={setOrder}
             setInputState={setInputState}
@@ -355,8 +361,7 @@ function Dashboard() {
 
           <ModalEditTurn />
 
-          {/* SE DEBE ARREGLAR ESTO DEBIDO A QUE SI ES PACIENTE DEB TRAER LISTADO DE PACIENTES       */}
-          {/* {!stateInfo && !newTurno && !newClient && !newDog && stateCategory==="Cliente"? (
+          {!stateInfo && !newTurno && !newClient && !newDog ? (
             <div className="container-lg pb-4">
               <Select
                 placeholder="Seleccione Mascota a Buscar"
@@ -364,17 +369,11 @@ function Dashboard() {
                 onChange={ChangeDog}
               />
             </div>
-          ) :  null} */}
+          ) : null}
 
-          {stateCategory === "Paciente" ? (
-            <div className="titGral">
-              <h1 className="mt-1">{`Historial de ${stateCategory}`}</h1>
-            </div>
-          ) : (
-            <div className="titGral">
-              <h1 className="mt-1">{`Historial de Mascota`}</h1>
-            </div>
-          )}
+          <div className="titGral">
+            <h1 className="mt-1">{`Historial de Mascota`}</h1>
+          </div>
         </>
       </div>
 
@@ -475,6 +474,15 @@ function Dashboard() {
                     : null}
                 </tbody>
               </table>
+
+              {stateCategory && stateCategory === "peluAndVet" ? (
+                <button onClick={openHistorial}>
+                  <img
+                    src={carpetaMedica}
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                </button>
+              ) : null}
             </div>
           </>
         ) : (

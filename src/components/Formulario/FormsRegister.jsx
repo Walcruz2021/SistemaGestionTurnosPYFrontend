@@ -12,9 +12,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { addUser } from "../../reducer/actions/actions";
+import { addUser } from "../../reducer/actions/actionsUser";
 import "../../css/cssGeneral.css";
-import "./FormsLoginAndRegister.css";
+// import "./FormsLoginAndRegister.css";
 import { MDBInput } from "mdb-react-ui-kit";
 import { FaGoogle } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -26,7 +26,7 @@ import { BsWatch } from "react-icons/bs";
 import { BsFileEarmarkBarGraph } from "react-icons/bs";
 import { RiExchangeDollarFill } from "react-icons/ri";
 import { MdOutlineMailLock } from "react-icons/md";
-
+import "./FormsRegister.css";
 import supportLogin from "../../icons/supportLogin.png";
 
 function FormRegister({ autUser }) {
@@ -230,7 +230,7 @@ function FormRegister({ autUser }) {
         <div className="col-md-6">
           <div className="text-center">
             <div className="card-body">
-              <div className="login-wrap">
+              <div className="login-wrapR">
                 <div className="login-html">
                   <img src={logoNew} style={{ width: "185px" }} alt="logo" />
                   <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>

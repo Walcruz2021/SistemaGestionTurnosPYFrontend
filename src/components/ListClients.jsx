@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getClients, deleteClient } from "../reducer/actions/actions";
+import { getClients, deleteClient } from "../reducer/actions/actionsClients";
 import "./ListClients.css";
 import HistorialClient from "./HistorialClient";
 import ModalAddClient from "./Modal/ModalAddClient";

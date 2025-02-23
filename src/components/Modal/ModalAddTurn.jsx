@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getTurnos, addTurnos } from "../../reducer/actions/actions";
+import { getTurnos, addTurnos } from "../../reducer/actions/actionsTurnos";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
@@ -112,8 +112,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const handleSubmit = () => {
     if (
       stateInput.name.trim() === "" ||
-      stateCategory==="Cliente"?
-      stateInput.nameDog.trim() === "" :null ||
+      stateInput.nameDog.trim() === "" ||
       stateInput.date.trim() === "" ||
       stateInput.time.trim() === ""
     ) {
@@ -189,14 +188,14 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
             <Form>
               <Select
                 className="classSelect"
-                placeholder={`Seleccione ${stateCategory}`}
+                placeholder="Seleccione Cliente"
                 onChange={(selected) => {
                   handleChangeCli(selected);
                 }}
                 options={optionsListSelect}
               />
 
-              {stateCategory === "Cliente" ? (
+              
                 <Select
                   className="classSelect"
                   placeholder="Seleccione Mascota"
@@ -205,7 +204,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                   }}
                   options={optionsList}
                 />
-              ) : null}
+              
 
               <Form.Group
                 className="mb-1"
@@ -263,8 +262,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
           <Modal.Footer className="mt-0 pt-1 pb-1">
             {!stateInput.date ||
             !stateInput.time ||
-            stateCategory ==="Cliente"?
-            !stateInput.nameDog :null ||
+            !stateInput.nameDog ||
             !stateInput.idClient ? (
               <Button
                 variant="primary"

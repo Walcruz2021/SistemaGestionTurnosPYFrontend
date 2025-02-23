@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getTurnos, updateTurno } from "../../reducer/actions/actions";
+import { getTurnos, updateTurno } from "../../reducer/actions/actionsTurnos";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
@@ -17,6 +17,7 @@ const ModalEditTurn = ({
   stateDataEdit,
   setStateDataEdit,
 }) => {
+
   const [stateCheck, setStateCheck] = useState({
     isNotifications: null, // Estado inicial
   });

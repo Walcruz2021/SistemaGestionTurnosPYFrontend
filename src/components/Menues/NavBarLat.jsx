@@ -13,8 +13,8 @@ import { auth } from "../../api/configFirebase";
 import {
   functionCompanySelected,
   resetCompanySelected,
-  resetAllClients,
-} from "../../reducer/actions/actions";
+} from "../../reducer/actions/actionsCompany";
+import { resetAllClients } from "../../reducer/actions/actionsClients";
 import { resetGastosXanioandMesParam } from "../../reducer/actions/actionsGastos";
 import { resetVentasXanioandMesParam } from "../../reducer/actions/actionsVentas";
 import { useEffect, useState } from "react";
@@ -27,20 +27,14 @@ import "../../css/cssGeneral.css";
 import { BiSupport } from "react-icons/bi";
 
 function NavBarLat({ listCompaniesAll }) {
-
   const userLogin = useSelector((state) => state.user);
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const CompanyMenuReducer = useSelector((state) => state.companySelected);
 
+
   const [stateCompanySelected, setCompanySelectedMenu] = useState();
 
-  useEffect(() => {
-    if (CompanyMenuReducer) {
-      setCompanySelectedMenu(CompanyMenuReducer);
-    }
-  }, [CompanyMenuReducer]);
 
   const onCloseSesion = async () => {
     try {
@@ -53,15 +47,6 @@ function NavBarLat({ listCompaniesAll }) {
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
-  };
-
-  const changeCompany = (company) => {
-    setCompanySelectedMenu(company);
-    dispatch(functionCompanySelected(company));
-    dispatch(resetAllClients());
-    dispatch(resetGastosXanioandMesParam());
-    dispatch(resetVentasXanioandMesParam());
-    navigate("/");
   };
 
   const [stateStatus, setStatus] = useState(false);
@@ -106,7 +91,7 @@ function NavBarLat({ listCompaniesAll }) {
                 </Offcanvas.Header>
               ) : null}
 
-              {CompanyMenuReducer && "nameCompany" in CompanyMenuReducer ? (
+              {/* {CompanyMenuReducer && "nameCompany" in CompanyMenuReducer ? (
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
                     <Nav.Link as={Link} to="./listVentas">
@@ -155,6 +140,7 @@ function NavBarLat({ listCompaniesAll }) {
                         Agregar Empresa
                       </NavDropdown.Item>
                     </NavDropdown>
+
                   </Nav>
                 </Offcanvas.Body>
               ) : (
@@ -192,6 +178,61 @@ function NavBarLat({ listCompaniesAll }) {
                       <NavDropdown.Item as={Link} to="/addCompany">
                         Agregar Empresa
                       </NavDropdown.Item>
+                    </NavDropdown>
+                  </Nav>
+                </Offcanvas.Body>
+              )} */}
+
+              {CompanyMenuReducer ? (
+                <Offcanvas.Body>
+                  <Nav className="justify-content-end flex-grow-1 pe-3">
+                    <Nav.Link as={Link} to="./listVentas">
+                      <FaMoneyBillTrendUp className="mx-4" />
+                      Ventas
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="./gastos">
+                      <PiMoneyFill className="mx-4" />
+                      Gastos
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="./informes">
+                      <FaChartLine className="mx-4" />
+                      Informes
+                    </Nav.Link>
+
+                    <Nav.Link as={Link} to="./support">
+                      <BiSupport className="mx-4" />
+                      Soporte
+                    </Nav.Link>
+
+                    <NavDropdown
+                      title={userLogin.displayName || userLogin.email}
+                      id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    >
+                      <NavDropdown.Item onClick={onCloseSesion}>
+                        Cerrar Sesion
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                    </NavDropdown>
+
+                    
+                  </Nav>
+                </Offcanvas.Body>
+              ) : (
+                <Offcanvas.Body>
+                  <Nav className="justify-content-end flex-grow-1 pe-3">
+                    <Nav.Link as={Link} to="./support">
+                      <BiSupport className="mx-4" />
+                      Soporte
+                    </Nav.Link>
+
+                    <NavDropdown
+                      title={userLogin.displayName || userLogin.email}
+                      id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    >
+                      <NavDropdown.Item onClick={onCloseSesion}>
+                        Cerrar Sesion
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
                     </NavDropdown>
                   </Nav>
                 </Offcanvas.Body>

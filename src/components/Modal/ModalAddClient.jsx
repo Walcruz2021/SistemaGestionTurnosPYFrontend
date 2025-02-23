@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { getClients, addClient } from "../../reducer/actions/actions";
+import { getClients, addClient } from "../../reducer/actions/actionsClients";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 

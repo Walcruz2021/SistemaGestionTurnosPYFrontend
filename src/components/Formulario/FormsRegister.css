@@ -1,0 +1,52 @@
+
+
+.containerLogin {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    width: auto;
+    padding-left: 10rem;
+    padding-right: 10rem;
+  } 
+  
+  /* MOBILE */
+  @media(max-width:900px){
+    .containerLogin{
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  
+  .msgAlertInput{
+    font-size: 0.7rem;
+  }
+
+  .login-wrapR {
+    width: 100%;
+    margin: auto;
+    max-width: 525px;
+    /* altura form */
+    min-height: 700px;
+    position: relative;
+    background: url("../../IMAGENES/escritorio.avif") no-repeat center;
+    box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),
+      0 17px 50px 0 rgba(32, 192, 99, 0.19);
+  }
+  
+  .login-wrap-reg {
+    width: 100%;
+    margin: auto;
+    max-width: 525px;
+    min-height: 900px;
+    position: relative;
+    background: url("../../IMAGENES/escritorio.avif") no-repeat center;
+    box-shadow: 0 12px 15px 0 rgba(212, 210, 210, 0.24),
+      0 17px 50px 0 rgba(32, 192, 99, 0.19);
+  }
+  
+  .label-input-container label {
+    min-width: 80px; /* Tamaño uniforme de las etiquetas */
+    margin-top: auto; /* Alineación vertical */
+    
+  }
