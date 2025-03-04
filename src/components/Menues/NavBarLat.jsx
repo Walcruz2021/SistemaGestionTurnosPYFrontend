@@ -214,16 +214,18 @@ function NavBarLat({ listCompaniesAll }) {
                       <NavDropdown.Divider />
                     </NavDropdown>
 
-                    
                   </Nav>
                 </Offcanvas.Body>
               ) : (
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link as={Link} to="./support">
+                    
+                    {/* it is commented because it does not work */}
+
+                    {/* <Nav.Link as={Link} to="./support">
                       <BiSupport className="mx-4" />
                       Soporte
-                    </Nav.Link>
+                    </Nav.Link> */}
 
                     <NavDropdown
                       title={userLogin.displayName || userLogin.email}

@@ -12,12 +12,11 @@ import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
 
 const ModalEditTurn = ({
-  stateEditTurn,
-  setStateEditTurn,
+  booleanClose,
+  setBooleanClose,
   stateDataEdit,
   setStateDataEdit,
 }) => {
-
   const [stateCheck, setStateCheck] = useState({
     isNotifications: null, // Estado inicial
   });
@@ -38,12 +37,27 @@ const ModalEditTurn = ({
     }
   }, [stateDataEdit]);
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    setNewData((prevState) => ({
+      ...prevState,
+      date: getTodayDate(),
+    }));
+  }, []);
+
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setStateEditTurn(!stateEditTurn);
+  const handleClose = () => setBooleanClose(!booleanClose);
   const [stateValue, setStateValue] = useState({
     time: "",
     date: "",
@@ -60,31 +74,42 @@ const ModalEditTurn = ({
 
   const handleSumbit = (e) => {
     if (!newData.time.trim() === "" || !newData.date.trim() === "") {
-      alert("valores vacios");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Campos Vacios",
+      });
+    } else if (newData.date < getTodayDate()) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Fecha Incorrecta",
+      });
+    } else {
+      dispatch(updateTurno(newData, stateDataEdit._id));
+      MySwal.fire({
+        title: "¡Turno Editado Correctamente!",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(21, 151, 67)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setStateDataEdit({
+            time: "",
+            date: "",
+            notesTurn: "",
+          });
+          dispatch(getTurnos(companySelectedMenu._id));
+          handleClose();
+        }
+      });
     }
-    dispatch(updateTurno(newData, stateDataEdit._id));
-    MySwal.fire({
-      title: "¡Turno Editado Correctamente!",
-      icon: "success",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: "rgb(21, 151, 67)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setStateDataEdit({
-          time: "",
-          date: "",
-          notesTurn: "",
-        });
-        dispatch(getTurnos(companySelectedMenu._id));
-        handleClose();
-      }
-    });
   };
   return (
     <>
       {/* ADD CLIENT */}
       <div>
-        <Modal show={stateEditTurn} onHide={handleClose}>
+        <Modal show={booleanClose} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Editar Turno</Modal.Title>
           </Modal.Header>
@@ -102,7 +127,7 @@ const ModalEditTurn = ({
                   // placeholder="Pepe Argento"
                   name="notesTurn"
                   autoFocus
-                  maxLength={30}
+                  maxLength={120}
                   value={stateDataEdit ? stateDataEdit.notesTurn : null}
                   onChange={handleChange}
                   required
@@ -133,6 +158,7 @@ const ModalEditTurn = ({
                   type="date"
                   name="date"
                   autoFocus
+                  min={getTodayDate()}
                   maxLength={100}
                   value={stateDataEdit ? stateDataEdit.date : null}
                   onChange={handleChange}
@@ -148,25 +174,27 @@ const ModalEditTurn = ({
                   <input
                     type="checkbox"
                     name="notifications"
-                    checked={stateCheck.isNotifications ?? false} 
+                    checked={stateCheck.isNotifications ?? false}
                     onChange={(e) => {
-                        setStateCheck({
+                      setStateCheck({
                         ...stateCheck,
-                        isNotifications: e.target.checked, 
-                        }),
+                        isNotifications: e.target.checked,
+                      }),
                         setNewData({
                           ...newData,
                           isNotifications: !stateCheck.isNotifications,
                         });
-                      }}
-                      />
-                    )}
-                    </FormGroup>
-                    <p className="text-danger" style={{ fontSize: '12px' }}>(*) Al activar notificaciones, el cliente debe tener un email</p>
-                  </Form>
-                  </Modal.Body>
-                  <Modal.Footer className="mt-0 pt-1 pb-1">
-                  {/* <Button variant="primary" type="submit" onClick={handleClose}>
+                    }}
+                  />
+                )}
+              </FormGroup>
+              <p className="text-danger" style={{ fontSize: "12px" }}>
+                (*) Al activar notificaciones, el cliente debe tener un email
+              </p>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer className="mt-0 pt-1 pb-1">
+            {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}
             <Button variant="primary" type="submit" onClick={handleSumbit}>

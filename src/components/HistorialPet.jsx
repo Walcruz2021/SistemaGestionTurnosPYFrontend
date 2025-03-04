@@ -31,8 +31,6 @@ function HistorialPet() {
     localStorage.getItem("historialData") || "{}"
   );
 
-
-
   useEffect(() => {
     if (idClientFromDashboard && idClientFromDashboard !== "{}") {
       dispatch(get_clients_id(idClientFromDashboard));
@@ -80,7 +78,7 @@ function HistorialPet() {
     setOrderTable1(!orderTable1);
     //dispatch(orderTurnos(order));
     const listOrder = listVts;
- 
+
     const arrayOrder =
       orderTable1 === true
         ? listOrder.sort(function (a, b) {
@@ -120,7 +118,7 @@ function HistorialPet() {
 
         <button
           onClick={(e) => handleOrderTable(e)}
-          style={{ cursor: "pointer"}}
+          style={{ cursor: "pointer" }}
           className="border-0 m-1"
         >
           <img src={calendarOrder} style={{ width: "25px", height: "35px" }} />
@@ -269,6 +267,8 @@ function HistorialPet() {
             </div>
           </div>
 
+          {/* VACUNAS */}
+
           <div className="text-center d-flex justify-content-center gap-2 p-2">
             <img
               className="img-thumbnail"
@@ -284,7 +284,7 @@ function HistorialPet() {
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-secondary">
               <tr>
-                <th>Fecha </th>
+                <th style={{ width: "150px" }}>Fecha </th>
                 <th>Inoculacion</th>
                 {/* <th>Info</th> */}
               </tr>
@@ -300,26 +300,24 @@ function HistorialPet() {
               ))}
             </tbody>
           </table>
-        </div>
 
-        <div className="text-center d-flex justify-content-center gap-2 p-2">
-          <img
-            className="img-thumbnail"
-            src={tratamiento}
-            style={{ width: "50px", height: "50px" }}
-          />
-          <div className="titGral">
-            <h2>TRATAMIENTO</h2>
+          {/* TRATAMIENTO */}
+
+          <div className="text-center d-flex justify-content-center gap-2 p-2">
+            <img
+              className="img-thumbnail"
+              src={tratamiento}
+              style={{ width: "50px", height: "50px" }}
+            />
+            <div className="titGral">
+              <h2>TRATAMIENTO</h2>
+            </div>
           </div>
-        </div>
-
-        <div className="container-lg table-responsive mb-4">
-          {/* <td>{selectedDog.selectedDog.label}</td> */}
 
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-secondary">
               <tr>
-                <th>Fecha </th>
+                <th style={{ width: "150px" }}>Fecha </th>
                 <th>Tratamiento</th>
                 {/* <th>Info</th> */}
               </tr>
@@ -335,24 +333,24 @@ function HistorialPet() {
               ))}
             </tbody>
           </table>
-        </div>
-        <div className="text-center d-flex justify-content-center gap-2  p-2">
-          <img
-            className="img-thumbnail"
-            src={receta}
-            style={{ width: "50px", height: "50px" }}
-          />
-          <div className="titGral">
-            <h2>RECETA</h2>
+
+          {/* RECETA */}
+
+          <div className="text-center d-flex justify-content-center gap-2  p-2">
+            <img
+              className="img-thumbnail"
+              src={receta}
+              style={{ width: "50px", height: "50px" }}
+            />
+            <div className="titGral">
+              <h2>RECETA</h2>
+            </div>
           </div>
-        </div>
-        <div className="container-lg table-responsive mb-4">
-          {/* <td>{selectedDog.selectedDog.label}</td> */}
 
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-secondary">
               <tr>
-                <th>Fecha </th>
+                <th style={{ width: "150px" }}>Fecha </th>
                 <th>Receta</th>
                 {/* <th>Info</th> */}
               </tr>
@@ -363,11 +361,12 @@ function HistorialPet() {
                   <td>
                     {convertDateFormat(data.date)} - {convertDay(data.date)}
                   </td>
-                  <td>{data.tratamiento}</td>
+                  <td>{data.receta}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+
         </div>
       </div>
     </div>

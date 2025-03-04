@@ -28,7 +28,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const [stateCategory, setStateCategory] = useState("Cliente");
 
   const [newVentas, setNewVentas] = useState(false);
-  const [stateEditTurn, setStateEditTurn] = useState(false);
+  const [booleanClose, setBooleanClose] = useState(false);
   const [stateCargaFich, setStateCargaFich] = useState(false);
   const [stateDataEdit, setStateDataEdit] = useState();
   const [stateNewFicha, setStateNewFicha] = useState();
@@ -91,7 +91,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleEditTurn(e, turn) {
-    setStateEditTurn(!stateEditTurn); //display the modal ModalEdit
+    setBooleanClose(!booleanClose); //display the modal ModalEdit
     setStateDataEdit(turn); //data of turn selected
   }
 
@@ -166,28 +166,6 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
     console.log(updatedCheckedState);
     setCheckedState(updatedCheckedState);
 
-    // MySwal.fire({
-    //   title: "¿Estas seguro?",
-    //   text: "¡El turno será borrado de la base de datos!",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#1ABD53",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Sí",
-    //   cancelButtonText: "Cancelar",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     dispatch(deleteTurno(props.idTurn)).then(() => {
-    //       dispatch(getTurnos(companySelectedMenu._id));
-    //     });
-    //     MySwal.fire({
-    //       title: "Turno borrado",
-    //       text: "El Turno se borró correctamente.",
-    //       icon: "success",
-    //       confirmButtonColor: "#00A0D2",
-    //     });
-    //   }
-    // });
   };
 
   return (
@@ -196,7 +174,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th>Nombre Cliente</th>
+              <th>Nombre Mascota</th>
 
               <th>
                 Fecha{" "}
@@ -292,8 +270,8 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
         </table>
 
         <ModalEditTurn
-          stateEditTurn={stateEditTurn}
-          setStateEditTurn={setStateEditTurn}
+          booleanClose={booleanClose}
+          setBooleanClose={setBooleanClose}
           stateDataEdit={stateDataEdit}
           setStateDataEdit={setStateDataEdit}
         />

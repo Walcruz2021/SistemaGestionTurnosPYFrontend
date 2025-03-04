@@ -7,7 +7,7 @@ import {
   updateClient,
 } from "../reducer/actions/actions";
 
-import {deleteDog} from "../reducer/actions/actionsDog"
+import { deleteDog } from "../reducer/actions/actionsDog";
 
 import Swal from "sweetalert2";
 import ModalEditDog from "./Modal/ModalEditDog";
@@ -21,40 +21,36 @@ import {
   faChartLine,
   faTrashArrowUp,
   faFilePen,
-
 } from "@fortawesome/free-solid-svg-icons";
 import withReactContent from "sweetalert2-react-content";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { renderMatches } from "react-router-dom";
 
-export default function HistorialClient({state,stateHist,setStateHist
-}) {
+export default function HistorialClient({ state, stateHist, setStateHist }) {
+
 
   var arrayDog = [];
 
+  const [stateDog, setDog] = useState(state.arrayDogs);
 
-  const [stateDog, setDog] = useState(
-    state.arrayDogs,
-  );
 
-  useEffect(()=>{
-    //console.log('El estado stateDog ha cambiado:', stateDog);
-  
-  },[stateDog])
+  useEffect(() => {
+    if (state) {
+      setDog(state.arrayDogs);
+    }
+  }, [state]);
 
   const [stateEditDog, setEditDog] = useState(false);
-  const[inputStateDog,setStateDog]=useState({
-    idDog:"",
-    notaP:"",
-    nameDog:"",
-    raza:"",
-    tamaño:""
-  })
+  const [inputStateDog, setStateDog] = useState({
+    idDog: "",
+    notaP: "",
+    nameDog: "",
+    raza: "",
+    tamaño: "",
+  });
 
-  
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
-
 
   let sumaTarjeta = 0;
   let sumaBanco = 0;
@@ -95,12 +91,11 @@ export default function HistorialClient({state,stateHist,setStateHist
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteDog(idDog));
-      //  pruebaConsole(state.state.arrayDogs[index]);
-        const array=stateDog.splice(index, 1);
-          setDog({
-            array
-          });
-        
+        //  pruebaConsole(state.state.arrayDogs[index]);
+        const array = stateDog.splice(index, 1);
+        setDog({
+          array,
+        });
 
         MySwal.fire({
           title: "Perro Eliminado",
@@ -112,15 +107,14 @@ export default function HistorialClient({state,stateHist,setStateHist
     });
   };
 
-  const editDog = (id,nameDog,notaP,raza,tamaño) => {
-  
+  const editDog = (id, nameDog, notaP, raza, tamaño) => {
     setStateDog({
-      idDog:id,
-      nameDog:nameDog,
-      notaP:notaP,
-      raza:raza,
-      tamaño:tamaño
-    })
+      idDog: id,
+      nameDog: nameDog,
+      notaP: notaP,
+      raza: raza,
+      tamaño: tamaño,
+    });
     setEditDog(!stateEditDog);
   };
 
@@ -128,22 +122,22 @@ export default function HistorialClient({state,stateHist,setStateHist
 
   return (
     <>
-    <ModalEditDog 
-    idDog={inputStateDog.idDog}
-    id={10}
-    state={stateEditDog}
-    setStateModal={setEditDog}
-    notaP={inputStateDog.notaP}
-    value={inputStateDog.notaP}
-    nameDog={inputStateDog.nameDog}
-    raza={inputStateDog.raza}
-    tamaño={inputStateDog.tamaño}
-    stateHist={stateHist}
-    setStateHist={setStateHist}
-    modalContainerBox
-    showInSettings
-  />
- 
+      <ModalEditDog
+        idDog={inputStateDog.idDog}
+        id={10}
+        state={stateEditDog}
+        setStateModal={setEditDog}
+        notaP={inputStateDog.notaP}
+        value={inputStateDog.notaP}
+        nameDog={inputStateDog.nameDog}
+        raza={inputStateDog.raza}
+        tamaño={inputStateDog.tamaño}
+        stateHist={stateHist}
+        setStateHist={setStateHist}
+        modalContainerBox
+        showInSettings
+      />
+
       {state.arrayPedidos.length > 0 ? (
         <>
           <h5 className="tituloVentas">Total Servicios</h5>
@@ -198,14 +192,28 @@ export default function HistorialClient({state,stateHist,setStateHist
                     {/* <h5 className="descripcion">Raza: {dog.raza}</h5> */}
                     <h5 className="descripcion">Tamaño: {dog.tamaño}</h5>
 
-                    <button className="buttonDleteDog"onClick={() => DogDelete(dog._id, index)}>
+                    <button
+                      className="buttonDleteDog"
+                      onClick={() => DogDelete(dog._id, index)}
+                    >
                       <FontAwesomeIcon
                         className="icon4"
                         icon={faTrashArrowUp}
                         size="lg"
                       />
                     </button>
-                    <button className="buttonEditDog" onClick={() => editDog(dog._id,dog.nameDog,dog.notaP,dog.raza,dog.tamaño)}>
+                    <button
+                      className="buttonEditDog"
+                      onClick={() =>
+                        editDog(
+                          dog._id,
+                          dog.nameDog,
+                          dog.notaP,
+                          dog.raza,
+                          dog.tamaño
+                        )
+                      }
+                    >
                       <FontAwesomeIcon
                         className="icon5"
                         icon={faFilePen}

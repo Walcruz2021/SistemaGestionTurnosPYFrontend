@@ -162,7 +162,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   rows={3}
                   name="notesCli"
                   autoFocus
-                  maxLength={150}
+                  maxLength={120}
                   value={stateValue.notesCli}
                   onChange={handleChange}
                   required

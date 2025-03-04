@@ -149,7 +149,11 @@ function FormRegister({ autUser }) {
       } catch (error) {
         console.error(error.code, error.message);
         if (error.code === "auth/weak-password") {
-          alert("password has few characters");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Las contraseñas deben tener mas de 6 dígitos",
+          });
         } else if (error.code === "auth/email-already-in-use") {
           Swal.fire({
             icon: "error",
@@ -182,7 +186,7 @@ function FormRegister({ autUser }) {
       ...prevState,
       firstName: newData,
     }));
-    setValidationName(newData.length > 4);
+    setValidationName(newData.length > 3);
   };
 
   const handleChangeLastName = (event) => {
@@ -253,7 +257,7 @@ function FormRegister({ autUser }) {
 
                   {!validationName && isInputFocusedName && (
                     <div className="text-danger msgAlertInput">
-                      Mayor a 4 letras
+                      Mayor a 3 letras
                     </div>
                   )}
 

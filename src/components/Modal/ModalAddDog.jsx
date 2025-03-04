@@ -213,7 +213,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 placeholder="Nombre de Mascota"
                 name="nameDog"
                 autoFocus
-                maxLength={30}
+                maxLength={20}
                 value={stateValue.nameDog}
                 onChange={handleChange}
                 required

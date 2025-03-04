@@ -248,7 +248,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                   // placeholder="Pepe Argento"
                   name="notesTurn"
                   autoFocus
-                  maxLength={150}
+                  maxLength={120}
                   value={stateInput.notesTurn}
                   onChange={handleChange}
                   required

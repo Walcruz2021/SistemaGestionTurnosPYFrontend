@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik, Field, ErrorMessage, Form } from "formik";
-
+import { ClipLoader } from "react-spinners";
 import {
   faSortAlphaDown,
   faPenSquare,
@@ -11,6 +11,8 @@ import {
   faNoteSticky,
   faScaleBalanced,
   faShieldDog,
+  faPerson,
+  faPersonWalking
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -41,18 +43,19 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 import carpetaMedica from "../icons/carpeta-medica.png";
+import {
+  listenToAuthChanges,
+  verificationConection,
+} from "../reducer/actions/actions";
+
 function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
-
   const listClients = useSelector((state) => state.allClients);
-
-
   const [stateListTurn, setListTurn] = useState([]);
   const [stateCategory, setStateCategory] = useState("");
-
   const vtaxClient = useSelector((state) => state.vtaxClient);
-
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [selectedDog, setSelectedDog] = useState(null);
@@ -90,6 +93,8 @@ function Dashboard() {
     email: "",
   });
 
+  const loginUser = useSelector((state) => state.user);
+
   const onTurnoAdded = () => {
     dispatch(getTurnos(companySelectedMenu._id));
   };
@@ -100,12 +105,39 @@ function Dashboard() {
 
   useEffect(() => {
     if (companySelectedMenu) {
-      dispatch(getClients(companySelectedMenu._id))
+      dispatch(getClients(companySelectedMenu._id));
       if (companySelectedMenu.category) {
         setStateCategory(companySelectedMenu.category);
       }
     }
   }, [companySelectedMenu]);
+
+  useEffect(() => {
+    if (loginUser) {
+      setIsLoading(false);
+    }
+  }, [loginUser]);
+
+  // ✅ Esperar la conexión a Mongo antes de mostrar la UI
+  useEffect(() => {
+    let interval;
+    const checkConnection = async () => {
+      try {
+        const response = await dispatch(verificationConection());
+        if (response) {
+          setIsLoading(false);
+          clearInterval(interval); // Si la conexión es exitosa, detenemos los intentos
+        }
+      } catch (error) {
+        console.error("Error verificando conexión:", error);
+      }
+    };
+    checkConnection();
+
+    // Si el servidor no está disponible, intentamos cada 5 segundos
+    interval = setInterval(checkConnection, 5000);
+    return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
+  }, [dispatch]);
 
   const [stateAddTurn, setStateAddTurn] = useState(false);
 
@@ -220,279 +252,304 @@ function Dashboard() {
 
   return (
     <>
-      <div>
-        {/* BUTTONS */}
-        <div className="container py-3">
-          <div className="row justify-content-center">
-            <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-              <div className="text-center">
-                <div className="card-body">
-                  <button
-                    className="btn btn-link"
-                    onClick={() => setNewClient(!newClient)}
-                  >
-                    <img src={addClient2} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {listClients ? (
-              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                <div className="text-center">
-                  <div className="card-body">
-                    <Link to="/listClient">
-                      <button className="btn btn-link">
-                        <img src={iconClients} />
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                <div className="text-center">
-                  <div className="card-body">
-                    <button className="btn btn-link">
-                      <img src={iconClients} onClick={messageClient} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {listClients ? (
-              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                <div className="text-center">
-                  <div className="card-body">
-                    <button className="btn btn-link">
-                      <img src={addPet} onClick={ModalAddDogActive} />
-                    </button>
-                    <ModalAddDog
-                      stateAddDog={stateAddDog}
-                      setStateAddDog={setStateAddDog}
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : !listClients ? (
-              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                <div className="text-center">
-                  <div className="card-body">
-                    <button className="btn btn-link">
-                      <img src={addPet} onClick={messageClient} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {listClients ? (
-              <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                <div className="text-center">
-                  <div className="card-body">
-                    <button className="btn btn-link" onClick={addTurn}>
-                      <img src={iconAddTurn} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <button className="btn btn-link" onClick={messageClient}>
-                <img src={iconAddTurn} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* MODALS */}
-        <ModalAddClient
-          state={newClient}
-          setState={setNewClient}
-        ></ModalAddClient>
-
-        {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}
-
-        {stateInfo ? (
-          <>
-            <ModalBoostrap show={stateInfo} onHide={handleClose} centered>
-              <ModalBoostrap.Body>
-                <ModalDescription
-                  nameClient={inputState.name}
-                  phone={inputState.phone}
-                  notesTurn={inputState.notesTurn}
-                  email={inputState.email}
-                  state={stateInfo}
-                  setStateModal={setInfo}
-                />
-              </ModalBoostrap.Body>
-            </ModalBoostrap>
-          </>
-        ) : null}
-
-        {/* MODAL PERMITE EDITAR UN TURNO */}
-      </div>
-      {/* <AgendaInputs></AgendaInputs> */}
-
-      <div className="container-fluid table-responsive">
-        <ModalAddTurn
-          // onTurnoAdded={onTurnoAdded}
-          stateAddTurn={newTurno}
-          setStateAddTurn={setNewTurno}
-        />
-      </div>
-
-      {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
-      <div className="container-fluid table-responsive">
-        <>
-          <div className="titGral">
-            <h2>TABLA DE TURNOS</h2>
-          </div>
-
-          <TableTurns
-            setOrder={setOrder}
-            setInputState={setInputState}
-            order={order}
-            setEditTurn={setEditTurn}
-            editTurn={editTurn}
-            setInfo={setInfo}
-            stateInfo={stateInfo}
-          />
-
-          <ModalEditTurn />
-
-          {!stateInfo && !newTurno && !newClient && !newDog ? (
-            <div className="container-lg pb-4">
-              <Select
-                placeholder="Seleccione Mascota a Buscar"
-                options={Listdogs}
-                onChange={ChangeDog}
-              />
-            </div>
-          ) : null}
-
-          <div className="titGral">
-            <h1 className="mt-1">{`Historial de Mascota`}</h1>
-          </div>
-        </>
-      </div>
-
-      {/* //////////////////////////HISTORIAL MASCOTA /////////////////////////////////////*/}
-
-      {selectedDog ? (
-        vtaxClient.status === 200 ? (
-          <>
-            <div className="container-lg table-responsive">
-              {/* <td>{selectedDog.selectedDog.label}</td> */}
-
-              {vtaxClient.data.vta ? (
-                <>
-                  <div className="titDetails">
-                    <h5 className="text-center">Detalle Mascota</h5>
-                  </div>
-                  <div className="container py-3">
-                    <div className="row justify-content-center">
-                      <div
-                        className="col-12 col-md-4 d-flex justify-content-center mb-1"
-                        key={vtaxClient.data.vta[0].Dog._id}
+      {!isLoading ? (
+        <div>
+          <div>
+            {/* BUTTONS */}
+            <div className="container py-3">
+              <div className="row justify-content-center">
+                <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                  <div className="text-center">
+                    <div className="card-body">
+                      <button
+                        className="btn btn-link"
+                        onClick={() => setNewClient(!newClient)}
                       >
-                        <div className="card-body text-center">
-                          <p>
-                            <FontAwesomeIcon icon={faBone} size="lg" />
-                          </p>
-                          <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
-                        </div>
-                      </div>
+                        <img src={addClient2} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                        <div className="card-body text-center">
-                          <p>
-                            <FontAwesomeIcon icon={faScaleBalanced} size="lg" />
-                          </p>
-                          <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
-                        </div>
-                      </div>
-
-                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                        <div className="card-body text-center">
-                          <p>
-                            <FontAwesomeIcon icon={faShieldDog} size="lg" />
-                          </p>
-                          <p>{vtaxClient.data.vta[0].Dog.raza}</p>
-                        </div>
-                      </div>
-
-                      <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                        <div className="card-body  text-center">
-                          <p>
-                            <FontAwesomeIcon icon={faNoteSticky} size="lg" />
-                          </p>
-                          <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
-                        </div>
+                {listClients ? (
+                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <Link to="/listClient">
+                          <button className="btn btn-link">
+                            <img src={iconClients} />
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
-                </>
-              ) : null}
+                ) : (
+                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <button className="btn btn-link">
+                          <img src={iconClients} onClick={messageClient} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {listClients ? (
+                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <button className="btn btn-link">
+                          <img src={addPet} onClick={ModalAddDogActive} />
+                        </button>
+                        <ModalAddDog
+                          stateAddDog={stateAddDog}
+                          setStateAddDog={setStateAddDog}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : !listClients ? (
+                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <button className="btn btn-link">
+                          <img src={addPet} onClick={messageClient} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {listClients ? (
+                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <button className="btn btn-link" onClick={addTurn}>
+                          <img src={iconAddTurn} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="btn btn-link" onClick={messageClient}>
+                    <img src={iconAddTurn} />
+                  </button>
+                )}
+              </div>
             </div>
 
-            <div className="container-lg table-responsive mb-4">
-              {/* <td>{selectedDog.selectedDog.label}</td> */}
+            {/* MODALS */}
+            <ModalAddClient
+              state={newClient}
+              setState={setNewClient}
+            ></ModalAddClient>
 
-              <table className="table table-bordered table-hover table-dark">
-                <thead class="thead-light table-secondary">
-                  <tr>
-                    <th>Valor Servicio</th>
-                    <th>
-                      Fecha{" "}
-                      <FontAwesomeIcon
-                        onClick={(e) => handleOrderHistDog(e)}
-                        color={order ? "#FF846A" : "#A2DFFF"}
-                        icon={faSortAlphaDown}
-                        size="lg"
-                        style={{ cursor: "pointer" }}
+            {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}
+
+            {stateInfo ? (
+              <>
+                <ModalBoostrap show={stateInfo} onHide={handleClose} centered>
+                  <ModalBoostrap.Body>
+                    <ModalDescription
+                      nameClient={inputState.name}
+                      phone={inputState.phone}
+                      notesTurn={inputState.notesTurn}
+                      email={inputState.email}
+                      state={stateInfo}
+                      setStateModal={setInfo}
+                    />
+                  </ModalBoostrap.Body>
+                </ModalBoostrap>
+              </>
+            ) : null}
+
+            {/* MODAL PERMITE EDITAR UN TURNO */}
+          </div>
+
+          {/* <AgendaInputs></AgendaInputs> */}
+
+          <div className="container-fluid table-responsive">
+            <ModalAddTurn
+              // onTurnoAdded={onTurnoAdded}
+              stateAddTurn={newTurno}
+              setStateAddTurn={setNewTurno}
+            />
+          </div>
+
+          {/* /////////////////////////////TABLA TURNOS ////////////////////////////////////////////// */}
+          <div className="container-fluid table-responsive">
+            <>
+              <div className="titGral">
+                <h2>TABLA DE TURNOS</h2>
+              </div>
+
+              <TableTurns
+                setOrder={setOrder}
+                setInputState={setInputState}
+                order={order}
+                setEditTurn={setEditTurn}
+                editTurn={editTurn}
+                setInfo={setInfo}
+                stateInfo={stateInfo}
+              />
+
+              <ModalEditTurn />
+
+              <div className="container-lg pb-4">
+                {!stateInfo && !newTurno && !newClient && !newDog ? (
+                  <div>
+                    <Select
+                      placeholder="Seleccione Mascota a Buscar"
+                      options={Listdogs}
+                      onChange={ChangeDog}
+                      menuPortalTarget={document.body} // Renderiza el menú fuera del contenedor
+                      styles={{
+                        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Asegura que esté visible sobre otros elementos
+                      }}
+                    />
+                    {/* Este style evita que el menú empuje el diseño y cause la barra de desplazamiento lateral. */}
+                  </div>
+                ) : null}
+
+                <div className="titGral">
+                  <h1 className="mt-1">{`Historial de Mascota`}</h1>
+                </div>
+              </div>
+            </>
+          </div>
+
+          {/* //////////////////////////HISTORIAL MASCOTA /////////////////////////////////////*/}
+
+          {selectedDog ? (
+            vtaxClient.status === 200 ? (
+              <>
+                <div className="container-lg table-responsive">
+                  {/* <td>{selectedDog.selectedDog.label}</td> */}
+
+                  {vtaxClient.data.vta ? (
+                    <>
+                      <div className="titDetails">
+                        <h5 className="text-center">Detalle Mascota</h5>
+                      </div>
+                      <div className="container py-3">
+                        <div className="row justify-content-center">
+                          <div
+                            className="col-12 col-md-4 d-flex justify-content-center mb-1"
+                            key={vtaxClient.data.vta[0].Dog._id}
+                          >
+                            <div className="card-body text-center">
+                              <p>
+                                <FontAwesomeIcon icon={faBone} size="lg" />
+                              </p>
+                              <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                            </div>
+                          </div>
+
+                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                            <div className="card-body text-center">
+                              <p>
+                                <FontAwesomeIcon
+                                  icon={faScaleBalanced}
+                                  size="lg"
+                                />
+                              </p>
+                              <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
+                            </div>
+                          </div>
+
+                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                            <div className="card-body text-center">
+                              <p>
+                                <FontAwesomeIcon icon={faPersonWalking} size="lg" />
+                              </p>
+                              <p>{vtaxClient.data.vta[0].name}</p>
+                            </div>
+                          </div> 
+
+                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
+                            <div className="card-body  text-center">
+                              <p>
+                                <FontAwesomeIcon
+                                  icon={faNoteSticky}
+                                  size="lg"
+                                />
+                              </p>
+                              <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+
+                <div className="container-lg table-responsive mb-4">
+                  {/* <td>{selectedDog.selectedDog.label}</td> */}
+
+                  <table className="table table-bordered table-hover table-dark">
+                    <thead class="thead-light table-secondary">
+                      <tr>
+                        <th>Valor Servicio</th>
+                        <th>
+                          Fecha{" "}
+                          <FontAwesomeIcon
+                            onClick={(e) => handleOrderHistDog(e)}
+                            color={order ? "#FF846A" : "#A2DFFF"}
+                            icon={faSortAlphaDown}
+                            size="lg"
+                            style={{ cursor: "pointer" }}
+                          />
+                        </th>
+                        <th>Nota Turno</th>
+                        <th>Tipo de Servicio</th>
+                        {/* <th>Info</th> */}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {vtaxClient.status === 200
+                        ? vtaxClient.data.vta.map((vta) => (
+                            <tr key={vta._id}>
+                              <td>$ {vta.valorServ}</td>
+                              <td>
+                                {convertDateFormat(vta.date)} -{" "}
+                                {convertDay(vta.date)}
+                              </td>
+                              <td>{vta.notesTurn}</td>
+                              <td>{vta.tipoServ}</td>
+                            </tr>
+                          ))
+                        : null}
+                    </tbody>
+                  </table>
+
+                  {stateCategory && stateCategory === "peluAndVet" ? (
+                    <button onClick={openHistorial}>
+                      <img
+                        src={carpetaMedica}
+                        style={{ width: "40px", height: "40px" }}
                       />
-                    </th>
-                    <th>Nota Turno</th>
-                    <th>Tipo de Servicio</th>
-                    {/* <th>Info</th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {vtaxClient.status === 200
-                    ? vtaxClient.data.vta.map((vta) => (
-                        <tr key={vta._id}>
-                          <td>$ {vta.valorServ}</td>
-                          <td>
-                            {convertDateFormat(vta.date)} -{" "}
-                            {convertDay(vta.date)}
-                          </td>
-                          <td>{vta.notesTurn}</td>
-                          <td>{vta.tipoServ}</td>
-                        </tr>
-                      ))
-                    : null}
-                </tbody>
-              </table>
-
-              {stateCategory && stateCategory === "peluAndVet" ? (
-                <button onClick={openHistorial}>
-                  <img
-                    src={carpetaMedica}
-                    style={{ width: "40px", height: "40px" }}
-                  />
-                </button>
-              ) : null}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="container-lg p-2 mb-2 text-center">
-              <h5 className="alertHist">No existe historial de Mascota</h5>
-            </div>
-          </>
-        )
-      ) : null}
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="container-lg p-2 mb-2 text-center">
+                  <h5 className="alertHist">No existe historial de Mascota</h5>
+                </div>
+              </>
+            )
+          ) : null}
+        </div>
+      ) : (
+        <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
+          <ClipLoader color="#000" loading={true} size={70} />
+          <div className="titGral">
+            <h2 className="mt-3">Espere un Momento por favor ...</h2>
+          </div>
+        </div>
+      )}
     </>
   );
 }

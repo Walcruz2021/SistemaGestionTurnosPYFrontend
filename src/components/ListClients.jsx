@@ -142,58 +142,57 @@ function ListClients() {
 
   const [newClient, setNewClient] = useState(false);
 
-  function handleDelete({ idClient, index }) {
-    if (idClient) {
-      MySwal.fire({
-        title: "¿Estas seguro?",
-        text: "¡El Cliente será borrado de la base de datos!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#1ABD53",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí",
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteClient(idClient));
-          clients.splice(index, 1);
-
-          //al eliminar el lciente se sambia el stateHist de manea de que no se visualize las mascotas pertenecientes al cliente eliminado
-          //el cual previamente se habia seleccionado
-          if (stateHist) {
-            setStateHist(!stateHist);
-          }
-
-          //al eliminar el cliente se cambia statInfo de manera de que no se visualize los input de edicion
-          if (stateInfo) {
-            setInfo(!stateInfo);
-          }
-
-          //setStateClients(stateClients[index].status=false)
-
-          //console.log(stateClients[index],"cliente elminado")
-          //al eliminar un cliente quedan los botones ediat y cancelar y ademas queda guardado en el estado el id del cliente eliminado
-          //por tanto se puede hacer click en los botones ya quye estan haciendo referencia al id de un cliente (en este caso del eliminado)
-          //por tanto se blanquea el id al eliminar dicho cliente
-          setInputState({
-            id: "",
-          });
-          //dispatch(getClients());
-
-          MySwal.fire({
-            title: "Cliente Eliminado",
-            text: "El cliente se borró correctamente.",
-            icon: "success",
-            confirmButtonColor: "#00A0D2",
-          });
-        }
-      });
-    } else
-      MySwal.fire({
+  async function handleDelete({ idClient, index }) {
+    if (!idClient) {
+      return MySwal.fire({
         icon: "error",
         title: "Oops...",
         text: "Debe elegir el cliente a eliminar!",
       });
+    }
+
+    const result = await MySwal.fire({
+      title: "¿Estás seguro?",
+      text: "¡El Cliente será borrado de la base de datos!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#1ABD53",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
+  
+      const response = await dispatch(deleteClient(idClient));
+console.log(response)
+
+      if (response?.status === 200) {
+        clients.splice(index, 1);
+
+        if (stateHist) setStateHist(!stateHist);
+        if (stateInfo) setInfo(!stateInfo);
+
+        setInputState({ id: "" });
+
+        await MySwal.fire({
+          title: "Cliente Eliminado",
+          text: "El cliente se borró correctamente.",
+          icon: "success",
+          confirmButtonColor: "#00A0D2",
+        });
+      } else if (response?.status === 204) {
+        await MySwal.fire({
+          icon: "info",
+          title: "No se puede eliminar",
+          text: "No se pude eliminar. Hay turnos pendientes.",
+          confirmButtonColor: "#00A0D2",
+        });
+      } else {
+        throw new Error("Error desconocido al eliminar el cliente.");
+      }
+    
   }
 
   return (
@@ -253,10 +252,10 @@ function ListClients() {
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-dark">
               <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Notes</th>
+                <th>Nombres Cliente</th>
+                <th>Contacto</th>
+                <th>Domicilio</th>
+                <th>Notas</th>
               </tr>
             </thead>
             <tbody>
