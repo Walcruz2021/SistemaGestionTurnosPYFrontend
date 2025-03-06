@@ -174,7 +174,13 @@ const FormGastosDir = () => {
                         placeholder="Efectivo"
                         maxLength={30}
                         required
+                        min="0"
                         className="mt-2"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}
@@ -199,8 +205,14 @@ const FormGastosDir = () => {
                         type="number"
                         placeholder="Transferencia"
                         maxLength={30}
+                        min="0"
                         required
                         className="mt-2"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}
@@ -225,8 +237,14 @@ const FormGastosDir = () => {
                         type="number"
                         placeholder="Tarjeta"
                         maxLength={30}
+                        min="0"
                         required
                         className="mt-2 mb-2"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}
@@ -273,7 +291,6 @@ const FormGastosDir = () => {
           atribuirse directamente al proceso de producción.
         </p>
       </div> */}
-      
     </>
   );
 };

@@ -173,8 +173,14 @@ const FormGastosInd = () => {
                         type="number"
                         placeholder="Efectivo"
                         maxLength={30}
+                        min="0"
                         required
                         className="mt-2"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}
@@ -201,6 +207,12 @@ const FormGastosInd = () => {
                         maxLength={30}
                         required
                         className="mt-2"
+                        min="0"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}
@@ -227,6 +239,12 @@ const FormGastosInd = () => {
                         maxLength={30}
                         required
                         className="mt-2 mb-2"
+                        min="0"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         {...field}
                       />
                     )}

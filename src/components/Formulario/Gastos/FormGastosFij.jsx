@@ -173,6 +173,12 @@ const FormGastosFij = () => {
                         placeholder="Efectivo"
                         maxLength={30}
                         required
+                        min="0"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         className="mt-2"
                         {...field}
                       />
@@ -199,6 +205,12 @@ const FormGastosFij = () => {
                         placeholder="Transferencia"
                         maxLength={30}
                         required
+                        min="0"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         className="mt-2"
                         {...field}
                       />
@@ -225,6 +237,12 @@ const FormGastosFij = () => {
                         placeholder="Tarjeta"
                         maxLength={30}
                         required
+                        min="0"
+                        onKeyDown={(e) => {
+                          if (e.key === "-" || e.key === "e") {
+                            e.preventDefault();
+                          }
+                        }}
                         className="mt-2 mb-2"
                         {...field}
                       />

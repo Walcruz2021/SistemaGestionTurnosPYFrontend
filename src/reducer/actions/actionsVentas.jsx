@@ -5,6 +5,8 @@ export const GET_VENTAS_ID = "GET_VENTAS_ID";
 export const GET_VENTAS = "GET_VENTAS";
 export const ORDER_VENTAS = "ORDER_VENTAS";
 export const DELETE_DOG = "DELETE_DOG";
+export const ORDER_VENTAS_MONTH_NOW="ORDER_VENTAS_MONTH_NOW"
+export const ORDER_VENTAS_MONTHANIO_PARAM="ORDER_VENTAS_MONTHANIO_PARAM"
 export const RESET_VENTASxANIOandPARAM = "RESET_VENTASxANIOandPARAM";
 export const DELETE_TURNO = "DELETE_TURNO";
 import axios from "axios";
@@ -68,18 +70,20 @@ export function vtasxA(idCompany, anio) {
 }
 
 export function vtasMesandAnioxParam(idCompany, date) {
+
   return async function (dispatch) {
     const vtas = await axios.get(
       `${host}/api/vtasxAnioandMesParam/${idCompany}`,
       {
         params: {
           date: date,
-        },
+        }
       }
     );
+
     return dispatch({
       type: VTAS_MES_ANIO_PARAMS,
-      payload: vtas.data, // use vtas.data to get the actual response data
+      payload: vtas.data.vtas, // use vtas.data to get the actual response data
     });
   };
 }
@@ -136,6 +140,20 @@ export function getVentas(payload) {
 export function orderVentas(payload) {
   return {
     type: ORDER_VENTAS,
+    payload,
+  };
+}
+
+export function orderVentasMonthNow(payload) {
+  return {
+    type: ORDER_VENTAS_MONTH_NOW,
+    payload,
+  };
+}
+
+export function orderVentasMonthAnioXParam(payload) {
+  return {
+    type: ORDER_VENTAS_MONTHANIO_PARAM,
     payload,
   };
 }

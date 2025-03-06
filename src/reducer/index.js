@@ -56,6 +56,8 @@ import {
   GET_VENTAS,
   ORDER_VENTAS,
   RESET_VENTASxANIOandPARAM,
+  ORDER_VENTAS_MONTH_NOW,
+  ORDER_VENTAS_MONTHANIO_PARAM,
 } from "./actions/actionsVentas";
 
 const initialState = {
@@ -86,6 +88,7 @@ function rootReducer(state = initialState, action) {
   //console.log(action.payload, "reducer (valores del actions)");
   // imprmiira esto de abajao,dependiendo de la accion que se haya elegido
   // Object { type: "GET_RECIPE", payload: (13) […] }
+
   switch (action.type) {
     case VERIFICATION_CONECTION:
       return {
@@ -283,11 +286,43 @@ function rootReducer(state = initialState, action) {
         allTurnos: arrayOrder,
       };
 
-    case ORDER_VENTAS:
-      const listOrderV = state.allVentas;
-      const arrayOrderV =
+    // case ORDER_VENTAS:
+    //   const listOrderV = state.allVentas;
+    //   const arrayOrderV =
+    //     action.payload === true
+    //       ? listOrderV.sort(function (a, b) {
+    //           const aux1 = a.date.toLocaleLowerCase();
+    //           const aux2 = b.date.toLocaleLowerCase();
+    //           if (aux1 > aux2) {
+    //             return 1;
+    //           }
+    //           if (aux2 > aux1) {
+    //             return -1;
+    //           } else return 0;
+    //         })
+    //       : // descendente
+    //         listOrderV.sort(function (a, b) {
+    //           const aux1a = a.date.toLocaleLowerCase();
+    //           const aux2b = b.date.toLocaleLowerCase();
+    //           if (aux1a > aux2b) {
+    //             return -1;
+    //           }
+    //           if (aux2b > aux1a) {
+    //             return 1;
+    //           } else return 0;
+    //         });
+
+    //   return {
+    //     ...state,
+    //     allVentas: arrayOrderV,
+    //   };
+
+    case ORDER_VENTAS_MONTH_NOW:
+      const listOrderVMN = state.vtasxAnioandMesNow;
+      //console.log(listOrderVMN)
+      const arrayOrderVMN =
         action.payload === true
-          ? listOrderV.sort(function (a, b) {
+          ? listOrderVMN.sort(function (a, b) {
               const aux1 = a.date.toLocaleLowerCase();
               const aux2 = b.date.toLocaleLowerCase();
               if (aux1 > aux2) {
@@ -298,7 +333,7 @@ function rootReducer(state = initialState, action) {
               } else return 0;
             })
           : // descendente
-            listOrderV.sort(function (a, b) {
+            listOrderVMN.sort(function (a, b) {
               const aux1a = a.date.toLocaleLowerCase();
               const aux2b = b.date.toLocaleLowerCase();
               if (aux1a > aux2b) {
@@ -311,14 +346,15 @@ function rootReducer(state = initialState, action) {
 
       return {
         ...state,
-        allVentas: arrayOrderV,
+        vtasxAnioandMesNow: arrayOrderVMN,
       };
 
-    case ORDER_GASTOS:
-      const listOrderG = state.allGastos;
-      const arrayOrderG =
+    case ORDER_VENTAS_MONTHANIO_PARAM:
+      const listOrderVAP = state.vtasxAnioandMesParam;
+
+      const arrayOrderVAP =
         action.payload === true
-          ? listOrderV.sort(function (a, b) {
+          ? listOrderVAP.sort(function (a, b) {
               const aux1 = a.date.toLocaleLowerCase();
               const aux2 = b.date.toLocaleLowerCase();
               if (aux1 > aux2) {
@@ -329,7 +365,7 @@ function rootReducer(state = initialState, action) {
               } else return 0;
             })
           : // descendente
-            listOrderG.sort(function (a, b) {
+          listOrderVAP.sort(function (a, b) {
               const aux1a = a.date.toLocaleLowerCase();
               const aux2b = b.date.toLocaleLowerCase();
               if (aux1a > aux2b) {
@@ -342,8 +378,39 @@ function rootReducer(state = initialState, action) {
 
       return {
         ...state,
-        allGastos: arrayOrderG,
+        vtasxAnioandMesParam: arrayOrderVAP,
       };
+
+    // case ORDER_GASTOS:
+    //   const listOrderG = state.allGastos;
+    //   const arrayOrderG =
+    //     action.payload === true
+    //       ? listOrderV.sort(function (a, b) {
+    //           const aux1 = a.date.toLocaleLowerCase();
+    //           const aux2 = b.date.toLocaleLowerCase();
+    //           if (aux1 > aux2) {
+    //             return 1;
+    //           }
+    //           if (aux2 > aux1) {
+    //             return -1;
+    //           } else return 0;
+    //         })
+    //       : // descendente
+    //         listOrderG.sort(function (a, b) {
+    //           const aux1a = a.date.toLocaleLowerCase();
+    //           const aux2b = b.date.toLocaleLowerCase();
+    //           if (aux1a > aux2b) {
+    //             return -1;
+    //           }
+    //           if (aux2b > aux1a) {
+    //             return 1;
+    //           } else return 0;
+    //         });
+
+    //   return {
+    //     ...state,
+    //     allGastos: arrayOrderG,
+    //   };
 
     case SEARCH_VTA_CLIENT:
       return {

@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   vtasAnioMesNow,
   orderVentas,
+  orderVentasMonthNow,
   vtasMesandAnioxParam,
+  orderVentasMonthAnioXParam,
+  resetVentasXanioandMesParam
 } from "../reducer/actions/actionsVentas";
 import "./ListVentas.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -110,7 +113,7 @@ export default function TodoList() {
   //******************************************** */
 
   //**************SELECTOR AÑOS**************************/
-  let listadoAños = [2022, 2023, 2024];
+  let listadoAños = [2022, 2023, 2024,2025];
   const años = [];
 
   listadoAños.map((año) => {
@@ -133,12 +136,18 @@ export default function TodoList() {
 
   //******************************************** */
   const [order, setOrder] = useState(false);
+  const [order2, setOrder2] = useState(false);
 
   const listadoVentas = ventas;
 
   function handleOrder(e) {
     setOrder(!order);
-    dispatch(orderVentas(order));
+    dispatch(orderVentasMonthNow(order));
+  }
+
+  function handleOrder2(e) {
+    setOrder2(!order2);
+    dispatch(orderVentasMonthAnioXParam(order2));
   }
 
   let labels = [];
@@ -183,6 +192,10 @@ export default function TodoList() {
     return info;
   }
 
+  function resetVtasXParams (){
+   dispatch(resetVentasXanioandMesParam())
+  }
+
   return (
     <div>
       <div className="container">
@@ -203,7 +216,7 @@ export default function TodoList() {
               <div className="card-body mt-1">
                 <Link to="/">
                   <button className="btn btn-link">
-                    <img src={back} />
+                    <img src={back} onClick={resetVtasXParams}/>
                   </button>
                 </Link>
               </div>
@@ -217,7 +230,7 @@ export default function TodoList() {
         <h2>Ventas del Mes Actual</h2>
       </div>
       
-      {Array.isArray(ventas) ? (
+      {Array.isArray(ventas) && ventas.length !=0 ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -225,7 +238,7 @@ export default function TodoList() {
             <thead class="thead-light table-dark">
               <tr>
                 <th>
-                  Date{" "}
+                  Fecha{" "}
                   <FontAwesomeIcon
                     onClick={(e) => handleOrder(e)}
                     color={order ? "#FF846A" : "#A2DFFF"}
@@ -234,11 +247,11 @@ export default function TodoList() {
                     style={{ cursor: "pointer" }}
                   />
                 </th>
-                <th>ValueService</th>
+                <th>Valor Servicio</th>
                 <th>Efectivo</th>
                 <th>Banco</th>
                 <th>Tarjeta</th>
-                <th>NameClient</th>
+                <th>Cliente</th>
               </tr>
             </thead>
             <tbody>
@@ -260,8 +273,8 @@ export default function TodoList() {
           </table>
         </div>
       ) : (
-        <div className="titGral">
-          <h2>No existen Ingresos del Mes Actual</h2>
+        <div className="titGral container-lg P-2">
+          <h2 className="alertSearch">No existen Ingresos del Mes Actual</h2>
         </div>
       )}
 
@@ -291,7 +304,7 @@ export default function TodoList() {
         </button>
       </div>
 
-      {vtasFiltered && vtasFiltered.vtas? (
+      {vtasFiltered ? (
         <div className="container-lg table-responsive">
           <div className="titGral">
             <h2>Ventas del Mes Seleccionado</h2>
@@ -300,24 +313,24 @@ export default function TodoList() {
             <thead class="thead-light table-dark">
               <tr>
                 <th>
-                  Date{" "}
+                  Fecha{" "}
                   <FontAwesomeIcon
-                    onClick={(e) => handleOrder(e)}
-                    color={order ? "#FF846A" : "#A2DFFF"}
+                    onClick={(e) => handleOrder2(e)}
+                    color={order2 ? "#FF846A" : "#A2DFFF"}
                     icon={faSortAlphaDown}
                     size="lg"
                     style={{ cursor: "pointer" }}
                   />
                 </th>
-                <th>ValueService</th>
+                <th>Valor Service</th>
                 <th>Efectivo</th>
                 <th>Banco</th>
                 <th>Tarjeta</th>
-                <th>NameClient</th>
+                <th>Cliente</th>
               </tr>
             </thead>
             <tbody>
-            {vtasFiltered.vtas.map((vta) => (
+            {vtasFiltered.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
                   {vta.valorServ ? <td>$ {vta.valorServ}</td> : <td>$ 0</td>}
@@ -335,8 +348,8 @@ export default function TodoList() {
           </table>
         </div>
       ) : (
-        <div className="container-lg P-2">
-          <h5 className="alertSearch">No se encontraron ventas</h5>
+        <div className="titGral container-lg P-2">
+          <h2 className="alertSearch">No se encontraron ventas</h2>
         </div>
       )}
     </div>
