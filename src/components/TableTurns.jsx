@@ -18,6 +18,7 @@ import {
   updateTurno,
 } from "../reducer/actions/actionsTurnos";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
+import ModalDescription from "./Modal/ModalDescription";
 
 const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
