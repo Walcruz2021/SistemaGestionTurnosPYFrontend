@@ -29,8 +29,7 @@ const FormAddCompany = () => {
     cuit: "",
   });
 
-  const [selectedOption,setSelectedOption]=useState("")
-
+  const [selectedOption, setSelectedOption] = useState("");
 
   //logIn with email of gmail
 
@@ -42,9 +41,9 @@ const FormAddCompany = () => {
     }));
   };
 
-const handleChangeRadioB=(event)=>{
-  setSelectedOption(event.target.value);
-}
+  const handleChangeRadioB = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   const handleSumbit = async (e) => {
     if (
@@ -69,7 +68,7 @@ const handleChangeRadioB=(event)=>{
             province: "Salta",
             country: "Argentina",
             emailUser: loginUser.email,
-            category:selectedOption
+            category: selectedOption,
           })
         );
         MySwal.fire({
@@ -134,21 +133,40 @@ const handleChangeRadioB=(event)=>{
           className="small"
           wrapperClass="mb-2"
           id="form1"
-          type="Number"
+          type="text"
           name="cuit"
           value={stateValue.cuit}
-          onChange={handleChange}
-          maxLength="8"
+          onChange={(e) => {
+            // Solo permitir números y máximo 10 caracteres
+            const value = e.target.value.replace(/\D/g, "").slice(0, 12);
+            setStateValue((prevState) => ({
+              ...prevState,
+              cuit: value,
+            }));
+          }}
+  
         />
 
         <div className="d-flex justify-content-between w-100">
           <label className="p-2">
-            <input className="m-2" type="radio" value="pelu" checked={selectedOption==="pelu"} onChange={handleChangeRadioB}  />
+            <input
+              className="m-2"
+              type="radio"
+              value="pelu"
+              checked={selectedOption === "pelu"}
+              onChange={handleChangeRadioB}
+            />
             Peluqueria
           </label>
 
           <label className="p-2">
-            <input className="m-2" type="radio" value="peluAndVet" checked={selectedOption==="peluAndVet"} onChange={handleChangeRadioB} />
+            <input
+              className="m-2"
+              type="radio"
+              value="peluAndVet"
+              checked={selectedOption === "peluAndVet"}
+              onChange={handleChangeRadioB}
+            />
             Veterinaria y Peluqueria
           </label>
         </div>
@@ -158,8 +176,7 @@ const handleChangeRadioB=(event)=>{
           {!stateValue.nameCompany ||
           !stateValue.address ||
           !stateValue.cuit ||
-          !selectedOption
-          ? (
+          !selectedOption ? (
             <button
               className="btn btn-primary"
               type="submit"

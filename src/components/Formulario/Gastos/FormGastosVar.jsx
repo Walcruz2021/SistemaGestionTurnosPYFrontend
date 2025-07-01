@@ -39,14 +39,15 @@ const FormGastosVar = () => {
     { value: "MANO DE OBRA TECNICO", label: "Mano de Obra Tecnico" },
     {
       value: "MULTAS ADMINISTRATIVAS",
-      label: "Multas Administrativas"
+      label: "Multas Administrativas",
     },
   ];
 
   const onSubmit = (data) => {
-    const fecha = new Date(data.date);
-    const año = fecha.getFullYear();
-    const mes = fecha.getMonth() + 1;
+    const [day, month, year] = data.date.split("/");
+    const fechaFormat = new Date(`${year}-${month}-${day}`); // yyyy-mm-dd
+    const año = fechaFormat.getFullYear();
+    const mes = fechaFormat.getMonth() + 1;
 
     const newStateInput = {
       ...data,

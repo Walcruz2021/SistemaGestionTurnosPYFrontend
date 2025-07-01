@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AgendaTurnos from "./components/AgendaTurnos";
 import ListClients from "./components/ListClients.jsx";
-import ListVentas from "./components/ListVentas.jsx";
+import InformeVentas from "./components/Informes/InformeVentas.jsx";
 import InformeAnualVtas from "./components/Informes/InformeAnualVtas.jsx";
 import InformeAnualGtos from "./components/Informes/InformeAnualGtos.jsx";
 import SettingClient from "./components/SettingClient.jsx";
@@ -27,6 +27,7 @@ import {
   listenToAuthChanges,
   verificationConection,
 } from "./reducer/actions/actions.jsx";
+import { searchUser } from "./reducer/actions/actionsUser.jsx"; 
 import { ClipLoader } from "react-spinners";
 
 const AppRoutes = () => {
@@ -67,6 +68,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     if (loginUser) {
+      dispatch(searchUser(loginUser.email));
       setIsLoading(false);
     }
   }, [loginUser]);
@@ -99,7 +101,7 @@ const AppRoutes = () => {
             <Routes>
               <Route path="/" element={<AgendaTurnos />} />
               <Route path="/listClient" element={<ListClients />} />
-              <Route path="/listVentas" element={<ListVentas />} />
+              <Route path="/InformeVentas" element={<InformeVentas />} />
               <Route path="/InformeAnualVtas" element={<InformeAnualVtas />} />
               <Route path="/InformeAnualGtos" element={<InformeAnualGtos />} />
               <Route path="/gastos" element={<Gastos />} />

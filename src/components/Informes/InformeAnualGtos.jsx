@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Informe.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { gtosXanio } from "../../reducer/actions/actionsGastos";
-import {orderVentas} from "../../reducer/actions/actionsVentas"
+import { orderVentas } from "../../reducer/actions/actionsVentas";
 import { Link } from "react-router-dom";
 import back from "../../icons/back.png";
 
@@ -24,6 +24,7 @@ function InformeAnualGtos() {
     { value: 2022, label: 2022 },
     { value: 2023, label: 2023 },
     { value: 2024, label: 2024 },
+    { value: 2025, label: 2025 },
   ];
 
   const listGastosAnio = useSelector((state) => state.gtosxAnio);
@@ -215,7 +216,7 @@ function InformeAnualGtos() {
     var bcoTotalAnio = 0;
     fechaN.meses.map((valor) => {
       if (valor.sumaMes != 0) {
-        console.log(valor, "---Z");
+   
         arrayGtos.push(valor);
         sumaTotalAnio = sumaTotalAnio + valor.sumaMes;
         efectivoTotalAnio = efectivoTotalAnio + valor.sumaEfectivo;
@@ -252,7 +253,6 @@ function InformeAnualGtos() {
       {Array.isArray(arrayGtos) ? (
         <div>
           <div className="container-lg">
-           
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-6 col-md-4 text-center">

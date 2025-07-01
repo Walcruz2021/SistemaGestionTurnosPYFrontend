@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 // import CardsItem from "./CardsItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  orderGastos,
+  orderGastosMonthNow,
   gastosXanioandMesNow,
   gastosXanioandMesParam,
+  orderGastosXanioandMesParam
 } from "../../reducer/actions/actionsGastos";
 import ModalBoostrap from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,11 +36,10 @@ export default function InformeGastos() {
 
   const MySwal = withReactContent(Swal);
   const gastos = useSelector((state) => state.gastosXanioandMesNow);
-  //console.log(gastos, 'Listgastos')
+
 
   const gastosFiltered = useSelector((state) => state.gastosXanioandMesParam);
 
-  //console.log(gastosFiltered,"vtas filtradas")
   const dispatch = useDispatch();
 
   const productsInv3 = useSelector((state) => state.allGastos);
@@ -113,7 +113,7 @@ export default function InformeGastos() {
   //******************************************** */
 
   //**************SELECTOR AÑOS**************************/
-  let listadoAños = [2022, 2023, 2024];
+  let listadoAños = [2022, 2023, 2024, 2025];
   const años = [];
 
   listadoAños.map((año) => {
@@ -141,8 +141,14 @@ export default function InformeGastos() {
 
   function handleOrder(e) {
     setOrder(!order);
-    dispatch(orderGastos(order));
+    dispatch(orderGastosMonthNow(order));
   }
+
+    function handleOrder2(e) {
+    setOrder(!order);
+    dispatch(orderGastosXanioandMesParam(order));
+  }
+
 
   let labels = [];
   let data3 = [];
@@ -246,7 +252,13 @@ export default function InformeGastos() {
         <h2>Gastos del Mes Actual</h2>
       </div>
 
-      {Array.isArray(gastos) ? (
+      {gastos && gastos.length ===0 ? (
+        <div className="container-lg P-2">
+          <h5 className="alertSearch">No existen Gastos del Mes Actual</h5>
+        </div>
+      ) : null}
+
+      {gastos && Array.isArray(gastos) ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -314,11 +326,7 @@ export default function InformeGastos() {
             </tbody>
           </table>
         </div>
-      ) : (
-        <div className="titGral">
-          <h2>No existen Ingresos del Mes Actual</h2>
-        </div>
-      )}
+      ) : null}
 
       <div className="container-lg P-2">
         <Select
@@ -346,7 +354,7 @@ export default function InformeGastos() {
         </button>
       </div>
 
-      {gastosFiltered && gastosFiltered.gtos? (
+      {gastosFiltered ? (
         <div className="container-lg table-responsive">
           <div className="titGral">
             <h2>Gastos del Mes Seleccionado</h2>
@@ -357,7 +365,7 @@ export default function InformeGastos() {
                 <th>
                   Date{" "}
                   <FontAwesomeIcon
-                    onClick={(e) => handleOrder(e)}
+                    onClick={(e) => handleOrder2(e)}
                     color={order ? "#FF846A" : "#A2DFFF"}
                     icon={faSortAlphaDown}
                     size="lg"
@@ -370,7 +378,7 @@ export default function InformeGastos() {
               </tr>
             </thead>
             <tbody>
-              {gastosFiltered.gtos.map((gtos) => (
+              {gastosFiltered.map((gtos) => (
                 <tr key={gtos._id}>
                   <td>{convertDateFormat(gtos.date)}</td>
                   {gtos.categoryGasto ? (
@@ -378,25 +386,28 @@ export default function InformeGastos() {
                   ) : (
                     <td>" "</td>
                   )}
-                  
+
                   {gtos.typeGasto ? <td> {gtos.typeGasto}</td> : <td>" "</td>}
-                  
+
                   {gtos.value ? (
-                  <td
-                   onClick={
-                    (e) =>
-                      handleInfo(
-                        e,
-                        gtos.description,
-                        gtos.efectivo,
-                        gtos.tarjeta,
-                        gtos.transferencia
-                      )
-                    }
-                    style={{ cursor: "pointer" }}
+                    <td
+                      onClick={(e) =>
+                        handleInfo(
+                          e,
+                          gtos.description,
+                          gtos.efectivo,
+                          gtos.tarjeta,
+                          gtos.transferencia
+                        )
+                      }
+                      style={{ cursor: "pointer" }}
                       title="Ver Detalles"
-                  >$ {gtos.value}</td>) :( <td>$ 0</td>)}
-                  
+                    >
+                      $ {gtos.value}
+                    </td>
+                  ) : (
+                    <td>$ 0</td>
+                  )}
                 </tr>
               ))}
             </tbody>

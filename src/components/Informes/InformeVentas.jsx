@@ -12,16 +12,16 @@ import {
   vtasMesandAnioxParam,
   orderVentasMonthAnioXParam,
   resetVentasXanioandMesParam
-} from "../reducer/actions/actionsVentas";
-import "./ListVentas.css";
+} from "../../reducer/actions/actionsVentas";
+import "./InformeVentas.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from "react-select";
-import Modal from "./Modal/Modal";
+import Modal from "../Modal/Modal";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import back from "../icons/back.png";
-import infMonth from "../icons/infMonth.png";
+import back from "../../icons/back.png";
+import infMonth from "../../icons/infMonth.png";
 // import { Button} from "../cssSyleComp/index";
 
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";

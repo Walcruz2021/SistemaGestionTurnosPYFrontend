@@ -35,6 +35,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const [stateNewFicha, setStateNewFicha] = useState();
   const [stateNewVta, setStateNewVta] = useState();
 
+
   useEffect(() => {
     if (companySelectedMenu) {
       if (companySelectedMenu.category) {
@@ -97,11 +98,13 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleCargaFicha(e, turn) {
+  
     setStateNewFicha(turn);
     setStateCargaFich(!stateCargaFich); //display the modal ModalEdit
   }
 
   function handleVentas(e, turn) {
+ 
     setStateNewVta(turn);
     setNewVentas(!newVentas);
   }

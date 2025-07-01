@@ -207,7 +207,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
             </Form.Group>
 
             <Form.Group className="mt-2">
-              <Form.Label lassName="text-xs">Nombre Mascota</Form.Label>
+              <Form.Label lassName="text-xs">(*) Nombre Mascota</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Nombre de Mascota"
@@ -233,6 +233,11 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
               />
             </Form.Group>
           </Form>
+
+            <div className="text-danger msgAlertInput mt-2">
+              (*) Valores Obligatorios
+            </div>  
+
         </Modal.Body>
         <Modal.Footer className="mt-2 pt-1 pb-1">
           {!stateValue.idClient ||

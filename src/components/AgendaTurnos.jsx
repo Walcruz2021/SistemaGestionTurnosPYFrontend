@@ -29,6 +29,7 @@ function AgendaTurnos() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listAllClients = useSelector((state) => state.allClients);
 
+
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
   }, [dispatch, loginUser]);

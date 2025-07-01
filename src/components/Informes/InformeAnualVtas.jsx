@@ -215,7 +215,7 @@ function InformeAnualVtas() {
     var bcoTotalAnio = 0;
     fechaN.meses.map((valor) => {
       if (valor.sumaMes != 0) {
-        console.log(valor, "---Z");
+
         arrayVtas.push(valor);
         sumaTotalAnio = sumaTotalAnio + valor.sumaMes;
         efectivoTotalAnio = efectivoTotalAnio + valor.sumaEfectivo;
@@ -259,7 +259,7 @@ function InformeAnualVtas() {
                   <div className="tex-center">
                     <div className="card-body">
                       <div className="btn btn-link">
-                        <Link to="/listVentas">
+                        <Link to="/InformeVentas">
                           <button className="btn btn-link">
                             <img src={back} />
                           </button>

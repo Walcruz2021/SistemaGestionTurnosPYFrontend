@@ -4,8 +4,9 @@ import host from "../../components/ruteBack/vbledeploy";
 export const ADD_GASTOS = "ADD_GASTOS";
 export const RESET_GASTOSxANIOandPARAM = "RESET_GASTOSxANIOandPARAM";
 export const GTOS_MES_ANIO_PARAMS = "GTOS_MES_ANIO_PARAMS";
+export const ORDER_GASTOS_MONTHANIO_PARAM = "ORDER_GASTOS_MONTHANIO_PARAM";
 export const GTOS_ANIO_MES_NOW = "GTOS_ANIO_MES_NOW";
-export const ORDER_GASTOS = "ORDER_GASTOS";
+export const ORDER_GASTOS_MONTH_NOW = "ORDER_GASTOS_MONTH_NOW";
 export const GTO_X_ANIO = "GTO_X_ANIO";
 
 /**
@@ -70,7 +71,7 @@ export const resetGastosXanioandMesParam = () => ({
  * @returns expenses accodrding to seleted date
  */
 export function gastosXanioandMesParam(idCompany, date) {
-  console.log(idCompany);
+
   return async function (dispatch) {
     const gtos = await axios.get(
       `${host}/api/gastosXanioandMesParam/${idCompany}`,
@@ -82,13 +83,13 @@ export function gastosXanioandMesParam(idCompany, date) {
     );
     return dispatch({
       type: GTOS_MES_ANIO_PARAMS,
-      payload: gtos.data, // use gtos.data to get the actual response data
+      payload: gtos.data.gtos, // use gtos.data to get the actual response data
     });
   };
 }
 
 export function gastosXanioandMesNow(idCompany) {
-  console.log(idCompany);
+
   return async function (dispatch) {
     const gtos = await axios.get(
       //"http://localhost:3002/api/vtasxAnioandMesNow",
@@ -102,9 +103,16 @@ export function gastosXanioandMesNow(idCompany) {
   };
 }
 
-export function orderGastos(payload) {
+export function orderGastosMonthNow(payload) {
   return {
-    type: ORDER_GASTOS,
+    type: ORDER_GASTOS_MONTH_NOW,
+    payload,
+  };
+}
+
+export function orderGastosXanioandMesParam(payload) {
+  return {
+    type: ORDER_GASTOS_MONTHANIO_PARAM,
     payload,
   };
 }

@@ -12,7 +12,7 @@ import {
   faScaleBalanced,
   faShieldDog,
   faPerson,
-  faPersonWalking
+  faPersonWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -51,6 +51,7 @@ import {
 function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listadoTurnos = useSelector((state) => state.allTurnos);
+
   const listClients = useSelector((state) => state.allClients);
   const [stateListTurn, setListTurn] = useState([]);
   const [stateCategory, setStateCategory] = useState("");
@@ -61,12 +62,10 @@ function Dashboard() {
   const [selectedDog, setSelectedDog] = useState(null);
   //stateTunrno es una bandera que se modificara cada vez que se elimina un turno
   //se utiliza ya que cada vez que se elimina el turno para que se vea reflkejado el cambio se necesita cambiar algun estado o apretar un boton
-  const [stateTurno, setTurno] = useState(false);
   const [newTurno, setNewTurno] = useState(false);
   const [newDog, setNewDog] = useState(false);
   const [newClient, setNewClient] = useState(false);
   const [order, setOrder] = useState(false);
-  const [changeTurn, setChangeTurn] = useState(false);
   const [stateInfo, setInfo] = useState(false);
   const [stateClientSelected, setStateClientSeleted] = useState();
   const [editTurn, setEditTurn] = useState(false);
@@ -92,7 +91,7 @@ function Dashboard() {
     index: "",
     email: "",
   });
-
+  const userMongo = useSelector((state) => state.userEmailSearch);
   const loginUser = useSelector((state) => state.user);
 
   const onTurnoAdded = () => {
@@ -100,7 +99,19 @@ function Dashboard() {
   };
 
   const addTurn = () => {
-    setNewTurno(!newTurno);
+    if (
+      userMongo &&  
+      userMongo.data.findUser.pay === false && listadoTurnos &&
+      listadoTurnos.length >= 3
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Par turnos ilimitados debe pagar PREMIUM!"
+      });
+    } else {
+      setNewTurno(!newTurno);
+    }
   };
 
   useEffect(() => {
@@ -461,11 +472,14 @@ function Dashboard() {
                           <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
                             <div className="card-body text-center">
                               <p>
-                                <FontAwesomeIcon icon={faPersonWalking} size="lg" />
+                                <FontAwesomeIcon
+                                  icon={faPersonWalking}
+                                  size="lg"
+                                />
                               </p>
                               <p>{vtaxClient.data.vta[0].name}</p>
                             </div>
-                          </div> 
+                          </div>
 
                           <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
                             <div className="card-body  text-center">

@@ -45,7 +45,8 @@ import {
   RESET_GASTOSxANIOandPARAM,
   GTOS_MES_ANIO_PARAMS,
   GTOS_ANIO_MES_NOW,
-  ORDER_GASTOS,
+  ORDER_GASTOS_MONTH_NOW,
+  ORDER_GASTOS_MONTHANIO_PARAM
 } from "./actions/actionsGastos";
 
 import {
@@ -59,6 +60,7 @@ import {
   ORDER_VENTAS_MONTH_NOW,
   ORDER_VENTAS_MONTHANIO_PARAM,
 } from "./actions/actionsVentas";
+
 
 const initialState = {
   allTurnos: [],
@@ -381,36 +383,70 @@ function rootReducer(state = initialState, action) {
         vtasxAnioandMesParam: arrayOrderVAP,
       };
 
-    // case ORDER_GASTOS:
-    //   const listOrderG = state.allGastos;
-    //   const arrayOrderG =
-    //     action.payload === true
-    //       ? listOrderV.sort(function (a, b) {
-    //           const aux1 = a.date.toLocaleLowerCase();
-    //           const aux2 = b.date.toLocaleLowerCase();
-    //           if (aux1 > aux2) {
-    //             return 1;
-    //           }
-    //           if (aux2 > aux1) {
-    //             return -1;
-    //           } else return 0;
-    //         })
-    //       : // descendente
-    //         listOrderG.sort(function (a, b) {
-    //           const aux1a = a.date.toLocaleLowerCase();
-    //           const aux2b = b.date.toLocaleLowerCase();
-    //           if (aux1a > aux2b) {
-    //             return -1;
-    //           }
-    //           if (aux2b > aux1a) {
-    //             return 1;
-    //           } else return 0;
-    //         });
+    case ORDER_GASTOS_MONTH_NOW:
+      const listOrderG = state.gastosXanioandMesNow;
+ 
+      const arrayOrderG =
+        action.payload === true
+          ? listOrderG.sort(function (a, b) {
+              const aux1 = a.date.toLocaleLowerCase();
+              const aux2 = b.date.toLocaleLowerCase();
+              if (aux1 > aux2) {
+                return 1;
+              }
+              if (aux2 > aux1) {
+                return -1;
+              } else return 0;
+            })
+          : // descendente
+            listOrderG.sort(function (a, b) {
+              const aux1a = a.date.toLocaleLowerCase();
+              const aux2b = b.date.toLocaleLowerCase();
+              if (aux1a > aux2b) {
+                return -1;
+              }
+              if (aux2b > aux1a) {
+                return 1;
+              } else return 0;
+            });
 
-    //   return {
-    //     ...state,
-    //     allGastos: arrayOrderG,
-    //   };
+      return {
+        ...state,
+        gastosXanioandMesNow: arrayOrderG,
+      };
+
+      case ORDER_GASTOS_MONTHANIO_PARAM:
+      const listOrderG2 = state.gastosXanioandMesParam;
+
+      const arrayOrderG2 =
+        action.payload === true
+          ? listOrderG2.sort(function (a, b) {
+              const aux1 = a.date.toLocaleLowerCase();
+              const aux2 = b.date.toLocaleLowerCase();
+              if (aux1 > aux2) {
+                return 1;
+              }
+              if (aux2 > aux1) {
+                return -1;
+              } else return 0;
+            })
+          : // descendente
+            listOrderG2.sort(function (a, b) {
+              const aux1a = a.date.toLocaleLowerCase();
+              const aux2b = b.date.toLocaleLowerCase();
+              if (aux1a > aux2b) {
+                return -1;
+              }
+              if (aux2b > aux1a) {
+                return 1;
+              } else return 0;
+            });
+
+       
+      return {
+        ...state,
+        gastosXanioandMesParam: arrayOrderG2,
+      };
 
     case SEARCH_VTA_CLIENT:
       return {

@@ -16,7 +16,7 @@ import gmail from "../../icons/gmailLogin.png";
 import { verificationCompaniesExist } from "../../reducer/actions/actionsCompany";
 import { listenToAuthChanges } from "../../reducer/actions/actions";
 
-import { addUser } from "../../reducer/actions/actionsUser";
+import { addUser, searchUser } from "../../reducer/actions/actionsUser";
 import ModalRestPassword from "../Modal/ModalRestPassword";
 import "./FormLoginNew.css";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -89,6 +89,7 @@ function FormLoginNew({ autUser }) {
       });
     } else {
       try {
+
         await signInWithEmailAndPassword(
           auth,
           stateValue.email,

@@ -105,7 +105,9 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nombre y Apellido</Form.Label>
+                <Form.Label lassName="text-xs">
+                  (*) Nombre y Apellido
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Pepe Argento"
@@ -124,7 +126,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Teléfono Contacto</Form.Label>
+                <Form.Label>(*) Teléfono Contacto</Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="3876153799"
@@ -132,7 +134,16 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   autoFocus
                   maxLength={15}
                   value={stateValue.phone}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    // Solo permitir números y máximo 10 caracteres
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 15);
+                    setStateValue((prevState) => ({
+                      ...prevState,
+                      phone: value,
+                    }));
+                  }}
                   required
                 />
               </Form.Group>
@@ -140,7 +151,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Domicilio</Form.Label>
+                <Form.Label>(*) Domicilio</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Dean Funes 1235"
@@ -156,7 +167,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Nota {stateCategory}</Form.Label>
+                <Form.Label>(*) Nota {stateCategory}</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={3}
@@ -184,7 +195,11 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 />
               </Form.Group>
             </Form>
+            <div className="text-danger msgAlertInput">
+              (*) Valores Obligatorios
+            </div>
           </Modal.Body>
+
           <Modal.Footer className="mt-0 pt-1 pb-1">
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes

@@ -78,9 +78,11 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
   };
 
   const handleSumbit = () => {
-    const fecha = new Date(stateNewVta.date);
+    const [day, month, year] = stateNewVta.date.split("/");
+    const fecha = new Date(`${year}-${month}-${day}`); // yyyy-mm-dd
     const año = fecha.getFullYear();
     const mes = fecha.getMonth() + 1;
+
     const valorServ =
       Number(stateValue.efectivo) +
       Number(stateValue.tarjeta) +
@@ -241,7 +243,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
             stateCategory === "peluAndVet" &&
             !stateNewVta.statusFile === true ? (
               <p className="text-danger small mt-2">
-                (*) Debe llenar ficha de la mascota
+                (*) ¡¡¡ ATENCION. Primero debe llenar ficha de mascota!!!
               </p>
             ) : null}
           </Form>

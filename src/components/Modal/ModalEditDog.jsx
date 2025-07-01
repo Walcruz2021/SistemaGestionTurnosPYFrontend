@@ -50,6 +50,7 @@ const ModalEditDog = ({
 
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
+  const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +89,7 @@ const ModalEditDog = ({
       }).then((result) => {
         if (result.isConfirmed) {
           if (showInSettings) {
-            dispatch(getClients());
+            dispatch(getClients(companySelectedMenu._id));
           }
           setStateModal(!state);
           setStateHist(!stateHist);

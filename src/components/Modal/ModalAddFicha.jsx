@@ -6,16 +6,26 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTurno, getTurnos,updateTurno } from "../../reducer/actions/actionsTurnos";
+import {
+  deleteTurno,
+  getTurnos,
+  updateTurno,
+} from "../../reducer/actions/actionsTurnos";
 import { asignedVentas } from "../../reducer/actions/actionsVentas";
 
-const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => {
-
+const ModalAddFicha = ({
+  state,
+  setState,
+  stateNewFicha,
+  setStateNewFicha,
+}) => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const dispatch = useDispatch();
 
   const [stateCategory, setStateCategory] = useState("Cliente");
+
+  const [newDataFicha, setNewDataFicha] = useState();
 
   useEffect(() => {
     if (
@@ -27,28 +37,22 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
     }
   }, [companySelectedMenu, dispatch]);
 
+  useEffect(() => {
+    if (stateNewFicha) {
+      setNewDataFicha(stateNewFicha);
+    }
+  }, [stateNewFicha]);
+
   const MySwal = withReactContent(Swal);
-  const [stateValue, setStateValue] = useState({
-    receta: "",
-    vacunas: "",
-    tratamiento: "",
-    peso: "",
-  });
 
   const handleClose = () => {
     setState(!state);
-
-    setStateValue({
-      receta: "",
-      vacunas: "",
-      tratamiento: "",
-      peso: "",
-    });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setStateValue((prevState) => ({
+
+    setStateNewFicha((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -59,22 +63,10 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
     const año = fecha.getFullYear();
     const mes = fecha.getMonth() + 1;
 
-    const dtaFicha = {
-      mes,
-      año,
-      idTurno:stateNewFicha._id,
-      date:stateNewFicha.date,
-      idCompany: companySelectedMenu._id,
-      receta: stateValue.receta,
-      vacunas: stateValue.vacunas,
-      tratamiento: stateValue.tratamiento,
-      peso: stateValue.peso,
-      statusFile: true,
-    };
     // if (!newData.time.trim() === "" || !newData.date.trim() === "") {
     //   alert("valores vacios");
     // }
-    dispatch(updateTurno(dtaFicha, stateNewFicha._id));
+    dispatch(updateTurno(newDataFicha, stateNewFicha._id));
     MySwal.fire({
       title: "Ficha Guardada Correctamente!",
       icon: "success",
@@ -104,7 +96,7 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
                 name="receta"
                 autoFocus
                 maxLength={100}
-                value={stateValue.receta}
+                value={stateNewFicha ? stateNewFicha.receta : null}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -116,7 +108,7 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
                 name="vacunas"
                 autoFocus
                 maxLength={100}
-                value={stateValue.vacunas}
+                value={stateNewFicha ? stateNewFicha.vacunas : null}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -128,7 +120,7 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
                 name="tratamiento"
                 autoFocus
                 maxLength={100}
-                value={stateValue.tratamiento}
+                value={stateNewFicha ? stateNewFicha.tratamiento : null}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -136,11 +128,18 @@ const ModalAddFicha = ({ state, setState, stateNewFicha, setStateNewFicha }) => 
               <Form.Label>Peso</Form.Label>
               <Form.Control
                 name="peso"
-                type="number"
+                type="text"
                 autoFocus
                 maxLength={100}
-                value={stateValue.peso}
-                onChange={handleChange}
+                value={stateNewFicha ? stateNewFicha.peso : null}
+                onChange={(e) => {
+                  // Solo permitir números y máximo 10 caracteres
+                  const value = e.target.value.replace(/\D/g, "").slice(0,3);
+                  setStateNewFicha((prevState) => ({
+                    ...prevState,
+                    peso: value,
+                  }));
+                }}
               />
             </Form.Group>
           </Form>

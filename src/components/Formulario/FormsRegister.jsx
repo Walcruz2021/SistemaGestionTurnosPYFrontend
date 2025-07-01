@@ -133,6 +133,7 @@ function FormRegister({ autUser }) {
           fullName: `${stateValue.firstName} ${stateValue.lastName}`,
           status: true,
           email: emailState,
+          pay:false //determinara si el cliente pago o no por el sistema
         };
         dispatch(addUser(newUser));
         MySwal.fire({

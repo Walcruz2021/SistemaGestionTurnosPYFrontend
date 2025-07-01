@@ -186,7 +186,7 @@ function NavBarLat({ listCompaniesAll }) {
               {CompanyMenuReducer ? (
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link as={Link} to="./listVentas">
+                    <Nav.Link as={Link} to="./InformeVentas">
                       <FaMoneyBillTrendUp className="mx-4" />
                       Ventas
                     </Nav.Link>

@@ -86,6 +86,7 @@ const ModalEditTurn = ({
         text: "Fecha Incorrecta",
       });
     } else {
+
       dispatch(updateTurno(newData, stateDataEdit._id));
       MySwal.fire({
         title: "¡Turno Editado Correctamente!",
