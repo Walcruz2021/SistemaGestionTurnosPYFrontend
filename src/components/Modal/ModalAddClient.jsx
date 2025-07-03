@@ -183,7 +183,12 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Email {stateCategory}</Form.Label>
+                <Form.Label>
+                  Email {stateCategory} {}
+                  <span className="text-danger form-text" style={{ fontSize: "0.7em" }}>
+                    (Campo No Obligatorio)
+                  </span>
+                </Form.Label>
                 <Form.Control
                   rows={3}
                   name="email"
@@ -195,7 +200,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 />
               </Form.Group>
             </Form>
-            <div className="text-danger msgAlertInput">
+            <div className="text-danger msgAlertInput mt-2">
               (*) Valores Obligatorios
             </div>
           </Modal.Body>

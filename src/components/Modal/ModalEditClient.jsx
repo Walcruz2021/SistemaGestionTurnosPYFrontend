@@ -5,8 +5,10 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { getClients, updateClient } from "../../reducer/actions/actionsClients";
+import { updateTurno } from "../../reducer/actions/actionsTurnos";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { set } from "react-hook-form";
 
 const ModalEditClient = ({
   state,
@@ -18,18 +20,27 @@ const ModalEditClient = ({
   notesCli: initialNotesCli,
   email: initialEmail,
 }) => {
+
+  const listClients = useSelector((state) => state.allClients);
+
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
   const handleClose = () => setState(!state);
+  const [emailError, setEmailError] = useState("");
+  const [validactionEmail, setValidactionEmail] = useState(false);
+  
   const [stateValue, setStateValue] = useState({
     idClient: "" || initialIdClient,
     name: "" || initialName,
     phone: "" || initialPhone,
     address: "" || initialAddress,
     notesCli: "" || initialNotesCli,
-    email:"" || initialEmail
+    email: "" || initialEmail,
+  });
+  const [stateEmail, setStateEmail] = useState({
+    email: "",
   });
 
   useEffect(() => {
@@ -41,7 +52,13 @@ const ModalEditClient = ({
       notesCli: "" || initialNotesCli,
       email: "" || initialEmail,
     });
-  }, [initialName, initialPhone, initialAddress, initialNotesCli,initialEmail]);
+  }, [
+    initialName,
+    initialPhone,
+    initialAddress,
+    initialNotesCli,
+    initialEmail,
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +80,7 @@ const ModalEditClient = ({
         text: "Faltan Datos por Completar",
       });
     }
+
     dispatch(
       updateClient(
         {
@@ -70,11 +88,25 @@ const ModalEditClient = ({
           phone: stateValue.phone,
           address: stateValue.address,
           notesCli: stateValue.notesCli,
-          email:stateValue.email
+          email: validactionEmail&&stateEmail ? stateEmail.email : initialEmail,
         },
         stateValue.idClient
       )
     );
+    let clienteEncontrado = listClients?.find(
+      (client) => client._id === stateValue.idClient
+    );
+
+    let arrayTurnos = clienteEncontrado ? clienteEncontrado.turnos : [];
+    for (let i = 0; i < arrayTurnos.length; i++) {
+      dispatch(
+        updateTurno(
+          { email: validactionEmail&&stateEmail ? stateEmail.email : initialEmail, phone: stateValue.phone },
+          arrayTurnos[i]
+        )
+      );
+    }
+
     MySwal.fire({
       title: "¡Cliente Modificado Correctamente!",
       icon: "success",
@@ -133,7 +165,16 @@ const ModalEditClient = ({
                   autoFocus
                   maxLength={15}
                   value={stateValue.phone}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    // Solo permitir números y máximo 10 caracteres
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 15);
+                    setStateValue((prevState) => ({
+                      ...prevState,
+                      phone: value,
+                    }));
+                  }}
                   required
                 />
               </Form.Group>
@@ -179,8 +220,31 @@ const ModalEditClient = ({
                   autoFocus
                   maxLength={100}
                   value={stateValue.email}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setStateValue((prevState) => ({
+                      ...prevState,
+                      email: value,
+                    }));
+                    // Validar formato email
+                    const emailRegex =
+                      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                    if (value && !emailRegex.test(value)) {
+                      setValidactionEmail(false);
+                      setEmailError("Debe ingresar un email válido.");
+                    } else {
+                      setValidactionEmail(true);
+                      setStateEmail((prevState) => ({
+                        ...prevState,
+                        email: value,
+                      }));
+                      setEmailError("");
+                    }
+                  }}
                 />
+                {emailError && (
+                  <div className="text-danger small mt-1">{emailError}</div>
+                )}
               </Form.Group>
             </Form>
           </Modal.Body>

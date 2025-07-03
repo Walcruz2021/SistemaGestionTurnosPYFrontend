@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import clientInfo from "../../icons/clientInfo.png";
+import Modal from "react-bootstrap/Modal";
 import { IoPersonAdd } from "react-icons/io5";
 import { MdOutlinePhonelinkLock } from "react-icons/md";
 import { MdOutlineEmail } from "react-icons/md";
@@ -15,14 +16,15 @@ function ModalDescription({
   phone,
   notesTurn,
   email,
+  stateModal,
 }) {
-
-  const closeModal = () => {
-    setStateModal(!state);
+  const handleClose = () => {
+    setStateModal(!stateModal);
   };
 
   return (
-    <>
+    <Modal show={stateModal} onHide={handleClose}>
+      <Modal.Header closeButton></Modal.Header>
       <Card className="w-100">
         <div className="d-flex justify-content-center p-2">
           <Card.Img
@@ -49,33 +51,27 @@ function ModalDescription({
             {phone}
           </ListGroup.Item>
           <ListGroup.Item style={{ color: "#424242" }}>
-            <MdOutlineEmail
-              style={{ marginRight: "10px", fontSize: "24px" }}
-            />
-            {email?email:<lt className="text-danger">"Email no cargado en el turno"</lt>}
+            <MdOutlineEmail style={{ marginRight: "10px", fontSize: "24px" }} />
+            {email ? (
+              email
+            ) : (
+              <lt className="text-danger">"Email no cargado en el turno"</lt>
+            )}
           </ListGroup.Item>
           <Card.Text style={{ color: "#424242" }} className="m-2 px-4">
             <RiStickyNoteAddFill
               style={{ marginRight: "10px", fontSize: "24px" }}
             />
-            {notesTurn?notesTurn:<lt className="text-danger">"Notas no cargadas en el turno"</lt>}
+            {notesTurn ? (
+              notesTurn
+            ) : (
+              <lt className="text-danger">"Notas no cargadas en el turno"</lt>
+            )}
           </Card.Text>
           {/* <ListGroup.Item></ListGroup.Item> */}
         </ListGroup>
-        <Card.Body>
-          <div className="d-flex justify-content-center p-1">
-            <button
-              onClick={closeModal}
-              type="button"
-              className="btn btn-outline-secondary"
-            >
-              Cerrar
-            </button>
-          </div>
-          {/* <Card.Link href="#">Another Link</Card.Link> */}
-        </Card.Body>
       </Card>
-    </>
+    </Modal>
   );
 }
 

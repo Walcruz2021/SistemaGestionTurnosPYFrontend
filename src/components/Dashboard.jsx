@@ -100,14 +100,15 @@ function Dashboard() {
 
   const addTurn = () => {
     if (
-      userMongo &&  
-      userMongo.data.findUser.pay === false && listadoTurnos &&
+      userMongo &&
+      userMongo.data.findUser.pay === false &&
+      listadoTurnos &&
       listadoTurnos.length >= 3
     ) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Par turnos ilimitados debe pagar PREMIUM!"
+        text: "Para turnos ilimitados debe pagar PREMIUM!",
       });
     } else {
       setNewTurno(!newTurno);
@@ -355,25 +356,6 @@ function Dashboard() {
               state={newClient}
               setState={setNewClient}
             ></ModalAddClient>
-
-            {/* MODAL QUE PERMITE INGRESAR VALORES A VENTA */}
-
-            {stateInfo ? (
-              <>
-                <ModalBoostrap show={stateInfo} onHide={handleClose} centered>
-                  <ModalBoostrap.Body>
-                    <ModalDescription
-                      nameClient={inputState.name}
-                      phone={inputState.phone}
-                      notesTurn={inputState.notesTurn}
-                      email={inputState.email}
-                      state={stateInfo}
-                      setStateModal={setInfo}
-                    />
-                  </ModalBoostrap.Body>
-                </ModalBoostrap>
-              </>
-            ) : null}
 
             {/* MODAL PERMITE EDITAR UN TURNO */}
           </div>

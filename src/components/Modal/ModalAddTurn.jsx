@@ -28,7 +28,9 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
     name: "",
     arrayDogs: [],
     phone: "",
+    email:""
   });
+
 
   const getTodayDate = () => {
     const today = new Date();
@@ -91,6 +93,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
       name: selected.label,
       arrayDogs: selected.label3,
       phone: selected.label2,
+      email: selected.label4,
       nameDog: "",
       idDog: "",
     });
@@ -139,6 +142,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
           time: stateInput.time,
           phone: stateInput.phone,
           Company: companySelectedMenu._id,
+          email: stateInput.email
         })
       );
       MySwal.fire({
@@ -162,6 +166,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
             idClient: "",
             time: "",
             phone: "",
+            email:""
           });
         }
       });

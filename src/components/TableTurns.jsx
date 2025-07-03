@@ -19,8 +19,10 @@ import {
 } from "../reducer/actions/actionsTurnos";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalDescription from "./Modal/ModalDescription";
+import ModalBoostrap from "react-bootstrap/Modal";
 
-const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
+//stateInfo tru or false
+const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
@@ -34,7 +36,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   const [stateDataEdit, setStateDataEdit] = useState();
   const [stateNewFicha, setStateNewFicha] = useState();
   const [stateNewVta, setStateNewVta] = useState();
-
+  const [dataDescription, setDataDescription] = useState({});
 
   useEffect(() => {
     if (companySelectedMenu) {
@@ -98,13 +100,11 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleCargaFicha(e, turn) {
-  
     setStateNewFicha(turn);
     setStateCargaFich(!stateCargaFich); //display the modal ModalEdit
   }
 
   function handleVentas(e, turn) {
- 
     setStateNewVta(turn);
     setNewVentas(!newVentas);
   }
@@ -146,7 +146,7 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
   function handleInfo(e, props) {
     e.preventDefault();
     setInfo(!stateInfo);
-    setInputState({
+    setDataDescription({
       _id: props._id,
       name: props.name,
       phone: props.phone,
@@ -169,7 +169,6 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
     );
     console.log(updatedCheckedState);
     setCheckedState(updatedCheckedState);
-
   };
 
   return (
@@ -262,7 +261,10 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
 
                     {turn.isNotifications ? (
                       <td>
-                        <input type="checkbox" checked />
+                        <div className="d-flex justify-content-center align-items-center mt-2" style={{ height: "100%" }}>
+
+                        <input type="checkbox" checked style={{ width: "22px", height: "22px" }}/>
+                        </div>
                       </td>
                     ) : (
                       <td></td>
@@ -292,6 +294,15 @@ const TableTurns = ({ setInputState, order, setInfo, stateInfo, setOrder }) => {
           setState={setNewVentas}
           stateNewVta={stateNewVta}
           setStateNewVta={setStateNewVta}
+        />
+
+        <ModalDescription
+          nameClient={dataDescription.name}
+          phone={dataDescription.phone}
+          notesTurn={dataDescription.notesTurn}
+          email={dataDescription.email}
+          setStateModal={setInfo}
+          stateModal={stateInfo}
         />
       </div>
     </>
