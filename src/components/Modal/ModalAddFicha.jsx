@@ -66,7 +66,9 @@ const ModalAddFicha = ({
     // if (!newData.time.trim() === "" || !newData.date.trim() === "") {
     //   alert("valores vacios");
     // }
-    dispatch(updateTurno(newDataFicha, stateNewFicha._id));
+    const updatedFicha = { ...stateNewFicha, statusFile: true };
+    setNewDataFicha(updatedFicha);
+    dispatch(updateTurno(updatedFicha, stateNewFicha._id));
     MySwal.fire({
       title: "Ficha Guardada Correctamente!",
       icon: "success",
@@ -134,7 +136,7 @@ const ModalAddFicha = ({
                 value={stateNewFicha ? stateNewFicha.peso : null}
                 onChange={(e) => {
                   // Solo permitir números y máximo 10 caracteres
-                  const value = e.target.value.replace(/\D/g, "").slice(0,3);
+                  const value = e.target.value.replace(/\D/g, "").slice(0, 3);
                   setStateNewFicha((prevState) => ({
                     ...prevState,
                     peso: value,

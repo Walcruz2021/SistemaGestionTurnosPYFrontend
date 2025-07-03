@@ -258,7 +258,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                         ) : null}
                       </div>
                     </td>
-
+d
                     {turn.isNotifications ? (
                       <td>
                         <div className="d-flex justify-content-center align-items-center mt-2" style={{ height: "100%" }}>
