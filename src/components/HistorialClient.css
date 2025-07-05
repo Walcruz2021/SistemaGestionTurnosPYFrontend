@@ -28,9 +28,15 @@
     display:grid;
     text-align: center;
     /* border: 1.19px solid rgba(224, 224, 224, 1); */
-    grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+justify-items: center; 
 }
 
+@media (max-width: 600px) {
+  .containerPed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 .contenedorSuma{
     /* border: 1.19px solid rgba(224, 224, 224, 1); */

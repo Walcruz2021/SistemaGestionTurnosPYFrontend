@@ -265,7 +265,7 @@ function Dashboard() {
   return (
     <>
       {!isLoading ? (
-        <div>
+        <div className="mb-2">
           <div>
             {/* BUTTONS */}
             <div className="container py-3">
@@ -414,129 +414,130 @@ function Dashboard() {
 
           {/* //////////////////////////HISTORIAL MASCOTA /////////////////////////////////////*/}
 
-          {selectedDog ? (
-            vtaxClient.status === 200 ? (
-              <>
-                <div className="container-lg table-responsive">
-                  {/* <td>{selectedDog.selectedDog.label}</td> */}
+          <div className="mb-2">
+            {selectedDog ? (
+              vtaxClient.status === 200 ? (
+                <>
+                  <div className="container-lg table-responsive">
+                    {/* <td>{selectedDog.selectedDog.label}</td> */}
 
-                  {vtaxClient.data.vta ? (
-                    <>
-                      <div className="titDetails">
-                        <h5 className="text-center">Detalle Mascota</h5>
-                      </div>
-                      <div className="container py-3">
-                        <div className="row justify-content-center">
-                          <div
-                            className="col-12 col-md-4 d-flex justify-content-center mb-1"
-                            key={vtaxClient.data.vta[0].Dog._id}
-                          >
-                            <div className="card-body text-center">
-                              <p>
-                                <FontAwesomeIcon icon={faBone} size="lg" />
-                              </p>
-                              <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                    <div className="mb-3 text-center">
+                      {vtaxClient.data.vta ? (
+                        <>
+                          <div className="titDetails">
+                            <h5 className="text-center">Detalle Mascota</h5>
+                          </div>
+                          <div className="container py-2">
+                            <div
+                              className="containerPed"
+                              key={vtaxClient.data.vta[0].Dog._id}
+                            >
+                              <div className="card-body text-center">
+                                <p>
+                                  <FontAwesomeIcon icon={faBone} size="lg" />
+                                </p>
+                                <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                              </div>
+
+                              <div className="card-body text-center">
+                                <p>
+                                  <FontAwesomeIcon
+                                    icon={faScaleBalanced}
+                                    size="lg"
+                                  />
+                                </p>
+                                <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
+                              </div>
+
+                              <div className="card-body text-center">
+                                <p>
+                                  <FontAwesomeIcon
+                                    icon={faPersonWalking}
+                                    size="lg"
+                                  />
+                                </p>
+                                <p>{vtaxClient.data.vta[0].name}</p>
+                              </div>
+
+                              <div className="card-body  text-center">
+                                <p>
+                                  <FontAwesomeIcon
+                                    icon={faNoteSticky}
+                                    size="lg"
+                                  />
+                                </p>
+                                <p>
+                                  {vtaxClient.data.vta[0].Dog.notaP
+                                    ? vtaxClient.data.vta[0].Dog.notaP
+                                    : "Sin Nota"}
+                                </p>
+                              </div>
                             </div>
                           </div>
-
-                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                            <div className="card-body text-center">
-                              <p>
-                                <FontAwesomeIcon
-                                  icon={faScaleBalanced}
-                                  size="lg"
-                                />
-                              </p>
-                              <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
-                            </div>
-                          </div>
-
-                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                            <div className="card-body text-center">
-                              <p>
-                                <FontAwesomeIcon
-                                  icon={faPersonWalking}
-                                  size="lg"
-                                />
-                              </p>
-                              <p>{vtaxClient.data.vta[0].name}</p>
-                            </div>
-                          </div>
-
-                          <div className="col-12 col-md-4 d-flex justify-content-center mb-1">
-                            <div className="card-body  text-center">
-                              <p>
-                                <FontAwesomeIcon
-                                  icon={faNoteSticky}
-                                  size="lg"
-                                />
-                              </p>
-                              <p>{vtaxClient.data.vta[0].Dog.notaP}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : null}
-                </div>
-
-                <div className="container-lg table-responsive mb-4">
-                  {/* <td>{selectedDog.selectedDog.label}</td> */}
-
-                  <table className="table table-bordered table-hover table-dark">
-                    <thead class="thead-light table-secondary">
-                      <tr>
-                        <th>Valor Servicio</th>
-                        <th>
-                          Fecha{" "}
-                          <FontAwesomeIcon
-                            onClick={(e) => handleOrderHistDog(e)}
-                            color={order ? "#FF846A" : "#A2DFFF"}
-                            icon={faSortAlphaDown}
-                            size="lg"
-                            style={{ cursor: "pointer" }}
+                        </>
+                      ) : null}
+                      {stateCategory && stateCategory === "peluAndVet" ? (
+                        <button onClick={openHistorial}>
+                          <img
+                            src={carpetaMedica}
+                            style={{ width: "40px", height: "40px" }}
                           />
-                        </th>
-                        <th>Nota Turno</th>
-                        <th>Tipo de Servicio</th>
-                        {/* <th>Info</th> */}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {vtaxClient.status === 200
-                        ? vtaxClient.data.vta.map((vta) => (
-                            <tr key={vta._id}>
-                              <td>$ {vta.valorServ}</td>
-                              <td>
-                                {convertDateFormat(vta.date)} -{" "}
-                                {convertDay(vta.date)}
-                              </td>
-                              <td>{vta.notesTurn}</td>
-                              <td>{vta.tipoServ}</td>
-                            </tr>
-                          ))
-                        : null}
-                    </tbody>
-                  </table>
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
 
-                  {stateCategory && stateCategory === "peluAndVet" ? (
-                    <button onClick={openHistorial}>
-                      <img
-                        src={carpetaMedica}
-                        style={{ width: "40px", height: "40px" }}
-                      />
-                    </button>
-                  ) : null}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="container-lg p-2 mb-2 text-center">
-                  <h5 className="alertHist">No existe historial de Mascota</h5>
-                </div>
-              </>
-            )
-          ) : null}
+                  <div className="container-lg table-responsive mb-4">
+                    {/* <td>{selectedDog.selectedDog.label}</td> */}
+
+                    <table className="table table-bordered table-hover table-dark">
+                      <thead class="thead-light table-secondary">
+                        <tr>
+                          <th>Valor Servicio</th>
+                          <th>
+                            Fecha{" "}
+                            <FontAwesomeIcon
+                              onClick={(e) => handleOrderHistDog(e)}
+                              color={order ? "#FF846A" : "#A2DFFF"}
+                              icon={faSortAlphaDown}
+                              size="lg"
+                              style={{ cursor: "pointer" }}
+                            />
+                          </th>
+                          <th>Nota Turno</th>
+                          <th>Tipo de Servicio</th>
+                          {/* <th>Info</th> */}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {vtaxClient.status === 200
+                          ? vtaxClient.data.vta.map((vta) => (
+                              <tr key={vta._id}>
+                                <td>$ {vta.valorServ}</td>
+                                <td>
+                                  {convertDateFormat(vta.date)} -{" "}
+                                  {convertDay(vta.date)}
+                                </td>
+                                <td>{vta.notesTurn}</td>
+                                <td>{vta.tipoServ}</td>
+                              </tr>
+                            ))
+                          : null}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="container-lg p-2 mb-2 text-center">
+                    <h5 className="alertHist">
+                      No existe historial de Mascota
+                    </h5>
+                  </div>
+                </>
+              )
+            ) : null}
+          </div>
         </div>
       ) : (
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
