@@ -422,7 +422,6 @@ function Dashboard() {
                     {/* <td>{selectedDog.selectedDog.label}</td> */}
 
                     <div className="mb-3 text-center">
-              
                       {vtaxClient.data.vta ? (
                         <>
                           <div className="titDetails">
@@ -437,7 +436,7 @@ function Dashboard() {
                                 <p>
                                   <FontAwesomeIcon icon={faBone} size="lg" />
                                 </p>
-                                <p>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].Dog.nameDog}</p>
                               </div>
 
                               <div className="card-body text-center">
@@ -447,7 +446,7 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p>{vtaxClient.data.vta[0].Dog.tamaño}</p>
+                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].Dog.tamaño}</p>
                               </div>
 
                               <div className="card-body text-center">
@@ -457,7 +456,7 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p>{vtaxClient.data.vta[0].name}</p>
+                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].name}</p>
                               </div>
 
                               <div className="card-body  text-center">
@@ -467,12 +466,13 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p>
+                                <p className="smallText" style={{ fontSize: "1em" }} >
                                   {vtaxClient.data.vta[0].Dog.notaP
                                     ? vtaxClient.data.vta[0].Dog.notaP
                                     : "Sin Nota"}
                                 </p>
                               </div>
+
                             </div>
                           </div>
                         </>
@@ -480,10 +480,18 @@ function Dashboard() {
 
                       {/* BUTTON OPEN HISTORY PDF */}
                       {stateCategory && stateCategory === "peluAndVet" ? (
-                        <button onClick={openHistorial}>
+                        <button
+                          onClick={openHistorial}
+                          className="d-flex justify-content-center align-items-center mx-auto"
+                          style={{
+                            background: "none",
+                            border: "none",
+                            padding: 0,
+                          }}
+                        >
                           <img
                             src={carpetaMedica}
-                            style={{ width: "40px", height: "40px" }}
+                            style={{ width: "60px", height: "60px" }}
                           />
                         </button>
                       ) : null}
@@ -541,7 +549,6 @@ function Dashboard() {
               )
             ) : null}
           </div>
-          
         </div>
       ) : (
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
