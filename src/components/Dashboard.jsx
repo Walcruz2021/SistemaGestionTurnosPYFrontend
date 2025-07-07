@@ -42,7 +42,7 @@ import TableTurns from "./TableTurns";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
-import carpetaMedica from "../icons/carpeta-medica.png";
+import carpetaMedica from "../icons/carpetaMedica.png";
 import {
   listenToAuthChanges,
   verificationConection,
@@ -422,6 +422,7 @@ function Dashboard() {
                     {/* <td>{selectedDog.selectedDog.label}</td> */}
 
                     <div className="mb-3 text-center">
+              
                       {vtaxClient.data.vta ? (
                         <>
                           <div className="titDetails">
@@ -476,6 +477,8 @@ function Dashboard() {
                           </div>
                         </>
                       ) : null}
+
+                      {/* BUTTON OPEN HISTORY PDF */}
                       {stateCategory && stateCategory === "peluAndVet" ? (
                         <button onClick={openHistorial}>
                           <img
@@ -538,6 +541,7 @@ function Dashboard() {
               )
             ) : null}
           </div>
+          
         </div>
       ) : (
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
