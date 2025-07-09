@@ -495,7 +495,7 @@ function Dashboard() {
                         </>
                       ) : null}
 
-                      <img src={addClient2} />
+                
                       {/* BUTTON OPEN HISTORY PDF */}
                       {stateCategory && stateCategory === "peluAndVet" ? (
                         <button
@@ -507,10 +507,7 @@ function Dashboard() {
                             padding: 0,
                           }}
                         >
-                          <img
-                            src={carpetaMedica}
-                            style={{ width: "60px", height: "60px" }}
-                          />
+                          <img src={addClient2} />
                         </button>
                       ) : null}
                     </div>
