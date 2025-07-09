@@ -17,6 +17,7 @@ import ventas from "../../icons/ventas.png";
 import VtasGast from "../../icons/VtasGast.png";
 import { gtosXanio} from "../../reducer/actions/actionsGastos";
 import {vtasxA } from "../../reducer/actions/actionsVentas";
+import "./InfGastosAndVtas.css"
 
 import filterSumaValues from "../../functions/filterSumaValues";
 
@@ -35,7 +36,6 @@ const InfGastosAndVtas = () => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const listGtosAnio = useSelector((state) => state.gtosxAnio);
   const listVtasAnio = useSelector((state) => state.vtasxAnio);
-
 
   const [stateGtosValue, setStateGtosValue] = useState([]);
  
@@ -169,8 +169,11 @@ const InfGastosAndVtas = () => {
     ],
   };
 
+  const isMobile = window.innerWidth < 600;
+
   const options = {
     responsive: true,
+    aspectRatio: isMobile ? 0.8 : 2,
     plugins: {
       legend: {
         position: "top",
@@ -243,7 +246,7 @@ const InfGastosAndVtas = () => {
       ) : activeVentas ? (
         <Bar data={dataV} options={options} />
       ) : (
-        <Line data={dataVyG} options={options} />
+        <Line data={dataVyG} options={options}  />
       )}
 
       </div>

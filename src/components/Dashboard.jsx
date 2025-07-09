@@ -436,7 +436,12 @@ function Dashboard() {
                                 <p>
                                   <FontAwesomeIcon icon={faBone} size="lg" />
                                 </p>
-                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].Dog.nameDog}</p>
+                                <p
+                                  className="smallText"
+                                  style={{ fontSize: "1em" }}
+                                >
+                                  {vtaxClient.data.vta[0].Dog.nameDog}
+                                </p>
                               </div>
 
                               <div className="card-body text-center">
@@ -446,7 +451,12 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].Dog.tamaño}</p>
+                                <p
+                                  className="smallText"
+                                  style={{ fontSize: "1em" }}
+                                >
+                                  {vtaxClient.data.vta[0].Dog.tamaño}
+                                </p>
                               </div>
 
                               <div className="card-body text-center">
@@ -456,7 +466,12 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p className="smallText" style={{ fontSize: "1em" }}>{vtaxClient.data.vta[0].name}</p>
+                                <p
+                                  className="smallText"
+                                  style={{ fontSize: "1em" }}
+                                >
+                                  {vtaxClient.data.vta[0].name}
+                                </p>
                               </div>
 
                               <div className="card-body  text-center">
@@ -466,18 +481,21 @@ function Dashboard() {
                                     size="lg"
                                   />
                                 </p>
-                                <p className="smallText" style={{ fontSize: "1em" }} >
+                                <p
+                                  className="smallText"
+                                  style={{ fontSize: "1em" }}
+                                >
                                   {vtaxClient.data.vta[0].Dog.notaP
                                     ? vtaxClient.data.vta[0].Dog.notaP
                                     : "Sin Nota"}
                                 </p>
                               </div>
-
                             </div>
                           </div>
                         </>
                       ) : null}
 
+                      <img src={addClient2} />
                       {/* BUTTON OPEN HISTORY PDF */}
                       {stateCategory && stateCategory === "peluAndVet" ? (
                         <button
