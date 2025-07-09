@@ -42,7 +42,7 @@ import TableTurns from "./TableTurns";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
-import carpetaMedica from "../icons/carpetaMedica.png";
+import carpetaMedica from "../icons/carpeta-medica.png";
 import {
   listenToAuthChanges,
   verificationConection,
@@ -507,7 +507,7 @@ function Dashboard() {
                             padding: 0,
                           }}
                         >
-                          <img src={addClient2} />
+                          <img src={carpetaMedica} style={{ width: "60px", height: "60px" }} />
                         </button>
                       ) : null}
                     </div>
