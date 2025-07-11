@@ -47,6 +47,7 @@ import {
   listenToAuthChanges,
   verificationConection,
 } from "../reducer/actions/actions";
+import convertNum from "../functions/convertNum";
 
 function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
@@ -261,6 +262,8 @@ function Dashboard() {
     localStorage.setItem("historialData", JSON.stringify(stateClientSelected));
     window.open("/historialPet", "_blank", "noopener,noreferrer");
   };
+
+ 
 
   return (
     <>
@@ -495,7 +498,6 @@ function Dashboard() {
                         </>
                       ) : null}
 
-                
                       {/* BUTTON OPEN HISTORY PDF */}
                       {stateCategory && stateCategory === "peluAndVet" ? (
                         <button
@@ -507,7 +509,10 @@ function Dashboard() {
                             padding: 0,
                           }}
                         >
-                          <img src={carpetaMedica} style={{ width: "60px", height: "60px" }} />
+                          <img
+                            src={carpetaMedica}
+                            style={{ width: "60px", height: "60px" }}
+                          />
                         </button>
                       ) : null}
                     </div>
@@ -539,7 +544,7 @@ function Dashboard() {
                         {vtaxClient.status === 200
                           ? vtaxClient.data.vta.map((vta) => (
                               <tr key={vta._id}>
-                                <td>$ {vta.valorServ}</td>
+                                <td>{convertNum(vta.valorServ)}</td>
                                 <td>
                                   {convertDateFormat(vta.date)} -{" "}
                                   {convertDay(vta.date)}

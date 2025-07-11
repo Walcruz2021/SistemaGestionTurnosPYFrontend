@@ -20,7 +20,7 @@ import back from "../../icons/back.png";
 import infMonth from "../../icons/infMonth.png";
 import ModalTypeGasto from "../Modal/ModalTypeGasto";
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
-
+import convertNum from "../../functions/convertNum"
 // import { Chart } from "primereact/chart";
 
 export default function InformeGastos() {
@@ -309,10 +309,10 @@ export default function InformeGastos() {
                       style={{ cursor: "pointer" }}
                       title="Ver Detalles"
                     >
-                      $ {gtos.value}
+                     {convertNum(gtos.value)}
                     </td>
                   ) : (
-                    <td>$ 0</td>
+                    <td>{convertNum(0)}</td>
                   )}
                   {/* {gtos.efectivo ? <td>$ {gtos.efectivo}</td> : <td>$ 0</td>}
                   {gtos.transferencia ? (
@@ -403,10 +403,10 @@ export default function InformeGastos() {
                       style={{ cursor: "pointer" }}
                       title="Ver Detalles"
                     >
-                      $ {gtos.value}
+                      {convertNum(gtos.value)}
                     </td>
                   ) : (
-                    <td>$ 0</td>
+                    <td>{convertNum(0)}</td>
                   )}
                 </tr>
               ))}

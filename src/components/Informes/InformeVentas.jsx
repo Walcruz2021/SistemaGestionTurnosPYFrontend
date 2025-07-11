@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import back from "../../icons/back.png";
 import infMonth from "../../icons/infMonth.png";
-// import { Button} from "../cssSyleComp/index";
+import convertNum from "../../functions/convertNum"
 
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -258,14 +258,14 @@ export default function TodoList() {
               {ventas.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>$ {vta.valorServ}</td> : <td>$ 0</td>}
-                  {vta.efectivo ? <td>$ {vta.efectivo}</td> : <td>$ 0</td>}
+                  {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
+                  {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
                   {vta.transferencia ? (
-                    <td>$ {vta.transferencia}</td>
+                    <td>{convertNum(vta.transferencia)}</td>
                   ) : (
-                    <td>$ 0</td>
+                    <td>{convertNum(0)}</td>
                   )}
-                  {vta.tarjeta ? <td>$ {vta.tarjeta}</td> : <td>$ 0</td>}
+                  {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>}
                   <td>{vta.name}</td>
                 </tr>
               ))}
@@ -322,7 +322,7 @@ export default function TodoList() {
                     style={{ cursor: "pointer" }}
                   />
                 </th>
-                <th>Valor Service</th>
+                <th>Valor de Servicio</th>
                 <th>Efectivo</th>
                 <th>Banco</th>
                 <th>Tarjeta</th>
@@ -333,14 +333,14 @@ export default function TodoList() {
             {vtasFiltered.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>$ {vta.valorServ}</td> : <td>$ 0</td>}
-                  {vta.efectivo ? <td>$ {vta.efectivo}</td> : <td>$ 0</td>}
+                  {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
+                  {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
                   {vta.transferencia ? (
-                    <td>$ {vta.transferencia}</td>
+                    <td>{convertNum(vta.transferencia)}</td>
                   ) : (
-                    <td>$ 0</td>
+                    <td>{convertNum(0)}</td>
                   )}
-                  {vta.tarjeta ? <td>$ {vta.tarjeta}</td> : <td>$ 0</td>}
+                  {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>}
                   <td>{vta.name}</td>
                 </tr>
               ))}

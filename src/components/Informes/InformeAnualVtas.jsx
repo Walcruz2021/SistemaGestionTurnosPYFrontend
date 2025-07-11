@@ -13,7 +13,7 @@ import {
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import sale from "../../icons/sale.png";
+import convertNum from "../../functions/convertNum";
 
 function InformeAnualVtas() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
@@ -226,7 +226,7 @@ function InformeAnualVtas() {
     arrayVtas.push({ anio: fechaN.name });
   }
 
-  //console.log(arrayVtas)
+
 
   // (6) [{…}, {…}, {…}, {…}, {…}, 2022]
   // 0: {mes: 2, sumaMes: 2000, sumaEfectivo: 2000, sumaTarjeta: NaN, sumaTransferencia: NaN}
@@ -301,10 +301,11 @@ function InformeAnualVtas() {
                     {arrayVtas.map((vta) => (
                       <tr>
                         <td>{vta.mesString}</td>
-                        <td>{vta.sumaMes}</td>
-                        <td>{vta.sumaEfectivo}</td>
-                        <td>{vta.sumaTarjeta}</td>
-                        <td>{vta.sumaTransferencia}</td>
+
+                        <td>{vta.sumaMes && convertNum(vta.sumaMes)}</td>
+                        <td>{vta.sumaEfectivo && convertNum(vta.sumaEfectivo) }</td>
+                        <td>{vta.sumaTarjeta && convertNum(vta.sumaTarjeta)}</td>
+                        <td>{vta.sumaTransferencia && convertNum(vta.sumaTransferencia)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -320,25 +321,25 @@ function InformeAnualVtas() {
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faChartLine} size="lg" />
-                  <p>Total Vendido $ {sumaTotalAnio}</p>
+                  <p>Total Vendido: {convertNum(sumaTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-                  <p>Total Efectivo: $ {efectivoTotalAnio}</p>
+                  <p>Total Efectivo: {convertNum(efectivoTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-                  <p>Total Banco: $ {bcoTotalAnio}</p>
+                  <p>Total Banco: {convertNum(bcoTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-                  <p>Total Tarjeta: $ {tarjetaTotalAnio}</p>
+                  <p>Total Tarjeta: {convertNum(tarjetaTotalAnio)}</p>
                 </div>
               </div>
             </div>

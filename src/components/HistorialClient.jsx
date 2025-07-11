@@ -8,7 +8,7 @@ import {
 } from "../reducer/actions/actions";
 
 import { deleteDog } from "../reducer/actions/actionsDog";
-
+import convertNum from "../functions/convertNum"
 import Swal from "sweetalert2";
 import ModalEditDog from "./Modal/ModalEditDog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -149,13 +149,13 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
                 size="lg"
               />
               <h6>Efectivo</h6>
-              <p>$ {sumaEfectivo}</p>
+              <p>{convertNum(sumaEfectivo)}</p>
             </div>
 
             <div className="contenedorSuma">
               <FontAwesomeIcon className="icon3" icon={faIdCard} size="lg" />
               <h6>Tarjeta</h6>
-              <p>$ {sumaTarjeta}</p>
+              <p>{convertNum(sumaTarjeta)}</p>
             </div>
 
             <div className="contenedorSuma">
@@ -165,7 +165,7 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
                 size="lg"
               />
               <h6>Transferencia</h6>
-              <p>$ {sumaBanco}</p>
+              <p>{convertNum(sumaBanco)}</p>
             </div>
 
             <div className="contenedorSuma">

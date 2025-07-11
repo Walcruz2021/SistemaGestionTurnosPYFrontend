@@ -9,6 +9,7 @@ import { RiStickyNoteAddFill } from "react-icons/ri";
 import { RiBankCardLine } from "react-icons/ri";
 import { BsBank } from "react-icons/bs";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import convertNum from "../../functions/convertNum";
 function ModalTypeGasto({
   state,
   setStateModal,
@@ -42,19 +43,19 @@ function ModalTypeGasto({
             <FaMoneyBillTransfer
               style={{ marginRight: "10px", fontSize: "24px" }}
             />
-            {efectivo}
+            {convertNum(efectivo)}
           </ListGroup.Item>
           <ListGroup.Item style={{ color: "#424242" }}>
             <BsBank
               style={{ marginRight: "10px", fontSize: "24px" }}
             />
-            {transferencia}
+            {convertNum(transferencia)}
           </ListGroup.Item>
           <ListGroup.Item style={{ color: "#424242" }}>
             <RiBankCardLine
               style={{ marginRight: "10px", fontSize: "24px" }}
             />
-            {tarjeta}
+            {convertNum(tarjeta)}
           </ListGroup.Item>
           <Card.Text style={{ color: "#424242" }} className="m-2 px-4">
             <RiStickyNoteAddFill

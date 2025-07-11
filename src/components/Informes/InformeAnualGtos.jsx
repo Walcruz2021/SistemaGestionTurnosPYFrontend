@@ -14,6 +14,7 @@ import {
   faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
+import convertNum from "../../functions/convertNum";
 import sale from "../../icons/sale.png";
 
 function InformeAnualGtos() {
@@ -301,10 +302,10 @@ function InformeAnualGtos() {
                     {arrayGtos.map((gto) => (
                       <tr>
                         <td>{gto.mesString}</td>
-                        <td>{gto.sumaMes}</td>
-                        <td>{gto.sumaEfectivo}</td>
-                        <td>{gto.sumaTarjeta}</td>
-                        <td>{gto.sumaTransferencia}</td>
+                        <td>{gto.sumaMes && convertNum(gto.sumaMes)}</td>
+                        <td>{gto.sumaEfectivo && convertNum(gto.sumaEfectivo)}</td>
+                        <td>{gto.sumaTarjeta && convertNum(gto.sumaTarjeta)}</td>
+                        <td>{gto.sumaTransferencia && convertNum(gto.sumaTransferencia)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -320,25 +321,25 @@ function InformeAnualGtos() {
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faChartLine} size="lg" />
-                  <p>Total Gastado $ {sumaTotalAnio}</p>
+                  <p>Total Gastado: {convertNum(sumaTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-                  <p>Total Efectivo: $ {efectivoTotalAnio}</p>
+                  <p>Total Efectivo: {convertNum(efectivoTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-                  <p>Total Banco: $ {bcoTotalAnio}</p>
+                  <p>Total Banco: {convertNum(bcoTotalAnio)}</p>
                 </div>
               </div>
               <div className="cardInf">
                 <div>
                   <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-                  <p>Total Tarjeta: $ {tarjetaTotalAnio}</p>
+                  <p>Total Tarjeta: {convertNum(tarjetaTotalAnio)}</p>
                 </div>
               </div>
             </div>
