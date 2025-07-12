@@ -236,8 +236,8 @@ export default function TodoList() {
         <div className="container-lg table-responsive">
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-dark">
-              <tr>
-                <th>
+              <tr className="instrument-serif-regular">
+                <th >
                   Fecha{" "}
                   <FontAwesomeIcon
                     onClick={(e) => handleOrder(e)}
@@ -254,7 +254,7 @@ export default function TodoList() {
                 <th>Cliente</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="instrument-serif-regular">
               {ventas.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
@@ -278,7 +278,7 @@ export default function TodoList() {
         </div>
       )}
 
-      <div className="container-lg P-2">
+      <div className="container-lg p-1 instrument-serif-regular">
         <Select
           className="classSelect"
           placeholder="Seleccione Año"
@@ -287,7 +287,7 @@ export default function TodoList() {
         />
       </div>
 
-      <div className="container-lg P-2">
+      <div className="container-lg p-1 instrument-serif-regular">
         <Select
           className="classSelect"
           placeholder="Seleccione Mes"
@@ -295,7 +295,7 @@ export default function TodoList() {
           onChange={changeMeses}
         />
       </div>
-      <div className="container-lg P-2">
+      <div className="container-lg p-2">
         <button
           className="container-lg P-2 buttonBusc"
           onClick={() => SearchVentas()}
@@ -310,7 +310,7 @@ export default function TodoList() {
             <h2>Ventas del Mes Seleccionado</h2>
           </div>
           <table className="table table-bordered table-hover table-white">
-            <thead class="thead-light table-dark">
+            <thead class="thead-light table-dark instrument-serif-regular">
               <tr>
                 <th>
                   Fecha{" "}
@@ -329,7 +329,7 @@ export default function TodoList() {
                 <th>Cliente</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="instrument-serif-regular">
             {vtasFiltered.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
@@ -348,7 +348,7 @@ export default function TodoList() {
           </table>
         </div>
       ) : (
-        <div className="titGral container-lg P-2">
+        <div className="titGral container-lg p-2">
           <h2 className="alertSearch">No se encontraron ventas</h2>
         </div>
       )}

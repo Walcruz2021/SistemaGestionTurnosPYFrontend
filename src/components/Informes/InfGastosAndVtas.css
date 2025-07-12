@@ -1,5 +1,7 @@
 @media (max-width: 600px) {
   .container.mb-4 {
+      font-family: "Instrument Serif", serif;
+
     min-height: 320px;
   }
 }

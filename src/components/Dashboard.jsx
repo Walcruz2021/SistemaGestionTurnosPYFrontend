@@ -395,7 +395,7 @@ function Dashboard() {
               <div className="container-lg pb-4">
                 {!stateInfo && !newTurno && !newClient && !newDog ? (
                   <div>
-                    <Select
+                    <Select className="classSelect instrument-serif-regular"
                       placeholder="Seleccione Mascota a Buscar"
                       options={Listdogs}
                       onChange={ChangeDog}
@@ -408,8 +408,8 @@ function Dashboard() {
                   </div>
                 ) : null}
 
-                <div className="titGral">
-                  <h1 className="mt-1">{`Historial de Mascota`}</h1>
+                <div className="titGral instrument-serif-regular">
+                  <h1 className="mt-1 ">{`Historial de Mascota`}</h1>
                 </div>
               </div>
             </>
@@ -428,7 +428,7 @@ function Dashboard() {
                       {vtaxClient.data.vta ? (
                         <>
                           <div className="titDetails">
-                            <h5 className="text-center">Detalle Mascota</h5>
+                            <h5 className="text-center instrument-serif-regular">Detalle Mascota</h5>
                           </div>
                           <div className="container py-2">
                             <div
@@ -440,7 +440,7 @@ function Dashboard() {
                                   <FontAwesomeIcon icon={faBone} size="lg" />
                                 </p>
                                 <p
-                                  className="smallText"
+                                  className="instrument-serif-regular"
                                   style={{ fontSize: "1em" }}
                                 >
                                   {vtaxClient.data.vta[0].Dog.nameDog}
@@ -455,7 +455,7 @@ function Dashboard() {
                                   />
                                 </p>
                                 <p
-                                  className="smallText"
+                                  className="instrument-serif-regular"
                                   style={{ fontSize: "1em" }}
                                 >
                                   {vtaxClient.data.vta[0].Dog.tamaño}
@@ -470,7 +470,7 @@ function Dashboard() {
                                   />
                                 </p>
                                 <p
-                                  className="smallText"
+                                  className="instrument-serif-regular"
                                   style={{ fontSize: "1em" }}
                                 >
                                   {vtaxClient.data.vta[0].name}
@@ -485,7 +485,7 @@ function Dashboard() {
                                   />
                                 </p>
                                 <p
-                                  className="smallText"
+                                  className="instrument-serif-regular"
                                   style={{ fontSize: "1em" }}
                                 >
                                   {vtaxClient.data.vta[0].Dog.notaP
@@ -524,8 +524,8 @@ function Dashboard() {
                     <table className="table table-bordered table-hover table-dark">
                       <thead class="thead-light table-secondary">
                         <tr>
-                          <th>Valor Servicio</th>
-                          <th>
+                          <th className="instrument-serif-regular"> Valor Servicio</th>
+                          <th className="instrument-serif-regular">
                             Fecha{" "}
                             <FontAwesomeIcon
                               onClick={(e) => handleOrderHistDog(e)}
@@ -535,8 +535,8 @@ function Dashboard() {
                               style={{ cursor: "pointer" }}
                             />
                           </th>
-                          <th>Nota Turno</th>
-                          <th>Tipo de Servicio</th>
+                          <th className="instrument-serif-regular">Nota Turno</th>
+                          <th className="instrument-serif-regular">Tipo de Servicio</th>
                           {/* <th>Info</th> */}
                         </tr>
                       </thead>
@@ -544,13 +544,13 @@ function Dashboard() {
                         {vtaxClient.status === 200
                           ? vtaxClient.data.vta.map((vta) => (
                               <tr key={vta._id}>
-                                <td>{convertNum(vta.valorServ)}</td>
-                                <td>
+                                <td className="instrument-serif-regular">{convertNum(vta.valorServ)}</td>
+                                <td className="instrument-serif-regular">
                                   {convertDateFormat(vta.date)} -{" "}
                                   {convertDay(vta.date)}
                                 </td>
-                                <td>{vta.notesTurn}</td>
-                                <td>{vta.tipoServ}</td>
+                                <td className="instrument-serif-regular">{vta.notesTurn}</td>
+                                <td className="instrument-serif-regular">{vta.tipoServ}</td>
                               </tr>
                             ))
                           : null}
@@ -561,7 +561,7 @@ function Dashboard() {
               ) : (
                 <>
                   <div className="container-lg p-2 mb-2 text-center">
-                    <h5 className="alertHist">
+                    <h5 className="alertHist instrument-serif-regular">
                       No existe historial de Mascota
                     </h5>
                   </div>
@@ -574,7 +574,7 @@ function Dashboard() {
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
           <ClipLoader color="#000" loading={true} size={70} />
           <div className="titGral">
-            <h2 className="mt-3">Espere un Momento por favor ...</h2>
+            <h2 className="mt-3 instrument-serif-regular">Espere un Momento por favor ...</h2>
           </div>
         </div>
       )}

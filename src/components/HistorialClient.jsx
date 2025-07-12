@@ -8,7 +8,7 @@ import {
 } from "../reducer/actions/actions";
 
 import { deleteDog } from "../reducer/actions/actionsDog";
-import convertNum from "../functions/convertNum"
+import convertNum from "../functions/convertNum";
 import Swal from "sweetalert2";
 import ModalEditDog from "./Modal/ModalEditDog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,12 +27,9 @@ import { useState, useEffect } from "react";
 import { renderMatches } from "react-router-dom";
 
 export default function HistorialClient({ state, stateHist, setStateHist }) {
-
-
   var arrayDog = [];
 
   const [stateDog, setDog] = useState(state.arrayDogs);
-
 
   useEffect(() => {
     if (state) {
@@ -140,7 +137,9 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
 
       {state.arrayPedidos.length > 0 ? (
         <>
-          <h5 className="tituloVentas">Total Servicios</h5>
+          <h5 className="instrument-serif-regular text-center">
+            Total Servicios
+          </h5>
           <div className="containerPed">
             <div className="contenedorSuma">
               <FontAwesomeIcon
@@ -148,8 +147,10 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
                 icon={faDollarSign}
                 size="lg"
               />
-              <h6>Efectivo</h6>
-              <p>{convertNum(sumaEfectivo)}</p>
+              <h6 className="instrument-serif-regular">Efectivo</h6>
+              <p className="instrument-serif-regular">
+                {convertNum(sumaEfectivo)}
+              </p>
             </div>
 
             <div className="contenedorSuma">
@@ -185,7 +186,7 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
         {stateDog && stateDog.length
           ? stateDog.map((dog, index) =>
               dog.status === true ? (
-                <div className="container-description">
+                <div className="container-description ">
                   <div>
                     <h5 className="titulo">{dog.nameDog}</h5>
                     <h5 className="descripcion">Nota: {dog.notaP}</h5>

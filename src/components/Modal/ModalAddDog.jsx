@@ -163,15 +163,16 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
     <>
       <Modal show={stateAddDog} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Agregar Mascota</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">Agregar Mascota</Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
               <Form.Group className="mt-2">
-                <Form.Label>Seleccione Cliente</Form.Label>
+                <Form.Label className="instrument-serif-regular">Seleccione Cliente</Form.Label>
                 <Select
-                  placeholder="Seleccione Client"
+                className="instrument-serif-regular"
+                  placeholder="Seleccione Cliente"
                   onChange={(e) => {
                     handleChangeCli(e);
                   }}
@@ -192,7 +193,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
 
               <Form.Group className="mt-2">
                 {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
-                <Select
+                <Select className="instrument-serif-regular"
                   placeholder="Seleccione Tamaño"
                   onChange={(e) => {
                     handleChangeSize(e);
@@ -207,8 +208,9 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
             </Form.Group>
 
             <Form.Group className="mt-2">
-              <Form.Label lassName="text-xs">(*) Nombre Mascota</Form.Label>
+              <Form.Label lassName="text-xs" className="instrument-serif-regular">(*) Nombre Mascota</Form.Label>
               <Form.Control
+              className="instrument-serif-regular"
                 type="text"
                 placeholder="Nombre de Mascota"
                 name="nameDog"
@@ -220,8 +222,9 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
               />
             </Form.Group>
             <Form.Group className="mt-2">
-              <Form.Label>Nota Mascota</Form.Label>
+              <Form.Label className="instrument-serif-regular">Nota Mascota</Form.Label>
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
                 rows={3}
                 name="notaP"
@@ -234,17 +237,18 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
             </Form.Group>
           </Form>
 
-            <div className="text-danger msgAlertInput mt-2">
+            <div className="text-danger msgAlertInput mt-2 instrument-serif-regular">
               (*) Valores Obligatorios
             </div>  
 
         </Modal.Body>
-        <Modal.Footer className="mt-2 pt-1 pb-1">
+        <Modal.Footer className="mt-2 pt-1 pb-1 instrument-serif-regular">
           {!stateValue.idClient ||
           !stateValue.nameDog ||
           // !stateValue.raza ||
           !stateValue.tamaño ? (
             <Button
+           
               variant="primary"
               type="submit"
               onClick={handleSumbit}
@@ -253,7 +257,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
               Agregar Mascota
             </Button>
           ) : (
-            <Button variant="primary" type="submit" onClick={handleSumbit}>
+            <Button variant="primary" type="submit" onClick={handleSumbit} >
               Agregar Mascota
             </Button>
           )}

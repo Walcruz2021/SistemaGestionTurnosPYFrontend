@@ -203,7 +203,7 @@ export default function InformeGastos() {
   }
 
   return (
-    <div>
+    <div className="instrument-serif-regular">
       {stateInfo ? (
         <>
           <ModalBoostrap show={stateInfo} centered>

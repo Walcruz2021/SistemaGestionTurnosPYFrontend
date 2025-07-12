@@ -166,7 +166,7 @@ function ListClients() {
 
   
       const response = await dispatch(deleteClient(idClient));
-console.log(response)
+
 
       if (response?.status === 200) {
         clients.splice(index, 1);
@@ -198,7 +198,7 @@ console.log(response)
   return (
     <div>
       <div className="titGral">
-        <h1>Listado de Clientes</h1>
+        <h1 >Listado de Clientes</h1>
       </div>
 
       <div className="container py-3">
@@ -233,7 +233,7 @@ console.log(response)
       <div className="container-lg table-responsive">
         <div className="containerSearch">
           <input
-            className="inputBuscar"
+            className="inputBuscar instrument-serif-regular"
             type="text"
             name="search"
             placeholder="Busque un Cliente. Ingrese sólo valores en minúsculas"
@@ -252,10 +252,10 @@ console.log(response)
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-dark">
               <tr>
-                <th>Nombres Cliente</th>
-                <th>Contacto</th>
-                <th>Domicilio</th>
-                <th>Notas</th>
+                <th className="instrument-serif-regular">Nombre Cliente</th>
+                <th className="instrument-serif-regular">Contacto</th>
+                <th className="instrument-serif-regular">Domicilio</th>
+                <th className="instrument-serif-regular">Notas</th>
               </tr>
             </thead>
             <tbody>
@@ -280,12 +280,13 @@ console.log(response)
                               email: cli.email,
                             })
                           }
+                          className="instrument-serif-regular"
                         >
                           {cli.name}
                         </td>
-                        <td>{cli.phone}</td>
-                        <td>{cli.address}</td>
-                        <td>{cli.notesCli}</td>
+                        <td className="instrument-serif-regular">{cli.phone}</td>
+                        <td className="instrument-serif-regular">{cli.address}</td>
+                        <td className="instrument-serif-regular">{cli.notesCli}</td>
                       </tr>
                     ) : null
                   )
@@ -297,7 +298,7 @@ console.log(response)
 
       {stateHist ? (
         <div className="container-lg table-responsive">
-          <h5 className="tituloH">Historial del Cliente: {inputState.name}</h5>
+          <h5 className="tituloH instrument-serif-regular">Historial del Cliente: {inputState.name}</h5>
           <HistorialClient
             state={inputState}
             stateHist={stateHist}

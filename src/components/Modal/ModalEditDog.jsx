@@ -109,13 +109,14 @@ const ModalEditDog = ({
     <>
       <Modal show={state} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Editar Mascota</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">Editar Mascota</Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label lassName="text-xs">Nombre Mascota</Form.Label>
+              <Form.Label className="text-xs instrument-serif-regular">Nombre Mascota</Form.Label>
               <Form.Control
+              className="instrument-serif-regular"
                 type="text"
                 // placeholder="Pepe Argento"
                 name="nameDog"
@@ -131,8 +132,9 @@ const ModalEditDog = ({
             </Form.Group>
 
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Nota Mascota</Form.Label>
+              <Form.Label className="instrument-serif-regular">Nota Mascota</Form.Label>
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
                 rows={3}
                 name="notaP"
@@ -178,10 +180,11 @@ const ModalEditDog = ({
             </Form.Group> */}
 
             <Form.Group className="mt-2">
-              <Form.Label>Seleccione Tamaño</Form.Label>
+              <Form.Label className="instrument-serif-regular">Seleccione Tamaño</Form.Label>
               <select
+              
                 id="tamaño"
-                className="form-select"
+                className="form-select instrument-serif-regular"
                 //value={stateInput.tamaño}
                 onClick={handleChangeSize}
               >
@@ -210,7 +213,7 @@ const ModalEditDog = ({
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer className="mt-2 pt-1 pb-1">
+        <Modal.Footer className="mt-2 pt-1 pb-1 instrument-serif-regular">
           <Button variant="primary" type="submit" onClick={handleSumbit}>
             Modificar Mascota
           </Button>

@@ -65,7 +65,7 @@ function NavBarLat({ listCompaniesAll }) {
           <Container fluid>
             <Navbar.Brand>
               <div className="titGral">
-                <h3>GESTION DE TURNOS PYMESYA</h3>
+                <h2>GESTION DE TURNOS PYMESYA</h2>
               </div>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -91,100 +91,10 @@ function NavBarLat({ listCompaniesAll }) {
                 </Offcanvas.Header>
               ) : null}
 
-              {/* {CompanyMenuReducer && "nameCompany" in CompanyMenuReducer ? (
-                <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link as={Link} to="./listVentas">
-                      <FaMoneyBillTrendUp className="mx-4" />
-                      Ventas
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="./gastos">
-                      <PiMoneyFill className="mx-4" />
-                      Gastos
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="./informes">
-                      <FaChartLine className="mx-4" />
-                      Informes
-                    </Nav.Link>
-
-                    <Nav.Link as={Link} to="./support">
-                      <BiSupport className="mx-4"/>
-                      Soporte
-                    </Nav.Link>
-
-                    <NavDropdown
-                      title={userLogin.displayName || userLogin.email}
-                      id={`offcanvasNavbarDropdown-expand-${expand}`}
-                    >
-                      <NavDropdown.Item onClick={onCloseSesion}>
-                        Cerrar Sesion
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                    </NavDropdown>
-
-                    <NavDropdown
-                      title="Empresas"
-                      id={`offcanvasNavbarDropdown-expand-${expand}`}
-                    >
-                      {typeof listCompaniesAll === "object"
-                        ? listCompaniesAll.companies.map((company) => (
-                            <NavDropdown.Item
-                              key={company._id}
-                              onClick={() => changeCompany(company)}
-                            >
-                              {company.nameCompany}
-                            </NavDropdown.Item>
-                          ))
-                        : null}
-                      <NavDropdown.Item as={Link} to="/addCompany">
-                        Agregar Empresa
-                      </NavDropdown.Item>
-                    </NavDropdown>
-
-                  </Nav>
-                </Offcanvas.Body>
-              ) : (
-                <Offcanvas.Body>
-                  <Offcanvas.Header
-                    closeButton
-                    onClick={closeMenuLat}
-                  ></Offcanvas.Header>
-
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <NavDropdown
-                      title={userLogin.displayName || userLogin.email}
-                      id={`offcanvasNavbarDropdown-expand-${expand}`}
-                    >
-                      <NavDropdown.Item onClick={onCloseSesion}>
-                        Cerrar Sesion
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                    </NavDropdown>
-
-                    <NavDropdown
-                      title="Empresas"
-                      id={`offcanvasNavbarDropdown-expand-${expand}`}
-                    >
-                      {typeof listCompaniesAll === "object"
-                        ? listCompaniesAll.companies.map((company) => (
-                            <NavDropdown.Item
-                              key={company._id}
-                              onClick={() => changeCompany(company)}
-                            >
-                              {company.nameCompany}
-                            </NavDropdown.Item>
-                          ))
-                        : null}
-                      <NavDropdown.Item as={Link} to="/addCompany">
-                        Agregar Empresa
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                  </Nav>
-                </Offcanvas.Body>
-              )} */}
+    
 
               {CompanyMenuReducer ? (
-                <Offcanvas.Body>
+                <Offcanvas.Body className="instrument-serif-regular">
                   <Nav className="justify-content-end flex-grow-1 pe-3">
                     <Nav.Link as={Link} to="./InformeVentas">
                       <FaMoneyBillTrendUp className="mx-4" />

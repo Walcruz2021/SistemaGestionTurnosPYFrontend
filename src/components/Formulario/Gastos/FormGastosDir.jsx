@@ -133,12 +133,16 @@ const FormGastosDir = () => {
                       {...field}
                       placeholder="* Seleccione Categoria"
                       options={arrayGastosDir}
+                      className="instrument-serif-regular"
                     />
                   )}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group
+                className="mb-3 instrument-serif-regular"
+                controlId="formBasicEmail"
+              >
                 <Form.Label>* Fecha</Form.Label>
                 <Controller
                   name="date"
@@ -154,7 +158,7 @@ const FormGastosDir = () => {
                 />
               </Form.Group>
 
-              <div>
+              <div className="instrument-serif-regular">
                 <Form.Check
                   type="checkbox"
                   id="check-efectivo"
@@ -252,7 +256,7 @@ const FormGastosDir = () => {
                 )}
               </div>
 
-              <Form.Group className="mb-3 pt-2">
+              <Form.Group className="mb-3 pt-2 instrument-serif-regular">
                 <Controller
                   name="description"
                   control={control}
@@ -270,15 +274,21 @@ const FormGastosDir = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="mb-1">
+              <Form.Group className="mb-1 instrument-serif-regular">
                 <Form.Text className="text-danger">
                   * Valores Obligatorios.
                 </Form.Text>
               </Form.Group>
 
-              <Button variant="primary" type="submit" disabled={!isFormValid()}>
-                Ingresar Gasto Directo
-              </Button>
+              <div className="instrument-serif-regular">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={!isFormValid()}
+                >
+                  Ingresar Gasto Directo
+                </Button>
+              </div>
             </Form>
           </div>
         </div>

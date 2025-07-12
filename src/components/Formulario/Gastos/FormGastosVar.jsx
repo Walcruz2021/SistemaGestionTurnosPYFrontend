@@ -114,7 +114,7 @@ const FormGastosVar = () => {
   };
 
   return (
-    <>
+    <div className="instrument-serif-regular">
       <div className="titGral">
         <h2>GASTOS VARIABLES</h2>
       </div>
@@ -290,7 +290,7 @@ const FormGastosVar = () => {
           atribuirse directamente al proceso de producción.
         </p>
       </div> */}
-    </>
+    </div>
   );
 };
 

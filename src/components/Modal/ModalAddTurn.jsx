@@ -187,12 +187,12 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
       <div>
         <Modal show={stateAddTurn} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Agregar Turno</Modal.Title>
+            <Modal.Title className="instrument-serif-regular">Agregar Turno</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
               <Select
-                className="classSelect"
+                className="classSelect instrument-serif-regular"
                 placeholder="Seleccione Cliente"
                 onChange={(selected) => {
                   handleChangeCli(selected);
@@ -202,7 +202,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
 
               
                 <Select
-                  className="classSelect"
+                  className="classSelect instrument-serif-regular"
                   placeholder="Seleccione Mascota"
                   onChange={(e) => {
                     handleChangeDog(e);
@@ -215,8 +215,8 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Fecha Turno</Form.Label>
-                <Form.Control
+                <Form.Label className="instrument-serif-regular">Fecha Turno</Form.Label>
+                <Form.Control className="instrument-serif-regular"
                   type="date"
                   name="date"
                   autoFocus
@@ -228,8 +228,8 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Horario Turno</Form.Label>
-                <Form.Control
+                <Form.Label className="instrument-serif-regular">Horario Turno</Form.Label>
+                <Form.Control className="instrument-serif-regular"
                   type="time"
                   name="time"
                   autoFocus
@@ -245,8 +245,8 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nota Turno</Form.Label>
-                <Form.Control
+                <Form.Label lassName="text-xs" className="instrument-serif-regular">Nota Turno</Form.Label>
+                <Form.Control className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   type="text"
@@ -264,12 +264,12 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer className="mt-0 pt-1 pb-1">
+          <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {!stateInput.date ||
             !stateInput.time ||
             !stateInput.nameDog ||
             !stateInput.idClient ? (
-              <Button
+              <Button 
                 variant="primary"
                 type="submit"
                 onClick={handleSubmit}
@@ -278,7 +278,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 Agregar Turno
               </Button>
             ) : (
-              <Button variant="primary" type="submit" onClick={handleSubmit}>
+              <Button variant="primary" type="submit" onClick={handleSubmit} >
                 Agregar Turno
               </Button>
             )}

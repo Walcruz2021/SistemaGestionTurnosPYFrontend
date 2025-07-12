@@ -97,7 +97,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Adherir {stateCategory}</Modal.Title>
+            <Modal.Title className="instrument-serif-regular">Adherir {stateCategory}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -105,10 +105,10 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">
+                <Form.Label lassName="text-xs" className="instrument-serif-regular">
                   (*) Nombre y Apellido
                 </Form.Label>
-                <Form.Control
+                <Form.Control className="instrument-serif-regular"
                   type="text"
                   placeholder="Pepe Argento"
                   name="name"
@@ -126,8 +126,9 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>(*) Teléfono Contacto</Form.Label>
+                <Form.Label className="instrument-serif-regular">(*) Teléfono Contacto</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="number"
                   placeholder="3876153799"
                   name="phone"
@@ -151,8 +152,9 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>(*) Domicilio</Form.Label>
+                <Form.Label className="instrument-serif-regular">(*) Domicilio</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="text"
                   placeholder="Dean Funes 1235"
                   name="address"
@@ -167,8 +169,9 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>(*) Nota {stateCategory}</Form.Label>
+                <Form.Label className="instrument-serif-regular">(*) Nota {stateCategory}</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   name="notesCli"
@@ -183,13 +186,14 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>
+                <Form.Label className="instrument-serif-regular">
                   Email {stateCategory} {}
                   <span className="text-danger form-text" style={{ fontSize: "0.7em" }}>
                     (Campo No Obligatorio)
                   </span>
                 </Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   rows={3}
                   name="email"
                   type="email"
@@ -200,12 +204,12 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 />
               </Form.Group>
             </Form>
-            <div className="text-danger msgAlertInput mt-2">
+            <div className="text-danger msgAlertInput mt-2  instrument-serif-regular">
               (*) Valores Obligatorios
             </div>
           </Modal.Body>
 
-          <Modal.Footer className="mt-0 pt-1 pb-1">
+          <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}
@@ -214,6 +218,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             !stateValue.address ||
             !stateValue.notesCli ? (
               <Button
+             
                 variant="primary"
                 type="submit"
                 onClick={handleSumbit}
@@ -222,7 +227,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 Agregar {stateCategory}
               </Button>
             ) : (
-              <Button variant="primary" type="submit" onClick={handleSumbit}>
+              <Button variant="primary" type="submit" onClick={handleSumbit} >
                 Agregar {stateCategory}
               </Button>
             )}

@@ -112,7 +112,7 @@ const ModalEditTurn = ({
       <div>
         <Modal show={booleanClose} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Editar Turno</Modal.Title>
+            <Modal.Title className="instrument-serif-regular">Editar Turno</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -120,8 +120,9 @@ const ModalEditTurn = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nota de Turno</Form.Label>
+                <Form.Label lassName="text-xs" className="instrument-serif-regular">Nota de Turno</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   type="text"
@@ -138,8 +139,9 @@ const ModalEditTurn = ({
                 </Form.Text> */}
               </Form.Group>
               <Form.Group>
-                <Form.Label>Horario</Form.Label>
+                <Form.Label className="instrument-serif-regular">Horario</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="time"
                   name="time"
                   autoFocus
@@ -154,8 +156,9 @@ const ModalEditTurn = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Fecha</Form.Label>
+                <Form.Label className="instrument-serif-regular">Fecha</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="date"
                   name="date"
                   autoFocus
@@ -168,7 +171,7 @@ const ModalEditTurn = ({
               </Form.Group>
 
               <FormGroup>
-                <Form.Label className="p-2">
+                <Form.Label className="p-2 instrument-serif-regular">
                   Activacion de Notificaciones
                 </Form.Label>
                 {stateDataEdit && (
@@ -189,12 +192,12 @@ const ModalEditTurn = ({
                   />
                 )}
               </FormGroup>
-              <p className="text-danger" style={{ fontSize: "12px" }}>
+              <p className="text-danger instrument-serif-regular" style={{ fontSize: "12px" }}>
                 (*) Al activar notificaciones, el cliente debe tener un email
               </p>
             </Form>
           </Modal.Body>
-          <Modal.Footer className="mt-0 pt-1 pb-1">
+          <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}

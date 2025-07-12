@@ -20,7 +20,7 @@ import {
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalDescription from "./Modal/ModalDescription";
 import ModalBoostrap from "react-bootstrap/Modal";
-
+import "../../src/App.css";
 //stateInfo tru or false
 const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
@@ -177,9 +177,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th>Nombre Mascota</th>
+              <th className="instrument-serif-regular">Nombre Mascota</th>
 
-              <th>
+              <th className="instrument-serif-regular">
                 Fecha{" "}
                 <FontAwesomeIcon
                   onClick={(e) => handleOrder(e)}
@@ -189,9 +189,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                   style={{ cursor: "pointer" }}
                 />
               </th>
-              <th>Horario</th>
-              <th>Opciones</th>
-              <th>Aviso</th>
+              <th className="instrument-serif-regular">Horario</th>
+              <th className="instrument-serif-regular">Opciones</th>
+              <th className="instrument-serif-regular">Aviso</th>
             </tr>
           </thead>
           <tbody>
@@ -205,13 +205,14 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                       }
                       style={{ cursor: "pointer" }}
                       title="Informe Cliente"
+                      className="instrument-serif-regular"
                     >
                       {turn.nameDog}
                     </td>
-                    <td>
+                    <td className="instrument-serif-regular">
                       {convertDateFormat(turn.date)} - {convertDay(turn.date)}
                     </td>
-                    <td>{turn.time}</td>
+                    <td className="instrument-serif-regular">{turn.time}</td>
 
                     <td>
                       <div className="d-flex justify-content-between w-100">

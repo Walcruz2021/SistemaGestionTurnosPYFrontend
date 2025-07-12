@@ -155,13 +155,14 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
     <>
       <Modal show={state} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Adherir Venta</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">Adherir Venta</Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Tipo de Servicio</Form.Label>
+              <Form.Label className="instrument-serif-regular">Tipo de Servicio</Form.Label>
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
                 rows={3}
                 name="tipoServ"
@@ -174,11 +175,12 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
             </Form.Group>
             <div>
               <Form.Check
+              
                 type="checkbox"
                 id="check-efectivo"
                 label="Efectivo"
                 onChange={() => handleCheckChange("Efectivo")}
-                className="mt-2"
+                className="mt-2 instrument-serif-regular"
               />
               {visibleCheckE && (
                 <>
@@ -188,7 +190,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     name="efectivo"
                     maxLength={30}
                     required
-                    className="mt-2"
+                    className="mt-2 instrument-serif-regular"
                     value={stateValue.efectivo}
                     onChange={handleChangeNumber}
                   />
@@ -200,7 +202,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                 id="check-transferencia"
                 label="Transferencia"
                 onChange={() => handleCheckChange("Transferencia")}
-                className="mt-2"
+                className="mt-2 instrument-serif-regular"
               />
               {visibleCheckB && (
                 <>
@@ -210,7 +212,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     name="transferencia"
                     maxLength={30}
                     required
-                    className="mt-2"
+                    className="mt-2 instrument-serif-regular"
                     value={stateValue.transferencia}
                     onChange={handleChangeNumber}
                   />
@@ -222,7 +224,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                 id="check-tarjeta"
                 label="Tarjeta"
                 onChange={() => handleCheckChange("Tarjeta")}
-                className="mt-2"
+                className="mt-2 instrument-serif-regular"
               />
               {visibleCheckT && (
                 <>
@@ -232,7 +234,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     name="tarjeta"
                     maxLength={30}
                     required
-                    className="mt-2 mb-2"
+                    className="mt-2 mb-2 instrument-serif-regular"
                     value={stateValue.tarjeta}
                     onChange={handleChangeNumber}
                   />
@@ -242,13 +244,13 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
             {stateNewVta &&
             stateCategory === "peluAndVet" &&
             !stateNewVta.statusFile === true ? (
-              <p className="text-danger small mt-2">
+              <p className="text-danger small mt-2 instrument-serif-regular">
                 (*) ¡¡¡ ATENCION. Primero debe llenar ficha de mascota!!!
               </p>
             ) : null}
           </Form>
         </Modal.Body>
-        <Modal.Footer className="mt-0 pt-1 pb-1">
+        <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
           <Button
             variant="primary"
             type="submit"

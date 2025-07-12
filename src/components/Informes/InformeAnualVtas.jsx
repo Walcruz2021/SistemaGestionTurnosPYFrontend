@@ -277,7 +277,7 @@ function InformeAnualVtas() {
               placeholder="Seleccione Año"
               options={ListAños}
               onChange={ChangeAnio}
-              className="classSelect"
+              className="classSelect instrument-serif-regular"
             />
           </div>
 
@@ -288,7 +288,7 @@ function InformeAnualVtas() {
                   <h5>{arrayVtas[arrayVtas.length - 1].anio}</h5>
                 </div>
                 <table className="table table-bordered table-hover table-white">
-                  <thead class="thead-light table-secondary">
+                  <thead className="thead-light table-secondary instrument-serif-regular">
                     <tr>
                       <th>Mes</th>
                       <th>Vendido</th>
@@ -297,7 +297,7 @@ function InformeAnualVtas() {
                       <th>Banco</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="instrument-serif-regular">
                     {arrayVtas.map((vta) => (
                       <tr>
                         <td>{vta.mesString}</td>

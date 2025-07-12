@@ -138,8 +138,9 @@ const ModalEditClient = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs">Nombre y Apellido</Form.Label>
+                <Form.Label className="text-xs instrument-serif-regular">Nombre y Apellido</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="text"
                   placeholder="Pepe Argento"
                   name="name"
@@ -157,8 +158,9 @@ const ModalEditClient = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Teléfono Contacto</Form.Label>
+                <Form.Label className="instrument-serif-regular">Teléfono Contacto</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="number"
                   placeholder="3876153799"
                   name="phone"
@@ -182,8 +184,9 @@ const ModalEditClient = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Domicilio</Form.Label>
+                <Form.Label className="instrument-serif-regular">Domicilio</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   type="text"
                   placeholder="Dean Funes 1235"
                   name="address"
@@ -198,8 +201,9 @@ const ModalEditClient = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Nota Cliente</Form.Label>
+                <Form.Label className="instrument-serif-regular">Nota Cliente</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   name="notesCli"
@@ -214,8 +218,9 @@ const ModalEditClient = ({
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Email</Form.Label>
+                <Form.Label className="instrument-serif-regular">Email</Form.Label>
                 <Form.Control
+                className="instrument-serif-regular"
                   name="email"
                   autoFocus
                   maxLength={100}
@@ -243,12 +248,12 @@ const ModalEditClient = ({
                   }}
                 />
                 {emailError && (
-                  <div className="text-danger small mt-1">{emailError}</div>
+                  <div className="text-danger small mt-1 instrument-serif-regular">{emailError}</div>
                 )}
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer className="mt-0 pt-1 pb-1">
+          <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}

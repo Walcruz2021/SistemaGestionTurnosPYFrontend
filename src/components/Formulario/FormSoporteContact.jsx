@@ -56,7 +56,7 @@ const FormSoporteContact = () => {
     });
   }
   return (
-    <div className="login-wrap">
+    <div className="login-wrap instrument-serif-regular">
       <div className="login-html">
         <div className="text-center">
           <img src={logoNew} style={{ width: "185px" }} alt="logo" />
@@ -67,7 +67,7 @@ const FormSoporteContact = () => {
           <p className="text-center">FORMULARIO DE CONTACTO</p>
 
           <label className="mb-2" htmlFor="email">
-            Email Address
+            Email
           </label>
           <ValidationError prefix="Email" field="email" errors={state.errors} />
 
@@ -100,11 +100,11 @@ const FormSoporteContact = () => {
           <div className="text-center pt-2 mb-5 pb-1">
             {stateValue.message ? (
               <button className="btn btn-primary" type="submit">
-                Submit
+                Enviar
               </button>
             ) : (
               <button className="btn btn-primary" type="submit" disabled>
-                Submit
+                Enviar
               </button>
             )}
           </div>

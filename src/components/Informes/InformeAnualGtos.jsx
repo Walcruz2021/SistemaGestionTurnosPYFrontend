@@ -250,7 +250,7 @@ function InformeAnualGtos() {
   }
 
   return (
-    <div>
+    <div className="instrument-serif-regular">
       {Array.isArray(arrayGtos) ? (
         <div>
           <div className="container-lg">

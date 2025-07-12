@@ -116,7 +116,7 @@ const FormGastosInd = () => {
   };
 
   return (
-    <>
+    <div className="instrument-serif-regular">
       <div className="titGral">
         <h2>GASTOS INDIRECTOS</h2>
       </div>
@@ -292,7 +292,7 @@ const FormGastosInd = () => {
           continuidad de sus operaciones
         </p>
       </div> */}
-    </>
+    </div>
   );
 };
 

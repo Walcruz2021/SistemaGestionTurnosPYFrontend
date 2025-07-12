@@ -23,6 +23,8 @@ background-color: black;
 padding: 5px;
 margin-top: 5px;
 margin-bottom: 10px;
+  font-family: "Instrument Serif", serif;
+
 }
 
 .containerInforme{
@@ -34,13 +36,17 @@ margin-bottom: 10px;
 text-align: center;
 }
 
+.cardInf{
+      font-family: "Instrument Serif", serif;
+
+}
 .cardInf div{
     text-align: center;
 }
 
 .cardInf p{
     margin-top: 10px;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 
@@ -53,4 +59,6 @@ text-align: center;
     background-color: red;
     color: white;
     padding: 7px;
+      font-family: "Instrument Serif", serif;
+
 }

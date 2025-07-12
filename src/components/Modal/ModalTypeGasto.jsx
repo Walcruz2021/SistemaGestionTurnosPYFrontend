@@ -23,7 +23,7 @@ function ModalTypeGasto({
   };
 
   return (
-    <>
+    <div className="instrument-serif-regular  ">
       <Card className="w-100">
         <div className="d-flex justify-content-center p-2">
           <Card.Img
@@ -79,7 +79,7 @@ function ModalTypeGasto({
           {/* <Card.Link href="#">Another Link</Card.Link> */}
         </Card.Body>
       </Card>
-    </>
+    </div>
   );
 }
 

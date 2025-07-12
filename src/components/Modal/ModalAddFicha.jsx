@@ -11,7 +11,10 @@ import {
   getTurnos,
   updateTurno,
 } from "../../reducer/actions/actionsTurnos";
-import { asignedVentas } from "../../reducer/actions/actionsVentas";
+import { TbVaccine } from "react-icons/tb";
+import { AiOutlineMedicineBox } from "react-icons/ai";
+import { CgNotes } from "react-icons/cg";
+import { MdOutlineBalance } from "react-icons/md";
 
 const ModalAddFicha = ({
   state,
@@ -86,15 +89,19 @@ const ModalAddFicha = ({
     <>
       <Modal show={state} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Adherir Ficha</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">Adherir Ficha</Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Receta Otorgada</Form.Label>
+              <div className=" mb-1 mt-1">
+                <CgNotes size={28} /> <Form.Label className="instrument-serif-regular">Receta Otorgada</Form.Label>
+              </div>
+
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
-                rows={3}
+                rows={2}
                 name="receta"
                 autoFocus
                 maxLength={100}
@@ -103,10 +110,14 @@ const ModalAddFicha = ({
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Vacunas Aplicadas</Form.Label>
+              <div className="mb-1 mt-1">
+                <TbVaccine size={28} />{" "}
+                <Form.Label className="instrument-serif-regular">Vacunas Aplicadas</Form.Label>
+              </div>
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
-                rows={3}
+                rows={2}
                 name="vacunas"
                 autoFocus
                 maxLength={100}
@@ -115,10 +126,14 @@ const ModalAddFicha = ({
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Tratamiento</Form.Label>
+              <div className="mb-1 mt-1">
+                <AiOutlineMedicineBox size={28}/>{" "}
+                <Form.Label className="instrument-serif-regular">Tratamiento</Form.Label>
+              </div>
               <Form.Control
+              className="instrument-serif-regular"
                 as="textarea"
-                rows={3}
+                rows={2}
                 name="tratamiento"
                 autoFocus
                 maxLength={100}
@@ -127,8 +142,12 @@ const ModalAddFicha = ({
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label>Peso</Form.Label>
+              <div className="mb-1 mt-1">
+                <MdOutlineBalance size={28} />{" "}
+                <Form.Label className="instrument-serif-regular">Peso</Form.Label>
+              </div>
               <Form.Control
+              className="instrument-serif-regular"
                 name="peso"
                 type="text"
                 autoFocus
@@ -147,7 +166,7 @@ const ModalAddFicha = ({
           </Form>
         </Modal.Body>
         <Modal.Footer className="mt-0 pt-1 pb-1">
-          <Button variant="primary" type="submit" onClick={handleSumbit}>
+          <Button variant="primary" type="submit" onClick={handleSumbit} className="instrument-serif-regular">
             Agregar Ficha
           </Button>
         </Modal.Footer>

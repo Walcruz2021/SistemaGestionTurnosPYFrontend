@@ -115,7 +115,7 @@ const FormGastosFij = () => {
   };
 
   return (
-    <>
+    <div className="instrument-serif-regular">
       <div className="titGral">
         <h2>GASTOS FIJOS</h2>
       </div>
@@ -292,7 +292,7 @@ const FormGastosFij = () => {
           produzcan o vendan. 
         </p>
       </div> */}
-    </>
+    </div>
   );
 };
 
