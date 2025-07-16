@@ -11,11 +11,13 @@ import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
 const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
+
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const listClientsAll = useSelector((state) => state.allClients);
+
   const [stateCategory, setStateCategory] = useState("Cliente");
   const handleClose = () => setStateAddTurn(!stateAddTurn);
   const [stateInput, setStateInput] = useState({
@@ -87,6 +89,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   }
 
   function handleChangeCli(selected) {
+ 
     setStateInput({
       ...stateInput,
       idClient: selected.value,
@@ -114,8 +117,6 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
 
   const handleSubmit = () => {
     if (
-      stateInput.name.trim() === "" ||
-      stateInput.nameDog.trim() === "" ||
       stateInput.date.trim() === "" ||
       stateInput.time.trim() === ""
     ) {
@@ -156,7 +157,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
           setStateAddTurn(!stateAddTurn);
           //onTurnoAdded();
           // Update optionsListSelect after adding a turn
-          //updateOptionsList(listClientsCompany.clientes);
+
           setStateInput({
             name: "",
             nameDog: "",
@@ -266,9 +267,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
           </Modal.Body>
           <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {!stateInput.date ||
-            !stateInput.time ||
-            !stateInput.nameDog ||
-            !stateInput.idClient ? (
+            !stateInput.time ? (
               <Button 
                 variant="primary"
                 type="submit"

@@ -93,19 +93,7 @@ const ModalEditClient = ({
         stateValue.idClient
       )
     );
-    let clienteEncontrado = listClients?.find(
-      (client) => client._id === stateValue.idClient
-    );
-
-    let arrayTurnos = clienteEncontrado ? clienteEncontrado.turnos : [];
-    for (let i = 0; i < arrayTurnos.length; i++) {
-      dispatch(
-        updateTurno(
-          { email: validactionEmail&&stateEmail ? stateEmail.email : initialEmail, phone: stateValue.phone },
-          arrayTurnos[i]
-        )
-      );
-    }
+  
 
     MySwal.fire({
       title: "¡Cliente Modificado Correctamente!",

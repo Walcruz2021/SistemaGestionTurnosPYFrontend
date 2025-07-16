@@ -81,7 +81,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteTurno(props.idTurn)).then(() => {
+          dispatch(deleteTurno(props.idTurn)).then(() => {
           dispatch(getTurnos(companySelectedMenu._id));
         });
         MySwal.fire({
@@ -144,6 +144,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleInfo(e, props) {
+    
     e.preventDefault();
     setInfo(!stateInfo);
     setDataDescription({
@@ -207,7 +208,11 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                       title="Informe Cliente"
                       className="instrument-serif-regular"
                     >
-                      {turn.nameDog}
+                      {turn.nameDog ? (
+                        turn.nameDog
+                      ) : (
+                        <span className="text-danger">Cliente NO Asignado</span>
+                      )}
                     </td>
                     <td className="instrument-serif-regular">
                       {convertDateFormat(turn.date)} - {convertDay(turn.date)}
@@ -216,15 +221,28 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                     <td>
                       <div className="d-flex justify-content-between w-100">
-                        <button
-                          className="btn"
-                          onClick={
-                            (e) => handleVentas(e, turn)
-                            // console.log(turn.notesTurn,"----------> notyes 2")
-                          }
-                        >
-                          <FontAwesomeIcon icon={faHandHoldingUsd} size="lg" />
-                        </button>
+                        {turn.nameDog ? (
+                          <button
+                            className="btn"
+                            onClick={
+                              (e) => handleVentas(e, turn)
+                              // console.log(turn.notesTurn,"----------> notyes 2")
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={faHandHoldingUsd}
+                              size="lg"
+                            />
+                          </button>
+                        ) : (
+                          <button className="btn">
+                            <FontAwesomeIcon
+                              icon={faHandHoldingUsd}
+                              size="lg"
+                              color="red"
+                            />
+                          </button>
+                        )}
 
                         {/* handleEditTurn permite editar en especifico */}
                         <button
@@ -249,12 +267,21 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                           <FontAwesomeIcon icon={faTrash} size="lg" />
                         </button>
 
-                        {stateCategory && stateCategory === "peluAndVet" ? (
+                        {stateCategory &&
+                        stateCategory === "peluAndVet" &&
+                        turn.nameDog ? (
                           <button
                             className="btn"
                             onClick={(e) => handleCargaFicha(e, turn)}
                           >
                             <FaFileAlt size="22" />
+                          </button>
+                        ) : !turn.nameDog ? (
+                          <button
+                            className="btn"
+                           
+                          >
+                            <FaFileAlt size="22" color="red" />
                           </button>
                         ) : null}
                       </div>
@@ -262,9 +289,15 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                     {turn.isNotifications ? (
                       <td>
-                        <div className="d-flex justify-content-center align-items-center mt-2" style={{ height: "100%" }}>
-
-                        <input type="checkbox" checked style={{ width: "22px", height: "22px" }}/>
+                        <div
+                          className="d-flex justify-content-center align-items-center mt-2"
+                          style={{ height: "100%" }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked
+                            style={{ width: "22px", height: "22px" }}
+                          />
                         </div>
                       </td>
                     ) : (
@@ -281,6 +314,8 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
           setBooleanClose={setBooleanClose}
           stateDataEdit={stateDataEdit}
           setStateDataEdit={setStateDataEdit}
+          nameClient={stateDataEdit && stateDataEdit.name}
+          nameDog={stateDataEdit && stateDataEdit.nameDog}
         />
 
         <ModalAddFicha
