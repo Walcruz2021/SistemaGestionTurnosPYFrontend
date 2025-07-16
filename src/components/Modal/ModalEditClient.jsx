@@ -80,7 +80,7 @@ const ModalEditClient = ({
         text: "Faltan Datos por Completar",
       });
     }
-
+G
     dispatch(
       updateClient(
         {

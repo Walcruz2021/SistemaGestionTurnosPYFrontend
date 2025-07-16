@@ -10,6 +10,7 @@ import { deleteTurno, getTurnos } from "../../reducer/actions/actionsTurnos";
 import { asignedVentas } from "../../reducer/actions/actionsVentas";
 
 const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
+
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const dispatch = useDispatch();
@@ -69,13 +70,6 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
     }));
   };
 
-  const handleChangeNumber = (e) => {
-    const { name, value } = e.target;
-    setStateValue((prevState) => ({
-      ...prevState,
-      [name]: Number(value),
-    }));
-  };
 
   const handleSumbit = () => {
     const [day, month, year] = stateNewVta.date.split("/");
@@ -108,6 +102,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
       vacunas: stateNewVta.vacunas,
       peso: stateNewVta.peso,
     };
+    
     dispatch(asignedVentas(dataVta, stateNewVta.Client));
     MySwal.fire({
       title: "¡Venta guardada correctamente!",
@@ -155,14 +150,18 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
     <>
       <Modal show={state} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="instrument-serif-regular">Adherir Venta</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">
+            Adherir Venta
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label className="instrument-serif-regular">Tipo de Servicio</Form.Label>
+              <Form.Label className="instrument-serif-regular">
+                Tipo de Servicio
+              </Form.Label>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 as="textarea"
                 rows={3}
                 name="tipoServ"
@@ -175,7 +174,6 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
             </Form.Group>
             <div>
               <Form.Check
-              
                 type="checkbox"
                 id="check-efectivo"
                 label="Efectivo"
@@ -192,7 +190,16 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     required
                     className="mt-2 instrument-serif-regular"
                     value={stateValue.efectivo}
-                    onChange={handleChangeNumber}
+                    onChange={(e) => {
+                      // Solo permitir números y máximo 10 caracteres
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 15);
+                      setStateValue((prevState) => ({
+                        ...prevState,
+                        efectivo: Number(value),
+                      }));
+                    }}
                   />
                 </>
               )}
@@ -214,7 +221,16 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     required
                     className="mt-2 instrument-serif-regular"
                     value={stateValue.transferencia}
-                    onChange={handleChangeNumber}
+                      onChange={(e) => {
+                      // Solo permitir números y máximo 10 caracteres
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 15);
+                      setStateValue((prevState) => ({
+                        ...prevState,
+                        transferencia: Number(value),
+                      }));
+                    }}
                   />
                 </>
               )}
@@ -236,7 +252,16 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                     required
                     className="mt-2 mb-2 instrument-serif-regular"
                     value={stateValue.tarjeta}
-                    onChange={handleChangeNumber}
+                        onChange={(e) => {
+                      // Solo permitir números y máximo 10 caracteres
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 15);
+                      setStateValue((prevState) => ({
+                        ...prevState,
+                        tarjeta: Number(value),
+                      }));
+                    }}
                   />
                 </>
               )}

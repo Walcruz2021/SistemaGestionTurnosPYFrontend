@@ -26,7 +26,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
     notesTurn: "",
     nameDog: "",
     idDog: "",
-    idClient: "",
+    Client: "",
     name: "",
     arrayDogs: [],
     phone: "",
@@ -92,7 +92,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
  
     setStateInput({
       ...stateInput,
-      idClient: selected.value,
+      Client: selected.value,
       name: selected.label,
       arrayDogs: selected.label3,
       phone: selected.label2,
@@ -139,7 +139,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
           idDog: stateInput.idDog,
           date: stateInput.date,
           notesTurn: stateInput.notesTurn,
-          idClient: stateInput.idClient,
+          Client: stateInput.Client,
           time: stateInput.time,
           phone: stateInput.phone,
           Company: companySelectedMenu._id,
@@ -164,7 +164,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
             idDog: "",
             date: "",
             notesTurn: "",
-            idClient: "",
+            Client: "",
             time: "",
             phone: "",
             email:""
