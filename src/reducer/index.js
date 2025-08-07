@@ -28,6 +28,8 @@ import {
   VERIFICATION_COMPANY_EXISTS,
   FUNCTION_COMPANY_SELECTED,
   RESET_COMPANY_SELECTED,
+  IS_CATEGORY_MEDICINE,
+  TYPE_PERSON_CATEGORY,
 } from "./actions/actionsCompany";
 
 import {
@@ -46,7 +48,7 @@ import {
   GTOS_MES_ANIO_PARAMS,
   GTOS_ANIO_MES_NOW,
   ORDER_GASTOS_MONTH_NOW,
-  ORDER_GASTOS_MONTHANIO_PARAM
+  ORDER_GASTOS_MONTHANIO_PARAM,
 } from "./actions/actionsGastos";
 
 import {
@@ -60,7 +62,6 @@ import {
   ORDER_VENTAS_MONTH_NOW,
   ORDER_VENTAS_MONTHANIO_PARAM,
 } from "./actions/actionsVentas";
-
 
 const initialState = {
   allTurnos: [],
@@ -82,6 +83,8 @@ const initialState = {
   companySelected: null,
   userEmailSearch: null,
   conectionMongo: null,
+  categoryMedicine: false,
+  typePerson: "Cliente",
 };
 
 function rootReducer(state = initialState, action) {
@@ -367,7 +370,7 @@ function rootReducer(state = initialState, action) {
               } else return 0;
             })
           : // descendente
-          listOrderVAP.sort(function (a, b) {
+            listOrderVAP.sort(function (a, b) {
               const aux1a = a.date.toLocaleLowerCase();
               const aux2b = b.date.toLocaleLowerCase();
               if (aux1a > aux2b) {
@@ -385,7 +388,7 @@ function rootReducer(state = initialState, action) {
 
     case ORDER_GASTOS_MONTH_NOW:
       const listOrderG = state.gastosXanioandMesNow;
- 
+
       const arrayOrderG =
         action.payload === true
           ? listOrderG.sort(function (a, b) {
@@ -415,7 +418,7 @@ function rootReducer(state = initialState, action) {
         gastosXanioandMesNow: arrayOrderG,
       };
 
-      case ORDER_GASTOS_MONTHANIO_PARAM:
+    case ORDER_GASTOS_MONTHANIO_PARAM:
       const listOrderG2 = state.gastosXanioandMesParam;
 
       const arrayOrderG2 =
@@ -442,7 +445,6 @@ function rootReducer(state = initialState, action) {
               } else return 0;
             });
 
-       
       return {
         ...state,
         gastosXanioandMesParam: arrayOrderG2,
@@ -488,6 +490,18 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         vtasxAnioandMesParam: null,
+      };
+
+    case IS_CATEGORY_MEDICINE:
+      return {
+        ...state,
+        categoryMedicine: action.payload,
+      };
+
+    case TYPE_PERSON_CATEGORY:
+      return {
+        ...state,
+        typePerson: action.payload,
       };
     default:
       return state;

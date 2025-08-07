@@ -19,6 +19,9 @@ const ModalEditTurn = ({
   nameClient,
   nameDog,
 }) => {
+  console.log(nameClient)
+  const isMedicine = useSelector((state) => state.categoryMedicine);
+  const personCategory = useSelector((state) => state.typePerson);
   const listClientsAll = useSelector((state) => state.allClients);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const [stateCheck, setStateCheck] = useState({
@@ -164,7 +167,6 @@ const ModalEditTurn = ({
   }
 
   function handleChangeDog(selected) {
-  
     setStateDataEdit({
       ...stateDataEdit,
       nameDog: selected.label,
@@ -174,7 +176,7 @@ const ModalEditTurn = ({
 
   return (
     <>
-      {/* ADD CLIENT */}
+   
       <div>
         <Modal show={booleanClose} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -188,21 +190,22 @@ const ModalEditTurn = ({
                 <>
                   <Select
                     className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Cliente"
+                    placeholder={`Seleccione ${personCategory}`}
                     onChange={(selected) => {
                       handleChangeCli(selected);
                     }}
                     options={optionsListSelect}
                   />
-
-                  <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Mascota"
-                    onChange={(e) => {
-                      handleChangeDog(e);
-                    }}
-                    options={optionsList}
-                  />
+                  {!isMedicine ? (
+                    <Select
+                      className="classSelect instrument-serif-regular"
+                      placeholder="Seleccione Mascota"
+                      onChange={(e) => {
+                        handleChangeDog(e);
+                      }}
+                      options={optionsList}
+                    />
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -339,7 +342,7 @@ const ModalEditTurn = ({
                 className="text-danger instrument-serif-regular"
                 style={{ fontSize: "12px" }}
               >
-                (*) Al activar notificaciones, el cliente debe tener un email
+                (*) Al activar notificaciones, el {personCategory} debe tener un email
               </p>
             </Form>
           </Modal.Body>
@@ -348,13 +351,27 @@ const ModalEditTurn = ({
                           Save Changes
                         </Button> */}
             {}
-            {newData&& newData.Client && newData.idDog ? (
+            {
+              isMedicine ? newData && newData.Client? (
               <Button variant="primary" type="submit" onClick={handleSumbit}>
                 Editar Turno
               </Button>
-            ) : <Button variant="primary" type="submit" onClick={handleSumbit} disabled>
+            ):
+            newData && newData.Client && newData.idDog ? (
+              <Button variant="primary" type="submit" onClick={handleSumbit}>
                 Editar Turno
-              </Button>}
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={handleSumbit}
+                disabled
+              >
+                Editar Turno
+              </Button>
+            ):null
+            }
           </Modal.Footer>
         </Modal>
       </div>

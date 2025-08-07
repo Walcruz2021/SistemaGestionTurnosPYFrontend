@@ -28,7 +28,7 @@ import { renderMatches } from "react-router-dom";
 
 export default function HistorialClient({ state, stateHist, setStateHist }) {
   var arrayDog = [];
-
+  const isMedicine = useSelector((state) => state.categoryMedicine);
   const [stateDog, setDog] = useState(state.arrayDogs);
 
   useEffect(() => {
@@ -177,56 +177,60 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
           </div>
         </>
       ) : null}
+      
+      {!isMedicine ? (
+        <>
+          <div className="contenedorTit">
+            <h5>Listado de Mascotas</h5>
+          </div>
 
-      <div className="contenedorTit">
-        <h5>Listado de Mascotas</h5>
-      </div>
+          <div className="containerGralDog">
+            {stateDog && stateDog.length
+              ? stateDog.map((dog, index) =>
+                  dog.status === true ? (
+                    <div className="container-description ">
+                      <div>
+                        <h5 className="titulo">{dog.nameDog}</h5>
+                        <h5 className="descripcion">Nota: {dog.notaP}</h5>
+                        {/* <h5 className="descripcion">Raza: {dog.raza}</h5> */}
+                        <h5 className="descripcion">Tamaño: {dog.tamaño}</h5>
 
-      <div className="containerGralDog">
-        {stateDog && stateDog.length
-          ? stateDog.map((dog, index) =>
-              dog.status === true ? (
-                <div className="container-description ">
-                  <div>
-                    <h5 className="titulo">{dog.nameDog}</h5>
-                    <h5 className="descripcion">Nota: {dog.notaP}</h5>
-                    {/* <h5 className="descripcion">Raza: {dog.raza}</h5> */}
-                    <h5 className="descripcion">Tamaño: {dog.tamaño}</h5>
-
-                    <button
-                      className="buttonDleteDog"
-                      onClick={() => DogDelete(dog._id, index)}
-                    >
-                      <FontAwesomeIcon
-                        className="icon4"
-                        icon={faTrashArrowUp}
-                        size="lg"
-                      />
-                    </button>
-                    <button
-                      className="buttonEditDog"
-                      onClick={() =>
-                        editDog(
-                          dog._id,
-                          dog.nameDog,
-                          dog.notaP,
-                          dog.raza,
-                          dog.tamaño
-                        )
-                      }
-                    >
-                      <FontAwesomeIcon
-                        className="icon5"
-                        icon={faFilePen}
-                        size="lg"
-                      />
-                    </button>
-                  </div>
-                </div>
-              ) : null
-            )
-          : null}
-      </div>
+                        <button
+                          className="buttonDleteDog"
+                          onClick={() => DogDelete(dog._id, index)}
+                        >
+                          <FontAwesomeIcon
+                            className="icon4"
+                            icon={faTrashArrowUp}
+                            size="lg"
+                          />
+                        </button>
+                        <button
+                          className="buttonEditDog"
+                          onClick={() =>
+                            editDog(
+                              dog._id,
+                              dog.nameDog,
+                              dog.notaP,
+                              dog.raza,
+                              dog.tamaño
+                            )
+                          }
+                        >
+                          <FontAwesomeIcon
+                            className="icon5"
+                            icon={faFilePen}
+                            size="lg"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  ) : null
+                )
+              : null}
+          </div>
+        </>
+      ) : null}
     </>
   );
 }

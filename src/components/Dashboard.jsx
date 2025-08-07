@@ -55,7 +55,7 @@ function Dashboard() {
 
   const listClients = useSelector((state) => state.allClients);
   const [stateListTurn, setListTurn] = useState([]);
-  const [stateCategory, setStateCategory] = useState("");
+  const [stateCategory, setStateCategory] = useState("Cliente");
   const vtaxClient = useSelector((state) => state.vtaxClient);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -71,6 +71,9 @@ function Dashboard() {
   const [stateClientSelected, setStateClientSeleted] = useState();
   const [editTurn, setEditTurn] = useState(false);
   const [stateAddDog, setStateAddDog] = useState(false);
+  const isMedicine = useSelector((state) => state.categoryMedicine);
+  const personCategory = useSelector((state) => state.typePerson);
+  const [category, useCategory] = useState("Cliente");
   const [inputState, setInputState] = useState({
     id: "",
     name: "",
@@ -119,9 +122,6 @@ function Dashboard() {
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(getClients(companySelectedMenu._id));
-      if (companySelectedMenu.category) {
-        setStateCategory(companySelectedMenu.category);
-      }
     }
   }, [companySelectedMenu]);
 
@@ -254,7 +254,7 @@ function Dashboard() {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: `Debe Ingresar un Cliente`,
+      text: `Debe Ingresar un ${personCategory}`,
     });
   };
 
@@ -262,8 +262,6 @@ function Dashboard() {
     localStorage.setItem("historialData", JSON.stringify(stateClientSelected));
     window.open("/historialPet", "_blank", "noopener,noreferrer");
   };
-
- 
 
   return (
     <>
@@ -310,31 +308,32 @@ function Dashboard() {
                   </div>
                 )}
 
-                {listClients ? (
-                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                    <div className="text-center">
-                      <div className="card-body">
-                        <button className="btn btn-link">
-                          <img src={addPet} onClick={ModalAddDogActive} />
-                        </button>
-                        <ModalAddDog
-                          stateAddDog={stateAddDog}
-                          setStateAddDog={setStateAddDog}
-                        />
+                {!isMedicine &&
+                  (listClients ? (
+                    <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                      <div className="text-center">
+                        <div className="card-body">
+                          <button className="btn btn-link">
+                            <img src={addPet} onClick={ModalAddDogActive} />
+                          </button>
+                          <ModalAddDog
+                            stateAddDog={stateAddDog}
+                            setStateAddDog={setStateAddDog}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : !listClients ? (
-                  <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                    <div className="text-center">
-                      <div className="card-body">
-                        <button className="btn btn-link">
-                          <img src={addPet} onClick={messageClient} />
-                        </button>
+                  ) : (
+                    <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                      <div className="text-center">
+                        <div className="card-body">
+                          <button className="btn btn-link">
+                            <img src={addPet} onClick={messageClient} />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : null}
+                  ))}
 
                 {listClients ? (
                   <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
@@ -395,7 +394,8 @@ function Dashboard() {
               <div className="container-lg pb-4">
                 {!stateInfo && !newTurno && !newClient && !newDog ? (
                   <div>
-                    <Select className="classSelect instrument-serif-regular"
+                    <Select
+                      className="classSelect instrument-serif-regular"
                       placeholder="Seleccione Mascota a Buscar"
                       options={Listdogs}
                       onChange={ChangeDog}
@@ -428,7 +428,9 @@ function Dashboard() {
                       {vtaxClient.data.vta ? (
                         <>
                           <div className="titDetails">
-                            <h5 className="text-center instrument-serif-regular">Detalle Mascota</h5>
+                            <h5 className="text-center instrument-serif-regular">
+                              Detalle Mascota
+                            </h5>
                           </div>
                           <div className="container py-2">
                             <div
@@ -524,7 +526,10 @@ function Dashboard() {
                     <table className="table table-bordered table-hover table-dark">
                       <thead class="thead-light table-secondary">
                         <tr>
-                          <th className="instrument-serif-regular"> Valor Servicio</th>
+                          <th className="instrument-serif-regular">
+                            {" "}
+                            Valor Servicio
+                          </th>
                           <th className="instrument-serif-regular">
                             Fecha{" "}
                             <FontAwesomeIcon
@@ -535,8 +540,12 @@ function Dashboard() {
                               style={{ cursor: "pointer" }}
                             />
                           </th>
-                          <th className="instrument-serif-regular">Nota Turno</th>
-                          <th className="instrument-serif-regular">Tipo de Servicio</th>
+                          <th className="instrument-serif-regular">
+                            Nota Turno
+                          </th>
+                          <th className="instrument-serif-regular">
+                            Tipo de Servicio
+                          </th>
                           {/* <th>Info</th> */}
                         </tr>
                       </thead>
@@ -544,13 +553,19 @@ function Dashboard() {
                         {vtaxClient.status === 200
                           ? vtaxClient.data.vta.map((vta) => (
                               <tr key={vta._id}>
-                                <td className="instrument-serif-regular">{convertNum(vta.valorServ)}</td>
+                                <td className="instrument-serif-regular">
+                                  {convertNum(vta.valorServ)}
+                                </td>
                                 <td className="instrument-serif-regular">
                                   {convertDateFormat(vta.date)} -{" "}
                                   {convertDay(vta.date)}
                                 </td>
-                                <td className="instrument-serif-regular">{vta.notesTurn}</td>
-                                <td className="instrument-serif-regular">{vta.tipoServ}</td>
+                                <td className="instrument-serif-regular">
+                                  {vta.notesTurn}
+                                </td>
+                                <td className="instrument-serif-regular">
+                                  {vta.tipoServ}
+                                </td>
                               </tr>
                             ))
                           : null}
@@ -574,7 +589,9 @@ function Dashboard() {
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
           <ClipLoader color="#000" loading={true} size={70} />
           <div className="titGral">
-            <h2 className="mt-3 instrument-serif-regular">Espere un Momento por favor ...</h2>
+            <h2 className="mt-3 instrument-serif-regular">
+              Espere un Momento por favor ...
+            </h2>
           </div>
         </div>
       )}

@@ -169,6 +169,19 @@ const FormAddCompany = () => {
             />
             Veterinaria y Peluqueria
           </label>
+
+          
+          <label className="p-2">
+            <input
+              className="m-2"
+              type="radio"
+              value="medicinaGral"
+              checked={selectedOption === "medicinaGral"}
+              onChange={handleChangeRadioB}
+            />
+            Medicina General
+          </label>
+
         </div>
 
         <div className="text-danger msgAlertInput">* Valores Obligatorios</div>

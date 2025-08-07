@@ -28,8 +28,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
   const listTurnos = useSelector((state) => state.allTurnos);
 
-  const [stateCategory, setStateCategory] = useState("Cliente");
-
+  const [stateCategory, setStateCategory] = useState("Cliente"); //no borrar es el que determina si se vera icono de ficha si es veterinaria
+  const isMedicine = useSelector((state) => state.categoryMedicine);
+  const personCategory = useSelector((state) => state.typePerson);
   const [newVentas, setNewVentas] = useState(false);
   const [booleanClose, setBooleanClose] = useState(false);
   const [stateCargaFich, setStateCargaFich] = useState(false);
@@ -51,22 +52,6 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
     const day = new Date(date).getDay();
     const days = ["Dom", "Lun", "Mar", "Mi", "Jue", "Vie", "Sab"];
     return days[day];
-
-    //with const days = ["Dom", "Lun", "Mar", "Mi", "Jue", "Vie", "Sab"];
-    //return days[day] I avoid having thaht insert next code
-    // if (day === 0) {
-    //   return "Lun";
-    // } else if (day === 1) {
-    //   return "Mar";
-    // } else if (day === 2) {
-    //   return "Mi";
-    // } else if (day === 3) {
-    //   return "Jue";
-    // } else if (day === 4) {
-    //   return "Vie";
-    // } else if (day === 5) {
-    //   return "Sab";
-    // } else return "Dom";
   }
 
   function handleDelete(e, props) {
@@ -81,7 +66,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-          dispatch(deleteTurno(props.idTurn)).then(() => {
+        dispatch(deleteTurno(props.idTurn)).then(() => {
           dispatch(getTurnos(companySelectedMenu._id));
         });
         MySwal.fire({
@@ -144,7 +129,6 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   }
 
   function handleInfo(e, props) {
-    
     e.preventDefault();
     setInfo(!stateInfo);
     setDataDescription({
@@ -178,7 +162,11 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
         <table className="table table-bordered table-hover table-white">
           <thead className="thead-light table-secondary">
             <tr>
-              <th className="instrument-serif-regular">Nombre Mascota</th>
+              {isMedicine ? (
+                <th className="instrument-serif-regular">Nombre Paciente</th>
+              ) : (
+                <th className="instrument-serif-regular">Nombre Mascota</th>
+              )}
 
               <th className="instrument-serif-regular">
                 Fecha{" "}
@@ -205,10 +193,14 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                         // console.log(turn.notesTurn,"-->notes")
                       }
                       style={{ cursor: "pointer" }}
-                      title="Informe Cliente"
+                      title={`Informe ${personCategory}`}
                       className="instrument-serif-regular"
                     >
-                      {turn.nameDog ? (
+                      {isMedicine && turn.name ? (
+                        turn.name
+                      ) : !turn.name ? (
+                        <span className="text-danger">Paciente NO Asignado</span>
+                      ) : turn.nameDog ? (
                         turn.nameDog
                       ) : (
                         <span className="text-danger">Cliente NO Asignado</span>
@@ -277,10 +269,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                             <FaFileAlt size="22" />
                           </button>
                         ) : !turn.nameDog ? (
-                          <button
-                            className="btn"
-                           
-                          >
+                          <button className="btn">
                             <FaFileAlt size="22" color="red" />
                           </button>
                         ) : null}

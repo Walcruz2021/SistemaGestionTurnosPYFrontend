@@ -11,21 +11,10 @@ import withReactContent from "sweetalert2-react-content";
 
 const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
   const companySelectdMenu = useSelector((state) => state.companySelected);
-  const [stateCategory, setStateCategory] = useState("Cliente");
+
   const [companySelectedState, setCompanySelectedState] = useState();
 
-  useEffect(() => {
-    if (companySelectdMenu) {
-      setCompanySelectedState(companySelectdMenu);
-      if (
-        companySelectdMenu.category &&
-        companySelectdMenu.category === "medicina"
-      ) {
-        setStateCategory("Paciente");
-      }
-    }
-  });
-
+  const personCategory = useSelector((state) => state.typePerson);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
@@ -36,6 +25,13 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
     address: "",
     notesCli: "",
     email: "",
+  });
+
+   useEffect(() => {
+    if (companySelectdMenu) {
+      setCompanySelectedState(companySelectdMenu);
+  
+    }
   });
 
   const handleChange = (e) => {
@@ -72,7 +68,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
         })
       );
       MySwal.fire({
-        title: `¡${stateCategory} creado correctamente!`,
+        title: `¡${personCategory} creado correctamente!`,
         icon: "success",
         confirmButtonText: "Aceptar",
         confirmButtonColor: "rgb(21, 151, 67)",
@@ -97,7 +93,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title className="instrument-serif-regular">Adherir {stateCategory}</Modal.Title>
+            <Modal.Title className="instrument-serif-regular">Adherir {personCategory}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -169,7 +165,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label className="instrument-serif-regular">(*) Nota {stateCategory}</Form.Label>
+                <Form.Label className="instrument-serif-regular">(*) Nota {personCategory}</Form.Label>
                 <Form.Control
                 className="instrument-serif-regular"
                   as="textarea"
@@ -187,7 +183,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label className="instrument-serif-regular">
-                  Email {stateCategory} {}
+                  Email {personCategory} {}
                   <span className="text-danger form-text" style={{ fontSize: "0.7em" }}>
                     (Campo No Obligatorio)
                   </span>
@@ -224,11 +220,11 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                 onClick={handleSumbit}
                 disabled
               >
-                Agregar {stateCategory}
+                Agregar {personCategory}
               </Button>
             ) : (
               <Button variant="primary" type="submit" onClick={handleSumbit} >
-                Agregar {stateCategory}
+                Agregar {personCategory}
               </Button>
             )}
           </Modal.Footer>

@@ -11,13 +11,14 @@ import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
 const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
-
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const listClientsAll = useSelector((state) => state.allClients);
-
+  const isMedicine = useSelector((state) => state.categoryMedicine);
+  console.log(isMedicine)
+  const personCategory = useSelector((state) => state.typePerson);
   const [stateCategory, setStateCategory] = useState("Cliente");
   const handleClose = () => setStateAddTurn(!stateAddTurn);
   const [stateInput, setStateInput] = useState({
@@ -30,9 +31,8 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
     name: "",
     arrayDogs: [],
     phone: "",
-    email:""
+    email: "",
   });
-
 
   const getTodayDate = () => {
     const today = new Date();
@@ -73,7 +73,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   }, [listClientsAll]);
 
   useEffect(() => {
- if (companySelectedMenu) {
+    if (companySelectedMenu) {
       if (companySelectedMenu.category) {
         setStateCategory("Paciente");
       }
@@ -89,7 +89,6 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   }
 
   function handleChangeCli(selected) {
- 
     setStateInput({
       ...stateInput,
       Client: selected.value,
@@ -99,6 +98,17 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
       email: selected.label4,
       nameDog: "",
       idDog: "",
+    });
+  }
+
+  function handleChangeCliMedicine(selected) {
+    setStateInput({
+      ...stateInput,
+      Client: selected.value,
+      name: selected.label,
+      phone: selected.label2,
+      email: selected.label4,
+      category: isMedicine,
     });
   }
 
@@ -116,10 +126,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const optionsList = selectDog(stateInput.arrayDogs);
 
   const handleSubmit = () => {
-    if (
-      stateInput.date.trim() === "" ||
-      stateInput.time.trim() === ""
-    ) {
+    if (stateInput.date.trim() === "" || stateInput.time.trim() === "") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -132,20 +139,24 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
         text: "Fecha Incorrecta",
       });
     } else {
-      dispatch(
-        addTurnos({
-          name: stateInput.name,
-          nameDog: stateInput.nameDog,
-          idDog: stateInput.idDog,
-          date: stateInput.date,
-          notesTurn: stateInput.notesTurn,
-          Client: stateInput.Client,
-          time: stateInput.time,
-          phone: stateInput.phone,
-          Company: companySelectedMenu._id,
-          email: stateInput.email
-        })
-      );
+      const turnoData = {
+        name: stateInput.name,
+        nameDog: stateInput.nameDog,
+        idDog: stateInput.idDog,
+        date: stateInput.date,
+        notesTurn: stateInput.notesTurn,
+        time: stateInput.time,
+        phone: stateInput.phone,
+        Company: companySelectedMenu._id,
+        email: stateInput.email,
+      };
+      if (stateInput.Client) {
+        turnoData.Client = stateInput.Client;
+      }
+      if (isMedicine) {
+        turnoData.category = "medicinaGral";
+      }
+      dispatch(addTurnos(turnoData));
       MySwal.fire({
         title: "¡Turno creado correctamente!",
         icon: "success",
@@ -167,7 +178,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
             Client: "",
             time: "",
             phone: "",
-            email:""
+            email: "",
           });
         }
       });
@@ -188,36 +199,52 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
       <div>
         <Modal show={stateAddTurn} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title className="instrument-serif-regular">Agregar Turno</Modal.Title>
+            <Modal.Title className="instrument-serif-regular">
+              Agregar Turno
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
-              <Select
-                className="classSelect instrument-serif-regular"
-                placeholder="Seleccione Cliente"
-                onChange={(selected) => {
-                  handleChangeCli(selected);
-                }}
-                options={optionsListSelect}
-              />
-
-              
+              {isMedicine ? (
                 <Select
                   className="classSelect instrument-serif-regular"
-                  placeholder="Seleccione Mascota"
-                  onChange={(e) => {
-                    handleChangeDog(e);
+                  placeholder="Seleccione Paciente"
+                  onChange={(selected) => {
+                    handleChangeCliMedicine(selected);
                   }}
-                  options={optionsList}
+                  options={optionsListSelect}
                 />
-              
+              ) : (
+                <>
+                  <Select
+                    className="classSelect instrument-serif-regular"
+                    placeholder="Seleccione Cliente"
+                    onChange={(selected) => {
+                      handleChangeCli(selected);
+                    }}
+                    options={optionsListSelect}
+                  />
+
+                  <Select
+                    className="classSelect instrument-serif-regular"
+                    placeholder="Seleccione Mascota"
+                    onChange={(e) => {
+                      handleChangeDog(e);
+                    }}
+                    options={optionsList}
+                  />
+                </>
+              )}
 
               <Form.Group
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label className="instrument-serif-regular">Fecha Turno</Form.Label>
-                <Form.Control className="instrument-serif-regular"
+                <Form.Label className="instrument-serif-regular">
+                  Fecha Turno
+                </Form.Label>
+                <Form.Control
+                  className="instrument-serif-regular"
                   type="date"
                   name="date"
                   autoFocus
@@ -229,8 +256,11 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label className="instrument-serif-regular">Horario Turno</Form.Label>
-                <Form.Control className="instrument-serif-regular"
+                <Form.Label className="instrument-serif-regular">
+                  Horario Turno
+                </Form.Label>
+                <Form.Control
+                  className="instrument-serif-regular"
                   type="time"
                   name="time"
                   autoFocus
@@ -246,8 +276,15 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label lassName="text-xs" className="instrument-serif-regular">Nota Turno</Form.Label>
-                <Form.Control className="instrument-serif-regular"
+                <Form.Label
+                  lassName="text-xs"
+                  className="instrument-serif-regular"
+                >
+                  Nota Turno
+                </Form.Label>
+
+                <Form.Control
+                  className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   type="text"
@@ -266,9 +303,8 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
             </Form>
           </Modal.Body>
           <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
-            {!stateInput.date ||
-            !stateInput.time ? (
-              <Button 
+            {!stateInput.date || !stateInput.time ? (
+              <Button
                 variant="primary"
                 type="submit"
                 onClick={handleSubmit}
@@ -277,7 +313,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 Agregar Turno
               </Button>
             ) : (
-              <Button variant="primary" type="submit" onClick={handleSubmit} >
+              <Button variant="primary" type="submit" onClick={handleSubmit}>
                 Agregar Turno
               </Button>
             )}

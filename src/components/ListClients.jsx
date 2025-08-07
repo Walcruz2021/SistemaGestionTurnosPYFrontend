@@ -44,7 +44,7 @@ function ListClients() {
   const [stateSearch, setSearch] = useState("");
 
   const dispatch = useDispatch();
-
+  const personCategory = useSelector((state) => state.typePerson);
   const [editClient, setEditClient] = useState(false);
   //stateInfo es el que se acciona cada vez que se selecciona un cliente
   const [stateInfo, setInfo] = useState(false);
@@ -136,7 +136,7 @@ function ListClients() {
       MySwal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Debe elegir el cliente a Editar!",
+        text: `Debe elegir el ${personCategory} a Editar!`,
       });
   }
 
@@ -147,13 +147,13 @@ function ListClients() {
       return MySwal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Debe elegir el cliente a eliminar!",
+        text: `Debe elegir el ${personCategory} a eliminar!`,
       });
     }
 
     const result = await MySwal.fire({
       title: "¿Estás seguro?",
-      text: "¡El Cliente será borrado de la base de datos!",
+      text: `¡El ${personCategory} será borrado de la base de datos!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#1ABD53",
@@ -177,8 +177,8 @@ function ListClients() {
         setInputState({ id: "" });
 
         await MySwal.fire({
-          title: "Cliente Eliminado",
-          text: "El cliente se borró correctamente.",
+          title: `${personCategory} Eliminado`,
+          text: `El ${personCategory} se borró correctamente.`,
           icon: "success",
           confirmButtonColor: "#00A0D2",
         });
@@ -190,7 +190,7 @@ function ListClients() {
           confirmButtonColor: "#00A0D2",
         });
       } else {
-        throw new Error("Error desconocido al eliminar el cliente.");
+        throw new Error(`Error desconocido al eliminar el ${personCategory}.`);
       }
     
   }
@@ -198,7 +198,7 @@ function ListClients() {
   return (
     <div>
       <div className="titGral">
-        <h1 >Listado de Clientes</h1>
+        <h1>{personCategory}:Listado</h1>
       </div>
 
       <div className="container py-3">
@@ -236,7 +236,7 @@ function ListClients() {
             className="inputBuscar instrument-serif-regular"
             type="text"
             name="search"
-            placeholder="Busque un Cliente. Ingrese sólo valores en minúsculas"
+            placeholder={`Busque un ${personCategory}. Ingrese sólo valores en minúsculas`}
             value={stateSearch}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -252,7 +252,7 @@ function ListClients() {
           <table className="table table-bordered table-hover table-white">
             <thead class="thead-light table-dark">
               <tr>
-                <th className="instrument-serif-regular">Nombre Cliente</th>
+                <th className="instrument-serif-regular">Nombre {personCategory}</th>
                 <th className="instrument-serif-regular">Contacto</th>
                 <th className="instrument-serif-regular">Domicilio</th>
                 <th className="instrument-serif-regular">Notas</th>
@@ -298,7 +298,7 @@ function ListClients() {
 
       {stateHist ? (
         <div className="container-lg table-responsive">
-          <h5 className="tituloH instrument-serif-regular">Historial del Cliente: {inputState.name}</h5>
+          <h5 className="tituloH instrument-serif-regular">Historial del {personCategory}: {inputState.name}</h5>
           <HistorialClient
             state={inputState}
             stateHist={stateHist}

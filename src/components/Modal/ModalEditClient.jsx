@@ -22,7 +22,7 @@ const ModalEditClient = ({
 }) => {
 
   const listClients = useSelector((state) => state.allClients);
-
+  const personCategory = useSelector((state) => state.typePerson);
   const dispatch = useDispatch();
   const companySelectedMenu = useSelector((state) => state.companySelected);
   const MySwal = withReactContent(Swal);
@@ -96,7 +96,7 @@ G
   
 
     MySwal.fire({
-      title: "¡Cliente Modificado Correctamente!",
+      title: `¡${personCategory} Modificado Correctamente!`,
       icon: "success",
       confirmButtonText: "Aceptar",
       confirmButtonColor: "rgb(21, 151, 67)",
@@ -118,7 +118,7 @@ G
       <div>
         <Modal show={state} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Editar Cliente</Modal.Title>
+            <Modal.Title>Editar {personCategory}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
@@ -189,7 +189,7 @@ G
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label className="instrument-serif-regular">Nota Cliente</Form.Label>
+                <Form.Label className="instrument-serif-regular">Nota {personCategory}</Form.Label>
                 <Form.Control
                 className="instrument-serif-regular"
                   as="textarea"
@@ -246,7 +246,7 @@ G
                           Save Changes
                         </Button> */}
             <Button variant="primary" type="submit" onClick={handleSumbit}>
-              Modificar Cliente
+              Modificar {personCategory}
             </Button>
           </Modal.Footer>
         </Modal>

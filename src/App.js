@@ -22,14 +22,16 @@ import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
 import {
   functionCompanySelected,
   verificationCompaniesExist,
+  isMedicine,
+  typePerson
 } from "./reducer/actions/actionsCompany.jsx";
 import {
   listenToAuthChanges,
   verificationConection,
 } from "./reducer/actions/actions.jsx";
-import { searchUser } from "./reducer/actions/actionsUser.jsx"; 
+import { searchUser } from "./reducer/actions/actionsUser.jsx";
 import { ClipLoader } from "react-spinners";
-import "./App.css"
+import "./App.css";
 const AppRoutes = () => {
   const conectionMongo = useSelector((state) => state.conectionMongo);
   const loginUser = useSelector((state) => state.user);
@@ -83,8 +85,17 @@ const AppRoutes = () => {
     if (companiesList?.companies) {
       if (!companySelected) {
         dispatch(functionCompanySelected(companiesList.companies[0]));
+
         setIsLoading(false);
         navigate("/");
+      } else {
+        if (companySelected.category==="medicinaGral") {
+          dispatch(isMedicine(true))
+          dispatch(typePerson("Paciente")) 
+        }else{
+           dispatch(isMedicine(false))
+          dispatch(typePerson("Cliente")) 
+        }
       }
     } else if (loginUser?.emailVerified) {
       navigate("/addCompany");
@@ -147,4 +158,3 @@ function App() {
 }
 
 export default App;
-

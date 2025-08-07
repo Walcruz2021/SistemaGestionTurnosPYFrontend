@@ -4,6 +4,8 @@ export const FUNCTION_COMPANY_SELECTED = "FUNCTION_COMPANY_SELECTED";
 export const RESET_COMPANY_SELECTED = "RESET_COMPANY_SELECTED";
 export const ADD_COMPANY = "ADD_COMPANY";
 export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
+export const IS_CATEGORY_MEDICINE = "IS_CATEGORY_MEDICINE";
+export const TYPE_PERSON_CATEGORY="TYPE_PERSON_CATEGORY";
 
 export const resetCompanySelected = () => ({
   type: RESET_COMPANY_SELECTED,
@@ -41,5 +43,19 @@ export function addCompany(payload) {
     } catch (error) {
       console.log(error);
     }
+  };
+}
+
+export function isMedicine(payload) {
+  return {
+    type: IS_CATEGORY_MEDICINE,
+    payload,
+  };
+}
+
+export function typePerson(payload) {
+  return {
+    type: TYPE_PERSON_CATEGORY,
+    payload,
   };
 }

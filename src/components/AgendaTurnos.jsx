@@ -3,10 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import Dashboard from "./Dashboard";
-import {
-  getTurnos,
-} from "../reducer/actions/actionsTurnos";
-
+import { getTurnos } from "../reducer/actions/actionsTurnos";
 
 import {
   verificationCompaniesExist,
@@ -24,10 +21,7 @@ function AgendaTurnos() {
   const [listClients, setlistClients] = useState(null);
   const [error, setError] = useState(null);
   const loginUser = useSelector((state) => state.user);
-  const companies = useSelector((state) => state.arrayCompanies.data);
-  const [companyFirst, setCompanyFirst] = useState({});
   const companySelectedMenu = useSelector((state) => state.companySelected);
-  const listAllClients = useSelector((state) => state.allClients);
 
 
   useEffect(() => {
@@ -43,6 +37,7 @@ function AgendaTurnos() {
             getTurnos(companySelectedMenu._id)
           );
           setDb(turnosResponse.payload); // Asegúrate de que turnosResponse.data contenga la información correcta
+
         } catch (err) {
           setError(err);
         } finally {
