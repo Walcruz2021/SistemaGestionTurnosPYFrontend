@@ -19,7 +19,7 @@ const ModalEditTurn = ({
   nameClient,
   nameDog,
 }) => {
-  console.log(nameClient)
+
   const isMedicine = useSelector((state) => state.categoryMedicine);
   const personCategory = useSelector((state) => state.typePerson);
   const listClientsAll = useSelector((state) => state.allClients);
@@ -347,11 +347,13 @@ const ModalEditTurn = ({
             </Form>
           </Modal.Body>
           <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
-            {/* <Button variant="primary" type="submit" onClick={handleClose}>
-                          Save Changes
-                        </Button> */}
+           { newData && newData.Client && newData.idDog ? (
+              <Button variant="primary" type="submit" onClick={handleSumbit}>
+                Editar Turno
+              </Button>
+            ):null}
             {}
-            {
+            {/* {
               isMedicine ? newData && newData.Client? (
               <Button variant="primary" type="submit" onClick={handleSumbit}>
                 Editar Turno
@@ -371,7 +373,7 @@ const ModalEditTurn = ({
                 Editar Turno
               </Button>
             ):null
-            }
+            } */}
           </Modal.Footer>
         </Modal>
       </div>

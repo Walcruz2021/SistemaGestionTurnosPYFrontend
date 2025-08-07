@@ -17,7 +17,6 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const listClientsAll = useSelector((state) => state.allClients);
   const isMedicine = useSelector((state) => state.categoryMedicine);
-  console.log(isMedicine)
   const personCategory = useSelector((state) => state.typePerson);
   const [stateCategory, setStateCategory] = useState("Cliente");
   const handleClose = () => setStateAddTurn(!stateAddTurn);
