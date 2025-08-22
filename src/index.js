@@ -15,6 +15,7 @@
 // // Learn more about service workers: https://bit.ly/CRA-PWA
 //  serviceWorker.unregister();
 
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -30,14 +31,12 @@ root.render(
   <Provider store={store}>
     {/* PersistGate is config for use redux-persist*/}
     <PersistGate loading={null} persistor={persistor}>
-        <ModalAddTurn onClick={mockFn} />
       <React.StrictMode>
         <App />
       </React.StrictMode>
     </PersistGate>
   </Provider>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

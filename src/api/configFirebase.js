@@ -1,9 +1,15 @@
-// src/api/configFirebase.js
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+//Import the functions you need from the SDKs you need
+import { initializeApp } from "@firebase/app";
+import { getAnalytics } from "@firebase/analytics";
+import { getAuth } from "@firebase/auth";
+import firebase from '@firebase/app';
+import '@firebase/auth';
 
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY_FIREBASE,
   authDomain: "loginpymesya.firebaseapp.com",
@@ -11,19 +17,11 @@ const firebaseConfig = {
   storageBucket: "loginpymesya.appspot.com",
   messagingSenderId: "1073503569961",
   appId: "1:1073503569961:web:10e9096363a62dfa447438",
-  measurementId: "G-5159Y4G9ZQ",
+  measurementId: "G-5159Y4G9ZQ"
 };
 
-// ⚠️ Esto evita que Firebase se inicialice en tests
-const isTestEnv = process.env.JEST_WORKER_ID !== undefined;
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const auth=getAuth(app)
 
-let app, auth, db, storage;
-
-if (!isTestEnv) {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  storage = getStorage(app);
-}
-
-export { auth, db, storage };
+const analytics = getAnalytics(app);
