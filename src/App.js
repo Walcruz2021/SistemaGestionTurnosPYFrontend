@@ -32,6 +32,7 @@ import {
 import { searchUser } from "./reducer/actions/actionsUser.jsx";
 import { ClipLoader } from "react-spinners";
 import "./App.css";
+
 const AppRoutes = () => {
   const conectionMongo = useSelector((state) => state.conectionMongo);
   const loginUser = useSelector((state) => state.user);

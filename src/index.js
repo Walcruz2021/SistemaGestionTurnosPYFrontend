@@ -30,6 +30,7 @@ root.render(
   <Provider store={store}>
     {/* PersistGate is config for use redux-persist*/}
     <PersistGate loading={null} persistor={persistor}>
+        <ModalAddTurn onClick={mockFn} />
       <React.StrictMode>
         <App />
       </React.StrictMode>

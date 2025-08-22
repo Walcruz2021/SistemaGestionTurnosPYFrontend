@@ -33,7 +33,7 @@ import { asignedVentas } from "../../reducer/actions/actionsVentas";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
-import "./Modal.css";
+
 
 // recibira los valores de lo parametros desde donde se lo invoque
 // en este archivo de Modal recibira unos de estos 17 parametros desde donde se lo invoque
