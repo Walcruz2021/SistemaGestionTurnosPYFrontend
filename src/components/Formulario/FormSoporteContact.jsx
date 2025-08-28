@@ -67,7 +67,7 @@ const FormSoporteContact = () => {
           <p className="text-center">FORMULARIO DE CONTACTO</p>
 
           <label className="mb-2" htmlFor="email">
-            Email
+           * Email
           </label>
           <ValidationError prefix="Email" field="email" errors={state.errors} />
 
@@ -77,11 +77,11 @@ const FormSoporteContact = () => {
             id="email"
             type="email"
             name="email"
-            maxLength="400"
+            maxLength="35"
             value={loginUser.email}
           />
 
-          <label className="form-label">Ingrese su Comentario</label>
+          <label className="form-label" htmlFor="message">* Ingrese su Comentario</label>
 
           <MDBTextArea
             className="small"

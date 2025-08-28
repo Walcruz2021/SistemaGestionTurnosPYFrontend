@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.css";
-import { addDog} from "../../reducer/actions/actionsDog";
+import { addDog } from "../../reducer/actions/actionsDog";
 import { getClients } from "../../reducer/actions/actionsClients";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -28,11 +28,11 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
 
   useEffect(() => {
     if (!listClients) {
-      if(companySelectedMenu){
+      if (companySelectedMenu) {
         dispatch(getClients(companySelectedMenu._id));
       }
     }
-  },[listClients,dispatch]);
+  }, [listClients, dispatch]);
 
   const handleClose = () => {
     setStateAddDog(!stateAddDog);
@@ -84,7 +84,6 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
   }
 
   const MySwal = withReactContent(Swal);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -163,15 +162,24 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
     <>
       <Modal show={stateAddDog} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="instrument-serif-regular">Agregar Mascota</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">
+            Agregar Mascota
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-1">
               <Form.Group className="mt-2">
-                <Form.Label className="instrument-serif-regular">Seleccione Cliente</Form.Label>
+                <Form.Label
+                  htmlFor="cliente-select"
+                  className="instrument-serif-regular"
+                >
+                  Seleccione Cliente
+                </Form.Label>
                 <Select
-                className="instrument-serif-regular"
+                  inputId="cliente-select"
+                  inputProps={{ "data-testid": "cliente-select" }}
+                  className="instrument-serif-regular"
                   placeholder="Seleccione Cliente"
                   onChange={(e) => {
                     handleChangeCli(e);
@@ -180,20 +188,19 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 />
               </Form.Group>
 
-              {/* <Form.Group className="mt-2">
-              
-                <Select
-                  placeholder="Seleccione Raza"
-                  onChange={(e) => {
-                    handleChangeRaza(e);
-                  }}
-                  options={selectRazaArray}
-                />
-              </Form.Group> */}
+              <Form.Label
+                htmlFor="tam-select"
+                className="instrument-serif-regular"
+              >
+                Seleccione Tamaño
+              </Form.Label>
 
               <Form.Group className="mt-2">
                 {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
-                <Select className="instrument-serif-regular"
+                <Select
+                  className="instrument-serif-regular"
+                  inputId="tam-select"
+                  inputProps={{ "data-testid": "tam-select" }}
                   placeholder="Seleccione Tamaño"
                   onChange={(e) => {
                     handleChangeSize(e);
@@ -201,16 +208,16 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                   options={selectTamArray}
                 />
               </Form.Group>
-
-              {/* <Form.Text className="textoError" muted>
-                  Puedes ingresar hasta 15 caracteres.
-                </Form.Text> */}
             </Form.Group>
 
-            <Form.Group className="mt-2">
-              <Form.Label lassName="text-xs" className="instrument-serif-regular">(*) Nombre Mascota</Form.Label>
+            <Form.Group className="mt-2" controlId="modalNamePet">
+              <Form.Label
+                className="instrument-serif-regular"
+              >
+                (*) Nombre Mascota
+              </Form.Label>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 type="text"
                 placeholder="Nombre de Mascota"
                 name="nameDog"
@@ -221,10 +228,13 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 required
               />
             </Form.Group>
-            <Form.Group className="mt-2">
-              <Form.Label className="instrument-serif-regular">Nota Mascota</Form.Label>
+
+            <Form.Group className="mt-2" controlId="modalNotePet">
+              <Form.Label className="instrument-serif-regular">
+                Nota Mascota
+              </Form.Label>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 as="textarea"
                 rows={3}
                 name="notaP"
@@ -232,15 +242,13 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 maxLength={100}
                 value={stateValue.notaP}
                 onChange={handleChange}
-                required
               />
             </Form.Group>
           </Form>
 
-            <div className="text-danger msgAlertInput mt-2 instrument-serif-regular">
-              (*) Valores Obligatorios
-            </div>  
-
+          <div className="text-danger msgAlertInput mt-2 instrument-serif-regular">
+            (*) Valores Obligatorios
+          </div>
         </Modal.Body>
         <Modal.Footer className="mt-2 pt-1 pb-1 instrument-serif-regular">
           {!stateValue.idClient ||
@@ -248,7 +256,6 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
           // !stateValue.raza ||
           !stateValue.tamaño ? (
             <Button
-           
               variant="primary"
               type="submit"
               onClick={handleSumbit}
@@ -257,7 +264,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
               Agregar Mascota
             </Button>
           ) : (
-            <Button variant="primary" type="submit" onClick={handleSumbit} >
+            <Button variant="primary" type="submit" onClick={handleSumbit}>
               Agregar Mascota
             </Button>
           )}

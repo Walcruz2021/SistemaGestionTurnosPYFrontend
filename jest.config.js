@@ -1,22 +1,4 @@
-// export default {
-//   testEnvironment: "jsdom",
-//   transform: {
-//     "^.+\\.(js|jsx)$": "babel-jest",
-//   },
-//   moduleNameMapper: {
-//     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
-//   },
-//   transformIgnorePatterns: ["node_modules/(?!axios/)"],
-//   verbose:true
-// };
 
-// module.exports= {
-//   collectCoverage: true,
-//   collectCoverageFrom: ["src/**/*.{js,jsx}"],
-//   coverageDirectory: "coverage",
-//   testEnvironment: "jsdom",
-//   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-// };
 
 /** @type {import('jest').Config} */
 // jest.config.js
@@ -41,5 +23,6 @@ module.exports = {
       "<rootDir>/__mocks__/sweetalert2-react-content.js",
     "^src/api/configFirebase$": "<rootDir>/src/__mocks__/configFirebase.js",
   },
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  //setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
 };

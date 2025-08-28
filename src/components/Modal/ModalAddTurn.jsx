@@ -237,7 +237,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
 
               <Form.Group
                 className="mb-1"
-                controlId="exampleForm.ControlInput1"
+                controlId="formTurnDate"
               >
                 <Form.Label className="instrument-serif-regular">
                   Fecha Turno
@@ -254,7 +254,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 />
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group controlId="formTurnTime">
                 <Form.Label className="instrument-serif-regular">
                   Horario Turno
                 </Form.Label>
@@ -276,7 +276,6 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label
-                  lassName="text-xs"
                   className="instrument-serif-regular"
                 >
                   Nota Turno

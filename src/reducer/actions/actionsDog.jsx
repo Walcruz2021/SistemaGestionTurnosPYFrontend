@@ -5,7 +5,7 @@ export const UPDATE_DOG = "UPDATE_DOG";
 export const ADD_DOG = "ADD_DOG";
 export const SEARCH_VTA_CLIENT="SEARCH_VTA_CLIENT"
 export function addDog(payload, idClient) {
-  // console.log(id,"action")
+  console.log(payload,"action")
   return async function (dispatch) {
     try {
       const newDog = await axios.post(

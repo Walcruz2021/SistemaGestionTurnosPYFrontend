@@ -105,6 +105,7 @@ const FormAddCompany = () => {
 
         <MDBInput
           className="small"
+          data-testid="empresa-input"
           wrapperClass="mb-2"
           id="form1"
           type="text"
@@ -119,6 +120,7 @@ const FormAddCompany = () => {
         <MDBInput
           className="small"
           wrapperClass="mb-2"
+          data-testid="domicilio-input"
           id="form1"
           type="text"
           name="address"
@@ -131,6 +133,7 @@ const FormAddCompany = () => {
 
         <MDBInput
           className="small"
+          data-testid="cuit-input"
           wrapperClass="mb-2"
           id="form1"
           type="text"
@@ -144,7 +147,6 @@ const FormAddCompany = () => {
               cuit: value,
             }));
           }}
-  
         />
 
         <div className="d-flex justify-content-between w-100">
@@ -169,9 +171,6 @@ const FormAddCompany = () => {
             />
             Veterinaria y Peluqueria
           </label>
-
-
-
         </div>
 
         <div className="text-danger msgAlertInput">* Valores Obligatorios</div>

@@ -246,6 +246,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                         <button
                           className="btn"
+                          data-testid="btn-eliminar"
                           onClick={(e) =>
                             handleDelete(e, {
                               idTurn: turn._id,
