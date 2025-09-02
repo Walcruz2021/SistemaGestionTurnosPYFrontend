@@ -16,19 +16,19 @@ import { AiOutlineMedicineBox } from "react-icons/ai";
 import { CgNotes } from "react-icons/cg";
 import { MdOutlineBalance } from "react-icons/md";
 
-const ModalAddFicha = ({
-  state,
-  setState,
-  stateNewFicha,
-  setStateNewFicha,
-}) => {
+const ModalAddFicha = ({ openState, setOpenState, stateDataFicha }) => {
   const companySelectedMenu = useSelector((state) => state.companySelected);
 
   const dispatch = useDispatch();
 
   const [stateCategory, setStateCategory] = useState("Cliente");
 
-  const [newDataFicha, setNewDataFicha] = useState();
+  const [newDataFicha, setNewDataFicha] = useState({
+    receta: "",
+    vacunas: "",
+    tratamiento: "",
+    peso: "",
+  });
 
   useEffect(() => {
     if (
@@ -41,21 +41,21 @@ const ModalAddFicha = ({
   }, [companySelectedMenu, dispatch]);
 
   useEffect(() => {
-    if (stateNewFicha) {
-      setNewDataFicha(stateNewFicha);
+    if (openState) {
+      setNewDataFicha(stateDataFicha);
     }
-  }, [stateNewFicha]);
+  }, [openState]);
 
   const MySwal = withReactContent(Swal);
 
   const handleClose = () => {
-    setState(!state);
+    setOpenState(!openState);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setStateNewFicha((prevState) => ({
+    setNewDataFicha((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -87,76 +87,90 @@ const ModalAddFicha = ({
 
   return (
     <>
-      <Modal show={state} onHide={handleClose}>
+      <Modal show={openState} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="instrument-serif-regular">Adherir Ficha</Modal.Title>
+          <Modal.Title className="instrument-serif-regular">
+            Adherir Ficha
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-1" controlId="modalReceta">
               <div className=" mb-1 mt-1">
-                <CgNotes size={28} /> <Form.Label className="instrument-serif-regular">Receta Otorgada</Form.Label>
+                <CgNotes size={28} />
+                <Form.Label className="instrument-serif-regular">
+                  Receta Otorgada
+                </Form.Label>
               </div>
 
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 as="textarea"
                 rows={2}
                 name="receta"
                 autoFocus
                 maxLength={100}
-                value={stateNewFicha ? stateNewFicha.receta : null}
+                value={newDataFicha ? newDataFicha.receta : ""}
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-1" controlId="modalVacunas">
               <div className="mb-1 mt-1">
                 <TbVaccine size={28} />{" "}
-                <Form.Label className="instrument-serif-regular">Vacunas Aplicadas</Form.Label>
+                <Form.Label
+                  className="instrument-serif-regular"
+                  htmlFor="modalVacunas"
+                >
+                  Vacunas Aplicadas
+                </Form.Label>
               </div>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 as="textarea"
                 rows={2}
                 name="vacunas"
                 autoFocus
                 maxLength={100}
-                value={stateNewFicha ? stateNewFicha.vacunas : null}
+                value={newDataFicha ? newDataFicha.vacunas : null}
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-1" controlId="modalTratamiento">
               <div className="mb-1 mt-1">
-                <AiOutlineMedicineBox size={28}/>{" "}
-                <Form.Label className="instrument-serif-regular">Tratamiento</Form.Label>
+                <AiOutlineMedicineBox size={28} />{" "}
+                <Form.Label className="instrument-serif-regular">
+                  Tratamiento
+                </Form.Label>
               </div>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 as="textarea"
                 rows={2}
                 name="tratamiento"
                 autoFocus
                 maxLength={100}
-                value={stateNewFicha ? stateNewFicha.tratamiento : null}
+                value={newDataFicha ? newDataFicha.tratamiento : null}
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
               <div className="mb-1 mt-1">
                 <MdOutlineBalance size={28} />{" "}
-                <Form.Label className="instrument-serif-regular">Peso</Form.Label>
+                <Form.Label className="instrument-serif-regular">
+                  Peso
+                </Form.Label>
               </div>
               <Form.Control
-              className="instrument-serif-regular"
+                className="instrument-serif-regular"
                 name="peso"
                 type="text"
                 autoFocus
-                maxLength={100}
-                value={stateNewFicha ? stateNewFicha.peso : null}
+                maxLength={3}
+                value={newDataFicha ? newDataFicha.peso : ""}
                 onChange={(e) => {
-                  // Solo permitir números y máximo 10 caracteres
+                  // Solo permitir números y máximo 3 caracteres
                   const value = e.target.value.replace(/\D/g, "").slice(0, 3);
-                  setStateNewFicha((prevState) => ({
+                  setNewDataFicha((prevState) => ({
                     ...prevState,
                     peso: value,
                   }));
@@ -166,7 +180,12 @@ const ModalAddFicha = ({
           </Form>
         </Modal.Body>
         <Modal.Footer className="mt-0 pt-1 pb-1">
-          <Button variant="primary" type="submit" onClick={handleSumbit} className="instrument-serif-regular">
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSumbit}
+            className="instrument-serif-regular"
+          >
             Agregar Ficha
           </Button>
         </Modal.Footer>

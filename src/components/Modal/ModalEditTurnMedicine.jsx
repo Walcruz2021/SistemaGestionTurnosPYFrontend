@@ -11,13 +11,12 @@ import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
 
-const ModalEditTurn = ({
+const ModalEditTurnMedicine = ({
   booleanClose,
   setBooleanClose,
   stateDataEdit,
   setStateDataEdit,
   nameClient,
-  nameDog,
 }) => {
   const isMedicine = useSelector((state) => state.categoryMedicine);
   const personCategory = useSelector((state) => state.typePerson);
@@ -102,8 +101,8 @@ const ModalEditTurn = ({
     }));
   };
 
-  const handleSubmit = (e) => {
-    if (newData.date < getTodayDate()) {
+  const handleSumbit = (e) => {
+  if (newData.date < getTodayDate()) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -178,7 +177,7 @@ const ModalEditTurn = ({
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
-              {!nameClient || !nameDog ? (
+              {!nameClient ? (
                 <>
                   <Select
                     className="classSelect instrument-serif-regular"
@@ -188,14 +187,6 @@ const ModalEditTurn = ({
                       handleChangeCli(selected);
                     }}
                     options={optionsListSelect}
-                  />
-                  <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Mascota"
-                    onChange={(e) => {
-                      handleChangeDog(e);
-                    }}
-                    options={optionsList}
                   />
                 </>
               ) : (
@@ -211,28 +202,17 @@ const ModalEditTurn = ({
                       value={nameClient}
                     />
                   </Form.Group>
-                  <Form.Group
-                    className="mb-1"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label
-                      lassName="text-xs"
-                      className="instrument-serif-regular"
-                    >
-                      Mascota
-                    </Form.Label>
-                    <Form.Control
-                      className="instrument-serif-regular"
-                      type="text"
-                      // placeholder="Pepe Argento"
-                      value={nameDog}
-                    />
-                  </Form.Group>
                 </>
               )}
 
-              <Form.Group className="mb-1">
-                <Form.Label className="instrument-serif-regular">
+              <Form.Group
+                className="mb-1"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label
+                  lassName="text-xs"
+                  className="instrument-serif-regular"
+                >
                   Nota de Turno
                 </Form.Label>
                 <Form.Control
@@ -244,16 +224,21 @@ const ModalEditTurn = ({
                   name="notesTurn"
                   autoFocus
                   maxLength={120}
-                  value={stateDataEdit ? stateDataEdit.notesTurn : null}
+                  value={stateDataEdit ? stateDataEdit.notesTurn : ""}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
 
-              <Form.Group controlId="formTurnTime">
-                <Form.Label className="instrument-serif-regular">
+              <Form.Group>
+                <Form.Label
+                  className="instrument-serif-regular"
+                  htmlFor="horario-turno"
+                >
                   Horario Turno
                 </Form.Label>
                 <Form.Control
+                  id="horario-turno"
                   className="instrument-serif-regular"
                   type="time"
                   name="time"
@@ -265,18 +250,22 @@ const ModalEditTurn = ({
                 />
               </Form.Group>
 
-              <Form.Group className="mb-1" controlId="formTurnDate">
-                <Form.Label className="instrument-serif-regular">
+              <Form.Group>
+                <Form.Label
+                  className="instrument-serif-regular"
+                  htmlFor="fecha-turno"
+                >
                   Fecha Turno
                 </Form.Label>
                 <Form.Control
+                  id="fecha-turno"
                   className="instrument-serif-regular"
                   type="date"
                   name="date"
                   autoFocus
                   min={getTodayDate()}
                   maxLength={100}
-                  value={stateDataEdit ? stateDataEdit.date : ""}
+                  value={stateDataEdit ? stateDataEdit.date : null}
                   onChange={handleChange}
                   required
                 />
@@ -317,8 +306,8 @@ const ModalEditTurn = ({
             <Button
               variant="primary"
               type="submit"
-              onClick={handleSubmit}
-              disabled={!stateDataEdit?.date || !stateDataEdit?.time} // ✅ siempre depende de los dos campos
+              onClick={handleSumbit}
+              disabled={!stateDataEdit?.date || !stateDataEdit?.time}
             >
               Editar Turno
             </Button>
@@ -329,4 +318,4 @@ const ModalEditTurn = ({
   );
 };
 
-export default ModalEditTurn;
+export default ModalEditTurnMedicine;

@@ -9,6 +9,11 @@ const mockStore = configureStore([]);
 
 describe("ModalAddTurn", () => {
   let store;
+
+  jest.mock("sweetalert2", () => ({
+    fire: jest.fn(),
+  }));
+
   beforeEach(() => {
     store = mockStore({
       companySelected: { _id: "123", category: "pelu" },

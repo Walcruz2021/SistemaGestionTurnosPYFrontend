@@ -18,6 +18,7 @@ import {
   updateTurno,
 } from "../reducer/actions/actionsTurnos";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
+import ModalEditTurnMedicine from "../components/Modal/ModalEditTurnMedicine";
 import ModalDescription from "./Modal/ModalDescription";
 import ModalBoostrap from "react-bootstrap/Modal";
 import "../../src/App.css";
@@ -33,7 +34,8 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const personCategory = useSelector((state) => state.typePerson);
   const [newVentas, setNewVentas] = useState(false);
   const [booleanClose, setBooleanClose] = useState(false);
-  const [stateCargaFich, setStateCargaFich] = useState(false);
+  const [booleanCloseMedicine, setBooleanCloseMedicine] = useState(false);
+  const [openCargaFich, setOpenCargaFich] = useState(false);
   const [stateDataEdit, setStateDataEdit] = useState();
   const [stateNewFicha, setStateNewFicha] = useState();
   const [stateNewVta, setStateNewVta] = useState();
@@ -84,9 +86,14 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
     setStateDataEdit(turn); //data of turn selected
   }
 
+  function handleEditMedicine(e, turn) {
+    setBooleanCloseMedicine(!booleanCloseMedicine); //display the modal ModalEdit
+    setStateDataEdit(turn); //data of turn selected
+  }
+
   function handleCargaFicha(e, turn) {
     setStateNewFicha(turn);
-    setStateCargaFich(!stateCargaFich); //display the modal ModalEdit
+    setOpenCargaFich(!openCargaFich); //display the modal ModalEdit
   }
 
   function handleVentas(e, turn) {
@@ -199,7 +206,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                       {isMedicine && turn.name ? (
                         turn.name
                       ) : !turn.name ? (
-                        <span className="text-danger">Paciente NO Asignado</span>
+                        <span className="text-danger">
+                          Paciente NO Asignado
+                        </span>
                       ) : turn.nameDog ? (
                         turn.nameDog
                       ) : (
@@ -237,12 +246,22 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                         )}
 
                         {/* handleEditTurn permite editar en especifico */}
-                        <button
-                          className="btn"
-                          onClick={(e) => handleEditTurn(e, turn)}
-                        >
-                          <FontAwesomeIcon icon={faPenSquare} size="lg" />
-                        </button>
+
+                        {isMedicine ? (
+                          <button
+                            className="btn"
+                            onClick={(e) => handleEditMedicine(e, turn)}
+                          >
+                            <FontAwesomeIcon icon={faPenSquare} size="lg" />
+                          </button>
+                        ) : (
+                          <button
+                            className="btn"
+                            onClick={(e) => handleEditTurn(e, turn)}
+                          >
+                            <FontAwesomeIcon icon={faPenSquare} size="lg" />
+                          </button>
+                        )}
 
                         <button
                           className="btn"
@@ -266,6 +285,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                           <button
                             className="btn"
                             onClick={(e) => handleCargaFicha(e, turn)}
+                            aria-label="AddFicha"
                           >
                             <FaFileAlt size="22" />
                           </button>
@@ -308,11 +328,18 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
           nameDog={stateDataEdit && stateDataEdit.nameDog}
         />
 
+        <ModalEditTurnMedicine
+          booleanCloseMedicine={booleanCloseMedicine}
+          setBooleanCloseMedicine={setBooleanCloseMedicine}
+          stateDataEdit={stateDataEdit}
+          setStateDataEdit={setStateDataEdit}
+          nameClient={stateDataEdit && stateDataEdit.name}
+        />
+
         <ModalAddFicha
-          state={stateCargaFich}
-          setState={setStateCargaFich}
-          stateNewFicha={stateNewFicha}
-          setStateNewFicha={setStateNewFicha}
+          openState={openCargaFich}
+          setOpenState={setOpenCargaFich}
+          stateDataFicha={stateNewFicha}
         />
 
         <ModalAddVtas

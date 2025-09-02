@@ -156,7 +156,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-1" controlId="modalTipoServ">
               <Form.Label className="instrument-serif-regular">
                 Tipo de Servicio
               </Form.Label>
@@ -172,6 +172,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                 onChange={handleChange}
               />
             </Form.Group>
+
             <div>
               <Form.Check
                 type="checkbox"
@@ -179,14 +180,15 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                 label="Efectivo"
                 onChange={() => handleCheckChange("Efectivo")}
                 className="mt-2 instrument-serif-regular"
+                
               />
               {visibleCheckE && (
                 <>
                   <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="Efectivo"
                     name="efectivo"
-                    maxLength={30}
+                    maxLength={10}
                     required
                     className="mt-2 instrument-serif-regular"
                     value={stateValue.efectivo}
@@ -194,10 +196,10 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                       // Solo permitir números y máximo 10 caracteres
                       const value = e.target.value
                         .replace(/\D/g, "")
-                        .slice(0, 15);
+                        .slice(0, 10);
                       setStateValue((prevState) => ({
                         ...prevState,
-                        efectivo: Number(value),
+                        efectivo: value,
                       }));
                     }}
                   />
@@ -214,10 +216,10 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
               {visibleCheckB && (
                 <>
                   <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="Transferencia"
                     name="transferencia"
-                    maxLength={30}
+                    maxLength={10}
                     required
                     className="mt-2 instrument-serif-regular"
                     value={stateValue.transferencia}
@@ -225,10 +227,10 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                       // Solo permitir números y máximo 10 caracteres
                       const value = e.target.value
                         .replace(/\D/g, "")
-                        .slice(0, 15);
+                        .slice(0, 10);
                       setStateValue((prevState) => ({
                         ...prevState,
-                        transferencia: Number(value),
+                        transferencia: value,
                       }));
                     }}
                   />
@@ -245,10 +247,10 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
               {visibleCheckT && (
                 <>
                   <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="Tarjeta"
                     name="tarjeta"
-                    maxLength={30}
+                    maxLength={10}
                     required
                     className="mt-2 mb-2 instrument-serif-regular"
                     value={stateValue.tarjeta}
@@ -256,10 +258,10 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                       // Solo permitir números y máximo 10 caracteres
                       const value = e.target.value
                         .replace(/\D/g, "")
-                        .slice(0, 15);
+                        .slice(0, 10);
                       setStateValue((prevState) => ({
                         ...prevState,
-                        tarjeta: Number(value),
+                        tarjeta: value,
                       }));
                     }}
                   />
