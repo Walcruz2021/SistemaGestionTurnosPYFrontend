@@ -235,12 +235,9 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 </>
               )}
 
-              <Form.Group
-                className="mb-1"
-                controlId="formTurnDate"
-              >
+              <Form.Group className="mb-1" controlId="formTurnDate">
                 <Form.Label className="instrument-serif-regular">
-                  Fecha Turno
+                  (*) Fecha Turno
                 </Form.Label>
                 <Form.Control
                   className="instrument-serif-regular"
@@ -256,7 +253,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
 
               <Form.Group controlId="formTurnTime">
                 <Form.Label className="instrument-serif-regular">
-                  Horario Turno
+                  (*) Horario Turno
                 </Form.Label>
                 <Form.Control
                   className="instrument-serif-regular"
@@ -275,9 +272,7 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 className="mb-1"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label
-                  className="instrument-serif-regular"
-                >
+                <Form.Label className="instrument-serif-regular">
                   Nota Turno
                 </Form.Label>
 
@@ -299,6 +294,9 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
                 </Form.Text> */}
               </Form.Group>
             </Form>
+            <div className="text-danger msgAlertInput mt-2  instrument-serif-regular">
+              (*) Valores Obligatorios
+            </div>
           </Modal.Body>
           <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
             {!stateInput.date || !stateInput.time ? (

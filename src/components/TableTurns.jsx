@@ -212,9 +212,10 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                       ) : turn.nameDog ? (
                         turn.nameDog
                       ) : (
-                        <span className="text-danger">Cliente NO Asignado</span>
+                        <span className="text-danger">Paciente NO Asignado</span>
                       )}
                     </td>
+
                     <td className="instrument-serif-regular">
                       {convertDateFormat(turn.date)} - {convertDay(turn.date)}
                     </td>
@@ -290,7 +291,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                             <FaFileAlt size="22" />
                           </button>
                         ) : !turn.nameDog ? (
-                          <button className="btn">
+                          <button className="btn" disabled aria-label="AddFicha">
                             <FaFileAlt size="22" color="red" />
                           </button>
                         ) : null}

@@ -171,16 +171,32 @@ const FormGastosVar = () => {
                       <Form.Control
                         type="number"
                         placeholder="Efectivo"
-                        maxLength={30}
                         required
+                        maxLength={10}
                         min="0"
+                        className="mt-2"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -205,14 +221,30 @@ const FormGastosVar = () => {
                         placeholder="Transferencia"
                         maxLength={30}
                         required
+                        className="mt-2"
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -231,6 +263,7 @@ const FormGastosVar = () => {
                     name="tarjeta"
                     control={control}
                     defaultValue={0}
+                    className="mt-2 mb-2"
                     render={({ field }) => (
                       <Form.Control
                         type="number"
@@ -239,12 +272,27 @@ const FormGastosVar = () => {
                         required
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2 mb-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -261,7 +309,7 @@ const FormGastosVar = () => {
                       as="textarea"
                       rows={3}
                       type="text"
-                      maxLength="70"
+                      maxLength="80"
                       placeholder="* Ingrese Descripcion del Gasto"
                       {...field}
                     />

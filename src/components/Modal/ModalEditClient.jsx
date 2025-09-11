@@ -20,7 +20,6 @@ const ModalEditClient = ({
   notesCli: initialNotesCli,
   email: initialEmail,
 }) => {
-
   const listClients = useSelector((state) => state.allClients);
   const personCategory = useSelector((state) => state.typePerson);
   const dispatch = useDispatch();
@@ -30,14 +29,14 @@ const ModalEditClient = ({
   const handleClose = () => setState(!state);
   const [emailError, setEmailError] = useState("");
   const [validactionEmail, setValidactionEmail] = useState(false);
-  
+
   const [stateValue, setStateValue] = useState({
-    idClient: "" || initialIdClient,
-    name: "" || initialName,
-    phone: "" || initialPhone,
-    address: "" || initialAddress,
-    notesCli: "" || initialNotesCli,
-    email: "" || initialEmail,
+    idClient: initialIdClient || "",
+    name: initialName || "",
+    phone: initialPhone || "",
+    address: initialAddress || "",
+    notesCli: initialNotesCli || "",
+    email: initialEmail || "",
   });
   const [stateEmail, setStateEmail] = useState({
     email: "",
@@ -88,12 +87,12 @@ const ModalEditClient = ({
           phone: stateValue.phone,
           address: stateValue.address,
           notesCli: stateValue.notesCli,
-          email: validactionEmail&&stateEmail ? stateEmail.email : initialEmail,
+          email:
+            validactionEmail && stateEmail ? stateEmail.email : initialEmail,
         },
         stateValue.idClient
       )
     );
-  
 
     MySwal.fire({
       title: `¡${personCategory} Modificado Correctamente!`,
@@ -122,18 +121,17 @@ const ModalEditClient = ({
           </Modal.Header>
           <Modal.Body className="pt-1 pb-1">
             <Form>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label className="text-xs instrument-serif-regular">Nombre y Apellido</Form.Label>
+              <Form.Group className="mb-1" controlId="labelNameApellido">
+                <Form.Label className="text-xs instrument-serif-regular">
+                  (*) Nombre y Apellido
+                </Form.Label>
                 <Form.Control
-                className="instrument-serif-regular"
+                  className="instrument-serif-regular"
                   type="text"
                   placeholder="Pepe Argento"
                   name="name"
                   autoFocus
-                  maxLength={30}
+                  maxLength={25}
                   value={stateValue.name}
                   onChange={handleChange}
                   required
@@ -142,21 +140,20 @@ const ModalEditClient = ({
                   Puedes ingresar hasta 15 caracteres.
                 </Form.Text> */}
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label className="instrument-serif-regular">Teléfono Contacto</Form.Label>
+              <Form.Group className="mb-1" controlId="labelPhonePet">
+                <Form.Label className="instrument-serif-regular">
+                  (*) Teléfono Contacto
+                </Form.Label>
                 <Form.Control
-                className="instrument-serif-regular"
-                  type="number"
+                  className="instrument-serif-regular"
+                  type="text"
                   placeholder="3876153799"
                   name="phone"
                   autoFocus
                   maxLength={15}
                   value={stateValue.phone}
                   onChange={(e) => {
-                    // Solo permitir números y máximo 10 caracteres
+                    // Solo permitir números y máximo 15 caracteres
                     const value = e.target.value
                       .replace(/\D/g, "")
                       .slice(0, 15);
@@ -168,13 +165,12 @@ const ModalEditClient = ({
                   required
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label className="instrument-serif-regular">Domicilio</Form.Label>
+              <Form.Group className="mb-1" controlId="labelAddress">
+                <Form.Label className="instrument-serif-regular">
+                  (*) Domicilio
+                </Form.Label>
                 <Form.Control
-                className="instrument-serif-regular"
+                  className="instrument-serif-regular"
                   type="text"
                   placeholder="Dean Funes 1235"
                   name="address"
@@ -185,33 +181,30 @@ const ModalEditClient = ({
                   required
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label className="instrument-serif-regular">Nota {personCategory}</Form.Label>
+              <Form.Group className="mb-1" controlId="labelNote">
+                <Form.Label className="instrument-serif-regular">
+                  Nota {personCategory}
+                </Form.Label>
                 <Form.Control
-                className="instrument-serif-regular"
+                  className="instrument-serif-regular"
                   as="textarea"
                   rows={3}
                   name="notesCli"
                   autoFocus
-                  maxLength={100}
+                  maxLength={120}
                   value={stateValue.notesCli}
                   onChange={handleChange}
-                  required
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label className="instrument-serif-regular">Email</Form.Label>
+              <Form.Group className="mb-1" controlId="labelEmail">
+                <Form.Label className="instrument-serif-regular">
+                  Email
+                </Form.Label>
                 <Form.Control
-                className="instrument-serif-regular"
+                  className="instrument-serif-regular"
                   name="email"
                   autoFocus
-                  maxLength={100}
+                  maxLength={40}
                   value={stateValue.email}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -236,16 +229,26 @@ const ModalEditClient = ({
                   }}
                 />
                 {emailError && (
-                  <div className="text-danger small mt-1 instrument-serif-regular">{emailError}</div>
+                  <div className="text-danger small mt-1 instrument-serif-regular">
+                    {emailError}
+                  </div>
                 )}
               </Form.Group>
             </Form>
+            <div className="text-danger msgAlertInput mt-2  instrument-serif-regular">
+              (*) Valores Obligatorios
+            </div>
           </Modal.Body>
+
           <Modal.Footer className="mt-0 pt-1 pb-1 instrument-serif-regular">
-            {/* <Button variant="primary" type="submit" onClick={handleClose}>
-                          Save Changes
-                        </Button> */}
-            <Button variant="primary" type="submit" onClick={handleSumbit}>
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={handleSumbit}
+              disabled={
+                !stateValue.name || !stateValue.phone || !stateValue.address
+              }
+            >
               Modificar {personCategory}
             </Button>
           </Modal.Footer>

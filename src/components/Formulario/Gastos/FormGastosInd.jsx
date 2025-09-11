@@ -46,7 +46,7 @@ const FormGastosInd = () => {
   ];
 
   const onSubmit = (data) => {
-  const [day, month, year] = data.date.split("/");
+    const [day, month, year] = data.date.split("/");
     const fechaFormat = new Date(`${year}-${month}-${day}`); // yyyy-mm-dd
     const año = fechaFormat.getFullYear();
     const mes = fechaFormat.getMonth() + 1;
@@ -173,7 +173,7 @@ const FormGastosInd = () => {
                       <Form.Control
                         type="number"
                         placeholder="Efectivo"
-                        maxLength={30}
+                        maxLength={10}
                         min="0"
                         required
                         className="mt-2"
@@ -181,8 +181,24 @@ const FormGastosInd = () => {
                           if (e.key === "-" || e.key === "e") {
                             e.preventDefault();
                           }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
+                            e.preventDefault();
+                          }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -210,11 +226,27 @@ const FormGastosInd = () => {
                         className="mt-2"
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -242,11 +274,27 @@ const FormGastosInd = () => {
                         className="mt-2 mb-2"
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -263,7 +311,7 @@ const FormGastosInd = () => {
                       as="textarea"
                       rows={3}
                       type="text"
-                      maxLength="70"
+                      maxLength="80"
                       placeholder="* Ingrese Descripcion del Gasto"
                       {...field}
                     />

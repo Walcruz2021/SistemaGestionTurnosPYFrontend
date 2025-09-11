@@ -165,7 +165,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
 
               <Form.Group className="mb-1" controlId="labelNote">
                 <Form.Label className="instrument-serif-regular">
-                  (*) Nota {personCategory}
+                  Nota {personCategory}
                 </Form.Label>
                 <Form.Control
                   className="instrument-serif-regular"
@@ -176,7 +176,6 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   maxLength={120}
                   value={stateValue.notesCli}
                   onChange={handleChange}
-                  required
                 />
               </Form.Group>
 
@@ -216,8 +215,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                         </Button> */}
             {!stateValue.name ||
             !stateValue.phone ||
-            !stateValue.address ||
-            !stateValue.notesCli ? (
+            !stateValue.address ? (
               <Button
                 variant="primary"
                 type="submit"

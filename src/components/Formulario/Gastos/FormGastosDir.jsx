@@ -176,16 +176,32 @@ const FormGastosDir = () => {
                       <Form.Control
                         type="number"
                         placeholder="Efectivo"
-                        maxLength={30}
                         required
+                        maxLength={10}
                         min="0"
                         className="mt-2"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -208,16 +224,32 @@ const FormGastosDir = () => {
                       <Form.Control
                         type="number"
                         placeholder="Transferencia"
-                        maxLength={30}
-                        min="0"
+                        maxLength={10}
                         required
                         className="mt-2"
+                        min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -240,23 +272,42 @@ const FormGastosDir = () => {
                       <Form.Control
                         type="number"
                         placeholder="Tarjeta"
-                        maxLength={30}
-                        min="0"
+                        maxLength={10}
                         required
                         className="mt-2 mb-2"
+                        min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
                 )}
               </div>
 
-              <Form.Group className="mb-3 pt-2 instrument-serif-regular">
+              <Form.Group
+                className="mb-3 pt-2 instrument-serif-regular"
+                id="formDescription"
+              >
                 <Controller
                   name="description"
                   control={control}

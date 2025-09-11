@@ -168,13 +168,13 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
         </Modal.Header>
         <Modal.Body className="pt-1 pb-1">
           <Form>
-            <Form.Group className="mb-1">
-              <Form.Group className="mt-2">
+          
+              <Form.Group className="mt-2" id="selectClient">
                 <Form.Label
                   htmlFor="cliente-select"
                   className="instrument-serif-regular"
                 >
-                  Seleccione Cliente
+                  (*) Seleccione Cliente
                 </Form.Label>
                 <Select
                   inputId="cliente-select"
@@ -192,7 +192,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                 htmlFor="tam-select"
                 className="instrument-serif-regular"
               >
-                Seleccione Tamaño
+                (*) Seleccione Tamaño
               </Form.Label>
 
               <Form.Group className="mt-2">
@@ -208,7 +208,7 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
                   options={selectTamArray}
                 />
               </Form.Group>
-            </Form.Group>
+         
 
             <Form.Group className="mt-2" controlId="modalNamePet">
               <Form.Label

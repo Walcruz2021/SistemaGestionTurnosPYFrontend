@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import ModalAddDog from "../../Modal/ModalAddDog";
+import ModalEditPet from "../../Modal/ModalEditDog";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event"; //maneja interacciones con reac-select para que el test sea mas realista y menos propenso a fallar
@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 const mockStore = configureStore([]);
 
-describe("ModalAddDog", () => {
+describe("ModalEditPet", () => {
   let store;
   beforeEach(() => {
     store = mockStore({
@@ -20,7 +20,14 @@ describe("ModalAddDog", () => {
   const renderModal = () =>
     render(
       <Provider store={store}>
-        <ModalAddDog stateAddDog={true} setStateAddDog={jest.fn()} />
+        <ModalEditPet
+          state={true}
+          setStateModal={jest.fn()}
+          idDog="1"
+          notaP="es malo"
+          nameDog="Firulais"
+          tamaño="grande"
+        />
       </Provider>
     );
 
@@ -30,47 +37,39 @@ describe("ModalAddDog", () => {
     expect(namePet).toHaveAttribute("maxLength", "20");
   });
 
-  test("El campo Nota Mascota no es obligatorio", () => {
-    renderModal();
-    const notaPet = screen.getByLabelText("Nota Mascota");
-    expect(notaPet).not.toHaveAttribute("required");
-  });
-
-  test("El botón 'Agregar Mascota' se habilita solo si los campos obligatorios están completos", async () => {
-    renderModal();
-
-    const user = userEvent.setup();
-
-    const nameInput = screen.getByLabelText("(*) Nombre Mascota");
-    const clientSelect = screen.getByLabelText("(*) Seleccione Cliente");
-    const sizeSelect = screen.getByLabelText("(*) Seleccione Tamaño");
-
-    const button = screen.getByRole("button", { name: /Agregar Mascota/i });
-
-    // Inicialmente, el botón está deshabilitado
-    expect(button).toBeDisabled();
-
-    // 👉 Simular escribir nombre
-    await user.type(nameInput, "Firulais");
-    expect(button).toBeDisabled();
-
-    // 👉 Abrir y seleccionar cliente
-    await user.click(clientSelect); // abre el menú
-    await user.click(screen.getByText("Cliente Test"));
-    expect(button).toBeDisabled();
-
-    // 👉 Abrir y seleccionar tamaño
-    await user.click(sizeSelect); // abre el menú
-    await user.click(screen.getByText("grande"));
-
-    // Ahora el botón debería estar habilitado
-    expect(button).not.toBeDisabled();
-  });
-
   test("Campo Nota Mascota tiene maxLength de 100 caracteres", () => {
     renderModal();
     const notaPet = screen.getByLabelText("Nota Mascota");
     expect(notaPet).toHaveAttribute("maxLength", "100");
+  });
+
+  test("El botón Editar Mascota está habilitado al inicio si los campos vienen completos", () => {
+    renderModal({
+      idDog: "1",
+      notaP: "es malo",
+      nameDog: "Firulais",
+      tamaño: "grande",
+    });
+
+    const button = screen.getByRole("button", { name: /Modificar/i });
+    expect(button).not.toBeDisabled();
+  });
+
+  test("El botón Editar  se deshabilita si se borran los campos obligatorios", () => {
+    renderModal({
+      idDog: "1",
+      notaP: "es malo",
+      nameDog: "Firulais",
+      tamaño: "grande",
+    });
+
+    const button = screen.getByRole("button", { name: /Modificar/i });
+    expect(button).not.toBeDisabled();
+
+    const namePet = screen.getByLabelText("(*) Nombre Mascota");
+    fireEvent.change(namePet, { target: { value: "" } });
+
+    expect(button).toBeDisabled();
   });
 
   // test("Llama a onSubmit con el formato correcto al agregar mascota", () => {

@@ -45,7 +45,7 @@ const FormGastosFij = () => {
   ];
 
   const onSubmit = (data) => {
-     const [day, month, year] = data.date.split("/");
+    const [day, month, year] = data.date.split("/");
     const fechaFormat = new Date(`${year}-${month}-${day}`); // yyyy-mm-dd
     const año = fechaFormat.getFullYear();
     const mes = fechaFormat.getMonth() + 1;
@@ -123,7 +123,8 @@ const FormGastosFij = () => {
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-6">
             <Form className="px-3" onSubmit={handleSubmit(onSubmit)}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="categoryGasto">
+                
                 <Controller
                   name="category"
                   control={control}
@@ -172,16 +173,32 @@ const FormGastosFij = () => {
                       <Form.Control
                         type="number"
                         placeholder="Efectivo"
-                        maxLength={30}
                         required
+                        maxLength={10}
                         min="0"
+                        className="mt-2"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -204,16 +221,32 @@ const FormGastosFij = () => {
                       <Form.Control
                         type="number"
                         placeholder="Transferencia"
-                        maxLength={30}
+                        maxLength={10}
                         required
+                        className="mt-2"
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -236,16 +269,32 @@ const FormGastosFij = () => {
                       <Form.Control
                         type="number"
                         placeholder="Tarjeta"
-                        maxLength={30}
+                        maxLength={10}
                         required
+                        className="mt-2 mb-2"
                         min="0"
                         onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e") {
+                          if (e.key === "-" || e.key === "e" || e.key === "+") {
+                            e.preventDefault();
+                          }
+                          // Evita escribir si ya hay 10 caracteres
+                          if (
+                            e.target.value &&
+                            e.target.value.length >= 10 &&
+                            // Permite borrar
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            !isNaN(Number(e.key))
+                          ) {
                             e.preventDefault();
                           }
                         }}
-                        className="mt-2 mb-2"
-                        {...field}
+                        onChange={(e) => {
+                          // Limita el valor a 10 caracteres
+                          if (e.target.value.length <= 10) {
+                            field.onChange(e);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -263,7 +312,7 @@ const FormGastosFij = () => {
                       rows={3}
                       type="text"
                       placeholder="* Ingrese Descripcion del Gasto"
-                      maxLength="70"
+                      maxLength="80"
                       {...field}
                     />
                   )}
