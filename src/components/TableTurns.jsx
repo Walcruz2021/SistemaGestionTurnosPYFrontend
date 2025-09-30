@@ -30,7 +30,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const listTurnos = useSelector((state) => state.allTurnos);
 
   const [stateCategory, setStateCategory] = useState("Cliente"); //no borrar es el que determina si se vera icono de ficha si es veterinaria
+
   const isMedicine = useSelector((state) => state.categoryMedicine);
+
   const personCategory = useSelector((state) => state.typePerson);
   const [newVentas, setNewVentas] = useState(false);
   const [booleanClose, setBooleanClose] = useState(false);
@@ -290,11 +292,12 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                           >
                             <FaFileAlt size="22" />
                           </button>
-                        ) : !turn.nameDog ? (
+                        ) : stateCategory === "peluAndVet" && !turn.nameDog ? (
                           <button className="btn" disabled aria-label="AddFicha">
                             <FaFileAlt size="22" color="red" />
                           </button>
                         ) : null}
+                        
                       </div>
                     </td>
 

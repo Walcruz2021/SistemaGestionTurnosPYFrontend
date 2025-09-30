@@ -19,7 +19,7 @@ import Select from "react-select";
 import { useForm, ValidationError } from "@formspree/react";
 
 /**
- * This form is used for send comentaries or report errors when user is logued 
+ * This form is used for send comentaries or report errors when user is logued
  */
 const FormSoporteContact = () => {
   const MySwal = withReactContent(Swal);
@@ -30,7 +30,6 @@ const FormSoporteContact = () => {
     message: "",
   });
 
- 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStateValue((prev) => ({
@@ -39,7 +38,6 @@ const FormSoporteContact = () => {
     }));
   };
 
-  
   const [state, handleSubmit] = useForm("mdknyzby");
 
   if (state.succeeded) {
@@ -67,7 +65,7 @@ const FormSoporteContact = () => {
           <p className="text-center">FORMULARIO DE CONTACTO</p>
 
           <label className="mb-2" htmlFor="email">
-           * Email
+            * Email
           </label>
           <ValidationError prefix="Email" field="email" errors={state.errors} />
 
@@ -81,7 +79,9 @@ const FormSoporteContact = () => {
             value={loginUser.email}
           />
 
-          <label className="form-label" htmlFor="message">* Ingrese su Comentario</label>
+          <label className="form-label" htmlFor="message">
+            * Ingrese su Comentario
+          </label>
 
           <MDBTextArea
             className="small"
@@ -98,15 +98,9 @@ const FormSoporteContact = () => {
             * Valores Obligatorios
           </div>
           <div className="text-center pt-2 mb-5 pb-1">
-            {stateValue.message ? (
-              <button className="btn btn-primary" type="submit">
-                Enviar
-              </button>
-            ) : (
-              <button className="btn btn-primary" type="submit" disabled>
-                Enviar
-              </button>
-            )}
+            <button className="btn btn-primary" type="submit" disabled={!stateValue.message  || stateValue.message.trim() === "" ? true : false}>
+              Enviar
+            </button>
           </div>
         </form>
       </div>

@@ -101,47 +101,58 @@ const FormAddCompany = () => {
 
         <p className="text-center">ADHERIR UNA EMPRESA</p>
 
-        <label className="form-label">Nombre de la Empresa *</label>
+        <label className="form-label" htmlFor="idNameComp">
+          (*) Nombre de la Empresa
+        </label>
 
         <MDBInput
           className="small"
           data-testid="empresa-input"
           wrapperClass="mb-2"
-          id="form1"
+          id="idNameComp"
           type="text"
           name="nameCompany"
           value={stateValue.nameCompany}
           onChange={handleChange}
-          maxLength="25"
+          minLength="2"
+          maxLength="30"
         />
 
-        <label className="form-label">Domicilio *</label>
+        <label className="form-label" htmlFor="idAddress">
+          (*) Domicilio
+        </label>
 
         <MDBInput
           className="small"
           wrapperClass="mb-2"
           data-testid="domicilio-input"
-          id="form1"
+          id="idAddress"
           type="text"
           name="address"
           value={stateValue.address}
           onChange={handleChange}
+          minLength="2"
           maxLength="30"
         />
 
-        <label className="form-label">Cuit *</label>
+        <label className="form-label" htmlFor="idCuit">
+          {" "}
+          (*) Cuit
+        </label>
 
         <MDBInput
           className="small"
           data-testid="cuit-input"
           wrapperClass="mb-2"
-          id="form1"
+          id="idCuit"
           type="text"
           name="cuit"
           value={stateValue.cuit}
+          minLength="2"
+          maxLength="15"
           onChange={(e) => {
-            // Solo permitir números y máximo 10 caracteres
-            const value = e.target.value.replace(/\D/g, "").slice(0, 12);
+            // Solo permitir números y máximo 15 caracteres
+            const value = e.target.value.replace(/\D/g, "").slice(0, 15);
             setStateValue((prevState) => ({
               ...prevState,
               cuit: value,
@@ -173,29 +184,25 @@ const FormAddCompany = () => {
           </label>
         </div>
 
-        <div className="text-danger msgAlertInput">* Valores Obligatorios</div>
+        <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
         <div className="text-center pt-2 mb-5 pb-1">
-          {!stateValue.nameCompany ||
-          !stateValue.address ||
-          !stateValue.cuit ||
-          !selectedOption ? (
+          {
             <button
               className="btn btn-primary"
               type="submit"
               onClick={handleSumbit}
-              disabled
+              disabled={
+                !stateValue.nameCompany.trim() ||
+                !stateValue.address.trim() ||
+                !stateValue.cuit.trim() ||
+                !selectedOption
+                  ? true
+                  : false
+              }
             >
               Adherir Empresa
             </button>
-          ) : (
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={handleSumbit}
-            >
-              Adherir Empresa
-            </button>
-          )}
+          }
         </div>
       </div>
     </div>

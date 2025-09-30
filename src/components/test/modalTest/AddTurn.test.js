@@ -30,7 +30,7 @@ describe("ModalAddTurn", () => {
       </Provider>
     );
 
-  test("El campo Nota Turno no es obligatorio", () => {
+  test("El Boton se habilita con valores obligatorios (fecha y hora)", () => {
     renderModal();
 
     // completar los campos obligatorios: fecha y hora
@@ -38,14 +38,15 @@ describe("ModalAddTurn", () => {
     const timeInput = screen.getByLabelText(/Horario Turno/i);
 
     fireEvent.change(dateInput, { target: { value: "2099-12-31" } });
+    const button = screen.getByRole("button", { name: /Agregar Turno/i });
+    expect(button).toBeDisabled();
     fireEvent.change(timeInput, { target: { value: "10:00" } });
 
     // el botón debería estar habilitado aunque Nota Turno esté vacío
-    const button = screen.getByRole("button", { name: /Agregar Turno/i });
     expect(button).not.toBeDisabled();
   });
 
-  test("Fecha y Hora son campos obligatorios", () => {
+  test("Fecha y Hora son campos obligatorios. El boton se habilita con estos campos completos", () => {
     renderModal();
 
     const dateInput = screen.getByLabelText(/Fecha Turno/i);

@@ -32,6 +32,7 @@ import { PiDog } from "react-icons/pi";
 
 function FormLoginNew({ autUser }) {
   const loginUser = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function FormLoginNew({ autUser }) {
     email: "",
     password: "",
   });
+
   const [show, setShow] = useState(false);
 
   const loginGoogle = async () => {
@@ -63,6 +65,7 @@ function FormLoginNew({ autUser }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setStateValue((prevState) => ({
       ...prevState,
       [name]: value,
@@ -78,82 +81,95 @@ function FormLoginNew({ autUser }) {
     return response;
   };
 
-  const handleSumbit = async (e) => {
-    if (stateValue.email.trim() === "" || stateValue.password.trim() === "") {
+const handleSumbit = async (e) => {
+  e.preventDefault();
+
+  if (stateValue.email.trim() === "" || stateValue.password.trim() === "") {
+    MySwal.fire({
+      title: "Error Login",
+      text: "Campos vacíos",
+      icon: "warning",
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "rgb(255, 140, 0)",
+    });
+    return;
+  }
+
+  try {
+    // 🔑 Login
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      stateValue.email,
+      stateValue.password
+    );
+
+    const user = userCredential.user;
+ 
+
+    // ⚠️ Verifico el correo
+    if (!user.emailVerified) {
+      await auth.signOut(); // lo sacamos
+      MySwal.fire({
+        title: "¡Correo electrónico no verificado!",
+        text: "Por favor, verifica tu correo electrónico para continuar.",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(255, 140, 0)",
+      });
+      return;
+    }
+
+    
+    // ✅ Si está verificado, sigue el flujo normal
+    MySwal.fire({
+      title: "¡Usuario Logueado Correctamente!",
+      icon: "success",
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "rgb(21, 151, 67)",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        dispatch(listenToAuthChanges());
+        const resVerification = await verificationCompanies(user.email);
+
+        if (resVerification.payload.status === 200) {
+          navigate("/");
+        } else if (resVerification.payload.status === 204) {
+          navigate("/addCompany");
+        }
+      }
+    });
+
+  } catch (error) {
+    console.log("Error:", error.code, error.message);
+
+    if (error.code === "auth/invalid-credential") {
       MySwal.fire({
         title: "Error Login",
-        text: "Usuario o Contraseña Incorrecto",
+        text: "Usuario o Contraseña Incorrecta",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "rgb(255, 140, 0)",
+      });
+    } else if (error.code === "auth/invalid-email") {
+      MySwal.fire({
+        title: "Error Login",
+        text: "Debe ingresar un Email válido",
         icon: "warning",
         confirmButtonText: "Aceptar",
         confirmButtonColor: "rgb(255, 140, 0)",
       });
     } else {
-      try {
-
-        await signInWithEmailAndPassword(
-          auth,
-          stateValue.email,
-          stateValue.password
-        );
-        if (auth.currentUser.emailVerified) {
-          MySwal.fire({
-            title: "¡Usuario Logueado Correctamente!",
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(21, 151, 67)",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              dispatch(listenToAuthChanges());
-              const resVerification = await verificationCompanies(
-                auth.currentUser.email
-              );
-              if (resVerification.payload.status === 200) {
-                navigate("/");
-              } else if (resVerification.payload.status === 204) {
-                navigate("/addCompany");
-              }
-            }
-          });
-        } else {
-          MySwal.fire({
-            title: "¡Correo electrónico no verificado!",
-            text: "Por favor, verifica tu correo electrónico para continuar.",
-            icon: "warning",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(255, 140, 0)",
-          });
-          //resetForm();
-        }
-      } catch (error) {
-        if (error.code === "auth/invalid-credential") {
-          MySwal.fire({
-            title: "Error Login",
-            text: "Usuario o Contraseña Incorrecto",
-            icon: "warning",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(255, 140, 0)",
-          });
-        } else if (error.code === "auth/invalid-email") {
-          MySwal.fire({
-            title: "Error Login",
-            text: "Debe Ingresar un Email",
-            icon: "warning",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(255, 140, 0)",
-          });
-        } else {
-          console.log(error.message);
-        }
-      }
+      MySwal.fire({
+        title: "Error Login",
+        text: "Ha ocurrido un error inesperado",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     }
-  };
+  }
+};
 
-  // const resetForm = () => {
-  //   setStateValue({
-  //     email: "",
-  //     password: "",
-  //   });
-  // };
+
 
   const RedirectLink = () => {
     navigate("/register");
@@ -177,63 +193,67 @@ function FormLoginNew({ autUser }) {
 
                   <p className="text-center">LOGIN AL SISTEMA</p>
                   <div className="login-form">
-                    <div className="group">
-                      <label className="form-label pt-3 pb-1">
-                        <FaUser /> CORREO ELECTRONICO
-                      </label>
-                      <MDBInput
-                        className="form-input mb-2"
-                        id="form1"
-                        type="email"
-                        name="email"
-                        value={stateValue.email}
-                        onChange={handleChange}
-                        required
-                      />
-                      <label className="form-label pt-3 pb-1 .anton-sc-regular">
-                        <RiLockPasswordFill /> PASSWORD
-                      </label>
-                      <MDBInput
-                        className="form-input mb-2"
-                        id="form2"
-                        type="password"
-                        name="password"
-                        value={stateValue.password}
-                        onChange={handleChange}
-                        required
-                      />
-                      <div className="pt-2">
-                        {!stateValue.email || !stateValue.password ? (
-                          <button
-                            className="btn btn-outline-dark form-button"
-                            type="submit"
-                            onClick={handleSumbit}
-                            disabled
-                          >
-                            Inicio de Sesión
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-outline-dark form-button"
-                            type="submit"
-                            onClick={handleSumbit}
-                          >
-                            Inicio de Sesión
-                          </button>
-                        )}
-                      </div>
+                    <form onSubmit={handleSumbit}>
+                      <div className="group">
+                        <label className="form-label pt-3 pb-1">
+                          <FaUser /> CORREO ELECTRONICO
+                        </label>
+                        <MDBInput
+                          className="form-input mb-2"
+                          id="form1"
+                          type="email"
+                          name="email"
+                          value={stateValue.email}
+                          placeholder="Ingrese su Email"
+                          onChange={handleChange}
+                          maxLength={30}
+                          required
+                        />
+                        <label className="form-label pt-3 pb-1 .anton-sc-regular">
+                          <RiLockPasswordFill /> PASSWORD
+                        </label>
+                        <MDBInput
+                          className="form-input mb-2"
+                          id="form2"
+                          type="password"
+                          name="password"
+                          value={stateValue.password}
+                          placeholder="Ingrese Contraseña"
+                          maxLength={20}
+                          onChange={handleChange}
+                          required
+                        />
+                        <div className="pt-2">
+                          {!stateValue.email || !stateValue.password ? (
+                            <button
+                              className="btn btn-outline-dark form-button"
+                              type="submit"
+                              disabled
+                            >
+                              Inicio de Sesión
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-outline-dark form-button"
+                              type="submit"
+                            >
+                              Inicio de Sesión
+                            </button>
+                          )}
+                        </div>
 
-                      <ModalRestPassword show={show} setShow={setShow} />
-                      <div className="d-flex flex-row align-items-center justify-content-center pb-4 pt-3 mt-3">
-                        <p className="mb-0 px-2">¿No tiene una cuenta?</p>
-                        <button
-                          className="btn btn-outline-secondary btn-custom"
-                          onClick={RedirectLink}
-                        >
-                          Registrarse
-                        </button>
+                        <ModalRestPassword show={show} setShow={setShow} />
+                        <div className="d-flex flex-row align-items-center justify-content-center pb-4 pt-3 mt-3">
+                          <p className="mb-0 px-2">¿No tiene una cuenta?</p>
+                          <button
+                            className="btn btn-outline-secondary btn-custom"
+                            onClick={RedirectLink}
+                          >
+                            Registrarse
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </div>

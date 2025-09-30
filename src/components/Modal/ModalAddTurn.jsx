@@ -19,7 +19,20 @@ const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const isMedicine = useSelector((state) => state.categoryMedicine);
   const personCategory = useSelector((state) => state.typePerson);
   const [stateCategory, setStateCategory] = useState("Cliente");
-  const handleClose = () => setStateAddTurn(!stateAddTurn);
+  const handleClose = () => {
+    setStateAddTurn(!stateAddTurn);
+    setStateInput({
+      name: "",
+      nameDog: "",
+      idDog: "",
+      date: "",
+      notesTurn: "",
+      Client: "",
+      time: "",
+      phone: "",
+      email: "",
+    });
+  };
   const [stateInput, setStateInput] = useState({
     date: "",
     time: "",

@@ -75,7 +75,7 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
     // })
   }
 
-  const DogDelete = (idDog, index) => {
+  const DogDelete = async (idDog, index) => {
     MySwal.fire({
       title: "¿Estas seguro?",
       text: "¡El Perro será borrado del cliente!",
@@ -85,21 +85,31 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí",
       cancelButtonText: "Cancelar",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(deleteDog(idDog));
-        //  pruebaConsole(state.state.arrayDogs[index]);
-        const array = stateDog.splice(index, 1);
-        setDog({
-          array,
-        });
+        const response = await dispatch(deleteDog(idDog));
+     
+        if (response?.status === 200) {
+          const array = stateDog.splice(index, 1);
+          setDog({
+            array,
+          });
 
-        MySwal.fire({
-          title: "Perro Eliminado",
-          text: "El Perro fue eliminado",
-          icon: "success",
-          confirmButtonColor: "#00A0D2",
-        });
+          MySwal.fire({
+            title: "Perro Eliminado",
+            text: "El Perro fue eliminado",
+            icon: "success",
+            confirmButtonColor: "#00A0D2",
+          });
+        } else if (response?.status === 204) {
+ 
+          await MySwal.fire({
+            icon: "info",
+            title: "No se puede eliminar",
+            text: "No se pude eliminar. Hay turnos pendientes.",
+            confirmButtonColor: "#00A0D2",
+          });
+        }
       }
     });
   };
@@ -177,7 +187,7 @@ export default function HistorialClient({ state, stateHist, setStateHist }) {
           </div>
         </>
       ) : null}
-      
+
       {!isMedicine ? (
         <>
           <div className="contenedorTit">

@@ -105,7 +105,7 @@ const FormGastosVar = () => {
   const isFormValid = () => {
     return (
       allValues.date &&
-      allValues.description &&
+      allValues.description.trim() &&
       (allValues.efectivo > 0 ||
         allValues.transferencia > 0 ||
         allValues.tarjeta > 0) &&

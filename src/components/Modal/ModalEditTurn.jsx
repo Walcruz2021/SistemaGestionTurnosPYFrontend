@@ -231,9 +231,9 @@ const ModalEditTurn = ({
                 </>
               )}
 
-              <Form.Group className="mb-1">
+              <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
                 <Form.Label className="instrument-serif-regular">
-                  Nota de Turno
+                  Nota Turno
                 </Form.Label>
                 <Form.Control
                   className="instrument-serif-regular"
@@ -243,8 +243,8 @@ const ModalEditTurn = ({
                   // placeholder="Pepe Argento"
                   name="notesTurn"
                   autoFocus
-                  maxLength={120}
-                  value={stateDataEdit ? stateDataEdit.notesTurn : null}
+                  maxLength="120"
+                  value={stateDataEdit ? stateDataEdit.notesTurn : ""}
                   onChange={handleChange}
                 />
               </Form.Group>

@@ -44,7 +44,7 @@ test("Campo Email tiene maxLength de 35 caracteres", () => {
   expect(emailInput).toHaveAttribute("maxLength", "35");
 });
 
-test("EL boton se debe activar cuando los dos campos Email y Comentario esten completos", async() => {
+test("EL boton se debe activar cuando los dos campos Email y Comentario esten completos", async () => {
   renderModal();
 
   const user = userEvent.setup();
@@ -56,6 +56,10 @@ test("EL boton se debe activar cuando los dos campos Email y Comentario esten co
   expect(button).toBeDisabled();
   await user.type(emailInput, "walcruz1988.21@gmail.com");
   expect(button).toBeDisabled();
+
+  await user.type(commentInput, "     ");
+  expect(button).toBeDisabled();
+
   await user.type(commentInput, "tengo un problema");
   expect(button).not.toBeDisabled();
 });

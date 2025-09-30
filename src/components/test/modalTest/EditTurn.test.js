@@ -192,4 +192,15 @@ describe("ModalEditTurn", () => {
       text: "Fecha Incorrecta",
     });
   });
+
+  test("El campo Nota Turno tiene maxlength de 120 caracteres", () => {
+    renderModal();
+    const notesInput = screen.getByLabelText(/Nota Turno/i);
+
+    fireEvent.change(notesInput, { target: { value: "a".repeat(150) } });
+
+    expect(notesInput.value.length).toBeLessThanOrEqual(120);
+
+    //expect(notesInput).toHaveAttribute("maxlength", "120"); no utilizo esta linea porque no esta leyendo ese atributo ya que value puede venir con valores nulos
+  });
 });

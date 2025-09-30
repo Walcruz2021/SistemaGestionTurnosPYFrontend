@@ -133,7 +133,7 @@ function FormRegister({ autUser }) {
           fullName: `${stateValue.firstName} ${stateValue.lastName}`,
           status: true,
           email: emailState,
-          pay:false //determinara si el cliente pago o no por el sistema
+          pay: false, //determinara si el cliente pago o no por el sistema
         };
         dispatch(addUser(newUser));
         MySwal.fire({
@@ -153,7 +153,7 @@ function FormRegister({ autUser }) {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Las contraseñas deben tener mas de 6 dígitos",
+            text: "Las contraseñas deben tener mas de 5 dígitos",
           });
         } else if (error.code === "auth/email-already-in-use") {
           Swal.fire({
@@ -187,7 +187,7 @@ function FormRegister({ autUser }) {
       ...prevState,
       firstName: newData,
     }));
-    setValidationName(newData.length > 3);
+    setValidationName(newData.length >= 3);
   };
 
   const handleChangeLastName = (event) => {
@@ -196,7 +196,7 @@ function FormRegister({ autUser }) {
       ...prevState,
       lastName: newData,
     }));
-    setValidationLastName(newData.length > 4);
+    setValidationLastName(newData.length >= 3);
   };
 
   const handleChangePassword = (event) => {
@@ -229,6 +229,10 @@ function FormRegister({ autUser }) {
     setIsInputFocusedLastName(true);
   };
 
+    const RedirectLinkContact = () => {
+    navigate("/supportForm");
+  };
+
   return (
     <div className="container py-3 mt-2">
       <div className="row justify-content-center">
@@ -242,15 +246,22 @@ function FormRegister({ autUser }) {
 
                   <p className="text-center">REGISTRO AL SISTEMA</p>
 
-                  <div className="d-flex align-items-center label-input-container">
-                    <label className="form-label">Nombre</label>
+                  <div
+                    className="d-flex align-items-center label-input-container"
+                    controlId="labelNombre"
+                  >
+                    <label className="form-label" htmlFor="firstName">
+                      (*) Nombre
+                    </label>
 
                     <MDBInput
                       className="small"
                       wrapperClass="mb-2 ms-3 w-100"
                       type="text"
+                      id="firstName"
                       name="firstName"
-                      maxLength="30"
+                      minLength={2}
+                      maxLength="20"
                       onFocus={handleFocusName}
                       onChange={handleChangeName}
                     />
@@ -258,31 +269,35 @@ function FormRegister({ autUser }) {
 
                   {!validationName && isInputFocusedName && (
                     <div className="text-danger msgAlertInput">
-                      Mayor a 3 letras
+                      Mayor a 2 letras
                     </div>
                   )}
 
                   <div className="d-flex align-items-center label-input-container">
-                    <label className="form-label">Apellido</label>
+                    <label className="form-label" htmlFor="lastName">
+                      (*) Apellido
+                    </label>
 
                     <MDBInput
                       className="small"
                       wrapperClass="mb-2 ms-3 w-100 mt-1"
                       type="text"
+                      id="lastName"
                       name="lastName"
-                      maxLength="30"
+                      minLength={2}
+                      maxLength="20"
                       onChange={handleChangeLastName}
                       onFocus={handleFocusLastName}
                     />
                   </div>
                   {!validationLastName && isInputFocusedLastName && (
                     <div className="text-danger msgAlertInput">
-                      Mayor a 4 letras
+                      Mayor a 2 letras
                     </div>
                   )}
 
                   <div className="d-flex align-items-center label-input-container">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="email">
                       <MdOutlineMailLock size="1.7rem" />
                     </label>
 
@@ -290,6 +305,8 @@ function FormRegister({ autUser }) {
                       className="small"
                       wrapperClass="mb-2 ms-3 w-100 mt-1"
                       type="email"
+                      id="email"
+                      placeHolder="Ingrese su Email"
                       name="email"
                       maxLength="50"
                       onChange={handleChangeEmail}
@@ -310,10 +327,11 @@ function FormRegister({ autUser }) {
                       wrapperClass="mb-2 ms-3 w-100 mt-1"
                       type="password"
                       name="password"
-                      maxLength="30"
+                      minLength={6}
+                      maxLength="20"
                       value={stateValue.password}
                       onChange={handleChangePassword}
-                      placeHolder="Ingrese Password"
+                      placeHolder="Password mayor 5 digitos"
                     />
                   </div>
 
@@ -326,9 +344,10 @@ function FormRegister({ autUser }) {
                       wrapperClass="mb-2 ms-3 w-100 mt-1"
                       type="password"
                       name="passwordDuplicated"
-                      maxLength="30"
+                      minLength={6}
+                      maxLength="20"
                       onChange={handleChangePasswordDuplicated}
-                      placeHolder="Ingrese Nuevamente Password"
+                      placeHolder="Ingrese de nuevo el password"
                     />
                   </div>
                   {!validationPassw && (
@@ -337,30 +356,26 @@ function FormRegister({ autUser }) {
                     </div>
                   )}
 
-                  <div>
-                    {!stateValue.firstName.trim("") ||
-                    !stateValue.lastName.trim("") ||
-                    !validationLastName ||
-                    !validationEmail ||
-                    !validationPassw ||
-                    !validationName ? (
-                      <button
-                        className="btn btn-outline-dark form-button mt-2"
-                        type="submit"
-                        onClick={handleSumbit}
-                        disabled
-                      >
-                        Registrarse
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-outline-dark form-button"
-                        type="submit"
-                        onClick={handleSumbit}
-                      >
-                        Registrarse
-                      </button>
-                    )}
+                  <div className="d-flex align-items-center label-input-container text-danger msgAlertInput">
+                    (*) Valores Obligatorios
+                  </div>
+
+                  <div className="m-2">
+                    <button
+                      className="btn btn-outline-dark form-button"
+                      type="submit"
+                      onClick={handleSumbit}
+                      disabled={
+                        !stateValue.firstName.trim("") ||
+                        !stateValue.lastName.trim("") ||
+                        !validationLastName ||
+                        !validationEmail ||
+                        !validationPassw ||
+                        !validationName
+                      }
+                    >
+                      Registrarse
+                    </button>
                   </div>
 
                   <div className="d-flex flex-row align-items-center justify-content-center pb-2 mb-1 pt-3">
@@ -409,7 +424,14 @@ function FormRegister({ autUser }) {
                   <RiExchangeDollarFill size={30} /> Completamente Gratuito
                 </ol>
 
-                <img src={supportLogin} width="100" height="100" />
+                    <button onClick={RedirectLinkContact} className="border-0">
+                  <img
+                    src={supportLogin}
+                    alt="Contact Support"
+                    width="100"
+                    height="100"
+                  />
+                </button>
               </div>
             </div>
           </div>

@@ -26,6 +26,7 @@ export function verificationConection(){
 
 export const listenToAuthChanges = () => (dispatch) => {
   auth.onAuthStateChanged((userCred) => {
+    
     if (userCred) {
       const { email, emailVerified, displayName } = userCred;
       dispatch(setUser({ email, emailVerified, displayName }));

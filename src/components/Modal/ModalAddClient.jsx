@@ -46,7 +46,6 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
     if (
       stateValue.name.trim() === "" ||
       stateValue.phone.trim() === "" ||
-      stateValue.notesCli.trim() === "" ||
       stateValue.address.trim() === ""
     ) {
       Swal.fire({
@@ -108,7 +107,7 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
                   placeholder="Pepe Argento"
                   name="name"
                   autoFocus
-                  maxLength={25}
+                  maxLength={30}
                   value={stateValue.name}
                   onChange={handleChange}
                   required
@@ -213,22 +212,16 @@ const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
             {/* <Button variant="primary" type="submit" onClick={handleClose}>
                           Save Changes
                         </Button> */}
-            {!stateValue.name ||
-            !stateValue.phone ||
-            !stateValue.address ? (
+           
               <Button
                 variant="primary"
                 type="submit"
                 onClick={handleSumbit}
-                disabled
+                disabled={!stateValue.name.trim() || !stateValue.phone.trim() || !stateValue.address.trim()?true:false}
               >
                 Agregar {personCategory}
               </Button>
-            ) : (
-              <Button variant="primary" type="submit" onClick={handleSumbit}>
-                Agregar {personCategory}
-              </Button>
-            )}
+            
           </Modal.Footer>
         </Modal>
       </div>

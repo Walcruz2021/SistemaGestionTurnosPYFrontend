@@ -62,16 +62,16 @@ const ModalAddFicha = ({ openState, setOpenState, stateDataFicha }) => {
   };
 
   const handleSumbit = () => {
-    const fecha = new Date(stateNewFicha.date);
+    const fecha = new Date(stateDataFicha.date);
     const año = fecha.getFullYear();
     const mes = fecha.getMonth() + 1;
 
     // if (!newData.time.trim() === "" || !newData.date.trim() === "") {
     //   alert("valores vacios");
     // }
-    const updatedFicha = { ...stateNewFicha, statusFile: true };
+    const updatedFicha = { ...newDataFicha, statusFile: true };
     setNewDataFicha(updatedFicha);
-    dispatch(updateTurno(updatedFicha, stateNewFicha._id));
+    dispatch(updateTurno(updatedFicha, stateDataFicha._id));
     MySwal.fire({
       title: "Ficha Guardada Correctamente!",
       icon: "success",
@@ -117,10 +117,7 @@ const ModalAddFicha = ({ openState, setOpenState, stateDataFicha }) => {
             <Form.Group className="mb-1" controlId="modalVacunas">
               <div className="mb-1 mt-1">
                 <TbVaccine size={28} />{" "}
-                <Form.Label
-                  className="instrument-serif-regular"
-                  htmlFor="modalVacunas"
-                >
+                <Form.Label className="instrument-serif-regular">
                   Vacunas Aplicadas
                 </Form.Label>
               </div>

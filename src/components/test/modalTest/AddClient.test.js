@@ -44,7 +44,7 @@ describe("ModalAddClient", () => {
   test("Campo Nombre y Apellido tiene maxLength de 25 caracteres", () => {
     renderModal();
     const nameCli = screen.getByLabelText("(*) Nombre y Apellido");
-    expect(nameCli).toHaveAttribute("maxLength", "25");
+    expect(nameCli).toHaveAttribute("maxLength", "30");
   });
 
   test("Campo Celular debe aceptar solo numeros y con cantidad maxima de 15", () => {
@@ -93,6 +93,12 @@ describe("ModalAddClient", () => {
     expect(addButton).toBeDisabled();
 
     // Completa los campos obligatorios
+    fireEvent.change(nameInput, { target: { value: "   " } });
+    fireEvent.change(phoneInput, { target: { value: "   " } });
+    fireEvent.change(addressInput, { target: { value: "     " } });
+    expect(addButton).toBeDisabled();
+
+    // Completa los campos obligatorios
     fireEvent.change(nameInput, { target: { value: "Juan Perez" } });
     fireEvent.change(phoneInput, { target: { value: "123456789" } });
     fireEvent.change(addressInput, { target: { value: "Calle Falsa 123" } });
@@ -103,50 +109,50 @@ describe("ModalAddClient", () => {
     expect(addButton).not.toBeDisabled();
   });
 
-// test("Al agregar un cliente se despacha addClient con el JSON correcto", () => {
-//   renderModal();
+  // test("Al agregar un cliente se despacha addClient con el JSON correcto", () => {
+  //   renderModal();
 
-//   // Llenamos los campos obligatorios
-//   fireEvent.change(screen.getByLabelText("(*) Nombre y Apellido"), {
-//     target: { value: "Juan Perez" },
-//   });
-//   fireEvent.change(screen.getByLabelText("(*) Teléfono Contacto"), {
-//     target: { value: "354565" },
-//   });
-//   fireEvent.change(screen.getByLabelText("(*) Domicilio"), {
-//     target: { value: "Dean Funes 24" },
-//   });
-//   fireEvent.change(screen.getByLabelText(/Nota/i), {
-//     target: { value: "Es un cliente VIP" },
-//   });
-//   fireEvent.change(screen.getByLabelText(/Email/i), {
-//     target: { value: "walcruz1988@gmail.com" },
-//   });
+  //   // Llenamos los campos obligatorios
+  //   fireEvent.change(screen.getByLabelText("(*) Nombre y Apellido"), {
+  //     target: { value: "Juan Perez" },
+  //   });
+  //   fireEvent.change(screen.getByLabelText("(*) Teléfono Contacto"), {
+  //     target: { value: "354565" },
+  //   });
+  //   fireEvent.change(screen.getByLabelText("(*) Domicilio"), {
+  //     target: { value: "Dean Funes 24" },
+  //   });
+  //   fireEvent.change(screen.getByLabelText(/Nota/i), {
+  //     target: { value: "Es un cliente VIP" },
+  //   });
+  //   fireEvent.change(screen.getByLabelText(/Email/i), {
+  //     target: { value: "walcruz1988@gmail.com" },
+  //   });
 
-//   // Verifica que el botón esté habilitado
-//   const addButton = screen.getByRole("button", { name: /Agregar/i });
-//   expect(addButton).not.toBeDisabled();
+  //   // Verifica que el botón esté habilitado
+  //   const addButton = screen.getByRole("button", { name: /Agregar/i });
+  //   expect(addButton).not.toBeDisabled();
 
-//   // Clic en Agregar
-//   fireEvent.click(addButton);
+  //   // Clic en Agregar
+  //   fireEvent.click(addButton);
 
-//   // Verificamos que se llamó addClient con el formato correcto
-//   expect(addClient).toHaveBeenCalledWith({
-//     name: "Juan Perez",
-//     phone: "354565",
-//     address: "Dean Funes 24",
-//     notesCli: "Es un cliente VIP",
-//     Company: "664550f3868e2227e45b29cd",
-//     status: true,
-//     email: "walcruz1988@gmail.com",
-//   });
+  //   // Verificamos que se llamó addClient con el formato correcto
+  //   expect(addClient).toHaveBeenCalledWith({
+  //     name: "Juan Perez",
+  //     phone: "354565",
+  //     address: "Dean Funes 24",
+  //     notesCli: "Es un cliente VIP",
+  //     Company: "664550f3868e2227e45b29cd",
+  //     status: true,
+  //     email: "walcruz1988@gmail.com",
+  //   });
 
-//   // Verifica que se llamó el Swal de éxito
-//   expect(mockMySwal.fire).toHaveBeenCalledWith(
-//     expect.objectContaining({
-//       title: expect.stringContaining("creado correctamente"),
-//       icon: "success",
-//     })
-//   );
-// });
+  //   // Verifica que se llamó el Swal de éxito
+  //   expect(mockMySwal.fire).toHaveBeenCalledWith(
+  //     expect.objectContaining({
+  //       title: expect.stringContaining("creado correctamente"),
+  //       icon: "success",
+  //     })
+  //   );
+  // });
 });
