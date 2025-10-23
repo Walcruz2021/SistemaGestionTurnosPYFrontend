@@ -3,21 +3,22 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getClients, deleteClient } from "../reducer/actions/actionsClients";
+import { getClients, deleteClient } from "../../reducer/actions/actionsClients";
 import "./ListClients.css";
-import HistorialClient from "./HistorialClient";
-import ModalAddClient from "./Modal/ModalAddClient";
+import HistorialClient from "../History/HistorialClient";
+import ModalAddClient from "../Modal/ModalAddClient";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 //import axios from "../api/axios";
-import "../css/cssGeneral.css";
-import back from "../../src/icons/back.png";
-import addClient from "../../src/icons/addClient.png";
-import deleteClientIcon from "../../src/icons/deleteClient.png";
-import editClientIcon from "../../src/icons/editClient.png";
-import ModalEditClient from "./Modal/ModalEditClient";
+import "../../css/cssGeneral.css";
+import back from "../../icons/back.png";
+import addClient from "../../icons/addClient.png";
+import deleteClientIcon from "../../icons/deleteClient.png";
+import editClientIcon from "../../icons/editClient.png";
+import ModalEditClient from "../Modal/ModalEditClient";
 const REGISTER_URL = "/createUserRolUserClient";
+import RankingClients from "../Clients/RankingClients"
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
@@ -363,6 +364,8 @@ function ListClients() {
         notesCli={inputState.notesCli}
         email={inputState.email}
       />
+
+      <RankingClients/>
     </div>
   );
 }

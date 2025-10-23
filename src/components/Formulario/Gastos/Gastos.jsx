@@ -1,10 +1,10 @@
 import { Reac, useState } from "react";
-import FormGastosVar from "../components/Formulario/Gastos/FormGastosVar";
-import FormGastosInd from "../components/Formulario/Gastos/FormGastosInd";
-import FormGastosDir from "../components/Formulario/Gastos/FormGastosDir";
+import FormGastosVar from "./FormGastosVar";
+import FormGastosInd from "./FormGastosInd";
+import FormGastosDir from "./FormGastosDir";
 import Button from "react-bootstrap/Button";
-import FormGastosFij from "../components/Formulario/Gastos/FormGastosFij";
-import gasto from "../icons/gastos.png";
+import FormGastosFij from "./FormGastosFij";
+import gasto from "../../../icons/gastos.png";
 import { Link } from "react-router-dom";
 
 const Gastos = () => {

@@ -11,7 +11,9 @@ import {
   orderVentasMonthNow,
   vtasMesandAnioxParam,
   orderVentasMonthAnioXParam,
-  resetVentasXanioandMesParam
+  resetVentasXanioandMesParam,
+  vtasxA,
+  predictionsSalesxAnio
 } from "../../reducer/actions/actionsVentas";
 import "./InformeVentas.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,14 +24,22 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import back from "../../icons/back.png";
 import infMonth from "../../icons/infMonth.png";
-import convertNum from "../../functions/convertNum"
-
+import convertArraySalesxAnio from "../../functions/convertArraySalesxAnio";
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
-
+import { FaChartBar } from "react-icons/fa";
+import convertNum from "../../functions/convertNum";
+import sumaTotalesArray from "../../functions/sumaTotalesArray";
+import {
+  faChartLine,
+  faHandHoldingDollar,
+  faCreditCardAlt,
+  faBuildingColumns,
+} from "@fortawesome/free-solid-svg-icons";
 // import { Chart } from "primereact/chart";
 
 export default function TodoList() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
+
 
   //devolucion decha actual
   let date = new Date();
@@ -41,6 +51,9 @@ export default function TodoList() {
 
   const MySwal = withReactContent(Swal);
   const ventas = useSelector((state) => state.vtasxAnioandMesNow);
+
+  const ventasXAnio = useSelector((state) => state.vtasxAnio);
+  const numberPrediction = useSelector((state) => state.dataPrediction)
 
 
   const vtasFiltered = useSelector((state) => state.vtasxAnioandMesParam);
@@ -63,12 +76,50 @@ export default function TodoList() {
   const [seletedMeses, setSelectedMeses] = useState("");
   //console.log(seletedMeses)
   const [seletedAño, setSelectedAño] = useState("");
+const [sumaTotalsState,setStateSumaTotals]=useState({
+  sumaMes: 0,
+  sumaEfectivo: 0,  
+  sumaTarjeta: 0,
+  sumaTransferencia: 0,
+});
+const [sumaTotalsState2,setStateSumaTotal2]=useState({
+  sumaMes: 0,
+  sumaEfectivo: 0,  
+  sumaTarjeta: 0,
+  sumaTransferencia: 0,
+});
 
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(vtasAnioMesNow(companySelectedMenu._id));
+      dispatch(vtasxA(companySelectedMenu._id, anio));
+
     }
   }, [dispatch, companySelectedMenu]);
+
+  useEffect(() => {
+    if (ventasXAnio && ventasXAnio.length) {
+      const predictionsSales = convertArraySalesxAnio(ventasXAnio).meses;
+      const listSales = predictionsSales.map(e => e.sumaMes);
+      if (listSales.length) {
+        dispatch(predictionsSalesxAnio(listSales));
+      }
+    }
+  }, [ventasXAnio, dispatch]);
+
+  useEffect(() => {
+    if (ventas && ventas.length) {
+       setStateSumaTotals(sumaTotalesArray(ventas))
+    }
+  }, [ventasXAnio, dispatch]);
+
+  useEffect(() => {
+    if (vtasFiltered && vtasFiltered.length) {
+      setStateSumaTotal2(sumaTotalesArray(vtasFiltered));
+    }
+  }, [vtasFiltered, dispatch]);
+
+
 
   function SearchVentas() {
     const date = "" + seletedAño + seletedMeses;
@@ -113,7 +164,7 @@ export default function TodoList() {
   //******************************************** */
 
   //**************SELECTOR AÑOS**************************/
-  let listadoAños = [2022, 2023, 2024,2025];
+  let listadoAños = [2022, 2023, 2024, 2025];
   const años = [];
 
   listadoAños.map((año) => {
@@ -192,9 +243,11 @@ export default function TodoList() {
     return info;
   }
 
-  function resetVtasXParams (){
-   dispatch(resetVentasXanioandMesParam())
+  function resetVtasXParams() {
+    dispatch(resetVentasXanioandMesParam())
   }
+
+
 
   return (
     <div>
@@ -216,7 +269,7 @@ export default function TodoList() {
               <div className="card-body mt-1">
                 <Link to="/">
                   <button className="btn btn-link">
-                    <img src={back} onClick={resetVtasXParams}/>
+                    <img src={back} onClick={resetVtasXParams} />
                   </button>
                 </Link>
               </div>
@@ -229,8 +282,8 @@ export default function TodoList() {
       <div className="titGral">
         <h2>Ventas del Mes Actual</h2>
       </div>
-      
-      {Array.isArray(ventas) && ventas.length !=0 ? (
+
+      {Array.isArray(ventas) && ventas.length != 0 ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -277,6 +330,47 @@ export default function TodoList() {
           <h2 className="alertSearch">No existen Ingresos del Mes Actual</h2>
         </div>
       )}
+
+      <div className="containerInforme">
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faChartLine} size="lg" />
+            <p>Total Vendido: {convertNum(sumaTotalsState.sumaMes)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+            <p>Total Efectivo: {convertNum(sumaTotalsState.sumaEfectivo)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+            <p>Total Banco: {convertNum(sumaTotalsState.sumaTransferencia)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+            <p>Total Tarjeta: {convertNum(sumaTotalsState.sumaTarjeta)}</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="containerInforme">
+        <div className="cardInf">
+          <div className="titGral">
+
+            <h2>Prediccion de ventas para el mes {mes + 1} </h2>
+          </div>
+          <p>
+            <FaChartBar /> {convertNum(numberPrediction)}
+          </p> 
+        </div>
+
+      </div>
 
       <div className="container-lg p-1 instrument-serif-regular">
         <Select
@@ -330,7 +424,7 @@ export default function TodoList() {
               </tr>
             </thead>
             <tbody className="instrument-serif-regular">
-            {vtasFiltered.map((vta) => (
+              {vtasFiltered.map((vta) => (
                 <tr key={vta._id}>
                   <td>{convertDateFormat(vta.date)}</td>
                   {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
@@ -352,6 +446,33 @@ export default function TodoList() {
           <h2 className="alertSearch">No se encontraron ventas</h2>
         </div>
       )}
+
+       <div className="containerInforme">
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faChartLine} size="lg" />
+            <p>Total Vendido: {convertNum(sumaTotalsState2.sumaMes)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+            <p>Total Efectivo: {convertNum(sumaTotalsState2.sumaEfectivo)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+            <p>Total Banco: {convertNum(sumaTotalsState2.sumaTransferencia)}</p>
+          </div>
+        </div>
+        <div className="cardInf">
+          <div>
+            <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+            <p>Total Tarjeta: {convertNum(sumaTotalsState2.sumaTarjeta)}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

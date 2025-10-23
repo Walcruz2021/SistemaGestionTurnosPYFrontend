@@ -5,10 +5,12 @@ export const GET_VENTAS_ID = "GET_VENTAS_ID";
 export const GET_VENTAS = "GET_VENTAS";
 export const ORDER_VENTAS = "ORDER_VENTAS";
 export const DELETE_DOG = "DELETE_DOG";
-export const ORDER_VENTAS_MONTH_NOW="ORDER_VENTAS_MONTH_NOW"
-export const ORDER_VENTAS_MONTHANIO_PARAM="ORDER_VENTAS_MONTHANIO_PARAM"
+export const ORDER_VENTAS_MONTH_NOW = "ORDER_VENTAS_MONTH_NOW"
+export const ORDER_VENTAS_MONTHANIO_PARAM = "ORDER_VENTAS_MONTHANIO_PARAM"
 export const RESET_VENTASxANIOandPARAM = "RESET_VENTASxANIOandPARAM";
 export const DELETE_TURNO = "DELETE_TURNO";
+export const PREDICTIONS_SALES_X_ANIO = "PREDICTIONS_SALES_X_ANIO"
+export const GET_RANKING_VTAS_CLIENT="GET_RANKING_VTAS_CLIENT"
 import axios from "axios";
 import host from "../../components/ruteBack/vbledeploy";
 
@@ -161,3 +163,44 @@ export function orderVentasMonthAnioXParam(payload) {
 export const resetVentasXanioandMesParam = () => ({
   type: RESET_VENTASxANIOandPARAM,
 });
+
+export function predictionsSalesxAnio(dataVtas) {
+
+  return async function (dispatch) {
+    try {
+
+      const numberPrediction = await axios.get(
+        //"http://localhost:3002/api/listVentas",
+        `${host}/api/prediccionVtasMensual`,
+        {
+          params: {
+            data: dataVtas,
+          }
+        }
+      );
+
+      return dispatch({
+        type: PREDICTIONS_SALES_X_ANIO,
+        payload: numberPrediction.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+
+export function rankingVentasByClient(idCompany) {
+  return async function (dispatch) {
+    const listVentas = await axios.get(
+      //"http://localhost:3002/api/listVentas",
+      `${host}/api/rankingVtasByClients/${idCompany}`,
+      {}
+    );
+
+    return dispatch({
+      type: GET_RANKING_VTAS_CLIENT,
+      payload: listVentas.data.ranking,
+    });
+  };
+}

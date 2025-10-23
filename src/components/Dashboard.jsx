@@ -38,7 +38,7 @@ import addPet from "../icons/addPet.png";
 import iconAddTurn from "../icons/addTurn.png";
 import iconClients from "../icons/listClients.png";
 import ModalBoostrap from "react-bootstrap/Modal";
-import TableTurns from "./TableTurns";
+import TableTurns from "./Turns/TableTurns";
 import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";

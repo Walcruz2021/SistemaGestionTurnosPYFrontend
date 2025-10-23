@@ -9,19 +9,19 @@ import {
 import { FaFileAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import ModalAddVtas from "../components/Modal/ModalAddVtas";
-import ModalAddFicha from "../components/Modal/ModalAddFicha";
+import ModalAddVtas from "../Modal/ModalAddVtas";
+import ModalAddFicha from "../Modal/ModalAddFicha";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteTurno,
   getTurnos,
   updateTurno,
-} from "../reducer/actions/actionsTurnos";
-import ModalEditTurn from "../components/Modal/ModalEditTurn";
-import ModalEditTurnMedicine from "../components/Modal/ModalEditTurnMedicine";
-import ModalDescription from "./Modal/ModalDescription";
+} from "../../reducer/actions/actionsTurnos";
+import ModalEditTurn from "../Modal/ModalEditTurn";
+import ModalEditTurnMedicine from "../Modal/ModalEditTurnMedicine";
+import ModalDescription from "../Modal/ModalDescription";
 import ModalBoostrap from "react-bootstrap/Modal";
-import "../../src/App.css";
+import "../../../src/App.css";
 //stateInfo tru or false
 const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();

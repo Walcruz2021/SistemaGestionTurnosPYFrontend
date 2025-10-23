@@ -5,12 +5,12 @@ import {
   getClients,
   deleteClient,
   updateClient,
-} from "../reducer/actions/actions";
+} from "../../reducer/actions/actions";
 
-import { deleteDog } from "../reducer/actions/actionsDog";
-import convertNum from "../functions/convertNum";
+import { deleteDog } from "../../reducer/actions/actionsDog";
+import convertNum from "../../functions/convertNum";
 import Swal from "sweetalert2";
-import ModalEditDog from "./Modal/ModalEditDog";
+import ModalEditDog from "../Modal/ModalEditDog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDog,

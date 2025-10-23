@@ -61,6 +61,8 @@ import {
   RESET_VENTASxANIOandPARAM,
   ORDER_VENTAS_MONTH_NOW,
   ORDER_VENTAS_MONTHANIO_PARAM,
+  PREDICTIONS_SALES_X_ANIO,
+  GET_RANKING_VTAS_CLIENT
 } from "./actions/actionsVentas";
 
 const initialState = {
@@ -85,6 +87,7 @@ const initialState = {
   conectionMongo: null,
   categoryMedicine: false,
   typePerson: "Cliente",
+  dataPrediction: ""
 };
 
 function rootReducer(state = initialState, action) {
@@ -265,26 +268,26 @@ function rootReducer(state = initialState, action) {
       const arrayOrder =
         action.payload === true
           ? listOrder.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
           : // descendente
-            listOrder.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+          listOrder.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
       return {
         ...state,
@@ -328,26 +331,26 @@ function rootReducer(state = initialState, action) {
       const arrayOrderVMN =
         action.payload === true
           ? listOrderVMN.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
           : // descendente
-            listOrderVMN.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+          listOrderVMN.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
       return {
         ...state,
@@ -360,26 +363,26 @@ function rootReducer(state = initialState, action) {
       const arrayOrderVAP =
         action.payload === true
           ? listOrderVAP.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
           : // descendente
-            listOrderVAP.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+          listOrderVAP.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
       return {
         ...state,
@@ -392,26 +395,26 @@ function rootReducer(state = initialState, action) {
       const arrayOrderG =
         action.payload === true
           ? listOrderG.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
           : // descendente
-            listOrderG.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+          listOrderG.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
       return {
         ...state,
@@ -424,26 +427,26 @@ function rootReducer(state = initialState, action) {
       const arrayOrderG2 =
         action.payload === true
           ? listOrderG2.sort(function (a, b) {
-              const aux1 = a.date.toLocaleLowerCase();
-              const aux2 = b.date.toLocaleLowerCase();
-              if (aux1 > aux2) {
-                return 1;
-              }
-              if (aux2 > aux1) {
-                return -1;
-              } else return 0;
-            })
+            const aux1 = a.date.toLocaleLowerCase();
+            const aux2 = b.date.toLocaleLowerCase();
+            if (aux1 > aux2) {
+              return 1;
+            }
+            if (aux2 > aux1) {
+              return -1;
+            } else return 0;
+          })
           : // descendente
-            listOrderG2.sort(function (a, b) {
-              const aux1a = a.date.toLocaleLowerCase();
-              const aux2b = b.date.toLocaleLowerCase();
-              if (aux1a > aux2b) {
-                return -1;
-              }
-              if (aux2b > aux1a) {
-                return 1;
-              } else return 0;
-            });
+          listOrderG2.sort(function (a, b) {
+            const aux1a = a.date.toLocaleLowerCase();
+            const aux2b = b.date.toLocaleLowerCase();
+            if (aux1a > aux2b) {
+              return -1;
+            }
+            if (aux2b > aux1a) {
+              return 1;
+            } else return 0;
+          });
 
       return {
         ...state,
@@ -502,6 +505,17 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         typePerson: action.payload,
+      };
+
+    case PREDICTIONS_SALES_X_ANIO:
+      return {
+        ...state,
+        dataPrediction: action.payload.prediction,
+      };
+    case GET_RANKING_VTAS_CLIENT:
+      return {
+        ...state,
+        rankingVtasByClient: action.payload,
       };
     default:
       return state;

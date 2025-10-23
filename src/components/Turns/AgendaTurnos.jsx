@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "./Message";
-import Dashboard from "./Dashboard";
-import { getTurnos } from "../reducer/actions/actionsTurnos";
+import Message from "../Message";
+import Dashboard from "../Dashboard";
+import { getTurnos } from "../../reducer/actions/actionsTurnos";
 
 import {
   verificationCompaniesExist,
   companySelected,
-} from "../reducer/actions/actionsCompany";
+} from "../../reducer/actions/actionsCompany";
 import "./AgendaTurnos.css";
-import linkBack from "./ruteBack/vbledeploy";
+import linkBack from "../ruteBack/vbledeploy";
 
 function AgendaTurnos() {
   // debugger

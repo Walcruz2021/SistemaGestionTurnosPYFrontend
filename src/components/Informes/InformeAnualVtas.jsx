@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import convertNum from "../../functions/convertNum";
+import convertArraySalesxAnio from "../../functions/convertArraySalesxAnio";
 
 function InformeAnualVtas() {
   const companySelectedMenu = useSelector((state) => state.companySelected);
@@ -55,187 +56,6 @@ function InformeAnualVtas() {
     dispatch(orderVentas(order));
   }
 
-  // useEffect(() => {
-  //   dispatch(vtasxA());
-  // });
-
-  // const tam = 0;
-  // const arrayAños = [2022];
-  // const ventasMensCopia = [];
-  // const sumaMes = [];
-  // const meses = 0;
-
-  // funcion que se encargara de insertar objeto FECHA al array de INFORME
-
-  const fechaN = {
-    name: selectedAnio, // 2022
-    meses: [
-      {
-        mesString: "Enero",
-        mes: 1,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Febrero",
-        mes: 2,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Marzo",
-        mes: 3,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Abril",
-        mes: 4,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Mayo",
-        mes: 5,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Junio",
-        mes: 6,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Julio",
-        mes: 7,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Agosto",
-        mes: 8,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Septiembre",
-        mes: 9,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Octubre",
-        mes: 10,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Noviembre",
-        mes: 11,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-      {
-        mesString: "Diciembre",
-        mes: 12,
-        sumaMes: 0,
-        sumaEfectivo: 0,
-        sumaTarjeta: 0,
-        sumaTransferencia: 0,
-      },
-    ],
-  };
-
-  //se recorre el listado de todas las ventas. ventas22 sera especificamente referido al año 2022 y fechaN sera especificamente tambien al año 2022
-  if (ventas22) {
-    ventas22.map((vta) => {
-      const mes = vta.mes - 1; //es -1 poirque mes sera el indice en el array de meses
-      //es decir mayo sera 4 en el array de meses
-      //console.log(mes,"mes en curso")
-      if (vta.valorServ) {
-        if (fechaN.meses[mes]) {
-          fechaN.meses[mes].sumaMes = fechaN.meses[mes].sumaMes + vta.valorServ;
-          //console.log(fechaN.meses[mes].sumaMes,mes,"suma Mes Curso")
-        }
-      }
-
-      if (vta.efectivo) {
-        if (fechaN.meses[mes]) {
-          fechaN.meses[mes].sumaEfectivo =
-            fechaN.meses[mes].sumaEfectivo + vta.efectivo;
-        }
-      } //else fechaN.meses[mes].sumaEfectivo = fechaN.meses[mes].sumaEfectivo + 0;
-
-      if (vta.tarjeta) {
-        if (fechaN.meses[mes]) {
-          fechaN.meses[mes].sumaTarjeta =
-            fechaN.meses[mes].sumaTarjeta + vta.tarjeta;
-        }
-      } //else fechaN.meses[mes].sumaTarjeta = fechaN.meses[mes].sumaTarjeta + 0;
-
-      if (vta.transferencia) {
-        if (fechaN.meses[mes]) {
-          fechaN.meses[mes].sumaTransferencia =
-            fechaN.meses[mes].sumaTransferencia + vta.transferencia;
-        }
-      }
-    });
-  }
-
-  //hasta aqui se tendra el objecto fechaN con las sumas de todas las ventas por mes en (efectivo-tarjeta-transferencia)
-
-  const arrayVtas = [];
-  if (fechaN.meses) {
-    var sumaTotalAnio = 0;
-    var efectivoTotalAnio = 0;
-    var tarjetaTotalAnio = 0;
-    var bcoTotalAnio = 0;
-    fechaN.meses.map((valor) => {
-      if (valor.sumaMes != 0) {
-
-        arrayVtas.push(valor);
-        sumaTotalAnio = sumaTotalAnio + valor.sumaMes;
-        efectivoTotalAnio = efectivoTotalAnio + valor.sumaEfectivo;
-        bcoTotalAnio = bcoTotalAnio + valor.sumaTransferencia;
-        tarjetaTotalAnio = tarjetaTotalAnio + valor.sumaTarjeta;
-      }
-    });
-    arrayVtas.push({ anio: fechaN.name });
-  }
-
-
-
-  // (6) [{…}, {…}, {…}, {…}, {…}, 2022]
-  // 0: {mes: 2, sumaMes: 2000, sumaEfectivo: 2000, sumaTarjeta: NaN, sumaTransferencia: NaN}
-  // 1: {mes: 3, sumaMes: 4500, sumaEfectivo: 1000, sumaTarjeta: 1500, sumaTransferencia: 1500}
-  // 2: {mes: 5, sumaMes: 6000, sumaEfectivo: 600, sumaTarjeta: 5400, sumaTransferencia: 5400}
-  // 3: {mes: 6, sumaMes: 5040, sumaEfectivo: 3000, sumaTarjeta: NaN, sumaTransferencia: NaN}
-  // 4: {mes: 7, sumaMes: 3000, sumaEfectivo: 1000, sumaTarjeta: 1000, sumaTransferencia: 1000}
-  // 5: 2022
-  // length: 6
 
   const ChangeAnio = (value) => {
     setSelectedAnio(value.value);
@@ -247,12 +67,21 @@ function InformeAnualVtas() {
     dispatch(vtasxA(companySelectedMenu._id, anio));
   }
 
+
+
+  if (ventas22) {
+
+    var arrayVtas = convertArraySalesxAnio(ventas22, selectedAnio);
+    console.log(arrayVtas)
+  }
+
+
   return (
     <div>
-      {Array.isArray(arrayVtas) ? (
+      {
         <div>
           <div className="container-lg">
-           
+
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-6 col-md-4 text-center">
@@ -281,77 +110,84 @@ function InformeAnualVtas() {
             />
           </div>
 
-          <div className="container-lg table-responsive">
-            {ventas22 ? (
-              <>
-                <div className="titInf">
-                  <h5>{arrayVtas[arrayVtas.length - 1].anio}</h5>
-                </div>
-                <table className="table table-bordered table-hover table-white">
-                  <thead className="thead-light table-secondary instrument-serif-regular">
-                    <tr>
-                      <th>Mes</th>
-                      <th>Vendido</th>
-                      <th>Efectivo</th>
-                      <th>Tarjeta</th>
-                      <th>Banco</th>
-                    </tr>
-                  </thead>
-                  <tbody className="instrument-serif-regular">
-                    {arrayVtas.map((vta) => (
-                      <tr>
-                        <td>{vta.mesString}</td>
+          {
+            arrayVtas ?
+              <div className="container-lg table-responsive">
+                {ventas22 ? (
+                  <>
+                    <div className="titInf">
+                      <h5>{arrayVtas.sumas[arrayVtas.sumas.length - 1].anio}</h5>
+                    </div>
+                    <table className="table table-bordered table-hover table-white">
+                      <thead className="thead-light table-secondary instrument-serif-regular">
+                        <tr>
+                          <th>Mes</th>
+                          <th>Vendido</th>
+                          <th>Efectivo</th>
+                          <th>Tarjeta</th>
+                          <th>Banco</th>
+                        </tr>
+                      </thead>
+                      <tbody className="instrument-serif-regular">
+                        {Array.isArray(arrayVtas.meses) ? arrayVtas.meses.map((vta) => (
+                          <tr>
+                            <td>{vta.mesString}</td>
+                            <td>{vta.sumaMes && convertNum(vta.sumaMes)}</td>
+                            <td>{vta.sumaEfectivo && convertNum(vta.sumaEfectivo)}</td>
+                            <td>{vta.sumaTarjeta && convertNum(vta.sumaTarjeta)}</td>
+                            <td>{vta.sumaTransferencia && convertNum(vta.sumaTransferencia)}</td>
+                          </tr>
+                        )) : null
+                        }
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <h5 className="alertVtas">
+                    No existen Ventas para el año {selectedAnio}
+                  </h5>
+                )}
 
-                        <td>{vta.sumaMes && convertNum(vta.sumaMes)}</td>
-                        <td>{vta.sumaEfectivo && convertNum(vta.sumaEfectivo) }</td>
-                        <td>{vta.sumaTarjeta && convertNum(vta.sumaTarjeta)}</td>
-                        <td>{vta.sumaTransferencia && convertNum(vta.sumaTransferencia)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </>
-            ) : (
-              <h5 className="alertVtas">
-                No existen Ventas para el año {selectedAnio}
-              </h5>
-            )}
+                <div className="containerInforme">
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faChartLine} size="lg" />
+                      <p>Total Vendido: {convertNum(arrayVtas.sumas[1].sumaTotalAnio)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                      <p>Total Efectivo: {convertNum(arrayVtas.sumas[2].efectivoTotalAnio)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                      <p>Total Banco: {convertNum(arrayVtas.sumas[4].bcoTotalAnio)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                      <p>Total Tarjeta: {convertNum(arrayVtas.sumas[3].tarjetaTotalAnio)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div> :
 
-            <div className="containerInforme">
-              <div className="cardInf">
-                <div>
-                  <FontAwesomeIcon icon={faChartLine} size="lg" />
-                  <p>Total Vendido: {convertNum(sumaTotalAnio)}</p>
-                </div>
+              <div className="container-lg table-responsive">
+
+                <h5 className="alertVtas">
+                  No existen Ventas para el año {selectedAnio}
+                </h5>
+
+
               </div>
-              <div className="cardInf">
-                <div>
-                  <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-                  <p>Total Efectivo: {convertNum(efectivoTotalAnio)}</p>
-                </div>
-              </div>
-              <div className="cardInf">
-                <div>
-                  <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-                  <p>Total Banco: {convertNum(bcoTotalAnio)}</p>
-                </div>
-              </div>
-              <div className="cardInf">
-                <div>
-                  <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-                  <p>Total Tarjeta: {convertNum(tarjetaTotalAnio)}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+          }
         </div>
-      ) : (
-        // <Loading>
-        //   <p>Loading...</p>
-        //   <img src="https://i.imgur.com/5JQ02CS.gif" alt="loading gif" width="100px" />
-        // </Loading>
-        <h1>fsef</h1>
-      )}
+      }
     </div>
   );
 }

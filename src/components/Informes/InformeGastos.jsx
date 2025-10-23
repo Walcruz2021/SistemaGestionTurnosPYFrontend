@@ -144,7 +144,7 @@ export default function InformeGastos() {
     dispatch(orderGastosMonthNow(order));
   }
 
-    function handleOrder2(e) {
+  function handleOrder2(e) {
     setOrder(!order);
     dispatch(orderGastosXanioandMesParam(order));
   }
@@ -252,7 +252,7 @@ export default function InformeGastos() {
         <h2>Gastos del Mes Actual</h2>
       </div>
 
-      {gastos && gastos.length ===0 ? (
+      {gastos && gastos.length === 0 ? (
         <div className="container-lg P-2">
           <h5 className="alertSearch">No existen Gastos del Mes Actual</h5>
         </div>
@@ -309,7 +309,7 @@ export default function InformeGastos() {
                       style={{ cursor: "pointer" }}
                       title="Ver Detalles"
                     >
-                     {convertNum(gtos.value)}
+                      {convertNum(gtos.value)}
                     </td>
                   ) : (
                     <td>{convertNum(0)}</td>

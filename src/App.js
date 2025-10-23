@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import AgendaTurnos from "./components/AgendaTurnos";
-import ListClients from "./components/ListClients.jsx";
+import AgendaTurnos from "./components/Turns/AgendaTurnos.jsx";
+import ListClients from "././components/Clients/ListClients.jsx";
 import InformeVentas from "./components/Informes/InformeVentas.jsx";
 import InformeAnualVtas from "./components/Informes/InformeAnualVtas.jsx";
 import InformeAnualGtos from "./components/Informes/InformeAnualGtos.jsx";
-import SettingClient from "./components/SettingClient.jsx";
+import SettingClient from "././components/Clients/SettingClient.jsx";
 import FormRegister from "./components/Formulario/FormsRegister.jsx";
 import FormLoginNew from "./components/Formulario/FormLoginNew.jsx";
 import LoginFirebase from "./components/LoginFirebase.jsx";
 import ListCompanies from "./components/ListCompanies.jsx";
 import FormAddCompany from "../src/components/Formulario/FormAddCompany.jsx";
-import Gastos from "./components/Gastos.jsx";
+import Gastos from "././components/Formulario/Gastos/Gastos.jsx";
 import InformeGastos from "./components/Informes/InformeGastos.jsx";
 import InfGastosAndVtas from "./components/Informes/InfGastosAndVtas.jsx";
 import FormSoporteContact from "./components/Formulario/FormSoporteContact.jsx";
 import FormSoporteContactLoginReg from "./components/Formulario/FormSoporteContactLoginReg.jsx";
-import HistorialPet from "./components/HistorialPet.jsx";
+import HistorialPet from "./components/History/HistorialPet.jsx";
 import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
 import {
   functionCompanySelected,
