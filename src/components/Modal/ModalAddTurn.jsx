@@ -11,13 +11,13 @@ import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 
 const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
-  const listClientsAll = useSelector((state) => state.allClients);
-  const isMedicine = useSelector((state) => state.categoryMedicine);
-  const personCategory = useSelector((state) => state.typePerson);
+  const listClientsAll = useSelector((state) => state.client.allClients);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const [stateCategory, setStateCategory] = useState("Cliente");
   const handleClose = () => {
     setStateAddTurn(!stateAddTurn);

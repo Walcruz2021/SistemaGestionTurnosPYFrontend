@@ -34,11 +34,14 @@ import { ClipLoader } from "react-spinners";
 import "./App.css";
 
 const AppRoutes = () => {
-  const conectionMongo = useSelector((state) => state.conectionMongo);
-  const loginUser = useSelector((state) => state.user);
+  const conectionMongo = useSelector((state) => state.gralRed.conectionMongo);
+  const loginUser = useSelector((state) => state.user.user);
 
-  const companiesList = useSelector((state) => state.arrayCompanies.data);
-  const companySelected = useSelector((state) => state.companySelected);
+  const [alreadyChecked, setAlreadyChecked] = useState(false);
+
+  const companiesList = useSelector((state) => state.company.arrayCompanies.data);
+
+  const companySelected = useSelector((state) => state.company.companySelected);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -70,32 +73,34 @@ const AppRoutes = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (loginUser) {
+    if (loginUser && !alreadyChecked) {
       dispatch(searchUser(loginUser.email));
       setIsLoading(false);
     }
-  }, [loginUser]);
+  }, [loginUser, alreadyChecked, dispatch]);
 
+
+  //verificamos si el user se encuentra en la BD y si tiene companias
   useEffect(() => {
-    if (loginUser) {
+    if (loginUser && !alreadyChecked) {
       dispatch(verificationCompaniesExist(loginUser.email));
+      setAlreadyChecked(true)
     }
-  }, [dispatch, loginUser]);
+  }, [dispatch, loginUser, alreadyChecked]);
 
   useEffect(() => {
     if (companiesList?.companies) {
       if (!companySelected) {
         dispatch(functionCompanySelected(companiesList.companies[0]));
-
         setIsLoading(false);
         navigate("/");
       } else {
-        if (companySelected.category==="medicinaGral") {
+        if (companySelected.category === "medicinaGral") {
           dispatch(isMedicine(true))
-          dispatch(typePerson("Paciente")) 
-        }else{
-           dispatch(isMedicine(false))
-          dispatch(typePerson("Cliente")) 
+          dispatch(typePerson("Paciente"))
+        } else {
+          dispatch(isMedicine(false))
+          dispatch(typePerson("Cliente"))
         }
       }
     } else if (loginUser?.emailVerified) {

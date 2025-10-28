@@ -20,8 +20,8 @@ function AgendaTurnos() {
 
   const [listClients, setlistClients] = useState(null);
   const [error, setError] = useState(null);
-  const loginUser = useSelector((state) => state.user);
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const loginUser = useSelector((state) => state.user.user);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
 
   useEffect(() => {

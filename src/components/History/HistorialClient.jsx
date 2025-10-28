@@ -28,7 +28,7 @@ import { renderMatches } from "react-router-dom";
 
 export default function HistorialClient({ state, stateHist, setStateHist }) {
   var arrayDog = [];
-  const isMedicine = useSelector((state) => state.categoryMedicine);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
   const [stateDog, setDog] = useState(state.arrayDogs);
 
   useEffect(() => {

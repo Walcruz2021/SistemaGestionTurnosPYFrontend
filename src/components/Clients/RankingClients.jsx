@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { rankingVentasByClient } from "../../reducer/actions/actionsVentas"
+import { rankingVentasByClient, predictionsSalesxAnio, predictionsSalesByClientInCant, rankingVentasByClientDetails, lastValues } from "../../reducer/actions/actionsVentas"
+import Select from "react-select";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -15,6 +16,9 @@ import {
     Legend,
     ArcElement
 } from "chart.js";
+import { set } from "react-hook-form";
+import filterDatefeatures from "../../functions/filterDatefeatures";
+import TablePredictionsClients from "./TablePredictiosClients";
 
 ChartJS.register(
     CategoryScale,
@@ -31,12 +35,30 @@ ChartJS.register(
 const RankingClients = () => {
 
     const dispatch = useDispatch()
-    const companySelectedMenu = useSelector((state) => state.companySelected);
-    const rankingVtas = useSelector(state => state.rankingVtasByClient)
+    const companySelectedMenu = useSelector((state) => state.company.companySelected);
+    const rankingVtas = useSelector(state => state.sales.rankingVtasByClient)
+    const rankingVtasDetails = useSelector(state => state.sales.rankingVtasByClientDetails)
+    console.log(rankingVtasDetails)
+    const [initial, setInitial] = useState(true);
+    const predictionClientRanking = useSelector(state => state.sales.dataPredictioninCant)
+    const [selectedClient, setSelectedClient] = useState(null);
+
+
+    let date = new Date();
+    const mesNow = date.getMonth() + 1;
+    const listMonth = filterDatefeatures(mesNow)
+
+    const [lastValueSales, setLastaValues] = useState()
+
 
     useEffect(() => {
         dispatch(rankingVentasByClient(companySelectedMenu._id))
     }, [])
+
+    useEffect(() => {
+        dispatch(rankingVentasByClientDetails(companySelectedMenu._id))
+    }, [])
+
 
     let arrayClients = []
     let arrayCantServ = []
@@ -47,13 +69,30 @@ const RankingClients = () => {
         arrayTotalServices = rankingVtas.map(cli => cli.totalValorServ)
     }
 
+    useEffect(() => {
+        if (rankingVtasDetails && initial) {
+            dispatch(predictionsSalesByClientInCant(rankingVtasDetails[0].lastFiveSales))
+            setLastaValues(rankingVtasDetails[0].lastFiveSales && rankingVtasDetails[0].lastFiveSales.pop())
+            setInitial(false);
+        }
+    }, [])
+
+    useEffect(() => {
+        if (selectedClient && rankingVtasDetails && rankingVtasDetails.length > 0 && !initial) {
+            const opt = { value: selectedClient._id, label: selectedClient.cliente_name, lastFiveSales: selectedClient.lastFiveSales };
+            setSelectedClient(opt);
+            dispatch(predictionsSalesByClientInCant(selectedClient.lastFiveSales));
+        }
+    }, [rankingVtasDetails, dispatch])
+
+
     const dataServ = {
         labels: arrayClients,
         datasets: [
             {
                 label: "Services",
                 data: arrayCantServ,
-                backgroundColor: ["rgba(255, 0, 0, 0.6)", "#36A2EB", "#FFCE56"],
+                backgroundColor: ["rgba(255, 0, 0, 0.6)", "#36A2EB", "#FFCE56", "#cacfd2", "#2fc053ff"],
             },
         ],
     };
@@ -80,7 +119,7 @@ const RankingClients = () => {
             {
                 label: "ValuesServices",
                 data: arrayTotalServices,
-                backgroundColor: ["rgba(255, 0, 0, 0.6)", "#36A2EB", "#FFCE56"],
+                backgroundColor: ["rgba(255, 0, 0, 0.6)", "#36A2EB", "#FFCE56", "#cacfd2", "#2fc053ff"],
             },
         ],
     };
@@ -100,6 +139,43 @@ const RankingClients = () => {
             },
         },
     };
+
+    const dataPrediction = {
+        labels: listMonth ? listMonth.map(m => m.value) : [],
+        datasets: [
+            {
+                label: "PredictionServices",
+                data: predictionClientRanking.success === true ? predictionClientRanking.predictions : [],
+                backgroundColor: ["#2fc053ff"],
+            },
+        ],
+    };
+
+    const isMobile3 = window.innerWidth < 600;
+
+    const options3 = {
+        responsive: true,
+        aspectRatio: isMobile3 ? 0.8 : 2,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Monthly Sales Data",
+            },
+        },
+    };
+
+    const handleChangeCli = (e) => {
+
+        setSelectedClient(e);
+        //const clientLastFiveSales = e.lastFiveSales;
+        dispatch(predictionsSalesByClientInCant(e.lastFiveSales));
+        dispatch(lastValues(e.lastFiveSales))
+    }
+
+    //no esta mostrando correctamente el ultimo valor de venta
 
     return (
 
@@ -122,7 +198,24 @@ const RankingClients = () => {
                 <h2>Prediccion de Servicios</h2>
             </div>
 
-            <Line data={dataValues} options={options2} />
+            <div className="container-lg mb-3 ml-3" style={{ maxWidth: 420, width: "100%" }}>
+
+                <Select
+                    inputId="cliente-select"
+                    inputProps={{ "data-testid": "cliente-select" }}
+                    className="instrument-serif-regular"
+                    placeholder="Seleccione Cliente"
+
+                    value={selectedClient}
+                    onChange={handleChangeCli}
+                    options={rankingVtasDetails && rankingVtasDetails.map(cli => ({ value: cli._id, label: cli.cliente_name, lastFiveSales: cli.lastFiveSales }))}
+                />
+
+                {predictionClientRanking.success === true && listMonth && <TablePredictionsClients data={predictionClientRanking.predictions} listMonth={listMonth} />}
+
+            </div>
+
+            <Line data={dataPrediction} options={options3} />
 
         </div>
     )

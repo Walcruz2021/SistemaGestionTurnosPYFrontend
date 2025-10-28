@@ -27,10 +27,10 @@ import "../../css/cssGeneral.css";
 import { BiSupport } from "react-icons/bi";
 
 function NavBarLat({ listCompaniesAll }) {
-  const userLogin = useSelector((state) => state.user);
+  const userLogin = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const CompanyMenuReducer = useSelector((state) => state.companySelected);
+  const CompanyMenuReducer = useSelector((state) => state.company.companySelected);
 
 
   const [stateCompanySelected, setCompanySelectedMenu] = useState();
@@ -186,11 +186,11 @@ export default NavBarLat;
 // import "./NavBarLat.css";
 
 // function NavBarLat({ listCompaniesAll }) {
-//   const userLogin = useSelector((state) => state.user);
+//   const userLogin = useSelector((state) => state.user.user);
 //   const navigate = useNavigate();
 
 //   const dispatch = useDispatch();
-//   const CompanyMenuReducer = useSelector((state) => state.companySelected);
+//   const CompanyMenuReducer = useSelector((state) => state.company.companySelected);
 
 //   const [stateCompanySelected, setCompanySelectedMenu] = useState();
 

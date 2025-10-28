@@ -11,7 +11,7 @@ import { asignedVentas } from "../../reducer/actions/actionsVentas";
 
 const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   const dispatch = useDispatch();
   const [visibleCheckE, setVisibleCheckE] = useState(false);

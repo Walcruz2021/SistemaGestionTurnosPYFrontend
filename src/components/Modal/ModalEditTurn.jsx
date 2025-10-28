@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
+import  convertDateFormat  from "../../functions/convertDateFormat";
 
 const ModalEditTurn = ({
   booleanClose,
@@ -19,9 +20,9 @@ const ModalEditTurn = ({
   nameClient,
   nameDog,
 }) => {
-  const isMedicine = useSelector((state) => state.categoryMedicine);
-  const personCategory = useSelector((state) => state.typePerson);
-  const listClientsAll = useSelector((state) => state.allClients);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
+  const personCategory = useSelector((state) => state.company.typePerson);
+  const listClientsAll = useSelector((state) => state.client.allClients);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const [stateCheck, setStateCheck] = useState({
     isNotifications: null, // Estado inicial
@@ -81,7 +82,7 @@ const ModalEditTurn = ({
     }
   }, [listClientsAll]);
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
@@ -167,6 +168,8 @@ const ModalEditTurn = ({
     });
   }
 
+
+  
   return (
     <>
       <div>
@@ -276,7 +279,7 @@ const ModalEditTurn = ({
                   autoFocus
                   min={getTodayDate()}
                   maxLength={100}
-                  value={stateDataEdit ? stateDataEdit.date : ""}
+                  value={stateDataEdit ? convertDateFormat(stateDataEdit.date) : ""}
                   onChange={handleChange}
                   required
                 />

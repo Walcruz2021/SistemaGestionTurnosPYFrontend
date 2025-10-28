@@ -12,7 +12,7 @@ import withReactContent from "sweetalert2-react-content";
 
 function ModalRestPassword({ show, setShow }) {
   const dispatch = useDispatch();
-  const userSearch = useSelector((state) => state.userEmailSearch);
+  const userSearch = useSelector((state) => state.user.userEmailSearch);
 
   const handleClose = () => {
     setShow(false);

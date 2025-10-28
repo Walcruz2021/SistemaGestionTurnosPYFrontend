@@ -15,7 +15,7 @@ import { addGastos } from "../../../reducer/actions/actionsGastos";
  */
 const FormGastosFij = () => {
   const MySwal = withReactContent(Swal);
-  const companySelectdMenu = useSelector((state) => state.companySelected);
+  const companySelectdMenu = useSelector((state) => state.company.companySelected);
   const dispatch = useDispatch();
   const [visibleCheckE, setVisibleCheckE] = useState(false);
   const [visibleCheckT, setVisibleCheckT] = useState(false);

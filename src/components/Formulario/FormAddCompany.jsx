@@ -18,7 +18,7 @@ import logoNew from "../../IMAGENES/LogoNew.png";
 
 const FormAddCompany = () => {
   const MySwal = withReactContent(Swal);
-  const loginUser = useSelector((state) => state.user);
+  const loginUser = useSelector((state) => state.user.user.user);
   const navigate = useNavigate();
 
   //const history = useHistory();

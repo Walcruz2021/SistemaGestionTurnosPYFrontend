@@ -3,7 +3,7 @@ import host from "../../components/ruteBack/vbledeploy";
 export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG = "UPDATE_DOG";
 export const ADD_DOG = "ADD_DOG";
-export const SEARCH_VTA_CLIENT = "SEARCH_VTA_CLIENT";
+export const SEARCH_VTA_HISTORY_PETS = "SEARCH_VTA_HISTORY_PETS";
 export function addDog(payload, idClient) {
   console.log(payload, "action");
   return async function (dispatch) {
@@ -57,7 +57,7 @@ export function searchHistorialDog(payload) {
     );
 
     return dispatch({
-      type: SEARCH_VTA_CLIENT,
+      type: SEARCH_VTA_HISTORY_PETS,
       payload: vtaxClient,
     });
   };

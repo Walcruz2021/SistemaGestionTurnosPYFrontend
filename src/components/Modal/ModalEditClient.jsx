@@ -20,10 +20,10 @@ const ModalEditClient = ({
   notesCli: initialNotesCli,
   email: initialEmail,
 }) => {
-  const listClients = useSelector((state) => state.allClients);
-  const personCategory = useSelector((state) => state.typePerson);
+  const listClients = useSelector((state) => state.client.allClients);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const dispatch = useDispatch();
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);
   const handleClose = () => setState(!state);

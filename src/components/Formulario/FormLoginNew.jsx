@@ -31,7 +31,7 @@ import supportLogin from "../../icons/supportLogin.png";
 import { PiDog } from "react-icons/pi";
 
 function FormLoginNew({ autUser }) {
-  const loginUser = useSelector((state) => state.user);
+  const loginUser = useSelector((state) => state.user.user.user);
 
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);

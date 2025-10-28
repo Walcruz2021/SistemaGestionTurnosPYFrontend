@@ -24,7 +24,7 @@ import convertNum from "../../functions/convertNum"
 // import { Chart } from "primereact/chart";
 
 export default function InformeGastos() {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   //devolucion decha actual
   let date = new Date();
@@ -35,14 +35,14 @@ export default function InformeGastos() {
   //console.log(anio)
 
   const MySwal = withReactContent(Swal);
-  const gastos = useSelector((state) => state.gastosXanioandMesNow);
+  const gastos = useSelector((state) => state.bills.gastosXanioandMesNow);
 
 
-  const gastosFiltered = useSelector((state) => state.gastosXanioandMesParam);
+  const gastosFiltered = useSelector((state) => state.bills.gastosXanioandMesParam);
 
   const dispatch = useDispatch();
 
-  const productsInv3 = useSelector((state) => state.allGastos);
+  const productsInv3 = useSelector((state) => state.bills.allGastos);
   // console.log(productsInv3, "listgastos");
   const [newTurno, setNewTurno] = useState(false);
   const [stateDetailsGasto, setStateDetailsGasto] = useState({

@@ -10,11 +10,11 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const ModalAddClient = ({ state = newClient, setState = setNewClient }) => {
-  const companySelectdMenu = useSelector((state) => state.companySelected);
+  const companySelectdMenu = useSelector((state) => state.company.companySelected);
 
   const [companySelectedState, setCompanySelectedState] = useState();
 
-  const personCategory = useSelector((state) => state.typePerson);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);

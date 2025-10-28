@@ -48,7 +48,7 @@ const ModalEditDog = ({
 
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

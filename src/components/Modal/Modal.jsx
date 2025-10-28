@@ -105,7 +105,7 @@ export default function Modal({
   const dispatch = useDispatch();
 
   const arrayClients = [];
-  const categoriesClients = useSelector((state) => state.allClients);
+  const categoriesClients = useSelector((state) => state.client.allClients);
 
   const [selectedCli, setSelectedCli] = useState(null);
   //console.log(selectedRaza)

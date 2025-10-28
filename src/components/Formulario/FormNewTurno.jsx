@@ -25,7 +25,7 @@ const Forms1 = ({ listClientsCompany}) => {
     }));
   }, []);
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const [optionsListSelect, setOptionsListSelect] = useState([]);

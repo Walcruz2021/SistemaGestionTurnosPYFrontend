@@ -17,7 +17,7 @@ import convertNum from "../../functions/convertNum";
 import convertArraySalesxAnio from "../../functions/convertArraySalesxAnio";
 
 function InformeAnualVtas() {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const ListAños = [
     { value: 2020, label: 2020 },
     { value: 2021, label: 2021 },

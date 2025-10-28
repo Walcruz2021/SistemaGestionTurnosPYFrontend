@@ -18,7 +18,9 @@ export function functionCompanySelected(payload) {
   };
 }
 
+
 export function verificationCompaniesExist(email) {
+
   return async function (dispatch) {
     const arrayCompanies = await axios.get(
       `${host}/api/validationCompanyExist/${email}`
@@ -59,3 +61,6 @@ export function typePerson(payload) {
     payload,
   };
 }
+
+
+

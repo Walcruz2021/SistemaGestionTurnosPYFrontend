@@ -18,7 +18,7 @@ import convertNum from "../../functions/convertNum";
 import sale from "../../icons/sale.png";
 
 function InformeAnualGtos() {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const ListAños = [
     { value: 2020, label: 2020 },
     { value: 2021, label: 2021 },

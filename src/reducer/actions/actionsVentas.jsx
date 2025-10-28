@@ -10,7 +10,10 @@ export const ORDER_VENTAS_MONTHANIO_PARAM = "ORDER_VENTAS_MONTHANIO_PARAM"
 export const RESET_VENTASxANIOandPARAM = "RESET_VENTASxANIOandPARAM";
 export const DELETE_TURNO = "DELETE_TURNO";
 export const PREDICTIONS_SALES_X_ANIO = "PREDICTIONS_SALES_X_ANIO"
+export const PREDICTIONS_SALES_ByCLIENT_IN_CANT="PREDICTIONS_SALES_ByCLIENT_IN_CAN"
 export const GET_RANKING_VTAS_CLIENT="GET_RANKING_VTAS_CLIENT"
+export const GET_RANKING_VTAS_CLIENT_DETAILS="GET_RANKING_VTAS_CLIENT_DETAILS"
+export const LAST_VALUES="LAST_VALUES"
 import axios from "axios";
 import host from "../../components/ruteBack/vbledeploy";
 
@@ -164,6 +167,14 @@ export const resetVentasXanioandMesParam = () => ({
   type: RESET_VENTASxANIOandPARAM,
 });
 
+export function lastValues(payload) {
+  return {
+    type: LAST_VALUES,
+    payload,
+  };
+}
+
+
 export function predictionsSalesxAnio(dataVtas) {
 
   return async function (dispatch) {
@@ -189,6 +200,32 @@ export function predictionsSalesxAnio(dataVtas) {
   }
 }
 
+export function predictionsSalesByClientInCant(dataVtas) {
+
+  return async function (dispatch) {
+    try {
+
+      const numberPrediction = await axios.get(
+        //"http://localhost:3002/api/listVentas",
+        `${host}/api/prediccionVtasMensualInCant`,
+        {
+          params: {
+            data: dataVtas,
+          }
+        }
+      );
+
+      return dispatch({
+        type: PREDICTIONS_SALES_ByCLIENT_IN_CANT,
+        payload: numberPrediction.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+
 
 export function rankingVentasByClient(idCompany) {
   return async function (dispatch) {
@@ -200,6 +237,21 @@ export function rankingVentasByClient(idCompany) {
 
     return dispatch({
       type: GET_RANKING_VTAS_CLIENT,
+      payload: listVentas.data.ranking,
+    });
+  };
+}
+
+export function rankingVentasByClientDetails(idCompany) {
+  return async function (dispatch) {
+    const listVentas = await axios.get(
+      //"http://localhost:3002/api/listVentas",
+      `${host}/api/rankingVtasDetailsByClients/${idCompany}`,
+      {}
+    );
+
+    return dispatch({
+      type: GET_RANKING_VTAS_CLIENT_DETAILS,
       payload: listVentas.data.ranking,
     });
   };

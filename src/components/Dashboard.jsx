@@ -50,13 +50,12 @@ import {
 import convertNum from "../functions/convertNum";
 
 function Dashboard() {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
-  const listadoTurnos = useSelector((state) => state.allTurnos);
-
-  const listClients = useSelector((state) => state.allClients);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
+  const listadoTurnos = useSelector((state) => state.turns.allTurnos);
+  const listClients = useSelector((state) => state.client.allClients);
   const [stateListTurn, setListTurn] = useState([]);
   const [stateCategory, setStateCategory] = useState("Cliente");
-  const vtaxClient = useSelector((state) => state.vtaxClient);
+  const vtaxClient = useSelector((state) => state.pets.vtaxClient);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -71,8 +70,8 @@ function Dashboard() {
   const [stateClientSelected, setStateClientSeleted] = useState();
   const [editTurn, setEditTurn] = useState(false);
   const [stateAddDog, setStateAddDog] = useState(false);
-  const isMedicine = useSelector((state) => state.categoryMedicine);
-  const personCategory = useSelector((state) => state.typePerson);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const [category, useCategory] = useState("Cliente");
   const [inputState, setInputState] = useState({
     id: "",
@@ -95,8 +94,8 @@ function Dashboard() {
     index: "",
     email: "",
   });
-  const userMongo = useSelector((state) => state.userEmailSearch);
-  const loginUser = useSelector((state) => state.user);
+  const userMongo = useSelector((state) => state.user.userEmailSearch);
+  const loginUser = useSelector((state) => state.user.user);
 
   const onTurnoAdded = () => {
     dispatch(getTurnos(companySelectedMenu._id));
@@ -177,7 +176,7 @@ function Dashboard() {
     SearchDog(data.valueIdDog);
   };
 
-  const cliBusc = useSelector((state) => state.clientBusc);
+  const cliBusc = useSelector((state) => state.client.clientBusc);
 
   if (cliBusc.buscado) {
     const arrayIdClient = cliBusc.buscado.pedidos;

@@ -3,9 +3,8 @@ import host from "../../components/ruteBack/vbledeploy";
 import { auth } from "../../api/configFirebase";
 export const ADD_TODO = "ADD_TODO";
 export const ORDER_CONTACTS = "ORDER_CONTACTS";
-export const ASIGNED_VENTAS = "ASIGNED_VENTAS";
-export const SEARCH_VTA_CLIENT = "SEARCH_VTA_CLIENT";
-export const POST_BREAK = "POST_BREAK";
+
+
 export const GET_USER = "GET_USER";
 export const VERIFICATION_CONECTION="VERIFICATION_CONECTION"
 

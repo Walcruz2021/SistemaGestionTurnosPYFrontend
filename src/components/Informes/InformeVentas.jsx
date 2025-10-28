@@ -38,7 +38,7 @@ import {
 // import { Chart } from "primereact/chart";
 
 export default function TodoList() {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
 
   //devolucion decha actual
@@ -50,18 +50,18 @@ export default function TodoList() {
   //console.log(anio)
 
   const MySwal = withReactContent(Swal);
-  const ventas = useSelector((state) => state.vtasxAnioandMesNow);
+  const ventas = useSelector((state) => state.sales.vtasxAnioandMesNow);
 
-  const ventasXAnio = useSelector((state) => state.vtasxAnio);
-  const numberPrediction = useSelector((state) => state.dataPrediction)
+  const ventasXAnio = useSelector((state) => state.sales.vtasxAnio);
+  const numberPrediction = useSelector((state) => state.sales.dataPrediction)
 
 
-  const vtasFiltered = useSelector((state) => state.vtasxAnioandMesParam);
+  const vtasFiltered = useSelector((state) => state.sales.vtasxAnioandMesParam);
 
   //console.log(vtaFilterDateNow,"vtas filtradas")
   const dispatch = useDispatch();
 
-  const productsInv3 = useSelector((state) => state.allVentas);
+  const productsInv3 = useSelector((state) => state.sales.allVentas);
   // console.log(productsInv3, "listVentas");
   const [newTurno, setNewTurno] = useState(false);
   const [newClient, setNewClient] = useState(false);

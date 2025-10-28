@@ -23,7 +23,7 @@ import { useForm, ValidationError } from "@formspree/react";
  */
 const FormSoporteContact = () => {
   const MySwal = withReactContent(Swal);
-  const loginUser = useSelector((state) => state.user);
+  const loginUser = useSelector((state) => state.user.user);
   //console.log(loginUser.email)
   const navigate = useNavigate();
   const [stateValue, setStateValue] = useState({

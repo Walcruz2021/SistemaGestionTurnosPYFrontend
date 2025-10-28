@@ -18,9 +18,9 @@ const ModalEditTurnMedicine = ({
   setStateDataEdit,
   nameClient,
 }) => {
-  const isMedicine = useSelector((state) => state.categoryMedicine);
-  const personCategory = useSelector((state) => state.typePerson);
-  const listClientsAll = useSelector((state) => state.allClients);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
+  const personCategory = useSelector((state) => state.company.typePerson);
+  const listClientsAll = useSelector((state) => state.client.allClients);
   const [optionsListSelect, setOptionsListSelect] = useState([]);
   const [stateCheck, setStateCheck] = useState({
     isNotifications: null, // Estado inicial
@@ -80,7 +80,7 @@ const ModalEditTurnMedicine = ({
     }
   }, [listClientsAll]);
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [show, setShow] = useState(false);

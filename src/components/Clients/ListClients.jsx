@@ -38,14 +38,14 @@ function searchCli(busc) {
 
 function ListClients() {
   const MySwal = withReactContent(Swal);
-  var clients = useSelector((state) => state.allClients);
+  var clients = useSelector((state) => state.client.allClients);
   //console.log(clients,"listado")
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   const [stateSearch, setSearch] = useState("");
 
   const dispatch = useDispatch();
-  const personCategory = useSelector((state) => state.typePerson);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const [editClient, setEditClient] = useState(false);
   //stateInfo es el que se acciona cada vez que se selecciona un cliente
   const [stateInfo, setInfo] = useState(false);

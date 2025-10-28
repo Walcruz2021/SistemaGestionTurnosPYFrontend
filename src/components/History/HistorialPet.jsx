@@ -22,9 +22,9 @@ import dateOrder2 from "../../icons/dateOrder2.png";
 
 function HistorialPet() {
   const dispatch = useDispatch();
-  const vtaxClient = useSelector((state) => state.vtaxClient);
+  const vtaxClient = useSelector((state) => state.pets.vtaxClient);
   const listVts = vtaxClient.data.vta;
-  const clientBusc = useSelector((state) => state.clientBusc);
+  const clientBusc = useSelector((state) => state.client.clientBusc);
   const historialRef = useRef();
   const [orderTable1, setOrderTable1] = useState(false);
   const idClientFromDashboard = JSON.parse(

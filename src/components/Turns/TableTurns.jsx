@@ -25,15 +25,15 @@ import "../../../src/App.css";
 //stateInfo tru or false
 const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
   const dispatch = useDispatch();
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
-  const listTurnos = useSelector((state) => state.allTurnos);
+  const listTurnos = useSelector((state) => state.turns.allTurnos);
 
   const [stateCategory, setStateCategory] = useState("Cliente"); //no borrar es el que determina si se vera icono de ficha si es veterinaria
 
-  const isMedicine = useSelector((state) => state.categoryMedicine);
+  const isMedicine = useSelector((state) => state.company.categoryMedicine);
 
-  const personCategory = useSelector((state) => state.typePerson);
+  const personCategory = useSelector((state) => state.company.typePerson);
   const [newVentas, setNewVentas] = useState(false);
   const [booleanClose, setBooleanClose] = useState(false);
   const [booleanCloseMedicine, setBooleanCloseMedicine] = useState(false);

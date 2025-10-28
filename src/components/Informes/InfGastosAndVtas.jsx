@@ -33,9 +33,9 @@ ChartJS.register(
 );
 
 const InfGastosAndVtas = () => {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
-  const listGtosAnio = useSelector((state) => state.gtosxAnio);
-  const listVtasAnio = useSelector((state) => state.vtasxAnio);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
+  const listGtosAnio = useSelector((state) => state.bills.gtosxAnio);
+  const listVtasAnio = useSelector((state) => state.sales.vtasxAnio);
 
   const [stateGtosValue, setStateGtosValue] = useState([]);
  

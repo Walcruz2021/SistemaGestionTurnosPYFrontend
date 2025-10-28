@@ -17,7 +17,7 @@ import { CgNotes } from "react-icons/cg";
 import { MdOutlineBalance } from "react-icons/md";
 
 const ModalAddFicha = ({ openState, setOpenState, stateDataFicha }) => {
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   const dispatch = useDispatch();
 

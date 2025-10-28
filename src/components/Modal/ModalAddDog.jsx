@@ -22,9 +22,9 @@ const ModalAddDog = ({ stateAddDog, setStateAddDog }) => {
     tamaño: "",
   });
 
-  const listClients = useSelector((state) => state.allClients);
+  const listClients = useSelector((state) => state.client.allClients);
 
-  const companySelectedMenu = useSelector((state) => state.companySelected);
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
   useEffect(() => {
     if (!listClients) {
