@@ -37,8 +37,9 @@ const RankingClients = () => {
     const dispatch = useDispatch()
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const rankingVtas = useSelector(state => state.sales.rankingVtasByClient)
+    
+    //ultimas 5 ventas
     const rankingVtasDetails = useSelector(state => state.sales.rankingVtasByClientDetails)
-    console.log(rankingVtasDetails)
     const [initial, setInitial] = useState(true);
     const predictionClientRanking = useSelector(state => state.sales.dataPredictioninCant)
     const [selectedClient, setSelectedClient] = useState(null);
@@ -48,7 +49,6 @@ const RankingClients = () => {
     const mesNow = date.getMonth() + 1;
     const listMonth = filterDatefeatures(mesNow)
 
-    const [lastValueSales, setLastaValues] = useState()
 
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const RankingClients = () => {
     useEffect(() => {
         if (rankingVtasDetails && initial) {
             dispatch(predictionsSalesByClientInCant(rankingVtasDetails[0].lastFiveSales))
-            setLastaValues(rankingVtasDetails[0].lastFiveSales && rankingVtasDetails[0].lastFiveSales.pop())
+            // setLastaValues(rankingVtasDetails[0].lastFiveSales && rankingVtasDetails[0].lastFiveSales.pop())
             setInitial(false);
         }
     }, [])
@@ -168,7 +168,7 @@ const RankingClients = () => {
     };
 
     const handleChangeCli = (e) => {
-
+console.log(e,"cliente elegido")
         setSelectedClient(e);
         //const clientLastFiveSales = e.lastFiveSales;
         dispatch(predictionsSalesByClientInCant(e.lastFiveSales));

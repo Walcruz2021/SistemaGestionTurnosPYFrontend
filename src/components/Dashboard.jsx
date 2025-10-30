@@ -21,14 +21,13 @@ import { searchHistorialDog } from "../reducer/actions/actionsDog";
 import { getTurnos, deleteTurno } from "../reducer/actions/actionsTurnos";
 import { getClients } from "../reducer/actions/actionsClients";
 import Swal from "sweetalert2";
-import Modal from "./Modal/Modal";
 import FormNewTurno from "./Formulario/FormNewTurno";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import ModalDescription from "././Modal/ModalDescription";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
-import { ButtonModal, CloseButton } from "../cssSyleComp/ModalStyles";
+
 import ModalAddDog from "../components/Modal/ModalAddDog";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/cssGeneral.css";

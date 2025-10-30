@@ -18,7 +18,7 @@ import {
 import "./InformeVentas.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from "react-select";
-import Modal from "../Modal/Modal";
+
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";

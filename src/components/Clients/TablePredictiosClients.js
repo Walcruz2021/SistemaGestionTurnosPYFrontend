@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 export default function TablePredictionsClients({ data = sampleData, listMonth, lastValues }) {
 
     const lastValuesSales = useSelector(state => state.sales.lastValues)
-    console.log(lastValuesSales[lastValuesSales.length - 1]);
+  
     return (
         <div className="tmv-container">
 
@@ -20,7 +20,7 @@ export default function TablePredictionsClients({ data = sampleData, listMonth, 
                 <tbody>
                     <tr >
                         <td>Ultima Venta</td>
-                        <td>{convertNum(lastValuesSales[lastValuesSales.length - 1])}</td>
+                        <td>{convertNum(lastValuesSales[0])}</td>
 
                     </tr>
                     {data.map((prediction, index) => (

@@ -65,7 +65,7 @@ function NavBarLat({ listCompaniesAll }) {
           <Container fluid>
             <Navbar.Brand>
               <div className="titGral">
-                <h2>GESTION DE TURNOS PYMESYA</h2>
+                <h2>GESTION DE TURNOS PY</h2>
               </div>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
