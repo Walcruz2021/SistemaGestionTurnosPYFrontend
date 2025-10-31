@@ -70,9 +70,8 @@ const RankingClients = () => {
     }
 
     useEffect(() => {
-        if (rankingVtasDetails && initial) {
+        if (rankingVtasDetails && initial && rankingVtasDetails.length > 0) {
             dispatch(predictionsSalesByClientInCant(rankingVtasDetails[0].lastFiveSales))
-            // setLastaValues(rankingVtasDetails[0].lastFiveSales && rankingVtasDetails[0].lastFiveSales.pop())
             setInitial(false);
         }
     }, [])
