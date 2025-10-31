@@ -2,11 +2,20 @@ import React from "react";
 import "./TablePredictionsClients.css";
 import convertNum from "../../functions/convertNum";
 import { useDispatch, useSelector } from "react-redux"
+import { useState, useEffect } from "react"
+import { use } from "react";
 
 export default function TablePredictionsClients({ data = sampleData, listMonth, lastValues }) {
 
     const lastValuesSales = useSelector(state => state.sales.lastValues)
-  
+
+
+    const [stateLastValues, setStateLastValues] = useState([])
+
+    useEffect(() => {
+        setStateLastValues(lastValuesSales)
+    }, [lastValuesSales])
+
     return (
         <div className="tmv-container">
 
@@ -20,7 +29,7 @@ export default function TablePredictionsClients({ data = sampleData, listMonth, 
                 <tbody>
                     <tr >
                         <td>Ultima Venta</td>
-                        <td>{convertNum(lastValuesSales[0])}</td>
+                        <td>{stateLastValues&&stateLastValues.length>0&&convertNum(stateLastValues[0])}</td>
 
                     </tr>
                     {data.map((prediction, index) => (

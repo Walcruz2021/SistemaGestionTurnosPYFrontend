@@ -200,6 +200,9 @@ export function predictionsSalesxAnio(dataVtas) {
   }
 }
 
+
+//[43600, 35000, 27000, 15000, 13000] recibe las ultimas 5 ventas
+//retorna 5 predicciones en base al array de las ultimas 5 ventas mensuales del cliente
 export function predictionsSalesByClientInCant(dataVtas) {
 
   return async function (dispatch) {

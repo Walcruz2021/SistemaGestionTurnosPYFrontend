@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { rankingVentasByClient, predictionsSalesxAnio, predictionsSalesByClientInCant, rankingVentasByClientDetails, lastValues } from "../../reducer/actions/actionsVentas"
@@ -37,18 +36,33 @@ const RankingClients = () => {
     const dispatch = useDispatch()
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const rankingVtas = useSelector(state => state.sales.rankingVtasByClient)
-    
+
     //ultimas 5 ventas
     const rankingVtasDetails = useSelector(state => state.sales.rankingVtasByClientDetails)
+    // [{_id: '66ce205f9b979e00035d1da8', cliente_name: 'Franco Ariel Villanueva', totalValorServ: 808100, lastFiveSales: Array(5)}
+    // {_id: '66ce20289b979e00035d1da3', cliente_name: 'Daniel Ponce', totalValorServ: 145000, lastFiveSales: Array(5)},
+    //....
+    //....
+    //]
+
     const [initial, setInitial] = useState(true);
+
+    //predictionClientRanking contendra las 5 predicciones del array de las entas del cliente
     const predictionClientRanking = useSelector(state => state.sales.dataPredictioninCant)
+
+
     const [selectedClient, setSelectedClient] = useState(null);
+    // {_id: '66ce205f9b979e00035d1da8', cliente_name: 'Franco Ariel Villanueva', totalValorServ: 808100, lastFiveSales: Array(5)}
+
+
+
+    const [selectedCli, setSelectedCli] = useState(null);
+    // {_id: '66ce205f9b979e00035d1da8', cliente_name: 'Franco Ariel Villanueva', totalValorServ: 808100, lastFiveSales: Array(5)}
 
 
     let date = new Date();
     const mesNow = date.getMonth() + 1;
     const listMonth = filterDatefeatures(mesNow)
-
 
 
     useEffect(() => {
@@ -72,7 +86,9 @@ const RankingClients = () => {
     useEffect(() => {
         if (rankingVtasDetails && initial && rankingVtasDetails.length > 0) {
             dispatch(predictionsSalesByClientInCant(rankingVtasDetails[0].lastFiveSales))
+            dispatch(lastValues(rankingVtasDetails[0].lastFiveSales))
             setInitial(false);
+            setSelectedCli(rankingVtasDetails[0])
         }
     }, [])
 
@@ -167,7 +183,7 @@ const RankingClients = () => {
     };
 
     const handleChangeCli = (e) => {
-console.log(e,"cliente elegido")
+
         setSelectedClient(e);
         //const clientLastFiveSales = e.lastFiveSales;
         dispatch(predictionsSalesByClientInCant(e.lastFiveSales));
@@ -203,8 +219,7 @@ console.log(e,"cliente elegido")
                     inputId="cliente-select"
                     inputProps={{ "data-testid": "cliente-select" }}
                     className="instrument-serif-regular"
-                    placeholder="Seleccione Cliente"
-
+                    placeholder={!selectedCli?rankingVtasDetails&&rankingVtasDetails.length>0?rankingVtasDetails[0].cliente_name:"Seleccione un Cliente":selectedCli.cliente_name}
                     value={selectedClient}
                     onChange={handleChangeCli}
                     options={rankingVtasDetails && rankingVtasDetails.map(cli => ({ value: cli._id, label: cli.cliente_name, lastFiveSales: cli.lastFiveSales }))}
