@@ -55,6 +55,8 @@ const FormGastosDir = () => {
       tarjeta: data.tarjeta || 0,
     };
 
+    console.log(newStateInput)
+
     const value =
       Number(newStateInput.efectivo) +
       Number(newStateInput.tarjeta) +

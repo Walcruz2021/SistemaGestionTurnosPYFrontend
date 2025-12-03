@@ -7,7 +7,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { FaChartLine } from "react-icons/fa";
 import { PiMoneyFill } from "react-icons/pi";
-import { FaCogs } from "react-icons/fa";
+import { FaCogs,FaChargingStation  } from "react-icons/fa";
 import { signOut } from "@firebase/auth";
 import { auth } from "../../api/configFirebase";
 import {
@@ -91,7 +91,7 @@ function NavBarLat({ listCompaniesAll }) {
                 </Offcanvas.Header>
               ) : null}
 
-    
+
 
               {CompanyMenuReducer ? (
                 <Offcanvas.Body className="instrument-serif-regular">
@@ -109,6 +109,10 @@ function NavBarLat({ listCompaniesAll }) {
                       Informes
                     </Nav.Link>
 
+                    <Nav.Link as={Link} to="./insumos">
+                      <FaChargingStation className="mx-4" />
+                      Insumos
+                    </Nav.Link>
                     <Nav.Link as={Link} to="./support">
                       <BiSupport className="mx-4" />
                       Soporte
@@ -129,7 +133,7 @@ function NavBarLat({ listCompaniesAll }) {
               ) : (
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    
+
                     {/* it is commented because it does not work */}
 
                     {/* <Nav.Link as={Link} to="./support">

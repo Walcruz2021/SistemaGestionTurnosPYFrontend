@@ -1,8 +1,10 @@
-import {VERIFICATION_CONECTION} from "../actions/actions"
+import { VERIFICATION_CONECTION } from "../actions/actions"
+import { LIST_BRANDS } from "../actions/actionBrand"
 
 const initialState = {
     conectionMongo: null,
-    dataPrediction: ""
+    dataPrediction: "",
+    listbrands: []
 };
 
 
@@ -15,9 +17,11 @@ export default function gralReducer(state = initialState, action) {
                 conectionMongo: action.payload,
             };
 
-      
-   
-       
+
+        case LIST_BRANDS:
+            return {
+                ...state, listBrands: action.payload
+            }
 
 
         default:

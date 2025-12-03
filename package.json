@@ -33,6 +33,7 @@
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
+    "lucide-react": "^0.553.0",
     "mdb-react-ui-kit": "^8.0.0",
     "openai": "^4.77.0",
     "react": "^18.1.0",

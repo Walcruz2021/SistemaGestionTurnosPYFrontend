@@ -7,6 +7,9 @@ import petsReducer from "./hooksReducer/petsReducer"
 import salesReducer from "./hooksReducer/salesReducer"
 import userReducer from "./hooksReducer/userReducer"
 import turnsReducer from "./hooksReducer/turnsReducer"
+import supplierReducer from "./hooksReducer/supplier/supplierReducer"
+import supplyReducer from "./hooksReducer/supply/supplyReducer"
+import stockBatchReducer from "./hooksReducer/stockBatchReducer"
 
 const rootReducer = combineReducers({
   bills: billsReducer,
@@ -16,7 +19,11 @@ const rootReducer = combineReducers({
   pets: petsReducer,
   sales: salesReducer,
   user: userReducer,
-  turns:turnsReducer
+  turns:turnsReducer,
+  supplier:supplierReducer,
+  supply:supplyReducer,
+  stockBatch:stockBatchReducer
+
 });
 
 export default rootReducer;

@@ -15,9 +15,7 @@ import {
   faPersonWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-
 import { searchHistorialDog } from "../reducer/actions/actionsDog";
-
 import { getTurnos, deleteTurno } from "../reducer/actions/actionsTurnos";
 import { getClients } from "../reducer/actions/actionsClients";
 import Swal from "sweetalert2";
@@ -27,13 +25,13 @@ import { Link } from "react-router-dom";
 import Select from "react-select";
 import ModalDescription from "././Modal/ModalDescription";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
-
 import ModalAddDog from "../components/Modal/ModalAddDog";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/cssGeneral.css";
 import ModalAddClient from "./Modal/ModalAddClient";
 import addClient2 from "../icons/addClientSmall.png";
 import addPet from "../icons/addPet.png";
+import iconBuy from "../icons/buy2.png";
 import iconAddTurn from "../icons/addTurn.png";
 import iconClients from "../icons/listClients.png";
 import ModalBoostrap from "react-bootstrap/Modal";
@@ -192,26 +190,26 @@ function Dashboard() {
     const arrayOrder =
       order === true
         ? listOrder.sort(function (a, b) {
-            const aux1 = a.date.toLocaleLowerCase();
-            const aux2 = b.date.toLocaleLowerCase();
-            if (aux1 > aux2) {
-              return 1;
-            }
-            if (aux2 > aux1) {
-              return -1;
-            } else return 0;
-          })
+          const aux1 = a.date.toLocaleLowerCase();
+          const aux2 = b.date.toLocaleLowerCase();
+          if (aux1 > aux2) {
+            return 1;
+          }
+          if (aux2 > aux1) {
+            return -1;
+          } else return 0;
+        })
         : // descendente
-          listOrder.sort(function (a, b) {
-            const aux1a = a.date.toLocaleLowerCase();
-            const aux2b = b.date.toLocaleLowerCase();
-            if (aux1a > aux2b) {
-              return -1;
-            }
-            if (aux2b > aux1a) {
-              return 1;
-            } else return 0;
-          });
+        listOrder.sort(function (a, b) {
+          const aux1a = a.date.toLocaleLowerCase();
+          const aux2b = b.date.toLocaleLowerCase();
+          if (aux1a > aux2b) {
+            return -1;
+          }
+          if (aux2b > aux1a) {
+            return 1;
+          } else return 0;
+        });
 
     return {
       ...stateListTurn,
@@ -267,8 +265,26 @@ function Dashboard() {
         <div className="mb-2">
           <div>
             {/* BUTTONS */}
+
+
             <div className="container py-3">
+
               <div className="row justify-content-center">
+
+                <div className="col-6 col-md-4 d-flex justify-content-center">
+                  <div className="text-center">
+                    <div className="card-body">
+                      <Link to="/compraInsumos">
+
+                        <button className="btn btn-link" onClick={addTurn}>
+                          <img src={iconBuy} />
+                        </button>
+                      </Link>
+
+                    </div>
+                  </div>
+                </div>
+
                 <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                   <div className="text-center">
                     <div className="card-body">
@@ -333,6 +349,8 @@ function Dashboard() {
                     </div>
                   ))}
 
+
+
                 {listClients ? (
                   <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                     <div className="text-center">
@@ -348,6 +366,9 @@ function Dashboard() {
                     <img src={iconAddTurn} />
                   </button>
                 )}
+
+
+
               </div>
             </div>
 
@@ -550,22 +571,22 @@ function Dashboard() {
                       <tbody>
                         {vtaxClient.status === 200
                           ? vtaxClient.data.vta.map((vta) => (
-                              <tr key={vta._id}>
-                                <td className="instrument-serif-regular">
-                                  {convertNum(vta.valorServ)}
-                                </td>
-                                <td className="instrument-serif-regular">
-                                  {convertDateFormat(vta.date)} -{" "}
-                                  {convertDay(vta.date)}
-                                </td>
-                                <td className="instrument-serif-regular">
-                                  {vta.notesTurn}
-                                </td>
-                                <td className="instrument-serif-regular">
-                                  {vta.tipoServ}
-                                </td>
-                              </tr>
-                            ))
+                            <tr key={vta._id}>
+                              <td className="instrument-serif-regular">
+                                {convertNum(vta.valorServ)}
+                              </td>
+                              <td className="instrument-serif-regular">
+                                {convertDateFormat(vta.date)} -{" "}
+                                {convertDay(vta.date)}
+                              </td>
+                              <td className="instrument-serif-regular">
+                                {vta.notesTurn}
+                              </td>
+                              <td className="instrument-serif-regular">
+                                {vta.tipoServ}
+                              </td>
+                            </tr>
+                          ))
                           : null}
                       </tbody>
                     </table>

@@ -20,6 +20,8 @@ import FormSoporteContactLoginReg from "./components/Formulario/FormSoporteConta
 import HistorialPet from "./components/History/HistorialPet.jsx";
 import NavBarLat from "../src/components/Menues/NavBarLat.jsx";
 import Footer from "../src/components/Menues/Footer.jsx";
+import Supplies from "./components/Supplies/Supplies.jsx";
+import TableBuySupplies from "./components/Supplies/TableBuySupplies.jsx"
 import {
   functionCompanySelected,
   verificationCompaniesExist,
@@ -128,11 +130,13 @@ const AppRoutes = () => {
               <Route path="/listCompanies" element={<ListCompanies />} />
               <Route path="/InformeGastos" element={<InformeGastos />} />
               <Route path="/informes" element={<InfGastosAndVtas />} />
+              <Route path="/insumos" element={<Supplies />} />
               <Route path="/support" element={<FormSoporteContact />} />
               <Route path="/historialPet" element={<HistorialPet />} />
+              <Route path="/compraInsumos" element={<TableBuySupplies />} />
               <Route path="*" element={<div>404 Not Found</div>} />
             </Routes>
-            <Footer/>
+            <Footer />
           </div>
         ) : (
           <Routes>
