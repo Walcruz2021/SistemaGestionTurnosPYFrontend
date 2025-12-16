@@ -18,17 +18,20 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
     const dispatch = useDispatch();
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplies = useSelector((state) => state.supply.listSupplies);
+    console.log(listSupplies)
     const listBrands = useSelector((state) => state.gralRed.listBrands);
+    const [stateMargen, setmargen] = useState(50)
 
     const [suppliesOptions, setSuppliesOptions] = useState([]);
+
     const [brandOptions, setBrandOptions] = useState([]);
 
     // Acceso directo al producto actual
     const currentProduct = stateInput.detailsSupply[index];
-
+console.log(currentProduct)
     useEffect(() => {
         if (companySelectedMenu) {
-            dispatch(getListSupplies());
+            dispatch(getListSupplies(companySelectedMenu._id));
             dispatch(getBrands());
         }
     }, [companySelectedMenu]);
@@ -45,16 +48,32 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
 
     useEffect(() => {
         if (currentProduct?.nameBrand && listSupplies) {
+
             const filtered = listSupplies
-                .filter((prod) => prod.nameBrand === currentProduct.nameBrand)
+                .filter((prod) => prod.global.nameBrand === currentProduct.nameBrand)
                 .map((prod) => ({
-                    value: prod._id,
-                    label: prod.nameSupply
+                    value: prod.global._id,
+                    label: prod.global.nameSupply
                 }));
+       
             setSuppliesOptions(filtered);
         }
     }, [currentProduct?.nameBrand, listSupplies]);
 
+    useEffect(() => {
+    if (currentProduct?.unitCost != null) {
+        const calculated = currentProduct.unitCost * (1 + stateMargen / 100);
+
+        setStateInput(prev => {
+            const updated = [...prev.detailsSupply];
+            updated[index] = {
+                ...updated[index],
+                priceSale: calculated
+            };
+            return { ...prev, detailsSupply: updated };
+        });
+    }
+}, [currentProduct?.unitCost, stateMargen]);
 
     // Cambiar algún valor del producto
     const handleChangeField = (name, value) => {
@@ -77,11 +96,17 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
 
     const handleChangeInput = (e) => {
         const { name, value, type } = e.target;
+        console.log(value)
         handleChangeField(
             name,
             type === "number" ? (value === "" ? "" : Number(value)) : value
         );
     };
+
+    const handleChangeMargen = (e) => {
+        const { value } = e.target;
+        setmargen(value);
+    }
 
     return (
         <Row className="g-2 mb-3">
@@ -146,13 +171,39 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
                 </Form.Group>
             </Col>
 
-        <Col xs={6}>
+            <Col xs={6}>
                 <Form.Group>
                     <Form.Label>Costo Unidad</Form.Label>
                     <Form.Control
                         type="number"
                         name="unitCost"
                         value={currentProduct?.unitCost || ""}
+                        onChange={handleChangeInput}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+
+            <Col xs={6}>
+                <Form.Group>
+                    <Form.Label>% Margen Ganancia</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="margen"
+                        value={stateMargen}
+                        onChange={handleChangeMargen}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+
+            <Col xs={6}>
+                <Form.Group>
+                    <Form.Label>Precio Venta</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="priceSale"
+                        value={currentProduct?.unitCost * (1 + stateMargen / 100) || ""}
                         onChange={handleChangeInput}
                         required
                     />

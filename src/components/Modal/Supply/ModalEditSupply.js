@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
+import { Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -11,41 +12,71 @@ import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
 import listCategories from "../../../functions/categoriesSupplies.json"
 import { getListSupplies, actionEditSupply } from "../../../reducer/actions/supply/actionsSupply"
+import { getBrands } from "../../../reducer/actions/actionBrand"
 
 const ModalEditSupply = ({
-    stateOpenModal,
-    setStateOpenModal,
-    stateDataSupply,
-    setDataSupply
+    modalOpenEditSupply,
+    setModalOpenEditSupply,
+    dataSupply,
 }) => {
-
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplier = useSelector((state) => state.supplier.listSupplier)
+    const listBrands = useSelector((state) => state.gralRed.listBrands)
 
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setStateOpenModal(!stateOpenModal);
-
+    const handleClose = () => setModalOpenEditSupply(!modalOpenEditSupply);
+    const [stateSeletedBrand, setStateSeletedBrand] = useState()
     const [stateInput, setStateInput] = useState({
-
+        nameSupply: "",
+        categorySupply: "",
+        // idSupplier: "",
+        idBrand: "",
+        nameBrand: "",
+        typeUnidMed: "",
+        valueUnidMed: "",
+        priceSale: ""
     });
 
 
 
     useEffect(() => {
-        if (stateDataSupply) {
+        if (companySelectedMenu) {
+            dispatch(getBrands())
+        }
+    }, [])
+
+    useEffect(() => {
+        if (dataSupply) {
             setStateInput({
-                idSupply: stateDataSupply._id,
-                nameSupply: stateDataSupply.nameSupply,
-                categorySupply: stateDataSupply.categorySupply,
-                idSupplier: stateDataSupply.idSupplier,
-                nameSupplier: stateDataSupply.nameSupplier
+                idSupply: dataSupply._id,
+                nameSupply: dataSupply.nameSupply,
+                categorySupply: dataSupply.categorySupply,
+                idSupplier: dataSupply.idSupplier,
+                nameSupplier: dataSupply.nameSupplier,
+                priceSale: dataSupply.priceSale,
+                nameBrand: dataSupply.nameBrand,
+                typeUnidMed: dataSupply.typeUnidMed,
+                valueUnidMed: dataSupply.valueUnidMed,
+                priceSale: dataSupply.priceSale
             })
         }
-    }, [stateDataSupply])
+    }, [dataSupply])
+
+     useEffect(() => {
+            if (Array.isArray(listBrands) && listBrands.length > 0) {
+                const formattedBrands = listBrands.map((brand) => ({
+                    value: brand._id,
+                    label: brand.nameBrand,
+                }));
+    
+                setStateSeletedBrand(formattedBrands);
+            }
+        }, [listBrands]);
+
     var selectSupplierArray = []
 
     const handleChange = (e) => {
@@ -90,9 +121,9 @@ const ModalEditSupply = ({
 
     function handleChangeSupplier(e) {
         const idSupplier = e.value;
-        const nameSupplier=e.label
+        const nameSupplier = e.label
 
-        setStateInput({ ...stateInput, idSupplier: idSupplier, nameSupplier:nameSupplier })
+        setStateInput({ ...stateInput, idSupplier: idSupplier, nameSupplier: nameSupplier })
     }
 
     const handleSubmit = () => {
@@ -105,10 +136,14 @@ const ModalEditSupply = ({
         }
         else {
             const supplyData = {
-                nameSupply: stateInput.nameSupply,
                 categorySupply: stateInput.categorySupply,
-                idSupplier: stateInput.idSupplier,
-                nameSupplier: stateInput.nameSupplier,
+                idSUpply: stateInput.idSupply,
+                nameBrand: stateInput.nameBrand,
+                nameSupply: stateInput.nameSupply,
+                idBrand: stateInput.idBrand,
+                priceSale: stateInput.priceSale,
+                typeUnidMed: stateInput.typeUnidMed,
+                valueUnidMed: stateInput.valueUnidMed,
                 Company: companySelectedMenu._id
             };
             dispatch(actionEditSupply(supplyData, stateInput.idSupply));
@@ -132,11 +167,35 @@ const ModalEditSupply = ({
         }
     };
 
+    //SELECT UNIDAD
+    const TypeUnidMed = ["Litro", "Peso", "Talle Internacional", "Talle Numerico"]
+        .map((f) => ({ value: f, label: f }));
+
+    const handleChangeTypeUnidMed = (e) => {
+        setStateInput({ ...stateInput, typeUnidMed: e.value });
+    };
+
+    //TALLES INT
+    const talleInt = ["S", "M", "L", "X", "XL", "XXL"]
+        .map((t) => ({ value: t, label: t }));
+
+    const handleChangeTalleInt = (e) => {
+        setStateInput({ ...stateInput, talleInt: e.value });
+    };
+
+    //TALLES NUMERICOS
+    const talleNum = ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44"]
+        .map((t) => ({ value: t, label: t }));
+
+    const handleChangeTalleNum = (e) => {
+        setStateInput({ ...stateInput, valueUnidMed: e.value });
+    };
+
 
     return (
         <>
             <div>
-                <Modal show={stateOpenModal} onHide={handleClose}>
+                <Modal show={modalOpenEditSupply} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title className="instrument-serif-regular">
                             Editar Insumo
@@ -147,26 +206,67 @@ const ModalEditSupply = ({
 
                             <>
 
-                                <>
+                                <Select
+                                    className="classSelect instrument-serif-regular"
+                                    placeholder={stateInput.categorySupply ? stateInput.categorySupply : "Seleccione Categoria"}
+                                    onChange={(e) => {
+                                        handleChangeCategory(e);
+                                    }}
+                                    options={selectCategoryArray}
+                                />
 
-                                    <Select
-                                        className="classSelect instrument-serif-regular"
-                                        placeholder={stateInput.nameSupplier ? stateInput.nameSupplier : "Seleccione Proveedor"}
-                                        onChange={(e) => {
-                                            handleChangeSupplier(e);
-                                        }}
-                                        options={selectSupplierArray}
-                                    />
+                                <Select
+                                    className="classSelect instrument-serif-regular"
+                                    placeholder={stateInput.nameBrand ? stateInput.nameBrand : "Seleccione Marca"}
+                                    onChange={(e) => setStateInput({ ...stateInput, nameBrand: e.label, idBrand: e.value })}
+                                    options={stateSeletedBrand}
+                                />
 
-                                    <Select
-                                        className="classSelect instrument-serif-regular"
-                                        placeholder={stateInput.categorySupply ? stateInput.categorySupply : "Seleccione Categoria"}
-                                        onChange={(e) => {
-                                            handleChangeCategory(e);
-                                        }}
-                                        options={selectCategoryArray}
-                                    />
-                                </>
+                                <Col xs={6}>
+                                    <Form.Group>
+                                        <Form.Label>Tipo Unidad Medida</Form.Label>
+                                        <Select
+                                            options={TypeUnidMed}
+                                            onChange={handleChangeTypeUnidMed}
+                                            placeholder={stateInput.typeUnidMed ? stateInput.typeUnidMed : "Seleccione tipo de Unidad"}
+                                        />
+                                    </Form.Group>
+                                </Col>
+
+                                {stateInput && stateInput.typeUnidMed === "Talle Internacional" ?
+                                    <Col xs={6}>
+                                        <Form.Group>
+                                            <Form.Label>Valor Unidad Medida</Form.Label>
+                                            <Select
+                                                options={talleInt}
+                                                onChange={handleChangeTalleInt}
+                                                placeholder={stateInput.valueUnidMed ? stateInput.valueUnidMed : "Seleccione valor de Unidad"}
+                                            />
+                                        </Form.Group>
+
+                                    </Col> : stateInput.typeUnidMed === "Talle Numerico" ?
+                                        <Col xs={6}>
+                                            <Form.Group>
+                                                <Form.Label>Valor Unidad Medida</Form.Label>
+                                                <Select
+                                                    options={talleNum}
+                                                    onChange={handleChangeTalleNum}
+                                                    placeholder={stateInput.valueUnidMed ? stateInput.valueUnidMed : "Seleccione valor de Unidad"}
+                                                />
+                                            </Form.Group>
+                                        </Col> : <Col xs={6}>
+                                            <Form.Group>
+                                                <Form.Label>Valor Unidad Medida</Form.Label>
+                                                <Form.Control
+                                                    type="number"
+                                                    name="valueUnitMed"
+                                                    value={stateInput.valueUnitMed}
+                                                    onChange={handleChange}
+                                                    placeholder={stateInput.valueUnidMed ? stateInput.valueUnidMed : "Seleccione valor de Unidad"}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+                                }
 
                                 <Form.Group
                                     className="mb-1"
@@ -187,6 +287,28 @@ const ModalEditSupply = ({
                                         required
                                     />
                                 </Form.Group>
+
+                                 <Form.Group
+                                    className="mb-1"
+                                    controlId="exampleForm.ControlInput1"
+                                >
+                                    <Form.Label className="instrument-serif-regular">
+                                        Precio de Venta
+                                    </Form.Label>
+
+                                    <Form.Control
+                                        className="instrument-serif-regular"
+                                        type="number"
+                                        name="priceSale"
+                                        autoFocus
+                                        maxLength={50}
+                                        min="0"
+                                        value={stateInput ? stateInput.priceSale : ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </Form.Group>
+                                
                             </>
 
                         </Form>

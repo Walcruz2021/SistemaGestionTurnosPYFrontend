@@ -51,17 +51,18 @@ export default function FormAddBuySupply({
                 idBrand: "",
                 nameBrand: "",
                 valueUnidMed: "",
-                details: ""
+                details: "",
+                priceSale:""
             }
         ]
     });
 
-    console.log(stateInput)
+
     // Cargar lista de proveedores + insumos
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(actionListSupplier(companySelectedMenu._id));
-            dispatch(getListSupplies());
+            dispatch(getListSupplies(companySelectedMenu._id));
             dispatch(getBrands())
         }
     }, [companySelectedMenu]);

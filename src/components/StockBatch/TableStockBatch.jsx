@@ -4,6 +4,7 @@ import { getStockBatchByIdSupply } from "../../reducer/actions/actionsStockBatch
 import { useSelector, useDispatch } from "react-redux";
 
 const TableStockBatch = ({ idSupply }) => {
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -39,7 +40,7 @@ const TableStockBatch = ({ idSupply }) => {
                                     className="instrument-serif-regular"
                                 >{buy.quantity}</td>
                                 <td>{buy.unitCost}</td>
-                  
+
                                 <td>{buy.datePurchase}</td>
                             </tr>
                         )
@@ -51,6 +52,7 @@ const TableStockBatch = ({ idSupply }) => {
 
             </table>
 
+            
         </div>
     )
 }

@@ -9,9 +9,17 @@ import { BsCalendar2DateFill } from "react-icons/bs"
 import { MdDiscount } from "react-icons/md";
 import { GrDocumentStore } from "react-icons/gr";
 import { TbCategoryFilled } from "react-icons/tb";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { useState } from "react";
+import ModalEditSupply from "../Modal/Supply/ModalEditSupply";
 
 const TableDetailSupplies = ({ stateDetailsSup }) => {
-    console.log(stateDetailsSup)
+
+    const [modalOpenEditSupply, setModalOpenEditSupply] = useState(false);
+    const onClickEditSUpply = () => {
+        setModalOpenEditSupply(true);
+    }
+
     return (
 
         <>
@@ -21,60 +29,77 @@ const TableDetailSupplies = ({ stateDetailsSup }) => {
                 <div className="container my-4">
                     <div className="row g-3 text-center">
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm">
                                 <FaFileInvoice size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Insumo</small>
-                                <strong>{stateDetailsSup.nameSupply ?? ""}</strong>
+                                <strong>{stateDetailsSup.global?.nameSupply ?? ""}</strong>
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm">
                                 <MdDiscount size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Marca</small>
-                                <strong>{stateDetailsSup.nameBrand ?? ""}</strong>
+                                <strong>{stateDetailsSup.global?.nameBrand ?? ""}</strong>
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm">
                                 <PiHighHeelFill size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Talle</small>
-                                <strong>{stateDetailsSup.valueUnidMed ?? 0}</strong>
+                                <strong>{stateDetailsSup.global?.valueUnidMed ?? 0}</strong>
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm">
-                                <GrDocumentStore  size="1.7rem" className="mb-2" />
+                                <GrDocumentStore size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Stock</small>
-                                <strong>{stateDetailsSup.totalStock ?? 0}</strong>
+                                <strong>{stateDetailsSup?.totalStock ?? 0}</strong>
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <TbCategoryFilled size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Categoria</small>
-                                <strong>{stateDetailsSup.categorySupply ?? ""}</strong>
+                                <strong>{stateDetailsSup.global?.categorySupply ?? ""}</strong>
                             </div>
                         </div>
 
-                        <div className="col-12 col-md-4">
+                        <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <BsCalendar2DateFill size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Fecha Ingreso</small>
-                                <strong>{stateDetailsSup.createdAt ?? ""}</strong>
+                                <strong>{stateDetailsSup.global?.createdAt ?? ""}</strong>
                             </div>
                         </div>
 
+                        
+                        <div className="col-6 col-md-2">
+                            <div className="card p-3 h-100 shadow-sm bg-light">
+                                <FaMoneyBillTrendUp  size="1.7rem" className="mb-2" />
+                                <small className="text-muted">Precio Venta</small>
+                                <strong>{stateDetailsSup?.priceSale ?? ""}</strong>
+                            </div>
+                        </div>
+
+                        <div className="col-6 col-md-2">
+                            <div className="card p-3 h-100 shadow-sm bg-light" onClick={() => onClickEditSUpply()} style={{ cursor: "pointer" }}>
+                                <BsCalendar2DateFill size="1.7rem" className="mb-2" />
+                                <small className="text-muted">Editar Insumo</small>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+
             </>
 
-      
+            <ModalEditSupply modalOpenEditSupply={modalOpenEditSupply} setModalOpenEditSupply={setModalOpenEditSupply} dataSupply={stateDetailsSup} />
         </>
     )
 }

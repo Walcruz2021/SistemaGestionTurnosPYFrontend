@@ -1,11 +1,11 @@
 import React from 'react';
-import ModalAddSupply from '../Modal/Supply/ModalAddSuppply';
-import ModalAddSupplier from '../Modal/Suppier/ModalAddSupplier';
-import addSupplyIcon from "../../icons/supply2.png"
-import addSupplierIcon from "../../icons/supplier.png"
+import ModalAddSupply from '../../Modal/Supply/ModalAddSuppply';
+import ModalAddSupplier from '../../Modal/Suppier/ModalAddSupplier';
+import addSupplyIcon from "../../../icons/supply2.png"
+import addSupplierIcon from "../../../icons/supplier.png"
 import { useState, useEffect } from "react";
-import TableSupplies from './TableSupplies';
-const Supplies = () => {
+import TableSuppliesSale from '../../Supplies/TableSuppliesSale';
+const FormAddVtas = () => {
 
     const [openModalSupply, setOpenModalSupply] = useState(false);
     const [openModalSupplier, setOpenModalSupplier] = useState(false);
@@ -51,7 +51,7 @@ const Supplies = () => {
             </div>
             <div className="container-fluid table-responsive">
 
-                <TableSupplies />
+                <TableSuppliesSale />
                 <ModalAddSupply
                     openModal={openModalSupply}
                     setOpenModal={setOpenModalSupply}
@@ -68,4 +68,4 @@ const Supplies = () => {
     );
 };
 
-export default Supplies;
+export default FormAddVtas;

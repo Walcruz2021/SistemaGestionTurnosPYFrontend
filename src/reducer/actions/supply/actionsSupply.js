@@ -27,7 +27,7 @@ export function actionAddSupply(payload) {
 
 export function actionAddBuySupply(payload){
 
-  console.log(payload,"action")
+
    return async function (dispatch) {
     try {
       const newBuySupply = await axios.post(
@@ -76,12 +76,13 @@ export function actionEditSupplyByList(payload) {
 }
 
 
-export function getListSupplies() {
+export function getListSupplies(idCompany) {
+  
   return async function (dispatch) {
     const listSupplies = await axios.get(
       //"http://localhost:3002/api/listClients",
       //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
-      `${host}/api/getListSupplies`,
+      `${host}/api/getListSupplies/${idCompany}`,
       {}
     );
     return dispatch({

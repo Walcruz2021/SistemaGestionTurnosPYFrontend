@@ -40,6 +40,7 @@ import ModalAddVtas from "../components/Modal/ModalAddVtas";
 import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 import carpetaMedica from "../icons/carpeta-medica.png";
+import saleVta from "../icons/saleVta.png";
 import {
   listenToAuthChanges,
   verificationConection,
@@ -367,7 +368,17 @@ function Dashboard() {
                   </button>
                 )}
 
-
+               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                    <div className="text-center">
+                      <div className="card-body">
+                        <Link to="/addVtas">
+                          <button className="btn btn-link">
+                            <img src={saleVta} />
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
 
               </div>
             </div>
