@@ -1,4 +1,4 @@
-import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES, UPDATE_SUPPLY_By_LIST } from "../../actions/supply/actionsSupply";
+import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY } from "../../actions/supply/actionsSupply";
 
 
 const initialState = {
@@ -21,6 +21,11 @@ export default function supplyReducer(state = initialState, action) {
             };
 
         case ADD_BUY_SUPPLY:
+            return {
+                ...state
+            };
+
+        case ADD_SALE_SUPPLY:
             return {
                 ...state
             };

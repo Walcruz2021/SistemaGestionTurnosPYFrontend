@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { actionListBuySupplies } from "../../reducer/actions/supply/actionsSupply"
 import iconBuySupply from "../../icons/buySupply2.gif"
@@ -32,7 +32,43 @@ const TableBuySupplies = () => {
         });
     }
 
- 
+    //PAGINACION
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15;
+
+    const suppliesFiltered = useMemo(() => {
+
+
+        let result = listBuySupplies;
+
+        return result;
+    }, [
+        listBuySupplies,
+
+    ]);
+
+    const totalPages = suppliesFiltered
+        ? Math.ceil(suppliesFiltered.length / itemsPerPage)
+        : 0;
+
+    const currentItems =
+        suppliesFiltered?.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+        ) ?? [];
+
+
+    function handleOrder(e) {
+        setOrder(!order);
+        dispatch(actionsOrderSupplies(order));
+    }
+
+    function handleDetailsSupplies(e, props) {
+        e.preventDefault();
+        setStateDetailsSup({
+            detailsSup: props.sup,
+        });
+    }
 
     return (
         <div>
@@ -81,7 +117,7 @@ const TableBuySupplies = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listBuySupplies ? listBuySupplies.map((buy) => {
+                        {currentItems.map((buy) => {
                             return (
 
                                 <tr key={buy._id}>
@@ -95,12 +131,12 @@ const TableBuySupplies = () => {
                                         }
                                         className="instrument-serif-regular"
                                     >{buy.NInvoice}</td>
-                                     <td>{buy.nameSupplier??"No registrado"}</td>
+                                    <td>{buy.nameSupplier ?? "No registrado"}</td>
                                     <td>{convertDateReverse(buy.date)}</td>
                                     <td>{buy.montoB ? convertNum(buy.montoB) : 0}</td>
                                 </tr>
                             )
-                        }) : <h2>no hay datos</h2>
+                        })
 
                         }
 
@@ -108,12 +144,83 @@ const TableBuySupplies = () => {
 
                 </table>
 
+                {/* PAGINACIÓN NUMÉRICA */}
+                {suppliesFiltered.length > itemsPerPage && (
+                    <div className="d-flex justify-content-center mt-3">
+                        <nav>
+                            <ul className="pagination">
+                                <li
+                                    className={`page-item ${currentPage === 1
+                                        ? "disabled"
+                                        : ""
+                                        }`}
+                                >
+                                    <button
+                                        className="page-link"
+                                        onClick={() =>
+                                            setCurrentPage(
+                                                currentPage - 1
+                                            )
+                                        }
+                                    >
+                                        «
+                                    </button>
+                                </li>
+
+                                {Array.from(
+                                    { length: totalPages },
+                                    (_, i) => (
+                                        <li
+                                            key={i}
+                                            className={`page-item ${currentPage === i + 1
+                                                ? "active"
+                                                : ""
+                                                }`}
+                                        >
+                                            <button
+                                                className="page-link"
+                                                onClick={() =>
+                                                    setCurrentPage(
+                                                        i + 1
+                                                    )
+                                                }
+                                            >
+                                                {i + 1}
+                                            </button>
+                                        </li>
+                                    )
+                                )}
+
+                                <li
+                                    className={`page-item ${currentPage === totalPages
+                                        ? "disabled"
+                                        : ""
+                                        }`}
+                                >
+                                    <button
+                                        className="page-link"
+                                        onClick={() =>
+                                            setCurrentPage(
+                                                currentPage + 1
+                                            )
+                                        }
+                                    >
+                                        »
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                )}
+
                 <div className="titGral">
                     <h1>Detalle de Compra Seleccionada</h1>
                 </div>
                 <TableDetailBuys stateDetailsBuy={stateDetailsBuy.detailsBuy} />
 
             </div>
+
+
 
         </div>
     )

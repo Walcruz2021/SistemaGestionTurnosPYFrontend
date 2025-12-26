@@ -87,6 +87,7 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                 valueUnidMed: stateInput.valueUnidMed
             };
             dispatch(actionAddSupply(supplyData));
+          
             MySwal.fire({
                 title: "¡Insumo creado correctamente!",
                 icon: "success",

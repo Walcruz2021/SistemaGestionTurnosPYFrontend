@@ -28,7 +28,7 @@ const FormAddVtas = () => {
     return (
         <div>
             <div className="titGral">
-                <h1>LISTADO DE INSUMOS</h1>
+                <h1>LISTADO DE INSUMOS PARA VENTAS</h1>
             </div>
             <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">

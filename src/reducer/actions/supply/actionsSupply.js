@@ -9,6 +9,7 @@ export const ORDER_SUPPLIES = "ORDER_SUPPLIES"
 export const UPDATE_SUPPLY = "UPDATE_SUPPLY"
 export const GET_LIST_BUY_SUPPLIES = "GET_LIST_BUY_SUPPLIES"
 export const UPDATE_SUPPLY_By_LIST="UPDATE_SUPPLY_By_LIST"
+export const ADD_SALE_SUPPLY="ADD_SALE_SUPPLY"
 
 export function actionAddSupply(payload) {
   console.log(payload)
@@ -112,4 +113,20 @@ export function actionListBuySupplies(idCompany) {
 
     })
   }
+}
+
+export function actionAddSaleSupply(payload){
+
+console.log(payload)
+   return async function (dispatch) {
+    try {
+      const newSaleSupply = await axios.post(
+        `${host}/api/addSaleSupply`,
+        payload
+      );
+      return newSaleSupply;
+    } catch (error) {
+      console.log(error);
+    }
+  }; 
 }

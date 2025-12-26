@@ -4,6 +4,7 @@ import { TbTaxEuro } from "react-icons/tb";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
 import { FaFileInvoice } from "react-icons/fa6";
+import convertNum from "../../functions/convertNum";
 
 const TableDetailSells = ({ stateDetailsBuy }) => {
 
@@ -28,7 +29,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             <div className="card p-3 h-100 shadow-sm">
                                 <FaMoneyBillWave size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Importe Neto</small>
-                                <strong>{stateDetailsBuy.montoN ?? 0}</strong>
+                                <strong>{convertNum(stateDetailsBuy.montoN ?? 0)}</strong>
                             </div>
                         </div>
 
@@ -36,7 +37,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             <div className="card p-3 h-100 shadow-sm">
                                 <TbTaxEuro size="1.7rem" className="mb-2" />
                                 <small className="text-muted">IVA</small>
-                                <strong>{stateDetailsBuy.iva ?? 0}</strong>
+                                <strong>{convertNum(stateDetailsBuy.iva ?? 0)}</strong>
                             </div>
                         </div>
 
@@ -44,7 +45,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             <div className="card p-3 h-100 shadow-sm">
                                 <TbTaxEuro size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Otros Impuestos</small>
-                                <strong>{stateDetailsBuy.taxes ?? 0}</strong>
+                                <strong>{convertNum(stateDetailsBuy.taxes ?? 0)}</strong>
                             </div>
                         </div>
 
@@ -52,7 +53,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <FaMoneyBills size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Total Bruto</small>
-                                <strong>{stateDetailsBuy.montoB ?? 0}</strong>
+                                <strong>{convertNum(stateDetailsBuy.montoB ?? 0)}</strong>
                             </div>
                         </div>
 
@@ -104,7 +105,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                                     >{buy.nameSupply}</td>
                                     <td>{buy.nameBrand}</td>
                                     <td>{buy.quantity}</td>
-                                    <td>{buy.unitCost}</td>
+                                    <td>{convertNum(buy.unitCost)}</td>
                                 </tr>
                             )
                         }) : <h2>no hay datos</h2>

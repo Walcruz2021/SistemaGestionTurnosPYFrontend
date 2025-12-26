@@ -12,6 +12,9 @@ import { TbCategoryFilled } from "react-icons/tb";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useState } from "react";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply";
+import convertNum from "../../functions/convertNum";
+import convertDateFormat from "../../functions/convertDateFormat";
+import convertDateReverse from "../../functions/convertDateReverse";
 
 const TableDetailSupplies = ({ stateDetailsSup }) => {
 
@@ -73,16 +76,16 @@ const TableDetailSupplies = ({ stateDetailsSup }) => {
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <BsCalendar2DateFill size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Fecha Ingreso</small>
-                                <strong>{stateDetailsSup.global?.createdAt ?? ""}</strong>
+                                <strong>{convertDateReverse(convertDateFormat(stateDetailsSup.global?.createdAt ?? ""))}</strong>
                             </div>
                         </div>
 
-                        
+
                         <div className="col-6 col-md-2">
                             <div className="card p-3 h-100 shadow-sm bg-light">
-                                <FaMoneyBillTrendUp  size="1.7rem" className="mb-2" />
+                                <FaMoneyBillTrendUp size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Precio Venta</small>
-                                <strong>{stateDetailsSup?.priceSale ?? ""}</strong>
+                                <strong>{convertNum(stateDetailsSup?.priceSale ?? "")}</strong>
                             </div>
                         </div>
 
@@ -94,6 +97,8 @@ const TableDetailSupplies = ({ stateDetailsSup }) => {
                             </div>
                         </div>
                     </div>
+
+                
                 </div>
 
 

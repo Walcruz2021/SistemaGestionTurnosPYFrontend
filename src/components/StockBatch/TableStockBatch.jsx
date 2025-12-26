@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { getStockBatchByIdSupply } from "../../reducer/actions/actionsStockBatch"
 import { useSelector, useDispatch } from "react-redux";
+import convertNum from "../../functions/convertNum";
+import convertDateReverse from "../../functions/convertDateReverse";
+import convertDateFormat from "../../functions/convertDateFormat";
 
 const TableStockBatch = ({ idSupply }) => {
 
@@ -14,7 +17,7 @@ const TableStockBatch = ({ idSupply }) => {
     }, [idSupply, dispatch]);
 
     const listStockBatches = useSelector((state) => state.stockBatch.listStockBatch);
-
+ 
 
     return (
         <div >
@@ -24,6 +27,8 @@ const TableStockBatch = ({ idSupply }) => {
             <table className="table table-bordered table-hover table-white">
                 <thead className="thead-light table-secondary">
                     <tr>
+                        <th className="instrument-serif-regular">Nombre Lote</th>
+                        {/* este valor es la cantidad que existe del lote en particular */}
                         <th className="instrument-serif-regular">Cantidad</th>
                         <th className="instrument-serif-regular">Costo Unit</th>
                         <th className="instrument-serif-regular">Fecha Compra</th>
@@ -34,14 +39,17 @@ const TableStockBatch = ({ idSupply }) => {
                         return (
 
                             <tr key={buy._id}>
+                                <td
 
+                                    className="instrument-serif-regular"
+                                >{buy.nameLot ? buy.nameLot : "S/N"}</td>
                                 <td
 
                                     className="instrument-serif-regular"
                                 >{buy.quantity}</td>
-                                <td>{buy.unitCost}</td>
+                                <td>{convertNum(buy.unitCost)}</td>
 
-                                <td>{buy.datePurchase}</td>
+                                <td>{convertDateReverse(convertDateFormat(buy.datePurchase))}</td>
                             </tr>
                         )
                     }) : <h2>no hay datos</h2>
@@ -52,7 +60,7 @@ const TableStockBatch = ({ idSupply }) => {
 
             </table>
 
-            
+
         </div>
     )
 }

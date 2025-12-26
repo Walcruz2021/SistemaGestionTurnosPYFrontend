@@ -250,7 +250,7 @@ const Forms1 = ({ listClientsCompany}) => {
                   type="submit"
                   onClick={handleSubmit}
                 >
-                  Agregar Turno
+                    
                 </button>
               </div>
             </div>
