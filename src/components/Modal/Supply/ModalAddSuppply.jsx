@@ -68,7 +68,7 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
 
 
     const handleSubmit = () => {
-        if (stateInput.nameSupply.trim() === "" || stateInput.categorySupply.trim() === "" ) {
+        if (stateInput.nameSupply.trim() === "" || stateInput.categorySupply.trim() === "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -87,7 +87,7 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                 valueUnidMed: stateInput.valueUnidMed
             };
             dispatch(actionAddSupply(supplyData));
-          
+
             MySwal.fire({
                 title: "¡Insumo creado correctamente!",
                 icon: "success",
@@ -224,9 +224,9 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                                 />
 
 
-                                <Col xs={6}>
+                                <Col xs={6} className="instrument-serif-regular">
                                     <Form.Group>
-                                        <Form.Label>Tipo Unidad Medida</Form.Label>
+                                        <Form.Label>(*) Tipo Unidad Medida</Form.Label>
                                         <Select
                                             options={TypeUnidMed}
                                             onChange={handleChangeTypeUnidMed}
@@ -234,30 +234,33 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                                         />
                                     </Form.Group>
                                 </Col>
+
                                 {/* if option selected is talleInt or talleNum */}
                                 {stateInput && stateInput.typeUnidMed === "Talle Internacional" ?
-                                    <Col xs={6}>
+                                    <Col xs={6} className="pt-3">
                                         <Form.Group>
-                                            <Form.Label>Valor Unidad Medida</Form.Label>
+                                            <Form.Label className="instrument-serif-regular">(*) Valor Unidad Medida</Form.Label>
                                             <Select
                                                 options={talleInt}
                                                 onChange={handleChangeTalleInt}
                                                 placeholder="Producto"
+                                                className="instrument-serif-regular"
                                             />
                                         </Form.Group>
                                     </Col> : stateInput.typeUnidMed === "Talle Numerico" ?
-                                        <Col xs={6}>
+                                        <Col xs={6} className="pt-3">
                                             <Form.Group>
-                                                <Form.Label>Valor Unidad Medida</Form.Label>
+                                                <Form.Label className="instrument-serif-regular">(*) Valor Unidad Medida</Form.Label>
                                                 <Select
                                                     options={talleNum}
                                                     onChange={handleChangeTalleNum}
                                                     placeholder="Producto"
+                                                    className="instrument-serif-regular"
                                                 />
                                             </Form.Group>
                                         </Col> : <Col xs={6}>
                                             <Form.Group>
-                                                <Form.Label>Valor Unidad Medida</Form.Label>
+                                                <Form.Label className="instrument-serif-regular pt-3">(*) Valor Unidad Medida</Form.Label>
                                                 <Form.Control
                                                     type="number"
                                                     name="valueUnitMed"
@@ -275,8 +278,8 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                                 className="mb-1"
                                 controlId="exampleForm.ControlInput1"
                             >
-                                <Form.Label className="instrument-serif-regular">
-                                    Nombre Insumo
+                                <Form.Label className="instrument-serif-regular pt-3">
+                                    (*) Nombre Insumo
                                 </Form.Label>
 
                                 <Form.Control

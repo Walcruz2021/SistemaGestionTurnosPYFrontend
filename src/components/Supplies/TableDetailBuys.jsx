@@ -17,7 +17,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                 <div className="container my-4">
                     <div className="row g-3 text-center">
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm">
                                 <FaFileInvoice size="1.7rem" className="mb-2" />
                                 <small className="text-muted">N° Factura</small>
@@ -25,7 +25,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm">
                                 <FaMoneyBillWave size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Importe Neto</small>
@@ -33,7 +33,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm">
                                 <TbTaxEuro size="1.7rem" className="mb-2" />
                                 <small className="text-muted">IVA</small>
@@ -41,7 +41,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm">
                                 <TbTaxEuro size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Otros Impuestos</small>
@@ -49,7 +49,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <FaMoneyBills size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Total Bruto</small>
@@ -57,7 +57,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                             </div>
                         </div>
 
-                        <div className="col-12 col-md-4">
+                        <div className="col-12 col-md-4 instrument-serif-regular">
                             <div className="card p-3 h-100 shadow-sm bg-light">
                                 <BsPersonBoundingBox size="1.7rem" className="mb-2" />
                                 <small className="text-muted">Proveedor</small>
@@ -103,12 +103,14 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
 
                                         className="instrument-serif-regular"
                                     >{buy.nameSupply}</td>
-                                    <td>{buy.nameBrand}</td>
-                                    <td>{buy.quantity}</td>
-                                    <td>{convertNum(buy.unitCost)}</td>
+                                    <td className="instrument-serif-regular">{buy.nameBrand}</td>
+                                    <td className="instrument-serif-regular">{buy.quantity}</td>
+                                    <td className="instrument-serif-regular">{convertNum(buy.unitCost)}</td>
                                 </tr>
                             )
-                        }) : <h2>no hay datos</h2>
+                        }) : <div className="titGral">
+                            <h2>No hay Datos</h2>
+                        </div>
 
                         }
 

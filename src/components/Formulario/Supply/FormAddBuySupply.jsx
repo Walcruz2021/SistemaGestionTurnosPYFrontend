@@ -52,7 +52,7 @@ export default function FormAddBuySupply({
                 nameBrand: "",
                 valueUnidMed: "",
                 details: "",
-                priceSale:""
+                priceSale: ""
             }
         ]
     });
@@ -144,7 +144,7 @@ export default function FormAddBuySupply({
 
 
     // SUBMIT
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // if (
         //     stateInput.nameSupply.trim() === "" ||
         //     stateInput.date.trim() === ""
@@ -157,22 +157,55 @@ export default function FormAddBuySupply({
         //     return;
         // }
 
-        dispatch(actionAddBuySupply({
+        const resp = await dispatch(actionAddBuySupply({
             ...stateInput,
             Company: companySelectedMenu._id
         }));
 
-        // dispatch(actionEditSupplyByList(stateInput.detailsSupply, stateInput.idSupply))
+        setStateInput({
+            montoN: "",
+            montoB: "",
+            paymentMethod: "",
+            iva: "",
+            typeInvoice: "",
+            NInvoice: "",
+            taxes: "",
+            date: "",
+            nameSupplier: "",
+            idSupplier: "",
+            detailsSupply: [
+                {
+                    idSupply: "",
+                    nameSupply: "",
+                    quantity: "",
+                    unitCost: "",
+                    idBrand: "",
+                    nameBrand: "",
+                    valueUnidMed: "",
+                    details: "",
+                    priceSale: ""
+                }
+            ]
+        })
 
-        MySwal.fire({
-            title: "¡Compra registrada!",
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "rgb(21, 151, 67)",
-        }).then(() => {
-            dispatch(getListSupplies(companySelectedMenu._id));
+        if (resp && resp.status === 200) {
+            MySwal.fire({
+                title: "¡Compra registrada!",
+                icon: "success",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "rgb(21, 151, 67)",
+            }).then(() => {
+                dispatch(getListSupplies(companySelectedMenu._id));
 
-        });
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Ocurrio un Error",
+            });
+        }
+
     };
 
     const addBlockSupply = () => {
@@ -372,7 +405,7 @@ export default function FormAddBuySupply({
                 {/* <Button variant="secondary" onClick={setOpenModal}>
           Cancelar
         </Button> */}
-                < Button variant="primary" onClick={() => handleSubmit(stateInput)} listBrands={listBrands}>
+                < Button variant="primary" onClick={() => handleSubmit(stateInput)} listBrands={listBrands} disabled={!stateInput.date || !stateInput.montoN || !stateInput.detailsSupply.length > 0 || !stateInput.nameSupplier || !stateInput.NInvoice}>
                     Guardar Compra
                 </Button>
 
@@ -400,14 +433,14 @@ export default function FormAddBuySupply({
             </Modal.Footer >
 
             <ModalAddSupply
-                    openModal={openModalSupply}
-                    setOpenModal={setOpenModalSupply}
-                />
+                openModal={openModalSupply}
+                setOpenModal={setOpenModalSupply}
+            />
 
-                <ModalAddSupplier
-                    openModal={openModalSupplier}
-                    setOpenModal={setOpenModalSupplier}
-                />
+            <ModalAddSupplier
+                openModal={openModalSupplier}
+                setOpenModal={setOpenModalSupplier}
+            />
         </Form >
     );
 }

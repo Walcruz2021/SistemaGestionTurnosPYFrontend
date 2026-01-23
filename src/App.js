@@ -23,6 +23,7 @@ import Footer from "../src/components/Menues/Footer.jsx";
 import Supplies from "./components/Supplies/Supplies.jsx";
 import TableBuySupplies from "./components/Supplies/TableBuySupplies.jsx"
 import FormAddVtas from "./components/Formulario/Vtas/FormAddVtas.jsx";
+import FormStockAdjustments from "./components/Formulario/StockAdjustments/FormStockAdjustments.jsx";
 
 import {
   functionCompanySelected,
@@ -137,6 +138,7 @@ const AppRoutes = () => {
               <Route path="/historialPet" element={<HistorialPet />} />
               <Route path="/compraInsumos" element={<TableBuySupplies />} />
               <Route path="/addVtas" element={<FormAddVtas />} />
+              <Route path="/addStockAdjustments" element={<FormStockAdjustments />} />
               <Route path="*" element={<div>404 Not Found</div>} />
             </Routes>
             <Footer />

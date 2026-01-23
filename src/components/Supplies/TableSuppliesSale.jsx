@@ -29,7 +29,7 @@ const TableSuppliesSale = () => {
 
     const [stateSelectedBrand, setStateSelectedBrand] = useState(null);
     const [stateSelectedCategory, setStateSelectedCategory] = useState(null);
-    console.log(stateSelectedCategory)
+
     const [stateOpenModal, setStateOpenModal] = useState(false);
     const [stateDataSupply, setDataSupply] = useState(null);
 
@@ -70,7 +70,7 @@ const TableSuppliesSale = () => {
         if (supplySelected) return [];
 
         let result = listSupplies;
-        console.log(result)
+      
         // Buscar por texto
         if (stateSearch.trim() !== "") {
             result = result.filter((s) =>
@@ -173,7 +173,7 @@ const TableSuppliesSale = () => {
                 </div>
 
                 {/* FILTRO POR MARCA */}
-                <p className="mt-3">Filtrar por marca</p>
+                <p className="mt-3 instrument-serif-regular">Filtrar por marca</p>
                 <Select
                     className="classSelect instrument-serif-regular"
                     placeholder="Seleccione Marca"
@@ -184,7 +184,7 @@ const TableSuppliesSale = () => {
                 />
 
                 {/* FILTRO POR CATEGORÍA */}
-                <p className="mt-3">Filtrar por categoría</p>
+                <p className="mt-3 instrument-serif-regular">Filtrar por categoría</p>
                 <Select
                     className="classSelect instrument-serif-regular"
                     placeholder="Seleccione Categoría"

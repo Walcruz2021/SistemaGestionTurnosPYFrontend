@@ -117,7 +117,7 @@ export function actionListBuySupplies(idCompany) {
 
 export function actionAddSaleSupply(payload){
 
-console.log(payload)
+
    return async function (dispatch) {
     try {
       const newSaleSupply = await axios.post(

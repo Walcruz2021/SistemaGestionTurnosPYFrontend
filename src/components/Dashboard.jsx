@@ -368,17 +368,29 @@ function Dashboard() {
                   </button>
                 )}
 
-               <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                    <div className="text-center">
-                      <div className="card-body">
-                        <Link to="/addVtas">
-                          <button className="btn btn-link">
-                            <img src={saleVta} />
-                          </button>
-                        </Link>
-                      </div>
+                <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                  <div className="text-center">
+                    <div className="card-body">
+                      <Link to="/addVtas">
+                        <button className="btn btn-link">
+                          <img src={saleVta} />
+                        </button>
+                      </Link>
                     </div>
                   </div>
+                </div>
+
+                      <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                  <div className="text-center">
+                    <div className="card-body">
+                      <Link to="/addStockAdjustments">
+                        <button className="btn btn-link">
+                          <img src={saleVta} />
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </div>

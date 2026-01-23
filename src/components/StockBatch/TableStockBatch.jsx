@@ -17,7 +17,7 @@ const TableStockBatch = ({ idSupply }) => {
     }, [idSupply, dispatch]);
 
     const listStockBatches = useSelector((state) => state.stockBatch.listStockBatch);
- 
+
 
     return (
         <div >
@@ -47,12 +47,17 @@ const TableStockBatch = ({ idSupply }) => {
 
                                     className="instrument-serif-regular"
                                 >{buy.quantity}</td>
-                                <td>{convertNum(buy.unitCost)}</td>
+                                <td className="instrument-serif-regular">{convertNum(buy.unitCost)}</td>
 
-                                <td>{convertDateReverse(convertDateFormat(buy.datePurchase))}</td>
+                                <td className="instrument-serif-regular">{convertDateReverse(convertDateFormat(buy.datePurchase))}</td>
                             </tr>
                         )
-                    }) : <h2>no hay datos</h2>
+                    }) :
+
+                        <div className="titGral">
+                            <h2>No hay Datos</h2>
+                        </div>
+
 
                     }
 

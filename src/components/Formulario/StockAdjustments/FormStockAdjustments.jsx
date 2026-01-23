@@ -3,20 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import TableDetailSupplies from "./TableDetailSupplies.jsx";
+import TableSuppliesAdjustmentsDetails from "../../Supplies/TableSuppliesAdjustmentsDetails";
 import { useSelector, useDispatch } from "react-redux";
-import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
+import ModalEditSupply from "../../Modal/Supply/ModalEditSupply.js";
 import Select from "react-select";
-import listCategories from "../../functions/categoriesSupplies.json";
-import "../../../src/App.css";
+import listCategories from "../../../functions/categoriesSupplies.json";
+import "../../../../src/App.css";
 import {
     getListSupplies,
     actionsOrderSupplies,
-} from "../../reducer/actions/supply/actionsSupply.js";
-import { getBrands } from "../../reducer/actions/actionBrand.jsx";
-import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
+} from "../../../reducer/actions/supply/actionsSupply.js";
+import { getBrands } from "../../../reducer/actions/actionBrand.jsx";
+import TableStockBatch from "../../StockBatch/TableStockBatch.jsx";
 
-const TableSupplies = ({ setInfo, stateInfo }) => {
+const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     const dispatch = useDispatch();
     const companySelectedMenu = useSelector(
         (state) => state.company.companySelected
@@ -328,15 +328,11 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                     <div className="titGral">
                         <h1>Insumo Seleccionado</h1>
                     </div>
-                    <TableDetailSupplies
-                        // stateDetailsSup={stateDetailsSup.detailsSup}
-                        stateDetailsSup={stateDetailsSup}
-                        setSupplySelected={setSupplySelected}
-                    />
-                    <TableStockBatch
-                        // idSupply={stateDetailsSup.detailsSup?.idGlobalSupply}
-                        idSupply={stateDetailsSup.idGlobalSupply}
-                    />
+
+
+                    <TableSuppliesAdjustmentsDetails dataSupplySeleted={stateDetailsSup} />
+
+
                 </> : <div className="titGral">
                     <h1>Seleccione un Insumo para ver sus Detalles</h1>
                 </div>
@@ -354,4 +350,4 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     );
 };
 
-export default TableSupplies;
+export default FormStockAdjustments;

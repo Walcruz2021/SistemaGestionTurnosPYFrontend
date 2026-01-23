@@ -131,9 +131,9 @@ const TableBuySupplies = () => {
                                         }
                                         className="instrument-serif-regular"
                                     >{buy.NInvoice}</td>
-                                    <td>{buy.nameSupplier ?? "No registrado"}</td>
-                                    <td>{convertDateReverse(buy.date)}</td>
-                                    <td>{buy.montoB ? convertNum(buy.montoB) : 0}</td>
+                                    <td className="instrument-serif-regular">{buy.nameSupplier ?? "No registrado"}</td>
+                                    <td className="instrument-serif-regular">{convertDateReverse(buy.date)}</td>
+                                    <td className="instrument-serif-regular">{buy.montoB ? convertNum(buy.montoB) : 0}</td>
                                 </tr>
                             )
                         })

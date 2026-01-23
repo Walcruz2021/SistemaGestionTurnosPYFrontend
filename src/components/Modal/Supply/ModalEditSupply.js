@@ -19,6 +19,7 @@ const ModalEditSupply = ({
     setModalOpenEditSupply,
     dataSupply,
 }) => {
+  
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplier = useSelector((state) => state.supplier.listSupplier)
@@ -53,29 +54,29 @@ const ModalEditSupply = ({
         if (dataSupply) {
             setStateInput({
                 idSupply: dataSupply._id,
-                nameSupply: dataSupply.nameSupply,
-                categorySupply: dataSupply.categorySupply,
+                nameSupply: dataSupply.global.nameSupply,
+                categorySupply: dataSupply.global.categorySupply,
                 idSupplier: dataSupply.idSupplier,
                 nameSupplier: dataSupply.nameSupplier,
                 priceSale: dataSupply.priceSale,
-                nameBrand: dataSupply.nameBrand,
-                typeUnidMed: dataSupply.typeUnidMed,
-                valueUnidMed: dataSupply.valueUnidMed,
+                nameBrand: dataSupply.global.nameBrand,
+                typeUnidMed: dataSupply.global.typeUnidMed,
+                valueUnidMed: dataSupply.global.valueUnidMed,
                 priceSale: dataSupply.priceSale
             })
         }
     }, [dataSupply])
 
-     useEffect(() => {
-            if (Array.isArray(listBrands) && listBrands.length > 0) {
-                const formattedBrands = listBrands.map((brand) => ({
-                    value: brand._id,
-                    label: brand.nameBrand,
-                }));
-    
-                setStateSeletedBrand(formattedBrands);
-            }
-        }, [listBrands]);
+    useEffect(() => {
+        if (Array.isArray(listBrands) && listBrands.length > 0) {
+            const formattedBrands = listBrands.map((brand) => ({
+                value: brand._id,
+                label: brand.nameBrand,
+            }));
+
+            setStateSeletedBrand(formattedBrands);
+        }
+    }, [listBrands]);
 
     var selectSupplierArray = []
 
@@ -127,14 +128,14 @@ const ModalEditSupply = ({
     }
 
     const handleSubmit = () => {
-        if (stateInput.nameSupply.trim() === "" || stateInput.categorySupply.trim() === "" || stateInput.idSupplier.trim() === "") {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Faltan Datos por Completar",
-            });
-        }
-        else {
+        // if (stateInput.nameSupply.trim() === "" || stateInput.categorySupply.trim() === "" || stateInput.idSupplier.trim() === "") {
+        //     Swal.fire({
+        //         icon: "error",
+        //         title: "Oops...",
+        //         text: "Faltan Datos por Completar",
+        //     });
+        // }
+        
             const supplyData = {
                 categorySupply: stateInput.categorySupply,
                 idSUpply: stateInput.idSupply,
@@ -164,7 +165,7 @@ const ModalEditSupply = ({
                     });
                 }
             });
-        }
+        
     };
 
     //SELECT UNIDAD
@@ -224,8 +225,9 @@ const ModalEditSupply = ({
 
                                 <Col xs={6}>
                                     <Form.Group>
-                                        <Form.Label>Tipo Unidad Medida</Form.Label>
+                                        <Form.Label className="instrument-serif-regular">Tipo Unidad Medida</Form.Label>
                                         <Select
+                                            className="instrument-serif-regular mt-1"
                                             options={TypeUnidMed}
                                             onChange={handleChangeTypeUnidMed}
                                             placeholder={stateInput.typeUnidMed ? stateInput.typeUnidMed : "Seleccione tipo de Unidad"}
@@ -234,21 +236,22 @@ const ModalEditSupply = ({
                                 </Col>
 
                                 {stateInput && stateInput.typeUnidMed === "Talle Internacional" ?
-                                    <Col xs={6}>
+                                    <Col xs={6} className="mt-2">
                                         <Form.Group>
-                                            <Form.Label>Valor Unidad Medida</Form.Label>
+                                            <Form.Label className="instrument-serif-regular">Valor Unidad Medida</Form.Label>
                                             <Select
-                                                options={talleInt}
+                                                className="instrument-serif-regular"
                                                 onChange={handleChangeTalleInt}
                                                 placeholder={stateInput.valueUnidMed ? stateInput.valueUnidMed : "Seleccione valor de Unidad"}
                                             />
                                         </Form.Group>
 
                                     </Col> : stateInput.typeUnidMed === "Talle Numerico" ?
-                                        <Col xs={6}>
+                                        <Col xs={6} className="mt-2">
                                             <Form.Group>
-                                                <Form.Label>Valor Unidad Medida</Form.Label>
+                                                <Form.Label className="instrument-serif-regular">Valor Unidad Medida</Form.Label>
                                                 <Select
+                                                    className="instrument-serif-regular"
                                                     options={talleNum}
                                                     onChange={handleChangeTalleNum}
                                                     placeholder={stateInput.valueUnidMed ? stateInput.valueUnidMed : "Seleccione valor de Unidad"}
@@ -269,10 +272,10 @@ const ModalEditSupply = ({
                                 }
 
                                 <Form.Group
-                                    className="mb-1"
+                                    className="mb-1 mt-1"
                                     controlId="exampleForm.ControlInput1"
                                 >
-                                    <Form.Label className="instrument-serif-regular">
+                                    <Form.Label className="instrument-serif-regular mt-1">
                                         Nombre Insumo
                                     </Form.Label>
 
@@ -288,8 +291,8 @@ const ModalEditSupply = ({
                                     />
                                 </Form.Group>
 
-                                 <Form.Group
-                                    className="mb-1"
+                                <Form.Group
+                                    className="mb-1 mt-1"
                                     controlId="exampleForm.ControlInput1"
                                 >
                                     <Form.Label className="instrument-serif-regular">
@@ -308,7 +311,7 @@ const ModalEditSupply = ({
                                         required
                                     />
                                 </Form.Group>
-                                
+
                             </>
 
                         </Form>
@@ -319,7 +322,7 @@ const ModalEditSupply = ({
                             variant="primary"
                             type="submit"
                             onClick={handleSubmit}
-                            disabled={!stateInput.nameSupply || !stateInput.categorySupply || !stateInput.nameSupplier}
+                            disabled={!stateInput.nameSupply || !stateInput.categorySupply || !stateInput.typeUnidMed || !stateInput.valueUnidMed || !stateInput.nameBrand || !stateInput.priceSale}
                         >
                             Editar Insumo
                         </Button>

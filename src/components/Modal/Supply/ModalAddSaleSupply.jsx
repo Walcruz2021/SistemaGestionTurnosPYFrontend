@@ -18,9 +18,7 @@ import { getBrands } from "../../../reducer/actions/actionBrand"
 const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDetailsSupplies }) => {
 
     const [stateInputSupply, setStateInputSupply] = useState({
-        dateSale: "",
         quantitySale: "",
-        platformMethod: "",
         discount: 0,
         surcharge: 0
     });
@@ -32,6 +30,8 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
             setStateInputSupply(prev => ({
                 ...prev,
                 quantitySale: dataModalSale.quantitySale,
+                discount: dataModalSale.discount||0,
+                surcharge: dataModalSale.surcharge||0,
 
             }));
         }
@@ -70,11 +70,6 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
 
 
 
-    /////////////CATEGORY////////////////
-
-
-
-
     const handleUpdateSupply = () => {
         setStateDetailsSupplies(prev =>
             prev.map(item =>
@@ -98,11 +93,11 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                             Agregar Insumo
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="pt-1 pb-1">
+                    <Modal.Body className="pt-1 pb-1 ">
                         <Form>
 
                             <Form.Group
-                                className="mb-1"
+                                className="mb-1 instrument-serif-regular"
                                 controlId="exampleForm.ControlInput1"
                             >
                                 <Form.Label className="instrument-serif-regular">
@@ -117,7 +112,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                                     name="quantitySale"
                                     autoFocus
                                     min={1}
-                                    maxLength={50}
+                                    max={dataModalSale&&dataModalSale.totalStock}
                                     value={stateInputSupply.quantitySale}
                                     onChange={(e) => setStateInputSupply(prev => ({ ...prev, quantitySale: e.target.value }))}
                                     required

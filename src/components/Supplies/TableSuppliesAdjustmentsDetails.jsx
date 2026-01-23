@@ -18,7 +18,7 @@ import withReactContent from "sweetalert2-react-content";
 import converNum from "../../functions/convertNum"
 import { getListSupplies } from "../../reducer/actions/supply/actionsSupply.js"
 
-const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
+const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
 
     const [stateOpenModalSale, setStateOpenModalSale] = useState(false);
     const dispatch = useDispatch()
@@ -445,7 +445,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                         onClick={() => { addSaleSupply(stateDetailsSupplies) }}
                         disabled={!stateDetailsSupplies.length || !stateSaleDetail.dateSale || !stateSaleDetail.platformMethod || !stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta}
                     >
-                        Agregar Venta
+                        Agregar Ajuste
                     </Button>
 
                 </Modal.Footer>
@@ -455,6 +455,6 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
     )
 }
 
-export default TableSuppliesSaleDetails;
+export default TableSuppliesAdjustmentsDetails;
 
 
