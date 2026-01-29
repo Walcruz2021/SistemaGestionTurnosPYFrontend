@@ -12,6 +12,7 @@ import Select from "react-select";
 
 const ModalAddTurn = ({ stateAddTurn, setStateAddTurn, turn }) => {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
+  console.log(companySelectedMenu)
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
   const [optionsListSelect, setOptionsListSelect] = useState([]);

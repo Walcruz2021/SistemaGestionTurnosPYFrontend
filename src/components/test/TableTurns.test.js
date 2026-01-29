@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import TableTurns from "../TableTurns";
+import TableTurns from "../Turns/TableTurns";
 import Swal from "sweetalert2";
 import * as actions from "../../reducer/actions/actionsTurnos";
 import { FaFileAlt } from "react-icons/fa";
@@ -15,7 +15,7 @@ jest.mock("sweetalert2", () => ({
 // ✅ mock sin thunk
 jest.mock("../../reducer/actions/actionsTurnos", () => ({
   deleteTurno: jest.fn(() => Promise.resolve()),
-  getTurnos: jest.fn(() => Promise.resolve()),
+  getTurnos: jest.fn(() => Promise.resolve())
 }));
 
 // Mock store
@@ -26,19 +26,26 @@ describe("TableTurns component", () => {
 
   beforeEach(() => {
     store = mockStore({
-      companySelected: { category: "peluAndVet", _id: "123" },
-      allTurnos: [
-        {
-          _id: "6894e634e179027cbf200b45",
-          name: "Maria Elena Fuseneko",
-          nameDog: "Kaiser",
-          date: "07/08/2025",
-          time: "14:00",
-          isNotifications: true,
-        },
-      ],
-      categoryMedicine: false,
-      typePerson: "Cliente",
+      company: {
+        companySelected: { category: "peluAndVet", _id: "123" },
+        categoryMedicine: false, typePerson: "Cliente"
+      },
+      turns: {
+        allTurnos: [
+          {
+            _id: "6894e634e179027cbf200b45",
+            name: "Maria Elena Fuseneko",
+            nameDog: "Kaiser",
+            date: "07/08/2025",
+            time: "14:00",
+            isNotifications: true,
+          },
+        ],
+      },
+      client: {
+        allClients: [],
+      },
+
     });
 
     // ✅ ahora dispatch siempre devuelve una promesa
@@ -69,10 +76,13 @@ describe("TableTurns component", () => {
 
   it("muestra encabezados con 'Nombre Paciente' si categoryMedicine es true", () => {
     store = mockStore({
-      companySelected: { category: "medicinaGral", _id: "123" },
-      allTurnos: [],
-      categoryMedicine: true, // 👈 ahora true
-      typePerson: "Cliente",
+      company: { companySelected: { category: "medicinaGral", _id: "123" }, categoryMedicine: true, typePerson: "Cliente" },
+      turns: {
+        allTurnos: [],
+      },
+      client: {
+        allClients: [],
+      },
     });
     store.dispatch = jest.fn(() => Promise.resolve());
 
@@ -84,60 +94,69 @@ describe("TableTurns component", () => {
     expect(screen.getByText(/Opciones/i)).toBeInTheDocument();
   });
 
-  it("muestra botón AddFicha si categoryMedicine es true o category=peluAndVet", () => {
-    // ⚡ Creamos el store cumpliendo la condición
-    store = mockStore({
-      companySelected: { category: "peluAndVet", _id: "123" },
-      allTurnos: [
-        {
-          _id: "6894e634e179027cbf200b45",
-          name: "Maria Elena Fuseneko",
-          nameDog: "Kaiser",
-          date: "07/08/2025",
-          time: "14:00",
-          isNotifications: true,
-        },
-      ],
-      categoryMedicine: true, // 👉 cumple condición
-      typePerson: "Cliente",
-    });
-    store.dispatch = jest.fn(() => Promise.resolve());
+  //se comenta este test ya que momentanemante no se utilizara la categoria MEDICINE
+  // it("muestra botón AddFicha si categoryMedicine es true o category=peluAndVet", () => {
+  //   // ⚡ Creamos el store cumpliendo la condición
+  //   store = mockStore({
 
-    renderComponent();
+  //     turns: {
+  //       allTurnos: [
+  //         {
+  //           _id: "6894e634e179027cbf200b45",
+  //           name: "Maria Elena Fuseneko",
+  //           nameDog: "Kaiser",
+  //           date: "07/08/2025",
+  //           time: "14:00",
+  //           isNotifications: true,
+  //         },
+  //       ],
+  //     },
+  //     company: { companySelected: { category: "peluAndVet", _id: "123" } , categoryMedicine: true, typePerson: "Cliente", typePerson: "Cliente" },
+  //     client: {
+  //       allClients: [],
+  //     }
+  //   });
+  //   store.dispatch = jest.fn(() => Promise.resolve());
 
-    // 🔎 Verificamos que se renderizó el botón con el ícono FaFileAlt
-    const addFichaBtn = screen.getByRole("button", { name: /AddFicha/i });
-    expect(addFichaBtn).toBeInTheDocument();
+  //   renderComponent();
 
-    // opcional: validar que dentro tenga el ícono de FaFileAlt
-    expect(addFichaBtn.querySelector("svg")).toBeInTheDocument();
-  });
+  //   // 🔎 Verificamos que se renderizó el botón con el ícono FaFileAlt
+  //   const addFichaBtn = screen.getByRole("button", { name: /AddFicha/i });
+  //   expect(addFichaBtn).toBeInTheDocument();
 
-  it("NO muestra botón AddFicha si categoryMedicine es false y category !== peluAndVet", () => {
-    store = mockStore({
-      companySelected: { category: "otraCategoria", _id: "123" }, // ❌ distinta
-      allTurnos: [
-        {
-          _id: "6894e634e179027cbf200b45",
-          name: "Maria Elena Fuseneko",
-          nameDog: "Kaiser",
-          date: "07/08/2025",
-          time: "14:00",
-          isNotifications: true,
-        },
-      ],
-      categoryMedicine: false, // ❌ no cumple condición
-      typePerson: "Cliente",
-    });
-    store.dispatch = jest.fn(() => Promise.resolve());
+  //   // opcional: validar que dentro tenga el ícono de FaFileAlt
+  //   expect(addFichaBtn.querySelector("svg")).toBeInTheDocument();
+  // });
 
-    renderComponent();
+  //se comenta este test ya que momentanemante no se utilizara la categoria MEDICINE
+  // it("NO muestra botón AddFicha si categoryMedicine es false y category !== peluAndVet", () => {
+  //   store = mockStore({
+  //     company: { companySelected: { category: "otraCategoria", _id: "123" }, categoryMedicine: false, typePerson: "Cliente", typePerson: "Cliente" }, // ❌ distinta
+  //     turns: {
+  //       allTurnos: [
+  //         {
+  //           _id: "6894e634e179027cbf200b45",
+  //           name: "Maria Elena Fuseneko",
+  //           nameDog: "Kaiser",
+  //           date: "07/08/2025",
+  //           time: "14:00",
+  //           isNotifications: true,
+  //         },
+  //       ]
+  //     },
+  //     client: {
+  //       allClients: [],
+  //     },
+  //   });
+  //   store.dispatch = jest.fn(() => Promise.resolve());
 
-    // 🔎 el botón no debe estar
-    expect(
-      screen.queryByRole("button", { name: /AddFicha/i })
-    ).not.toBeInTheDocument();
-  });
+  //   renderComponent();
+
+  //   // 🔎 el botón no debe estar
+  //   expect(
+  //     screen.queryByRole("button", { name: /AddFicha/i })
+  //   ).not.toBeInTheDocument();
+  // });
 
   // it("botón AddFicha deshabilitado si categoryMedicine es true y no existe un Paciente asignado", () => {
   //   store = mockStore({

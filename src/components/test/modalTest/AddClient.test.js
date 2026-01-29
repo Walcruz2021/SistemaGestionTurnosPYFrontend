@@ -29,10 +29,10 @@ describe("ModalAddClient", () => {
   let store;
   beforeEach(() => {
     store = mockStore({
-      companySelected: { _id: "664550f3868e2227e45b29cd", category: "pelu" },
-      allClients: [{ _id: "1", name: "Cliente Test" }],
-      categoryMedicine: false,
-      typePerson: "Cliente",
+      company: { companySelected: { _id: "664550f3868e2227e45b29cd", category: "pelu" }, categoryMedicine: false, typePerson: "Cliente", },
+      client: { allClients: [{ _id: "1", name: "Cliente Test" }] },
+
+
     });
   });
   const renderModal = () =>
