@@ -120,6 +120,7 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     // MANEJO DE SELECCIÓN DE INSUMO
     //-------------------------------------------------
     const handleDetailsSupplies = (e, props) => {
+
         e.preventDefault();
 
         const selected = props.sup;
@@ -232,19 +233,37 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
                             <tbody>
                                 {currentItems.map((sup) => (
                                     <tr key={sup._id}>
-                                        <td className="instrument-serif-regular"
-                                            style={{ cursor: "pointer" }}
-                                            onClick={(e) =>
-                                                handleDetailsSupplies(e, {
-                                                    sup,
-                                                })
-                                            }
-                                        >
-                                            {sup.global.nameSupply}
-                                        </td>
+
+                                        {
+                                            sup.totalStock > 0 ?
+                                                <td className="instrument-serif-regular"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={(e) =>
+                                                        handleDetailsSupplies(e, {
+                                                            sup,
+                                                        })
+                                                    }
+                                                >
+                                                    {sup.global.nameSupply}
+                                                </td> :
+
+                                                <td className="instrument-serif-regular"
+                                                    style={{ color: "red" }}
+                                                >
+                                                    {sup.global.nameSupply}
+                                                </td>
+                                        }
+
                                         <td className="instrument-serif-regular">{sup.global.categorySupply}</td>
                                         <td className="instrument-serif-regular">{sup.global.nameBrand}</td>
-                                        <td className="instrument-serif-regular">{sup.totalStock ?? 0}</td>
+
+                                        {
+                                            sup.totalStock > 0 ?
+                                                <td className="instrument-serif-regular" style={{ color: "green" }}>{sup.totalStock ?? 0}</td>
+                                                :
+                                                <td className="instrument-serif-regular" style={{ color: "red" }}>{sup.totalStock ?? 0}</td>
+                                        }
+
                                     </tr>
                                 ))}
                             </tbody>

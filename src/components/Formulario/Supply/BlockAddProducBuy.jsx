@@ -18,7 +18,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
     const dispatch = useDispatch();
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplies = useSelector((state) => state.supply.listSupplies);
-    console.log(listSupplies)
+
     const listBrands = useSelector((state) => state.gralRed.listBrands);
     const [stateMargen, setmargen] = useState(50)
 
@@ -28,7 +28,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index }) => {
 
     // Acceso directo al producto actual
     const currentProduct = stateInput.detailsSupply[index];
-console.log(currentProduct)
+
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
@@ -96,7 +96,7 @@ console.log(currentProduct)
 
     const handleChangeInput = (e) => {
         const { name, value, type } = e.target;
-        console.log(value)
+     
         handleChangeField(
             name,
             type === "number" ? (value === "" ? "" : Number(value)) : value

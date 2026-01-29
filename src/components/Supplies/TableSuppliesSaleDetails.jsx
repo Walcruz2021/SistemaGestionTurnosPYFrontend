@@ -25,8 +25,6 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
     const MySwal = withReactContent(Swal);
     //estado que manejara el array de los insumos a vender que se seleccionaron
     const [stateDetailsSupplies, setStateDetailsSupplies] = useState([]);
-
-
     const [visibleCheckE, setVisibleCheckE] = useState(false);
     const [visibleCheckT, setVisibleCheckT] = useState(false);
     const [visibleCheckB, setVisibleCheckB] = useState(false);
@@ -46,6 +44,8 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
     const [dataModalSale, setDataModalSale] = useState(null);
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
+
+     const [selectState, setSelectState] = useState(null);
 
     useEffect(() => {
 
@@ -144,6 +144,8 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                         tarjeta: "",
                         efectivo: ""
                     });
+
+                    setSelectState(null);
                 }
             });
         } else {
@@ -429,8 +431,10 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                 placeholder="Seleccione Plataforma"
                                 onChange={(e) => {
                                     handleChangePlat(e);
+                                    setSelectState(e);
                                 }}
                                 options={selectPlataformaArray}
+                                value={selectState}
                             />
                         </Form.Group>
                     </Form>

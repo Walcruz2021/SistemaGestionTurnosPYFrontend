@@ -8,7 +8,6 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { PiHighHeelFill } from "react-icons/pi";
 import { FaCheckToSlot } from "react-icons/fa6";
-import ModalAddSaleSupply from "../Modal/Supply/ModalAddSaleSupply";
 import { actionAddSaleSupply } from "../../reducer/actions/supply/actionsSupply";
 import { useDispatch, useSelector } from "react-redux";
 import convertDateFormat from "../../functions/convertDateFormat"
@@ -17,33 +16,29 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import converNum from "../../functions/convertNum"
 import { getListSupplies } from "../../reducer/actions/supply/actionsSupply.js"
+import { addStockAdjustment } from "../../reducer/actions/stockAdjustment/actionStockAdjustment.js"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faTrash
+} from "@fortawesome/free-solid-svg-icons";
 
 const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
 
-    const [stateOpenModalSale, setStateOpenModalSale] = useState(false);
+    const [stateOpenModalAdj, setStateOpenModalAdj] = useState(false);
     const dispatch = useDispatch()
     const MySwal = withReactContent(Swal);
     //estado que manejara el array de los insumos a vender que se seleccionaron
     const [stateDetailsSupplies, setStateDetailsSupplies] = useState([]);
 
-
-    const [visibleCheckE, setVisibleCheckE] = useState(false);
-    const [visibleCheckT, setVisibleCheckT] = useState(false);
-    const [visibleCheckB, setVisibleCheckB] = useState(false);
-
     const [stateSaleDetail, setStateDetail] = useState({
-        dateSale: "",
-        platformMethod: ""
+        date: "",
+        typeAdjustment: "",
+        noteAdjustment: "",
+        quantity: 1,
     })
+    const [typeAdjustment, setTypeAdjustment] = useState(null);
 
-    const [stateValueMethodPay, setStateValueMethodPay] = useState({
-        transferencia: "",
-        tarjeta: "",
-        efectivo: ""
-    });
-
-
-    const [dataModalSale, setDataModalSale] = useState(null);
+    const [dataModalAdj, setDataModalAdj] = useState(null);
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
@@ -61,35 +56,31 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                 if (exists) return prev;
 
                 return [
-                    ...prev,
-                    { ...dataSupplySeleted, quantitySale: 1 }
+
+                    { ...dataSupplySeleted, quantity: 1 }
                 ];
             });
             const date = Date()
             const dateNew = convertDateFormat(date)
-            setStateDetail({ ...stateSaleDetail, dateSale: dateNew })
+            setStateDetail({ ...stateSaleDetail, date: dateNew })
         }
     }, [dataSupplySeleted]);
 
 
-    const totalSale = React.useMemo(() => {
-        return stateDetailsSupplies.reduce((acc, sale) => {
-            const quantity = sale.quantitySale ?? 0;
-            const price = sale.priceSale ?? 0;
-            const discount = sale.discount ?? 0;
-            const surcharge = sale.surcharge ?? 0;
+    // const totalSale = React.useMemo(() => {
+    //     return stateDetailsSupplies.reduce((acc, item) => {
+    //         const quantity = item.quantity ?? 0;
+    //         const price = item.priceSale ?? 0;
 
-            return acc +
-                (price * quantity) -
-                (discount * quantity) +
-                (surcharge * quantity);
-        }, 0);
-    }, [stateDetailsSupplies]);
+    //         return acc +
+    //             (price * quantity)
+    //     }, 0);
+    // }, [stateDetailsSupplies]);
 
 
-    const openModalSaleDetails = (supply) => {
-        setStateOpenModalSale(true);
-        setDataModalSale(supply)
+    const openModalDetails = (supply) => {
+        setStateOpenModalAdj(true);
+        setDataModalAdj(supply)
     }
 
     const addSaleSupply = async (detailsSupplies) => {
@@ -112,38 +103,35 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
         });
 
 
-        const dataSaleSupply = {
+        const dataAdjustment = {
             idCompany: companySelectedMenu._id,
-            date: stateSaleDetail.dateSale,
-            paymentMethodEfectivo: stateValueMethodPay.efectivo,
-            paymentMethodTransferencia: stateValueMethodPay.transferencia,
-            paymentMethodTarjeta: stateValueMethodPay.tarjeta,
-            platformMethod: stateSaleDetail.platformMethod,
-            items: listItemsSupplies
+            idCompanySupply: listItemsSupplies[0].idCompanySupply,
+            date: stateSaleDetail.date,
+            typeAdjustment: stateSaleDetail.typeAdjustment,
+            quantity: stateSaleDetail.quantity,
         }
 
-        const requestSale = await dispatch(actionAddSaleSupply(dataSaleSupply))
+        const requestSale = await dispatch(addStockAdjustment(dataAdjustment))
         if (requestSale && requestSale.status == 200) {
             //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
             dispatch(getListSupplies(companySelectedMenu._id))
             //limpiamos el array de con insumos elegidos para vender
             setStateDetailsSupplies([]);
             MySwal.fire({
-                title: `¡Venta Agregada Correctamente!`,
+                title: `¡Ajuste  Agregado Correctamente!`,
                 icon: "success",
                 confirmButtonText: "Aceptar",
                 confirmButtonColor: "rgb(21, 151, 67)",
             }).then((result) => {
                 if (result.isConfirmed) {
                     setStateDetail({
-                        platformMethod: "",
-                        dateSale: ""
+                        date: "",
+                        typeAdjustment: "",
+                        quantity: "",
+                        noteAdjustment: "",
                     });
-                    setStateValueMethodPay({
-                        transferencia: "",
-                        tarjeta: "",
-                        efectivo: ""
-                    });
+                    //reseteo del select
+                    setTypeAdjustment(null)
                 }
             });
         } else {
@@ -157,43 +145,90 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
 
     }
 
-    const handleChangeDate = (e) => {
+    const handleChangeDataNumber = (e) => {
         const { name, value } = e.target;
-        // value aquí vendrá como "yyyy-mm-dd" al seleccionar en el calendario
-        setStateDetail((prevState) => ({
-            ...prevState,
-            [name]: value,
+        let valMax = stateDetailsSupplies.length > 0 ? stateDetailsSupplies[0].totalStock : 0;
+        // solo enteros
+        if (!/^\d*$/.test(value)) return;
+
+        // evitar vacío
+        if (value === "") {
+            setStateDetail(prev => ({ ...prev, [name]: "" }));
+            return;
+        }
+
+        const numericValue = Number(value);
+
+        //límite máximo
+        if (numericValue > valMax) return;
+
+        setStateDetail(prev => ({
+            ...prev,
+            [name]: numericValue
         }));
     };
 
-    var arrayPlataforma = ["Mercado Libre", "Instagram", "Facebook", "Tik Tok", "Local"];
-    var selectPlataformaArray = [];
+    const handleChangeData = (e) => {
+        const { name, value } = e.target;
 
-    if (Array.isArray(arrayPlataforma)) {
-        arrayPlataforma.map((plat, i) => {
+        setStateDetail(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    var arrayAdjustment = ["NOTA DE CREDITO", "DAÑADO", "VENCIDO", "PERDIDO", "ROBO", "DIFERENCIA INVENTARIO", "DONACION", "MUESTRA"];
+    var selectTypeAdjuArray = [];
+
+    if (Array.isArray(arrayAdjustment)) {
+        arrayAdjustment.map((plat, i) => {
             var option = {
                 value: plat,
                 label: plat,
             };
-            selectPlataformaArray.push(option);
+            selectTypeAdjuArray.push(option);
         });
     }
 
-    function handleChangePlat(e) {
+    function handleChangeAdj(e) {
         const seleccionP = e.value;
 
-        setStateDetail({ ...stateSaleDetail, platformMethod: seleccionP });
+        setStateDetail({ ...stateSaleDetail, typeAdjustment: seleccionP });
     }
 
-    const handleCheckChange = (type) => {
-        if (type === "Efectivo") {
-            setVisibleCheckE(!visibleCheckE);
-        } else if (type === "Transferencia") {
-            setVisibleCheckB(!visibleCheckB);
-        } else if (type === "Tarjeta") {
-            setVisibleCheckT(!visibleCheckT);
-        }
-    };
+    const deleteSupply = () => {
+
+        MySwal.fire({
+            title: "¿Estas seguro?",
+            text: "¡Eliminar Insumo del Listado",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#1ABD53",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setStateDetailsSupplies([]);
+                setStateDetail({
+                    date: "",
+                    typeAdjustment: "",
+                    noteAdjustment: "",
+                    quantity: "",
+                })
+                setTypeAdjustment(null);
+                MySwal.fire({
+                    title: "Insumo Eliminado",
+                    text: "El Insumo se eliminó correctamente.",
+                    icon: "success",
+                    confirmButtonColor: "#00A0D2",
+                });
+            }
+        });
+
+
+    }
+
 
     return (
         <div className="container-lg table-responsive mb-4">
@@ -212,9 +247,8 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                             /> */}
                         </th>
 
-                        <th className="instrument-serif-regular">Cantidad</th>
-                        <th className="instrument-serif-regular">$ Venta Unid</th>
-                        <th className="instrument-serif-regular">$ Venta Total</th>
+
+
                         <th className="instrument-serif-regular">Opciones</th>
                     </tr>
                 </thead>
@@ -235,25 +269,9 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                                     {sup.global?.nameSupply}
                                 </td>
 
-                                <td className="instrument-serif-regular">{sup.quantitySale ?? 0}</td>
-
-
-                                <td className="instrument-serif-regular">{converNum(sup.priceSale)}</td>
-                                <td className="instrument-serif-regular">
-
-                                    {
-
-                                        converNum(
-                                            (sup.priceSale * (sup.quantitySale ?? 0)) - Number(sup.discount * sup.quantitySale || 0) +
-                                            Number(sup.surcharge * sup.quantitySale || 0)
-
-                                        )
-                                    }
-                                </td>
-
                                 <td>
 
-                                    <FaCheckToSlot size={"2rem"} onClick={() => openModalSaleDetails(sup)} />
+                                    <FontAwesomeIcon icon={faTrash} size="lg" onClick={() => deleteSupply()} />
                                 </td>
 
                             </tr>))
@@ -263,15 +281,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                     </tbody>
 
                 }
-                <div className="p-2 instrument-serif-regular d-flex justify-content-end">
-                    <p className="text-end fw-bold f-20  me-2">
-                        Total Venta:
-                    </p>
-                    <p className="text-end fw-bold">
-                        {converNum(totalSale)}
-                    </p>
 
-                </div>
 
 
             </table>
@@ -295,122 +305,39 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                             controlId="exampleForm.ControlInput1"
                         >
                             <Form.Label className="instrument-serif-regular">
-                                (*) Fecha Venta
+                                (*) Fecha Ajuste
                             </Form.Label>
 
                             <Form.Control
                                 className="instrument-serif-regular"
                                 type="date"
-                                name="dateSale"
-                                value={stateSaleDetail.dateSale}
-                                onChange={handleChangeDate}
+                                name="date"
+                                value={stateSaleDetail.date}
+                                onChange={handleChangeData}
                                 required
                             />
                         </Form.Group>
 
-                        <Form.Group>
+
+                        <Form.Group
+                            className="mb-1"
+                            controlId="exampleForm.ControlInput1"
+                        >
                             <Form.Label className="instrument-serif-regular">
-                                (*) Detalle de Pago
+                                Cantidad
                             </Form.Label>
+
+                            <Form.Control
+                                className="instrument-serif-regular"
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                name="quantity"
+                                value={stateSaleDetail.quantity}
+                                onChange={handleChangeDataNumber}
+                                required
+                            />
                         </Form.Group>
-
-                        <Form.Group>
-
-                            <Form.Check
-                                type="checkbox"
-                                id="check-efectivo"
-                                label="Efectivo"
-                                onChange={() => handleCheckChange("Efectivo")}
-                                className="mt-2 instrument-serif-regular"
-
-                            />
-                            {visibleCheckE && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Efectivo"
-                                        name="efectivo"
-                                        maxLength={10}
-                                        required
-                                        className="mt-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.efectivo}
-                                        onChange={(e) => {
-                                            // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                efectivo: value,
-                                            }));
-                                        }}
-                                    />
-                                </>
-                            )}
-
-                            <Form.Check
-                                type="checkbox"
-                                id="check-transferencia"
-                                label="Transferencia"
-                                onChange={() => handleCheckChange("Transferencia")}
-                                className="mt-2 instrument-serif-regular"
-                            />
-                            {visibleCheckB && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Transferencia"
-                                        name="transferencia"
-                                        maxLength={10}
-                                        required
-                                        className="mt-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.transferencia}
-                                        onChange={(e) => {
-                                            // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                transferencia: value,
-                                            }));
-                                        }}
-                                    />
-                                </>
-                            )}
-
-                            <Form.Check
-                                type="checkbox"
-                                id="check-tarjeta"
-                                label="Tarjeta"
-                                onChange={() => handleCheckChange("Tarjeta")}
-                                className="mt-2 instrument-serif-regular"
-                            />
-                            {visibleCheckT && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Tarjeta"
-                                        name="tarjeta"
-                                        maxLength={10}
-                                        required
-                                        className="mt-2 mb-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.tarjeta}
-                                        onChange={(e) => {
-                                            // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                tarjeta: value,
-                                            }));
-                                        }}
-                                    />
-                                </>
-                            )}
-                        </Form.Group>
-
 
 
                         <Form.Group className="mt-2">
@@ -419,20 +346,44 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                                 htmlFor="tam-select"
                                 className="instrument-serif-regular"
                             >
-                                (*) Plataforma Venta
+                                (*) Tipo Ajuste
                             </Form.Label>
-                            {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
+
                             <Select
                                 className="instrument-serif-regular"
                                 inputId="tam-select"
+                                value={typeAdjustment}
                                 inputProps={{ "data-testid": "tam-select" }}
-                                placeholder="Seleccione Plataforma"
+                                placeholder="Seleccione Tipo Ajuste"
                                 onChange={(e) => {
-                                    handleChangePlat(e);
+                                    setTypeAdjustment(e);
+                                    handleChangeAdj(e);
                                 }}
-                                options={selectPlataformaArray}
+                                options={selectTypeAdjuArray}
                             />
                         </Form.Group>
+
+
+                        <Form.Group
+                            className="mb-1"
+                            controlId="exampleForm.ControlInput1"
+                        >
+                            <Form.Label className="instrument-serif-regular">
+                                Nota Ajuste
+                            </Form.Label>
+
+                            <Form.Control
+                                className="instrument-serif-regular"
+                                type="text"
+                                as="textarea"
+                                name="noteAdjustment"
+                                maxLength="50"
+                                value={stateSaleDetail.noteAdjustment}
+                                onChange={handleChangeData}
+                                required
+                            />
+                        </Form.Group>
+
                     </Form>
                 </Modal.Body>
                 <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
@@ -443,14 +394,13 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                         variant="primary"
                         type="submit"
                         onClick={() => { addSaleSupply(stateDetailsSupplies) }}
-                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.dateSale || !stateSaleDetail.platformMethod || !stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta}
+                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.date}
                     >
                         Agregar Ajuste
                     </Button>
 
                 </Modal.Footer>
             </div>
-            <ModalAddSaleSupply openModal={stateOpenModalSale} setOpenModal={setStateOpenModalSale} dataModalSale={dataModalSale} stateDetailsSupplies={stateDetailsSupplies} setStateDetailsSupplies={setStateDetailsSupplies} />
         </div>
     )
 }
