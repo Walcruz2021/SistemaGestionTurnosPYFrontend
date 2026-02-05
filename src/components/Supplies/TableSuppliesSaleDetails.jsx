@@ -45,7 +45,8 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
-     const [selectState, setSelectState] = useState(null);
+    const [selectState, setSelectState] = useState(null);
+
 
     useEffect(() => {
 
@@ -85,6 +86,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                 (surcharge * quantity);
         }, 0);
     }, [stateDetailsSupplies]);
+
 
 
     const openModalSaleDetails = (supply) => {
@@ -196,6 +198,65 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
             setVisibleCheckT(!visibleCheckT);
         }
     };
+
+    const changeNumber = (e) => {
+        const { name, value } = e.target;
+
+        // permitir decimales (máx 2)
+        if (!/^\d*\.?\d{0,2}$/.test(value)) return;
+
+        // permitir borrar
+        if (value === "") {
+            setStateValueMethodPay(prev => ({
+                ...prev,
+                [name]: ""
+            }));
+            return;
+        }
+
+        const numericValue = Number(value);
+
+        // valores actuales
+        const efectivo = Number(
+            name === "efectivo" ? numericValue : stateValueMethodPay.efectivo || 0
+        );
+        const transferencia = Number(
+            name === "transferencia" ? numericValue : stateValueMethodPay.transferencia || 0
+        );
+        const tarjeta = Number(
+            name === "tarjeta" ? numericValue : stateValueMethodPay.tarjeta || 0
+        );
+
+        const totalIngresado = efectivo + transferencia + tarjeta;
+
+        // 🚫 no permitir superar el total de la venta
+        if (totalIngresado > totalSale) return;
+
+        setStateValueMethodPay(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const validationFormSale = () => {
+        if (!stateDetailsSupplies.length) return true;
+        if (!stateSaleDetail.dateSale) return true;
+        if (!stateSaleDetail.platformMethod) return true;
+        if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return true;
+        const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
+        if (totalPay !== totalSale) return true;
+        return false;
+    };
+
+    const messsageErrorValidation = () => {
+        if (!stateDetailsSupplies.length) return "No hay insumos registrados";
+        if (!stateSaleDetail.dateSale) return "Seleccione una fecha de venta";
+        if (!stateSaleDetail.platformMethod) return "Seleccione una plataforma de venta";
+        if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return "Ingrese al menos un método de pago";
+        const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
+        if (totalPay !== totalSale) return "La suma de los métodos de pago no coincide con el total de la venta";
+        return "";
+    }
 
     return (
         <div className="container-lg table-responsive mb-4">
@@ -332,20 +393,15 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         type="text"
                                         placeholder="Efectivo"
                                         name="efectivo"
-                                        maxLength={10}
+                                        inputMode="decimal"
+                                        maxLength={6}
                                         required
                                         className="mt-2 instrument-serif-regular"
                                         value={stateValueMethodPay.efectivo}
-                                        onChange={(e) => {
+                                        onChange={
                                             // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                efectivo: value,
-                                            }));
-                                        }}
+                                            changeNumber
+                                        }
                                     />
                                 </>
                             )}
@@ -363,20 +419,12 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         type="text"
                                         placeholder="Transferencia"
                                         name="transferencia"
-                                        maxLength={10}
+                                        maxLength={6}
+                                        inputMode="decimal"
                                         required
                                         className="mt-2 instrument-serif-regular"
                                         value={stateValueMethodPay.transferencia}
-                                        onChange={(e) => {
-                                            // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                transferencia: value,
-                                            }));
-                                        }}
+                                        onChange={changeNumber}
                                     />
                                 </>
                             )}
@@ -394,20 +442,12 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         type="text"
                                         placeholder="Tarjeta"
                                         name="tarjeta"
-                                        maxLength={10}
+                                        maxLength={6}
+                                        inputMode="decimal"
                                         required
                                         className="mt-2 mb-2 instrument-serif-regular"
                                         value={stateValueMethodPay.tarjeta}
-                                        onChange={(e) => {
-                                            // Solo permitir números y máximo 10 caracteres
-                                            const value = e.target.value
-                                                .replace(/\D/g, "")
-                                                .slice(0, 10);
-                                            setStateValueMethodPay((prevState) => ({
-                                                ...prevState,
-                                                tarjeta: value,
-                                            }));
-                                        }}
+                                        onChange={changeNumber}
                                     />
                                 </>
                             )}
@@ -440,6 +480,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                     </Form>
                 </Modal.Body>
                 <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
+                <div className="text-danger msgAlertInput">{messsageErrorValidation()}</div>
                 <Modal.Footer className="mt-0 pt-3 pb-1 instrument-serif-regular">
 
                     <Button
@@ -447,7 +488,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                         variant="primary"
                         type="submit"
                         onClick={() => { addSaleSupply(stateDetailsSupplies) }}
-                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.dateSale || !stateSaleDetail.platformMethod || !stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta}
+                        disabled={validationFormSale()}
                     >
                         Agregar Venta
                     </Button>

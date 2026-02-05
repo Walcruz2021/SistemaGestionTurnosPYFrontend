@@ -30,8 +30,8 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
             setStateInputSupply(prev => ({
                 ...prev,
                 quantitySale: dataModalSale.quantitySale,
-                discount: dataModalSale.discount||0,
-                surcharge: dataModalSale.surcharge||0,
+                discount: dataModalSale.discount || 0,
+                surcharge: dataModalSale.surcharge || 0,
 
             }));
         }
@@ -82,7 +82,66 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
         setOpenModal(false);
     };
 
+    const handleChangeDataNumber = (e) => {
+        const { name, value } = e.target;
+        let valMax = dataModalSale && dataModalSale.totalStock ? dataModalSale.totalStock : 0;
+        // solo enteros
+        if (!/^\d*$/.test(value)) return;
 
+        // evitar vacío
+        if (value === "") {
+            setStateInputSupply(prev => ({ ...prev, [name]: "" }));
+            return;
+        }
+
+        const numericValue = Number(value);
+
+        //límite máximo
+        if (numericValue > valMax) return;
+
+        if (numericValue === 0) return;
+
+        setStateInputSupply(prev => ({
+            ...prev,
+            [name]: numericValue
+        }));
+    };
+
+
+    const handleChangeDiscountSurcharge = (e) => {
+        const { name, value } = e.target;
+
+        const valMax =
+            dataModalSale && dataModalSale.totalStock
+                ? dataModalSale.priceSale
+                : 0;
+
+        // permitir decimales (máx 2)
+        if (!/^\d*\.?\d{0,2}$/.test(value)) return;
+
+        // permitir borrar
+        if (value === "") {
+            setStateInputSupply(prev => ({ ...prev, [name]: "" }));
+            return;
+        }
+
+        const numericValue = Number(value);
+
+        // permitir "1." o "."
+        if (isNaN(numericValue)) {
+            setStateInputSupply(prev => ({ ...prev, [name]: value }));
+            return;
+        }
+
+        // límite máximo
+        if (numericValue > valMax) return;
+
+        // 🚨 GUARDAR STRING
+        setStateInputSupply(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
     return (
         <>
 
@@ -90,7 +149,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                 <Modal show={openModal} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title className="instrument-serif-regular">
-                            Agregar Insumo
+                            Detalle Insumo {dataModalSale && dataModalSale.global.nameSupply}
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="pt-1 pb-1 ">
@@ -101,20 +160,20 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                                 controlId="exampleForm.ControlInput1"
                             >
                                 <Form.Label className="instrument-serif-regular">
-                                    Cantidad
+                                    (*) Cantidad
                                 </Form.Label>
 
 
 
                                 <Form.Control
                                     className="instrument-serif-regular"
-                                    type="number"
+                                    type="text"
                                     name="quantitySale"
-                                    autoFocus
-                                    min={1}
-                                    max={dataModalSale&&dataModalSale.totalStock}
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    max={dataModalSale && dataModalSale.totalStock}
                                     value={stateInputSupply.quantitySale}
-                                    onChange={(e) => setStateInputSupply(prev => ({ ...prev, quantitySale: e.target.value }))}
+                                    onChange={handleChangeDataNumber}
                                     required
                                 />
                             </Form.Group>
@@ -131,12 +190,12 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
 
                                 <Form.Control
                                     className="instrument-serif-regular"
-                                    type="number"
+                                    type="text"
                                     name="discount"
-                                    autoFocus
-                                    min={0}
+                                    inputMode="decimal"
+                                    maxLength={6}
                                     value={stateInputSupply.discount}
-                                    onChange={(e) => setStateInputSupply(prev => ({ ...prev, discount: e.target.value }))}
+                                    onChange={handleChangeDiscountSurcharge}
                                     required
                                 />
                             </Form.Group>
@@ -153,12 +212,12 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
 
                                 <Form.Control
                                     className="instrument-serif-regular"
-                                    type="number"
+                                    type="text"
                                     name="surcharge"
-                                    autoFocus
-                                    min={0}
+                                    inputMode="decimal"
+                                    maxLength={6}
                                     value={stateInputSupply.surcharge}
-                                    onChange={(e) => setStateInputSupply(prev => ({ ...prev, surcharge: e.target.value }))}
+                                    onChange={handleChangeDiscountSurcharge}
                                     required
                                 />
                             </Form.Group>
@@ -199,7 +258,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                             variant="primary"
                             type="submit"
                             onClick={handleUpdateSupply}
-
+                            disabled={stateInputSupply.quantitySale === "" || stateInputSupply.quantitySale === 0}
                         >
                             Modificar Detalle
                         </Button>
