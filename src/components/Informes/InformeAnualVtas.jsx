@@ -27,7 +27,7 @@ function InformeAnualVtas() {
     { value: 2025, label: 2025 },
   ];
 
-  const ventas22 = useSelector((state) => state.vtasxAnio);
+  const ventas22 = useSelector((state) => state.sales.vtasxAnio);
 
   const [selectedAnio, setSelectedAnio] = useState();
 

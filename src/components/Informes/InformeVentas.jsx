@@ -53,6 +53,7 @@ export default function TodoList() {
   const ventas = useSelector((state) => state.sales.vtasxAnioandMesNow);
 
   const ventasXAnio = useSelector((state) => state.sales.vtasxAnio);
+
   const numberPrediction = useSelector((state) => state.sales.dataPrediction)
 
 
@@ -93,7 +94,6 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
     if (companySelectedMenu) {
       dispatch(vtasAnioMesNow(companySelectedMenu._id));
       dispatch(vtasxA(companySelectedMenu._id, anio));
-
     }
   }, [dispatch, companySelectedMenu]);
 

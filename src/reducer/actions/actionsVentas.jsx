@@ -63,7 +63,7 @@ export function vtasxA(idCompany, anio) {
           },
         }
       );
-      // console.log(detail,"resultado request en actions")
+      console.log(detail,"resultado request en actions")
       return dispatch({
         type: VTA_X_ANIO,
         payload: detail.data.ventas,

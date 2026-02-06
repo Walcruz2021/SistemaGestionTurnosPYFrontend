@@ -157,6 +157,9 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
             return;
         }
 
+        // bloquear 0 exacto
+        if (Number(value) === 0) return;
+
         const numericValue = Number(value);
 
         //límite máximo
@@ -324,14 +327,14 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                             controlId="exampleForm.ControlInput1"
                         >
                             <Form.Label className="instrument-serif-regular">
-                                Cantidad
+                                (*) Cantidad
                             </Form.Label>
 
                             <Form.Control
                                 className="instrument-serif-regular"
                                 type="text"
                                 inputMode="numeric"
-                                pattern="[0-9]*"
+                                pattern="[1-9]*"
                                 name="quantity"
                                 value={stateSaleDetail.quantity}
                                 onChange={handleChangeDataNumber}
@@ -394,7 +397,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                         variant="primary"
                         type="submit"
                         onClick={() => { addSaleSupply(stateDetailsSupplies) }}
-                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.date}
+                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.date || !stateSaleDetail.quantity || !stateSaleDetail.typeAdjustment}
                     >
                         Agregar Ajuste
                     </Button>
