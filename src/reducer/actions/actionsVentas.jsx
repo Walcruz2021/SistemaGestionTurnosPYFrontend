@@ -63,10 +63,10 @@ export function vtasxA(idCompany, anio) {
           },
         }
       );
-      console.log(detail,"resultado request en actions")
+
       return dispatch({
         type: VTA_X_ANIO,
-        payload: detail.data.ventas,
+        payload: detail.data,
       });
     } catch (error) {
       console.log(error);
@@ -102,6 +102,7 @@ export function vtasAnioMesNow(idCompany) {
       `${host}/api/vtasxAnioandMesNow/${idCompany}`,
       {}
     );
+    console.log(vtas)
     return dispatch({
       type: VTAS_ANIO_MES_NOW,
       payload: vtas.data.vtas,

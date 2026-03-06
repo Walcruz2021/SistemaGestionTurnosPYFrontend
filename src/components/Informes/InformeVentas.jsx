@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
-
+import { ClipLoader } from "react-spinners";
 // import AgendaItem from "./AgendaItem";
 // import CardsItem from "./CardsItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import {
   vtasxA,
   predictionsSalesxAnio
 } from "../../reducer/actions/actionsVentas";
+import { informSalesSupplyByMonthNow, informSalesSupplyByMonth,resetSalesByMonth } from "../../reducer/actions/supply/actionsInformSalesSupply"
 import "./InformeVentas.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from "react-select";
@@ -24,11 +25,12 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import back from "../../icons/back.png";
 import infMonth from "../../icons/infMonth.png";
-import convertArraySalesxAnio from "../../functions/convertArraySalesxAnio";
+import convertArrayServxAnio from "../../functions/convertArrayServxAnio";
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 import { FaChartBar } from "react-icons/fa";
 import convertNum from "../../functions/convertNum";
 import sumaTotalesArray from "../../functions/sumaTotalesArray";
+import sumaTotalesArraySale from "../../functions/sumaTotalesArraySale";
 import {
   faChartLine,
   faHandHoldingDollar,
@@ -39,7 +41,8 @@ import {
 
 export default function TodoList() {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
-
+  const listSalesByMonthNow = useSelector((state) => state.salesSupply.listSalesSuppliesByMonthNow.sales)
+  const listSalesByMonth = useSelector((state) => state.salesSupply.listSalesSuppliesByMonth.sales)
 
   //devolucion decha actual
   let date = new Date();
@@ -56,14 +59,14 @@ export default function TodoList() {
 
   const numberPrediction = useSelector((state) => state.sales.dataPrediction)
 
-
   const vtasFiltered = useSelector((state) => state.sales.vtasxAnioandMesParam);
 
-  //console.log(vtaFilterDateNow,"vtas filtradas")
+
   const dispatch = useDispatch();
 
   const productsInv3 = useSelector((state) => state.sales.allVentas);
   // console.log(productsInv3, "listVentas");
+  const [loading, setLoading] = useState(false)
   const [newTurno, setNewTurno] = useState(false);
   const [newClient, setNewClient] = useState(false);
   const [newVentas, setNewVentas] = useState(false);
@@ -77,29 +80,56 @@ export default function TodoList() {
   const [seletedMeses, setSelectedMeses] = useState("");
   //console.log(seletedMeses)
   const [seletedAño, setSelectedAño] = useState("");
-const [sumaTotalsState,setStateSumaTotals]=useState({
-  sumaMes: 0,
-  sumaEfectivo: 0,  
-  sumaTarjeta: 0,
-  sumaTransferencia: 0,
-});
-const [sumaTotalsState2,setStateSumaTotal2]=useState({
-  sumaMes: 0,
-  sumaEfectivo: 0,  
-  sumaTarjeta: 0,
-  sumaTransferencia: 0,
-});
+  const [sumaTotalsState, setStateSumaTotals] = useState({
+    sumaMes: 0,
+    sumaEfectivo: 0,
+    sumaTarjeta: 0,
+    sumaTransferencia: 0,
+  });
+  const [sumaTotalsState2, setStateSumaTotal2] = useState({
+    sumaMes: 0,
+    sumaEfectivo: 0,
+    sumaTarjeta: 0,
+    sumaTransferencia: 0,
+  });
+
+  const [sumaTotalsState3, setStateSumaTotal3] = useState({
+    sumaMes: 0,
+    sumaEfectivo: 0,
+    sumaTarjeta: 0,
+    sumaTransferencia: 0,
+  });
+
+  const [sumaTotalsSaleByMonth, setStateTotalsSaleByMonth] = useState({
+    sumaMes: 0,
+    sumaEfectivo: 0,
+    sumaTarjeta: 0,
+    sumaTransferencia: 0,
+  });
 
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(vtasAnioMesNow(companySelectedMenu._id));
+      dispatch(informSalesSupplyByMonthNow(companySelectedMenu._id))
       dispatch(vtasxA(companySelectedMenu._id, anio));
     }
   }, [dispatch, companySelectedMenu]);
 
   useEffect(() => {
+    if (vtasFiltered !== undefined) {
+      setLoading(false)
+    }
+  }, [vtasFiltered]);
+
+  useEffect(() => {
+    if (listSalesByMonth !== undefined) {
+      setLoading(false);
+    }
+  }, [listSalesByMonth]);
+
+  useEffect(() => {
     if (ventasXAnio && ventasXAnio.length) {
-      const predictionsSales = convertArraySalesxAnio(ventasXAnio).meses;
+      const predictionsSales = convertArrayServxAnio(ventasXAnio).meses;
       const listSales = predictionsSales.map(e => e.sumaMes);
       if (listSales.length) {
         dispatch(predictionsSalesxAnio(listSales));
@@ -109,7 +139,7 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
 
   useEffect(() => {
     if (ventas && ventas.length) {
-       setStateSumaTotals(sumaTotalesArray(ventas))
+      setStateSumaTotals(sumaTotalesArray(ventas))
     }
   }, [ventasXAnio, dispatch]);
 
@@ -119,11 +149,32 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
     }
   }, [vtasFiltered, dispatch]);
 
+  useEffect(() => {
+    if (listSalesByMonthNow && listSalesByMonthNow.length) {
+      setStateSumaTotal3(sumaTotalesArraySale(listSalesByMonthNow));
+    }
+  }, [listSalesByMonthNow, dispatch]);
 
+  useEffect(() => {
+    if (listSalesByMonth && listSalesByMonth.length) {
+      setStateTotalsSaleByMonth(sumaTotalesArraySale(listSalesByMonth));
+    }
+  }, [listSalesByMonth, dispatch]);
+
+  //resetamos el informe mensual cada vez que se desmmonta el componente para evitar que se muestren datos al cambiar de pagina y volver a ingresar
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetSalesByMonth());
+      dispatch(resetVentasXanioandMesParam())
+    };
+  }, [dispatch]);
 
   function SearchVentas() {
     const date = "" + seletedAño + seletedMeses;
+    setLoading(true)
     dispatch(vtasMesandAnioxParam(companySelectedMenu._id, date));
+    dispatch(informSalesSupplyByMonth(companySelectedMenu._id, date));
   }
 
   //**************SELECTOR MESES**************************/
@@ -164,7 +215,7 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
   //******************************************** */
 
   //**************SELECTOR AÑOS**************************/
-  let listadoAños = [2022, 2023, 2024, 2025];
+  let listadoAños = [2022, 2023, 2024, 2025, 2026];
   const años = [];
 
   listadoAños.map((año) => {
@@ -237,10 +288,10 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
   };
 
   function convertDateFormat(date) {
-    if (date) {
-      var info = date.split("-").reverse().join("/");
-    }
-    return info;
+    if (!date) return "";
+
+    const onlyDate = date.split("T")[0]; // "2026-01-03"
+    return onlyDate.split("-").reverse().join("/"); // "03/01/2026"
   }
 
   function resetVtasXParams() {
@@ -280,10 +331,10 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
       <br />
       {/* <AgendaInputs></AgendaInputs> */}
       <div className="titGral">
-        <h2>Ventas del Mes Actual</h2>
+        <h2>Servicios del Mes Actual</h2>
       </div>
 
-      {Array.isArray(ventas) && ventas.length != 0 ? (
+      {Array.isArray(ventas) && ventas.length > 0 ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas
         <div className="container-lg table-responsive">
@@ -324,39 +375,116 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
               ))}
             </tbody>
           </table>
+
+          <div className="containerInforme">
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faChartLine} size="lg" />
+                <p>Total Servicios: {convertNum(sumaTotalsState.sumaMes)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                <p>Total Efectivo: {convertNum(sumaTotalsState.sumaEfectivo)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                <p>Total Banco: {convertNum(sumaTotalsState.sumaTransferencia)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                <p>Total Tarjeta: {convertNum(sumaTotalsState.sumaTarjeta)}</p>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="titGral container-lg P-2">
-          <h2 className="alertSearch">No existen Ingresos del Mes Actual</h2>
+          <h2 className="alertSearch">No existen Servicios del Mes Actual</h2>
         </div>
       )}
 
-      <div className="containerInforme">
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faChartLine} size="lg" />
-            <p>Total Vendido: {convertNum(sumaTotalsState.sumaMes)}</p>
+
+
+
+      {Array.isArray(listSalesByMonthNow) && listSalesByMonthNow.length > 0 ? (
+        <div className="container-lg table-responsive">
+          <div className="titGral">
+            <h2>Ventas del Mes Actual</h2>
+          </div>
+          <table className="table table-bordered table-hover table-white">
+            <thead class="thead-light table-dark instrument-serif-regular">
+              <tr>
+                <th>
+                  Fecha{" "}
+                  <FontAwesomeIcon
+                    onClick={(e) => handleOrder2(e)}
+                    color={order2 ? "#FF846A" : "#A2DFFF"}
+                    icon={faSortAlphaDown}
+                    size="lg"
+                    style={{ cursor: "pointer" }}
+                  />
+                </th>
+                <th>Valor de Venta</th>
+                <th>Efectivo</th>
+                <th>Banco</th>
+                <th>Tarjeta</th>
+                <th>Plataforma</th>
+              </tr>
+            </thead>
+            <tbody className="instrument-serif-regular">
+              {listSalesByMonthNow.map((sale) => (
+                <tr key={sale._id}>
+                  <td>{convertDateFormat(sale.date)}</td>
+                  {sale.totalSale ? <td>{convertNum(sale.totalSale)}</td> : <td>{convertNum(0)}</td>}
+                  {sale.paymentMethodEfectivo ? <td>{convertNum(sale.paymentMethodEfectivo)}</td> : <td>{convertNum(0)}</td>}
+                  {sale.paymentMethodTransferencia ? <td>{convertNum(sale.paymentMethodTransferencia)}</td> : <td>{convertNum(0)}</td>}
+
+                  {sale.paymentMethodTarjeta ? <td>{convertNum(sale.paymentMethodTarjeta)}</td> : <td>{convertNum(0)}</td>}
+                  {sale.platformMethod ? <td>{sale.platformMethod}</td> : <td>{"Plataforna NO Declarada"}</td>}
+                </tr>
+
+
+              ))}
+            </tbody>
+          </table>
+          <div className="containerInforme">
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faChartLine} size="lg" />
+                <p>Total Vendido: {convertNum(sumaTotalsState3.sumaMes)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                <p>Total Efectivo: {convertNum(sumaTotalsState3.sumaEfectivo)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                <p>Total Banco: {convertNum(sumaTotalsState3.sumaTransferencia)}</p>
+              </div>
+            </div>
+            <div className="cardInf">
+              <div>
+                <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                <p>Total Tarjeta: {convertNum(sumaTotalsState3.sumaTarjeta)}</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-            <p>Total Efectivo: {convertNum(sumaTotalsState.sumaEfectivo)}</p>
-          </div>
+      ) : (
+        <div className="titGral container-lg p-2">
+          <h2 className="alertSearch">No existen Ventas del Mes Actual</h2>
         </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-            <p>Total Banco: {convertNum(sumaTotalsState.sumaTransferencia)}</p>
-          </div>
-        </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-            <p>Total Tarjeta: {convertNum(sumaTotalsState.sumaTarjeta)}</p>
-          </div>
-        </div>
-      </div>
+      )}
 
 
       <div className="containerInforme">
@@ -367,7 +495,7 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
           </div>
           <p>
             <FaChartBar /> {convertNum(numberPrediction)}
-          </p> 
+          </p>
         </div>
 
       </div>
@@ -389,91 +517,202 @@ const [sumaTotalsState2,setStateSumaTotal2]=useState({
           onChange={changeMeses}
         />
       </div>
+
+
+
       <div className="container-lg p-2">
         <button
-          className="container-lg P-2 buttonBusc"
+          className={`container-lg P-2 ${!seletedAño || !seletedMeses ? "buttonBuscDesact" : "buttonBusc"
+            }`}
           onClick={() => SearchVentas()}
+          disabled={!seletedAño || !seletedMeses ? true : false}
         >
           Buscar Listado
         </button>
       </div>
 
-      {vtasFiltered ? (
-        <div className="container-lg table-responsive">
-          <div className="titGral">
-            <h2>Ventas del Mes Seleccionado</h2>
-          </div>
-          <table className="table table-bordered table-hover table-white">
-            <thead class="thead-light table-dark instrument-serif-regular">
-              <tr>
-                <th>
-                  Fecha{" "}
-                  <FontAwesomeIcon
-                    onClick={(e) => handleOrder2(e)}
-                    color={order2 ? "#FF846A" : "#A2DFFF"}
-                    icon={faSortAlphaDown}
-                    size="lg"
-                    style={{ cursor: "pointer" }}
-                  />
-                </th>
-                <th>Valor de Servicio</th>
-                <th>Efectivo</th>
-                <th>Banco</th>
-                <th>Tarjeta</th>
-                <th>Cliente</th>
-              </tr>
-            </thead>
-            <tbody className="instrument-serif-regular">
-              {vtasFiltered.map((vta) => (
-                <tr key={vta._id}>
-                  <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
-                  {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
-                  {vta.transferencia ? (
-                    <td>{convertNum(vta.transferencia)}</td>
-                  ) : (
-                    <td>{convertNum(0)}</td>
-                  )}
-                  {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>}
-                  <td>{vta.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="titGral container-lg p-2">
-          <h2 className="alertSearch">No se encontraron ventas</h2>
-        </div>
-      )}
 
-       <div className="containerInforme">
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faChartLine} size="lg" />
-            <p>Total Vendido: {convertNum(sumaTotalsState2.sumaMes)}</p>
+      {loading ? (
+
+        <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
+          <ClipLoader color="#000" loading={true} size={70} />
+          <div className="titGral">
+            <h2 className="mt-3">Espere un Momento por favor ...</h2>
           </div>
         </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-            <p>Total Efectivo: {convertNum(sumaTotalsState2.sumaEfectivo)}</p>
-          </div>
-        </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-            <p>Total Banco: {convertNum(sumaTotalsState2.sumaTransferencia)}</p>
-          </div>
-        </div>
-        <div className="cardInf">
-          <div>
-            <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-            <p>Total Tarjeta: {convertNum(sumaTotalsState2.sumaTarjeta)}</p>
-          </div>
-        </div>
-      </div>
+
+      ) : (
+
+        <>
+          {
+            Array.isArray(vtasFiltered) && vtasFiltered.length > 0 ? (
+              <div>
+                <div className="container-lg table-responsive">
+                  <div className="titGral">
+                    <h2>Servicios del Mes Seleccionado</h2>
+                  </div>
+                  <table className="table table-bordered table-hover table-white">
+                    <thead class="thead-light table-dark instrument-serif-regular">
+                      <tr>
+                        <th>
+                          Fecha{" "}
+                          <FontAwesomeIcon
+                            onClick={(e) => handleOrder2(e)}
+                            color={order2 ? "#FF846A" : "#A2DFFF"}
+                            icon={faSortAlphaDown}
+                            size="lg"
+                            style={{ cursor: "pointer" }}
+                          />
+                        </th>
+                        <th>Valor de Servicio</th>
+                        <th>Efectivo</th>
+                        <th>Banco</th>
+                        <th>Tarjeta</th>
+                        <th>Cliente</th>
+                      </tr>
+                    </thead>
+                    <tbody className="instrument-serif-regular">
+                      {vtasFiltered.map((vta) => (
+                        <tr key={vta._id}>
+                          <td>{convertDateFormat(vta.date)}</td>
+                          {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
+                          {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
+                          {vta.transferencia ? (
+                            <td>{convertNum(vta.transferencia)}</td>
+                          ) : (
+                            <td>{convertNum(0)}</td>
+                          )}
+                          {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>}
+                          <td>{vta.name}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  <div className="containerInforme">
+                    <div className="cardInf">
+                      <div>
+                        <FontAwesomeIcon icon={faChartLine} size="lg" />
+                        <p>Total Servicio: {convertNum(sumaTotalsState2.sumaMes)}</p>
+                      </div>
+                    </div>
+                    <div className="cardInf">
+                      <div>
+                        <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                        <p>Total Efectivo: {convertNum(sumaTotalsState2.sumaEfectivo)}</p>
+                      </div>
+                    </div>
+                    <div className="cardInf">
+                      <div>
+                        <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                        <p>Total Banco: {convertNum(sumaTotalsState2.sumaTransferencia)}</p>
+                      </div>
+                    </div>
+                    <div className="cardInf">
+                      <div>
+                        <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                        <p>Total Tarjeta: {convertNum(sumaTotalsState2.sumaTarjeta)}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            ) : (
+              <div className="titGral container-lg p-2">
+                <h2 className="alertSearch">No existen Servicios para el Mes Seleccionado</h2>
+              </div>
+            )
+          }
+
+          {
+            Array.isArray(listSalesByMonth) && listSalesByMonth.length > 0 ? (
+              <div className="container-lg table-responsive">
+                <div className="titGral">
+                  <h2>Ventas del Mes Seleccionado</h2>
+                </div>
+                <table className="table table-bordered table-hover table-white">
+                  <thead class="thead-light table-dark instrument-serif-regular">
+                    <tr>
+                      <th>
+                        Fecha{" "}
+                        <FontAwesomeIcon
+                          onClick={(e) => handleOrder2(e)}
+                          color={order2 ? "#FF846A" : "#A2DFFF"}
+                          icon={faSortAlphaDown}
+                          size="lg"
+                          style={{ cursor: "pointer" }}
+                        />
+                      </th>
+                      <th>Valor de Venta</th>
+                      <th>Efectivo</th>
+                      <th>Banco</th>
+                      <th>Tarjeta</th>
+                      <th>Plataforma</th>
+                    </tr>
+                  </thead>
+                  <tbody className="instrument-serif-regular">
+                    {listSalesByMonth.map((sale) => (
+                      <tr key={sale._id}>
+                        <td>{convertDateFormat(sale.date)}</td>
+                        {sale.totalSale ? <td>{convertNum(sale.totalSale)}</td> : <td>{convertNum(0)}</td>}
+                        {sale.paymentMethodEfectivo ? <td>{convertNum(sale.paymentMethodEfectivo)}</td> : <td>{convertNum(0)}</td>}
+                        {sale.paymentMethodTransferencia ? <td>{convertNum(sale.paymentMethodTransferencia)}</td> : <td>{convertNum(0)}</td>}
+
+                        {sale.paymentMethodTarjeta ? <td>{convertNum(sale.paymentMethodTarjeta)}</td> : <td>{convertNum(0)}</td>}
+                        {sale.platformMethod ? <td>{sale.platformMethod}</td> : <td>{"Plataforna NO Declarada"}</td>}
+                      </tr>
+
+
+                    ))}
+                  </tbody>
+                </table>
+                <div className="containerInforme">
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faChartLine} size="lg" />
+                      <p>Total Vendido: {convertNum(sumaTotalsSaleByMonth.sumaMes)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                      <p>Total Efectivo: {convertNum(sumaTotalsSaleByMonth.sumaEfectivo)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                      <p>Total Banco: {convertNum(sumaTotalsSaleByMonth.sumaTransferencia)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                      <p>Total Tarjeta: {convertNum(sumaTotalsSaleByMonth.sumaTarjeta)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            ) : (
+              <div className="titGral container-lg p-2">
+                <h2 className="alertSearch">No existen Ventas para el Mes Seleccionado</h2>
+              </div>
+            )
+          }
+        </>
+
+      )
+
+      }
+
     </div>
-  );
+  )
 }
+
+
+
+
 

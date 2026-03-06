@@ -74,7 +74,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
 
     const totalSale = React.useMemo(() => {
-        return stateDetailsSupplies.reduce((acc, sale) => {
+        const total = stateDetailsSupplies.reduce((acc, sale) => {
             const quantity = sale.quantitySale ?? 0;
             const price = sale.priceSale ?? 0;
             const discount = sale.discount ?? 0;
@@ -85,6 +85,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                 (discount * quantity) +
                 (surcharge * quantity);
         }, 0);
+        return Math.round(total);//redondeo a numero entero
     }, [stateDetailsSupplies]);
 
 
@@ -238,6 +239,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         }));
     };
 
+    //validation for button add sale supply
     const validationFormSale = () => {
         if (!stateDetailsSupplies.length) return true;
         if (!stateSaleDetail.dateSale) return true;
@@ -245,17 +247,23 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return true;
         const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
         if (totalPay !== totalSale) return true;
+ 
+
         return false;
     };
 
+    //validatio for inputs message errors
     const messsageErrorValidation = () => {
         if (!stateDetailsSupplies.length) return "No hay insumos registrados";
         if (!stateSaleDetail.dateSale) return "Seleccione una fecha de venta";
         if (!stateSaleDetail.platformMethod) return "Seleccione una plataforma de venta";
         if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return "Ingrese al menos un método de pago";
         const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
-        if (totalPay !== totalSale) return "La suma de los métodos de pago no coincide con el total de la venta";
-        return "";
+        if (totalPay !== totalSale) {
+ 
+            return "La suma de los métodos de pago no coincide con el total de la venta";
+        }
+
     }
 
     return (
@@ -298,22 +306,28 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                     {sup.global?.nameSupply}
                                 </td>
 
+
+
                                 <td className="instrument-serif-regular">{sup.quantitySale ?? 0}</td>
 
+                                {/* row priceSale unid */}
+                                <td className="instrument-serif-regular">{converNum(Math.round(sup.priceSale))}</td>
 
-                                <td className="instrument-serif-regular">{converNum(sup.priceSale)}</td>
+                                {/* row TOTAL SALE */}
                                 <td className="instrument-serif-regular">
 
                                     {
 
                                         converNum(
-                                            (sup.priceSale * (sup.quantitySale ?? 0)) - Number(sup.discount * sup.quantitySale || 0) +
-                                            Number(sup.surcharge * sup.quantitySale || 0)
-
+                                            Math.round(
+                                                (sup.priceSale * (sup.quantitySale ?? 0)) - Number(sup.discount * sup.quantitySale || 0) +
+                                                Number(sup.surcharge * sup.quantitySale || 0)
+                                            )
                                         )
                                     }
                                 </td>
 
+                                {/* row options */}
                                 <td>
 
                                     <FaCheckToSlot size={"2rem"} onClick={() => openModalSaleDetails(sup)} />
@@ -394,7 +408,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         placeholder="Efectivo"
                                         name="efectivo"
                                         inputMode="decimal"
-                                        maxLength={6}
+                                        maxLength={10}
                                         required
                                         className="mt-2 instrument-serif-regular"
                                         value={stateValueMethodPay.efectivo}
@@ -419,7 +433,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         type="text"
                                         placeholder="Transferencia"
                                         name="transferencia"
-                                        maxLength={6}
+                                        maxLength={10}
                                         inputMode="decimal"
                                         required
                                         className="mt-2 instrument-serif-regular"
@@ -442,7 +456,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                         type="text"
                                         placeholder="Tarjeta"
                                         name="tarjeta"
-                                        maxLength={6}
+                                        maxLength={10}
                                         inputMode="decimal"
                                         required
                                         className="mt-2 mb-2 instrument-serif-regular"

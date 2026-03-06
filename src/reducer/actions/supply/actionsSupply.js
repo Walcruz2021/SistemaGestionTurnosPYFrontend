@@ -12,7 +12,7 @@ export const UPDATE_SUPPLY_By_LIST="UPDATE_SUPPLY_By_LIST"
 export const ADD_SALE_SUPPLY="ADD_SALE_SUPPLY"
 
 export function actionAddSupply(payload) {
-  console.log(payload)
+
   return async function (dispatch) {
     try {
       const newSupply = await axios.post(

@@ -117,7 +117,10 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                 : 0;
 
         // permitir decimales (máx 2)
-        if (!/^\d*\.?\d{0,2}$/.test(value)) return;
+        // if (!/^\d*\.?\d{0,2}$/.test(value)) return;
+
+        //only integer number 
+        if (!/^\d*$/.test(value)) return;
 
         // permitir borrar
         if (value === "") {
@@ -192,7 +195,8 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                                     className="instrument-serif-regular"
                                     type="text"
                                     name="discount"
-                                    inputMode="decimal"
+                                    pattern="[0-9]*"
+                                    inputMode="numeric"
                                     maxLength={6}
                                     value={stateInputSupply.discount}
                                     onChange={handleChangeDiscountSurcharge}
@@ -214,7 +218,8 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                                     className="instrument-serif-regular"
                                     type="text"
                                     name="surcharge"
-                                    inputMode="decimal"
+                                    pattern="[0-9]*"
+                                    inputMode="numeric"
                                     maxLength={6}
                                     value={stateInputSupply.surcharge}
                                     onChange={handleChangeDiscountSurcharge}

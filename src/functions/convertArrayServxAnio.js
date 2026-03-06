@@ -1,5 +1,4 @@
-const convertArraySalesxAnio = (salesXAnio) => {
-
+const convertArrayServxAnio = (salesXAnio) => {
   const fechaN = {
     name: 2025, // 2022
     meses: [
@@ -167,4 +166,4 @@ const convertArraySalesxAnio = (salesXAnio) => {
   return arrayVtas;
 }
 
-export default convertArraySalesxAnio
+export default convertArrayServxAnio
