@@ -52,7 +52,7 @@ export function gtosXanio(idCompany, anio) {
       // console.log(detail,"resultado request en actions")
       return dispatch({
         type: GTO_X_ANIO,
-        payload: detail.data.gastos,
+        payload: detail.data.listBills,
       });
     } catch (error) {
       console.log(error);

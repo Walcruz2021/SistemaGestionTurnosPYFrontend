@@ -14,6 +14,7 @@
  */
 
 export default function filterSumaValues(listadoValues) {
+
   const objectListMeses = {
     meses: [
       {

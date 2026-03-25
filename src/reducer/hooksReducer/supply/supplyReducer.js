@@ -1,19 +1,27 @@
-import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY } from "../../actions/supply/actionsSupply";
+import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL } from "../../actions/supply/actionsSupply";
 
 
 const initialState = {
     listSupplies: [],
-    listBuySupplies: []
+    listBuySupplies: [],
+    findSUpplyByNInvoice: [],
+    listSuppliesGral: []
 };
 
 
 export default function supplyReducer(state = initialState, action) {
     switch (action.type) {
 
-        case GET_LIST_BUY_SUPPLIES:
+        case GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT:
             return {
                 ...state,
                 listBuySupplies: action.payload
+            }
+
+        case GET_BUYSUPPLY_BY_NINVOICE:
+            return {
+                ...state,
+                findSUpplyByNInvoice: action.payload
             }
         case ADD_SUPPLY:
             return {
@@ -76,6 +84,11 @@ export default function supplyReducer(state = initialState, action) {
                 ...state,
                 listSupplies: arrayOrder,
             };
+
+        case GET_LIST_SUPPLIES_GRAL:
+            return {
+                ...state, listSuppliesGral: action.payload
+            }
 
         default:
             return state;

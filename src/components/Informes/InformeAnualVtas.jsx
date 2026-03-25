@@ -36,22 +36,8 @@ function InformeAnualVtas() {
 
   const [selectedAnio, setSelectedAnio] = useState();
   const [arrayServByYear, setArrayServByYear] = useState();
-  console.log(arrayServByYear, "listServByYear")
-  //segun el año seleccionado traera las ventas de todos los meses correspondiente a ese año
-  //console.log(ventas22, "Listventas");
-  // [{Dog:"628ae644d66d1f4760a02319"
-  // año:2022
-  // client:"6287c8a0da18314e74b9325a"
-  // date:"2022-05-21"
-  // efectivo:600
-  // idTurno:"62b64deeabde7c1c0883f177"
-  // mes:5
-  // name:"Malachi Hahn"
-  // notesTurn:"llega en auto"
-  // tarjeta:5400
-  // tipoServ:"corte cuchilla 25-25"
-  // valorServ:6000
-  // _id:"62b64e05abde7c1c0883f17c"},{},......]
+
+
   const [arrayVtasByYear, setArrayVtasByYear] = useState();
 
 
@@ -128,58 +114,37 @@ function InformeAnualVtas() {
           <h2>Servicios Anuales</h2>
         </div>
         {
-          arrayServByYear ?
+          arrayServByYear && arrayServByYear.totalByMonth.length > 0 && arrayServByYear.totalByYear ?
             <div className="container-lg table-responsive">
 
-              <>
-                {/* <div className="titInf">
-                    <h5>{arrayServByYear.sumas[arrayServByYear.sumas.length - 1].anio}</h5>
-                  </div> */}
-                <table className="table table-bordered table-hover table-white">
-                  <thead className="thead-light table-secondary instrument-serif-regular">
+              <div className="titInf">
+                <h5>{selectedAnio}</h5>
+              </div>
+              <table className="table table-bordered table-hover table-white">
+                <thead className="thead-light table-secondary instrument-serif-regular">
+                  <tr>
+                    <th>Mes</th>
+                    <th>Total Servicio</th>
+                    <th>Efectivo</th>
+                    <th>Tarjeta</th>
+                    <th>Banco</th>
+                  </tr>
+                </thead>
+                <tbody className="instrument-serif-regular">
+                  {arrayServByYear && arrayServByYear.totalByMonth && Array.isArray(arrayServByYear.totalByMonth) ? arrayServByYear.totalByMonth.map((vta) => (
                     <tr>
-                      <th>Mes</th>
-                      <th>Vendido</th>
-                      <th>Efectivo</th>
-                      <th>Tarjeta</th>
-                      <th>Banco</th>
+                      <td>{vta._id ? vta._id === 1 ? 'Enero' : vta._id === 2 ? 'Febrero' : vta._id === 3 ? 'Marzo' : vta._id === 4 ? 'Abril' : vta._id === 5 ? 'Mayo' : vta._id === 6 ? 'Junio' : vta._id === 7 ? 'Julio' : vta._id === 8 ? 'Agosto' : vta._id === 9 ? 'Septiembre' : vta._id === 10 ? 'Octubre' : vta._id === 11 ? 'Noviembre' : 'Diciembre' : null}</td>
+                      <td>{vta.totalValorServ && convertNum(vta.totalValorServ)}</td>
+                      <td>{vta.totalEfectivo && convertNum(vta.totalEfectivo)}</td>
+                      <td>{vta.totalTarjeta && convertNum(vta.totalTarjeta)}</td>
+                      <td>{vta.totalTransferencia && convertNum(vta.totalTransferencia)}</td>
                     </tr>
-                  </thead>
-                  <tbody className="instrument-serif-regular">
-                    {arrayServByYear && arrayServByYear.totalByMonth && Array.isArray(arrayServByYear.totalByMonth) ? arrayServByYear.totalByMonth.map((vta) => (
-                      <tr>
-                        <td>{vta._id ? vta._id === 1 ? 'Enero' : vta._id === 2 ? 'Febrero' : vta._id === 3 ? 'Marzo' : vta._id === 4 ? 'Abril' : vta._id === 5 ? 'Mayo' : vta._id === 6 ? 'Junio' : vta._id === 7 ? 'Julio' : vta._id === 8 ? 'Agosto' : vta._id === 9 ? 'Septiembre' : vta._id === 10 ? 'Octubre' : vta._id === 11 ? 'Noviembre' : 'Diciembre' : null}</td>
-                        <td>{vta.totalValorServ && convertNum(vta.totalValorServ)}</td>
-                        <td>{vta.totalEfectivo && convertNum(vta.totalEfectivo)}</td>
-                        <td>{vta.totalTarjeta && convertNum(vta.totalTarjeta)}</td>
-                        <td>{vta.totalTransferencia && convertNum(vta.totalTransferencia)}</td>
-                      </tr>
-                    )) : null}
+                  )) : null}
 
-                  </tbody>
-                </table>
-              </>
+                </tbody>
+              </table>
 
 
-
-
-            </div> :
-
-            <div className="container-lg table-responsive">
-
-              <h5 className="alertVtas">
-                No existen Servicios para el año {selectedAnio}
-              </h5>
-
-
-            </div>
-
-        }
-
-        {
-          arrayServByYear && arrayServByYear.totalByYear
-            ?
-            <div className="container-lg table-responsive">
               <div className="containerInforme">
                 <div className="cardInf">
                   <div>
@@ -207,28 +172,38 @@ function InformeAnualVtas() {
                 </div>
               </div>
 
+
+
+            </div> :
+
+            <div className="container-lg table-responsive">
+
+              <h5 className="alertVtas">
+                No existen Servicios para el año {selectedAnio}
+              </h5>
             </div>
-            : null
         }
+
+
 
         <div className="titGral">
           <h2>Ventas Anuales</h2>
         </div>
 
         {
-          arrayVtasByYear && arrayVtasByYear.monthlyTotals ?
+          arrayVtasByYear && arrayVtasByYear.monthlyTotals.length > 0 ?
 
             <div className="container-lg table-responsive">
 
               <>
-                {/* <div className="titInf">
-                      <h5>{arrayVtasByYear.sumas[arrayVtasByYear.sumas.length - 1].anio}</h5>
-                    </div> */}
+                <div className="titInf">
+                  <h5>{selectedAnio}</h5>
+                </div>
                 <table className="table table-bordered table-hover table-white">
                   <thead className="thead-light table-secondary instrument-serif-regular">
                     <tr>
                       <th>Mes</th>
-                      <th>Vendido</th>
+                      <th>Total Vendido</th>
                       <th>Efectivo</th>
                       <th>Tarjeta</th>
                       <th>Banco</th>
@@ -250,24 +225,6 @@ function InformeAnualVtas() {
               </>
 
 
-
-
-            </div> :
-
-            <div className="container-lg table-responsive">
-
-              <h5 className="alertVtas">
-                No existen Ventas para el año {selectedAnio}
-              </h5>
-
-
-            </div>
-
-        }
-
-        {
-          arrayVtasByYear && arrayVtasByYear.totals ?
-            <div className="container-lg table-responsive">
               <div className="containerInforme">
                 <div className="cardInf">
                   <div>
@@ -295,9 +252,19 @@ function InformeAnualVtas() {
                 </div>
               </div>
 
+            </div> :
+
+            <div className="container-lg table-responsive">
+
+              <h5 className="alertVtas">
+                No existen Ventas para el año {selectedAnio}
+              </h5>
+
+
             </div>
-            : null
+
         }
+
       </div>
 
     </div>

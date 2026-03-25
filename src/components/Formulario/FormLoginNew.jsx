@@ -104,7 +104,7 @@ const handleSumbit = async (e) => {
     );
 
     const user = userCredential.user;
- 
+
 
     // ⚠️ Verifico el correo
     if (!user.emailVerified) {

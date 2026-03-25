@@ -108,9 +108,7 @@ const TableDetailSells = ({ stateDetailsBuy }) => {
                                     <td className="instrument-serif-regular">{convertNum(buy.unitCost)}</td>
                                 </tr>
                             )
-                        }) : <div className="titGral">
-                            <h2>No hay Datos</h2>
-                        </div>
+                        }) : null
 
                         }
 

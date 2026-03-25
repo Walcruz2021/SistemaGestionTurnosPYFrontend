@@ -3,13 +3,15 @@ import axios from "axios";
 import host from "../../../components/ruteBack/vbledeploy"
 
 export const ADD_SUPPLY = "ADD_SUPPLY"
-export const ADD_BUY_SUPPLY="ADD_BUY_SUPPLY"
+export const ADD_BUY_SUPPLY = "ADD_BUY_SUPPLY"
 export const GET_LIST_SUPPLIES = "GET_LIST_SUPPLIES"
 export const ORDER_SUPPLIES = "ORDER_SUPPLIES"
 export const UPDATE_SUPPLY = "UPDATE_SUPPLY"
-export const GET_LIST_BUY_SUPPLIES = "GET_LIST_BUY_SUPPLIES"
-export const UPDATE_SUPPLY_By_LIST="UPDATE_SUPPLY_By_LIST"
-export const ADD_SALE_SUPPLY="ADD_SALE_SUPPLY"
+export const GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT = "GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT"
+export const UPDATE_SUPPLY_By_LIST = "UPDATE_SUPPLY_By_LIST"
+export const ADD_SALE_SUPPLY = "ADD_SALE_SUPPLY"
+export const GET_BUYSUPPLY_BY_NINVOICE = "GET_BUYSUPPLY_BY_NINVOICE"
+export const GET_LIST_SUPPLIES_GRAL="GET_LIST_SUPPLIES_GRAL"
 
 export function actionAddSupply(payload) {
 
@@ -26,10 +28,10 @@ export function actionAddSupply(payload) {
   };
 }
 
-export function actionAddBuySupply(payload){
+export function actionAddBuySupply(payload) {
 
 
-   return async function (dispatch) {
+  return async function (dispatch) {
     try {
       const newBuySupply = await axios.post(
         `${host}/api/addBuySupply`,
@@ -39,7 +41,7 @@ export function actionAddBuySupply(payload){
     } catch (error) {
       console.log(error);
     }
-  }; 
+  };
 }
 
 export function actionEditSupply(payload, idSupply) {
@@ -78,7 +80,7 @@ export function actionEditSupplyByList(payload) {
 
 
 export function getListSupplies(idCompany) {
-  
+
   return async function (dispatch) {
     const listSupplies = await axios.get(
       //"http://localhost:3002/api/listClients",
@@ -93,6 +95,23 @@ export function getListSupplies(idCompany) {
   };
 }
 
+export function getListSuppliesGral(idCopany) {
+
+  return async function (dispatch) {
+    const listSuppliesGral = await axios.get(
+      //"http://localhost:3002/api/listClients",
+      //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
+      `${host}/api/getListSuppliesGral`,
+      {}
+    );
+    return dispatch({
+      type: GET_LIST_SUPPLIES_GRAL,
+      payload: listSuppliesGral.data.listSuppliesGral,
+    });
+  };
+}
+
+
 export function actionsOrderSupplies(payload) {
 
   return {
@@ -101,24 +120,44 @@ export function actionsOrderSupplies(payload) {
   };
 }
 
-export function actionListBuySupplies(idCompany) {
+export function actionListBuySuppliesByDateCurrent(idCompany) {
   return async function (dispatch) {
     const listBuySupplies = await axios.get(
-      `${host}/api/getListBuySupplies/${idCompany}`,
+      `${host}/api/getListBuySuppliesByDateCurrent/${idCompany}`,
       {}
     );
     return dispatch({
-      type: GET_LIST_BUY_SUPPLIES,
-      payload:listBuySupplies.data.listGetBuySupplies
+      type: GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT,
+      payload: listBuySupplies.data.listGetBuySupplies
 
     })
   }
 }
 
-export function actionAddSaleSupply(payload){
+export function actionListBuySupplyByNInvoice(idCompany, nInvoice) {
+  return async function (dispatch) {
+    const listBuySupplies = await axios.get(
+      `${host}/api/getBuySupplyXNInvoice/${idCompany}`,
+      {
+        params: {
+          NInvoice: nInvoice,
+
+        }
+      }
+    );
+    return dispatch({
+      type: GET_BUYSUPPLY_BY_NINVOICE,
+      payload: listBuySupplies.data.findSupply
+
+    })
+  }
+}
 
 
-   return async function (dispatch) {
+export function actionAddSaleSupply(payload) {
+
+
+  return async function (dispatch) {
     try {
       const newSaleSupply = await axios.post(
         `${host}/api/addSaleSupply`,
@@ -128,5 +167,5 @@ export function actionAddSaleSupply(payload){
     } catch (error) {
       console.log(error);
     }
-  }; 
+  };
 }

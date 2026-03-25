@@ -41,11 +41,14 @@ import ModalEditTurn from "../components/Modal/ModalEditTurn";
 import ModalAddTurn from "../components/Modal/ModalAddTurn";
 import carpetaMedica from "../icons/carpeta-medica.png";
 import saleVta from "../icons/saleVta.png";
+import saleVta2 from "../icons/adjustmentSupply.png";
 import {
   listenToAuthChanges,
   verificationConection,
 } from "../reducer/actions/actions";
 import convertNum from "../functions/convertNum";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 function Dashboard() {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
@@ -277,9 +280,18 @@ function Dashboard() {
                     <div className="card-body">
                       <Link to="/compraInsumos">
 
-                        <button className="btn btn-link" onClick={addTurn}>
+                        {/* <button className="btn btn-link" >
                           <img src={iconBuy} />
-                        </button>
+                        </button> */}
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="tooltip-top">Listado Compras</Tooltip>}
+                        >
+                          <button className="btn btn-link">
+                            <img src={iconBuy} />
+                          </button>
+                        </OverlayTrigger>
+
                       </Link>
 
                     </div>
@@ -289,12 +301,20 @@ function Dashboard() {
                 <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                   <div className="text-center">
                     <div className="card-body">
-                      <button
+                      {/* <button
                         className="btn btn-link"
                         onClick={() => setNewClient(!newClient)}
                       >
                         <img src={addClient2} />
-                      </button>
+                      </button> */}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip id="tooltip-top">Agregar Cliente</Tooltip>}
+                      >
+                        <button className="btn btn-link" onClick={() => setNewClient(!newClient)}>
+                          <img src={addClient2} />
+                        </button>
+                      </OverlayTrigger>
                     </div>
                   </div>
                 </div>
@@ -304,9 +324,14 @@ function Dashboard() {
                     <div className="text-center">
                       <div className="card-body">
                         <Link to="/listClient">
-                          <button className="btn btn-link">
-                            <img src={iconClients} />
-                          </button>
+                          <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-top">Listado Clientes</Tooltip>}
+                          >
+                            <button className="btn btn-link">
+                              <img src={iconClients} />
+                            </button>
+                          </OverlayTrigger>
                         </Link>
                       </div>
                     </div>
@@ -328,9 +353,17 @@ function Dashboard() {
                     <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                       <div className="text-center">
                         <div className="card-body">
-                          <button className="btn btn-link">
+                          {/* <button className="btn btn-link">
                             <img src={addPet} onClick={ModalAddDogActive} />
-                          </button>
+                          </button> */}
+                          <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-top">Agregar Mascota</Tooltip>}
+                          >
+                            <button className="btn btn-link" onClick={ModalAddDogActive}>
+                              <img src={addPet} />
+                            </button>
+                          </OverlayTrigger>
                           <ModalAddDog
                             stateAddDog={stateAddDog}
                             setStateAddDog={setStateAddDog}
@@ -356,9 +389,18 @@ function Dashboard() {
                   <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                     <div className="text-center">
                       <div className="card-body">
-                        <button className="btn btn-link" onClick={addTurn}>
+                        {/* <button className="btn btn-link" onClick={addTurn}>
                           <img src={iconAddTurn} />
-                        </button>
+                        </button> */}
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="tooltip-top">Agregar Turno</Tooltip>}
+                        >
+                          <button className="btn btn-link" onClick={addTurn}>
+                            <img src={iconAddTurn} />
+                          </button>
+                        </OverlayTrigger>
+
                       </div>
                     </div>
                   </div>
@@ -372,21 +414,45 @@ function Dashboard() {
                   <div className="text-center">
                     <div className="card-body">
                       <Link to="/addVtas">
-                        <button className="btn btn-link">
+
+
+                        {/* <button className="btn btn-link" >
                           <img src={saleVta} />
-                        </button>
+                        </button> */}
+
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="tooltip-top">Registrar Venta</Tooltip>}
+                        >
+                          <button className="btn btn-link">
+                            <img src={saleVta} />
+                          </button>
+                        </OverlayTrigger>
+
                       </Link>
                     </div>
                   </div>
                 </div>
 
-                      <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
+                <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                   <div className="text-center">
                     <div className="card-body">
                       <Link to="/addStockAdjustments">
-                        <button className="btn btn-link">
-                          <img src={saleVta} />
-                        </button>
+
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="tooltip-top">Listado Insumos</Tooltip>}
+                        >
+                          <button className="btn btn-link">
+                            <img src={saleVta2} />
+                          </button>
+                        </OverlayTrigger>
+
+                        {/* <button className="btn btn-link" title="Registrar Ajuste de Stock">
+                          <img src={saleVta2} />
+                        </button> */}
+
+
                       </Link>
                     </div>
                   </div>

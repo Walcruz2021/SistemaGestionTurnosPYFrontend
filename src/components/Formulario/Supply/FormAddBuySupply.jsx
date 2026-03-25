@@ -9,7 +9,8 @@ import { actionListSupplier } from "../../../reducer/actions/supplier/actionsSup
 import {
     getListSupplies,
     actionAddBuySupply,
-    actionEditSupplyByList
+    actionEditSupplyByList,
+    getListSuppliesGral
 } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand"
 import BlockAddProducBuy from "../Supply/BlockAddProducBuy.jsx"
@@ -17,8 +18,8 @@ import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
 import ModalAddSupply from "../../Modal/Supply/ModalAddSuppply.jsx";
+import { FaBasketShopping } from "react-icons/fa6";
 export default function FormAddBuySupply({
-
 }) {
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
@@ -26,10 +27,14 @@ export default function FormAddBuySupply({
     const listSupplier = useSelector((state) => state.supplier.listSupplier);
     const listBrands = useSelector((state) => state.gralRed.listBrands)
     const listSupplies = useSelector((state) => state.supply.listSupplies);
+    const listSuppliesGral = useSelector((state) => state.supply.listSuppliesGral)
+
     const [showContable, setShowContable] = useState(true);
     const [showContableProd, setShowContableProd] = useState(1);
     const [openModalSupply, setOpenModalSupply] = useState(false);
     const [openModalSupplier, setOpenModalSupplier] = useState(false);
+    // const [statusStateAccountant, setStateAccountant] = useState(false)
+
     // const [stateArrayCont,setStateArrayCont]=useState(2)
     const [stateInput, setStateInput] = useState({
         montoN: "",
@@ -57,7 +62,7 @@ export default function FormAddBuySupply({
         ]
     });
 
-
+    console.log(stateInput)
     // Cargar lista de proveedores + insumos
     useEffect(() => {
         if (companySelectedMenu) {
@@ -67,6 +72,10 @@ export default function FormAddBuySupply({
         }
     }, [companySelectedMenu]);
 
+
+    useEffect(() => {
+        dispatch(getListSuppliesGral())
+    }, [])
 
     // const handleChangeIndex = (e) => {
     //     const { name, value } = e.target;
@@ -79,11 +88,26 @@ export default function FormAddBuySupply({
     // };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name == "NInvoice") {
+            value = value.replace(/[^a-zA-Z0-9/-]/g, "").slice(0, 15);
+            setStateInput((prev) => ({
+                ...prev, [name]: value
+            }));
+        } else if (name == "date") {
 
-        setStateInput((prev) => ({
-            ...prev, [name]: value
-        }));
+
+
+            setStateInput((prev) => ({
+                ...prev, [name]: value
+            }));
+        } else {
+            value = value.replace(/\D/g, "").slice(0, 10);
+
+            setStateInput((prev) => ({
+                ...prev, [name]: value
+            }));
+        }
     };
 
 
@@ -228,6 +252,15 @@ export default function FormAddBuySupply({
         setShowContableProd(showContableProd + 1)
     }
 
+    const deleteBlockSupply = () => {
+        setStateInput((prev) => ({
+            ...prev,
+            detailsSupply: prev.detailsSupply.slice(0, -1)
+        }));
+
+        setShowContableProd(showContableProd - 1);
+    };
+
     const addSupplyFunction = () => {
 
         setOpenModalSupply(!openModalSupply);
@@ -240,6 +273,30 @@ export default function FormAddBuySupply({
 
     };
 
+    const validationAccountant = () => {
+        if (stateInput.date && stateInput.montoN && stateInput.nameSupplier && stateInput.NInvoice
+        ) {
+            return false
+        } else return true
+    }
+
+    const validationBuySupply = () => {
+
+        if (stateInput.detailsSupply[0].nameBrand && stateInput.detailsSupply[0].nameSupply && stateInput.detailsSupply[0].priceSale && stateInput.detailsSupply[0].quantity && stateInput.detailsSupply[0].unitCost && stateInput.detailsSupply[0].dueDate) {
+            return false
+        } else return true
+    }
+
+const customStyles = (hasError) => ({
+    control: (provided) => ({
+        ...provided,
+        borderColor: hasError ? "red" : provided.borderColor,
+        boxShadow: "none",
+        "&:hover": {
+            borderColor: hasError ? "red" : provided.borderColor
+        }
+    })
+});
     return (
         <Form centered size="lg">
             <div className="titGral">
@@ -256,9 +313,10 @@ export default function FormAddBuySupply({
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>N Factura</Form.Label>
+                            <Form.Label className="instrument-serif-regular">N Factura</Form.Label>
                             <Form.Control
-                                type="String"
+                                type="text"
+                                className={`instrument-serif-regular ${!stateInput.NInvoice ? "border-danger" : ""}`}
                                 name="NInvoice"
                                 value={stateInput.NInvoice}
                                 onChange={handleChange}
@@ -269,9 +327,11 @@ export default function FormAddBuySupply({
                     {/* Proveedor */}
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>Proveedor</Form.Label>
+                            <Form.Label className="instrument-serif-regular">Proveedor</Form.Label>
                             <Select
+                                styles={customStyles(!stateInput?.nameSupplier)}
                                 options={supplierOptions}
+                                className="instrument-serif-regular"
                                 onChange={handleChangeSupplier}
                                 placeholder="Proveedor"
                             />
@@ -281,10 +341,11 @@ export default function FormAddBuySupply({
                     {/* Fecha */}
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>Fecha</Form.Label>
+                            <Form.Label className="instrument-serif-regular">Fecha</Form.Label>
                             <Form.Control
                                 type="date"
                                 name="date"
+                                className={`instrument-serif-regular ${!stateInput.date ? "border-danger" : ""}`}
                                 value={stateInput.date}
                                 onChange={handleChange}
                                 required
@@ -294,10 +355,11 @@ export default function FormAddBuySupply({
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>Monto Neto</Form.Label>
+                            <Form.Label className="instrument-serif-regular">Monto Neto</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="montoN"
+                                className={`instrument-serif-regular ${!stateInput.montoN ? "border-danger" : ""}`}
                                 value={stateInput.montoN}
                                 onChange={handleChange}
                             />
@@ -306,10 +368,11 @@ export default function FormAddBuySupply({
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>IVA</Form.Label>
+                            <Form.Label className="instrument-serif-regular">IVA</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="iva"
+                                className="instrument-serif-regular"
                                 value={stateInput.iva}
                                 onChange={handleChange}
                             />
@@ -318,10 +381,11 @@ export default function FormAddBuySupply({
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>Impuestos Varios</Form.Label>
+                            <Form.Label className="instrument-serif-regular">Impuestos Varios</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="impuestos"
+                                className="instrument-serif-regular"
                                 value={stateInput.impuestos}
                                 onChange={handleChange}
                             />
@@ -330,10 +394,11 @@ export default function FormAddBuySupply({
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label>Monto Bruto</Form.Label>
+                            <Form.Label className="instrument-serif-regular">Monto Bruto</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="montoB"
+                                className="instrument-serif-regular"
                                 value={Number(stateInput.montoN) + Number(stateInput.iva ?? 0) + Number(stateInput.impuestos ?? 0)}
                                 onChange={handleChange}
                             />
@@ -346,7 +411,7 @@ export default function FormAddBuySupply({
             {/* =============================== */}
             {/*       BOTÓN OCULTAR/VER         */}
             {/* =============================== */}
-            <div className="pt-3">
+            <div className="pt-3 mb-4">
 
                 <button
                     className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center mb-3"
@@ -365,12 +430,25 @@ export default function FormAddBuySupply({
             {/* =============================== */}
 
             {Array.from({ length: showContableProd }).map((_, index) => (
-                <BlockAddProducBuy
-                    key={index}
-                    index={index}
-                    stateInput={stateInput}
-                    setStateInput={setStateInput}
-                />
+                <div>
+
+                    <div className="mb-3 border-top border-2">
+                        <div className="d-flex align-items-center gap-2 instrument-serif-regular mb-2 mt-3">
+                            <FaBasketShopping size={35} />
+                            <h3>Producto {index + 1}</h3>
+                        </div>
+
+                    </div>
+
+                    <BlockAddProducBuy
+                        key={index}
+                        index={index}
+                        stateInput={stateInput}
+                        setStateInput={setStateInput}
+                        validationBuySupply={validationBuySupply}
+                    />
+
+                </div>
             ))}
 
             {/* =============================== */}
@@ -390,7 +468,7 @@ export default function FormAddBuySupply({
                 {showContableProd > 1 ?
                     <button
                         className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center mb-3"
-                        onClick={() => setShowContableProd(showContableProd - 1)}
+                        onClick={() => deleteBlockSupply()}
 
                     >
                         <span>Eliminar Bloque Producto</span>
@@ -405,7 +483,7 @@ export default function FormAddBuySupply({
                 {/* <Button variant="secondary" onClick={setOpenModal}>
           Cancelar
         </Button> */}
-                < Button variant="primary" onClick={() => handleSubmit(stateInput)} listBrands={listBrands} disabled={!stateInput.date || !stateInput.montoN || !stateInput.detailsSupply.length > 0 || !stateInput.nameSupplier || !stateInput.NInvoice}>
+                < Button variant="primary" onClick={() => handleSubmit(stateInput)} listBrands={listBrands} disabled={validationAccountant() || validationBuySupply()}>
                     Guardar Compra
                 </Button>
 

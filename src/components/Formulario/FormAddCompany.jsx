@@ -28,7 +28,8 @@ const FormAddCompany = () => {
     address: "",
     cuit: "",
   });
-
+  const [validationName, setValidationName] = useState(true);
+  const [isInputFocusedName, setIsInputFocusedName] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
   //logIn with email of gmail
@@ -39,6 +40,11 @@ const FormAddCompany = () => {
       ...prevState,
       [name]: value,
     }));
+    setValidationName(value.length >= 3);
+  };
+
+  const handleFocusName = () => {
+    setIsInputFocusedName(true);
   };
 
   const handleChangeRadioB = (event) => {
@@ -88,12 +94,14 @@ const FormAddCompany = () => {
     }
   };
 
+
+
   //   const RedirectLink = () => {
   //     window.location.href = "/login";
   //   };
   return (
     <div className="login-wrapAddComp">
-      <div className="login-html">
+      <div className="addComp-htmld">
         <div className="text-center">
           <img src={logoNew} style={{ width: "185px" }} alt="logo" />
           <h4 className="mt-1 mb-3 pb-1">Gestion de Turnos PY</h4>
@@ -114,11 +122,19 @@ const FormAddCompany = () => {
           name="nameCompany"
           value={stateValue.nameCompany}
           onChange={handleChange}
+          onFocus={handleFocusName}
           minLength="2"
           maxLength="30"
         />
 
-        <label className="form-label" htmlFor="idAddress">
+        {!validationName && isInputFocusedName && (
+          <div className="text-danger msgAlertInput">
+            Mayor a 2 letras
+          </div>
+        )}
+
+
+        <label className="form-label mt-3" htmlFor="idAddress">
           (*) Domicilio
         </label>
 
@@ -135,7 +151,7 @@ const FormAddCompany = () => {
           maxLength="30"
         />
 
-        <label className="form-label" htmlFor="idCuit">
+        <label className="form-label mt-3" htmlFor="idCuit">
           {" "}
           (*) Cuit
         </label>
@@ -193,9 +209,9 @@ const FormAddCompany = () => {
               onClick={handleSumbit}
               disabled={
                 !stateValue.nameCompany.trim() ||
-                !stateValue.address.trim() ||
-                !stateValue.cuit.trim() ||
-                !selectedOption
+                  !stateValue.address.trim() ||
+                  !stateValue.cuit.trim() ||
+                  !selectedOption
                   ? true
                   : false
               }
