@@ -102,7 +102,7 @@ export function vtasAnioMesNow(idCompany) {
       `${host}/api/vtasxAnioandMesNow/${idCompany}`,
       {}
     );
-    console.log(vtas)
+   
     return dispatch({
       type: VTAS_ANIO_MES_NOW,
       payload: vtas.data.vtas,

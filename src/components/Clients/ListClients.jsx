@@ -103,7 +103,7 @@ function ListClients() {
   //esto se efectua cada vez que se aprieta un cliente
   function handleInfo(e, props) {
     e.preventDefault();
-    //console.log(props,"carcateristica cliente")
+
 
     if (stateInfo) {
       setInfo(!stateInfo);
@@ -246,6 +246,7 @@ function ListClients() {
 
       <ModalAddClient state={newClient} setState={setNewClient} />
       <br />
+      
       {clients ? (
         // HOVER para que semarque con el cursor
         // BODERED para que se marquen los bordes de las columnas

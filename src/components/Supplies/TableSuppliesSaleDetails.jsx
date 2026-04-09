@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { PiHighHeelFill } from "react-icons/pi";
 import { FaCheckToSlot } from "react-icons/fa6";
-import ModalAddSaleSupply from "../Modal/Supply/ModalAddSaleSupply";
+import ModalAddSaleSupply from "../Modal/SaleSupply/ModalAddSaleSupply.jsx";
 import { actionAddSaleSupply } from "../../reducer/actions/supply/actionsSupply";
 import { useDispatch, useSelector } from "react-redux";
 import convertDateFormat from "../../functions/convertDateFormat"

@@ -11,7 +11,7 @@
  */
 
 export default function sumaTotalesArray(listadoValues) {
- console.log(listadoValues)
+
   const objectSumaTotales = {
     sumaMes: 0,
     sumaEfectivo: 0,
