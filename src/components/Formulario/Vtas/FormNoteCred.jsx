@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { actionNoteCred } from "../../../reducer/actions/salesSupply/actionSalesSupply";
+import {resetSalesByMonth} from "../../../reducer/actions/supply/actionsInformSalesSupply";
 import convertNum from "../../../functions/convertNum";
 import { set } from "react-hook-form";
 
@@ -14,6 +15,7 @@ const FormNoteCred = ({ openModal, setOpenModal, dataModalSale,setStateDetailsSa
     const [stateOptionsSelect, setStateOptionsSelect] = useState([]);
     const [stateQuantity, setStateQuantity] = useState(0);
     const [stateListOptionSelected, setStateListOptionSelected] = useState([]);
+
     const [stateDate, setStateDate] = useState(new Date().toISOString().split('T')[0]);
     const [stateReason, setStateReason] = useState("");
 
@@ -52,8 +54,8 @@ const FormNoteCred = ({ openModal, setOpenModal, dataModalSale,setStateDetailsSa
     }
 
     const changeQuantity = (data, { e }) => {
-
-        const value = Math.max(0, Math.min(data?.quantitySale, parseInt(e.target.value, 10) || 0));
+console.log(data)
+        const value = Math.max(1, Math.min(data?.quantitySale - (data?.quantityReturn || 0), parseInt(e.target.value, 10) || 0));
         setStateListOptionSelected(prevState => prevState.map(option => option.idItemSale === data.idItemSale ? { ...option, quantityReturn: value } : option));
     };
 
@@ -87,7 +89,7 @@ const FormNoteCred = ({ openModal, setOpenModal, dataModalSale,setStateDetailsSa
                 setStateReason("")
                 setOpenModal(false);
                 setStateDetailsSale("")
-                dispatch()
+                dispatch(resetSalesByMonth())
 
             } else {
                 await MySwal.fire({
@@ -184,6 +186,8 @@ const FormNoteCred = ({ openModal, setOpenModal, dataModalSale,setStateDetailsSa
                                 <input
                                     type="date"
                                     className="form-control"
+                                    min={stateDate}
+                                    value={stateDate}
                                     onChange={(e) => setStateDate(e.target.value)}
                                 />
                             </div>
