@@ -66,7 +66,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     // --------------------------
     // SELECT OPTIONS
     // --------------------------
-    const brandOptions = listBrand.map((b) => ({
+    const brandOptions = listBrand?.map((b) => ({
         value: b._id,
         label: b.nameBrand
     }));
