@@ -128,7 +128,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
   const isButtonValid = () => {
     if (stateCategory && stateCategory === "peluAndVet") {
       return (
-        stateValue.tipoServ &&
+        stateValue.tipoServ.trim()  &&
         stateNewVta.statusFile &&
         (stateValue.efectivo > 0 ||
           stateValue.transferencia > 0 ||
@@ -137,7 +137,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
     } else {
       if (stateCategory === "pelu") {
         return (
-          stateValue.tipoServ &&
+          !stateValue.tipoServ.trim()  &&
           (stateValue.efectivo > 0 ||
             stateValue.transferencia > 0 ||
             stateValue.tarjeta > 0)

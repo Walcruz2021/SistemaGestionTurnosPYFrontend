@@ -150,18 +150,27 @@ export default function TodoList() {
     }
   }, [ventasXAnio, dispatch]);
 
+  //suma totales ventas (servicios) por mes seleccionado
   useEffect(() => {
     if (vtasFiltered && vtasFiltered.length) {
       setStateSumaTotal2(sumaTotalesArray(vtasFiltered));
     }
   }, [vtasFiltered, dispatch]);
 
+  //suma totales ventas de insumos por mes actual
   useEffect(() => {
     if (listSalesByMonthNow && listSalesByMonthNow.length) {
       setStateSumaTotal3(sumaTotalesArraySale(listSalesByMonthNow));
     }
   }, [listSalesByMonthNow, dispatch]);
 
+
+    //suma totales ventas de insumos por mes seleccionado
+  useEffect(() => {
+    if (listSalesByMonth && listSalesByMonth.length) {
+      setStateTotalsSaleByMonth(sumaTotalesArraySale(listSalesByMonth));
+    }
+  }, [listSalesByMonth, dispatch]);
 
 
   //resetamos el informe mensual cada vez que se desmmonta el componente para evitar que se muestren datos al cambiar de pagina y volver a ingresar
@@ -451,19 +460,20 @@ export default function TodoList() {
               <tr>
                 <th>
                   Fecha{" "}
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     onClick={(e) => handleOrder2(e)}
                     color={order2 ? "#FF846A" : "#A2DFFF"}
                     icon={faSortAlphaDown}
                     size="lg"
                     style={{ cursor: "pointer" }}
-                  />
+                  /> */}
                 </th>
                 <th>Valor de Venta</th>
-                <th>Efectivo</th>
+                {/* <th>Efectivo</th>
                 <th>Banco</th>
-                <th>Tarjeta</th>
+                <th>Tarjeta</th> */}
                 <th>Plataforma</th>
+                <th>Nª Venta</th>
               </tr>
             </thead>
             <tbody className="instrument-serif-regular">
@@ -471,11 +481,12 @@ export default function TodoList() {
                 <tr key={sale._id}>
                   <td>{convertDateFormat(sale.date)}</td>
                   {sale.totalSale ? <td>{convertNum(sale.totalSale)}</td> : <td>{convertNum(0)}</td>}
-                  {sale.paymentMethodEfectivo ? <td>{convertNum(sale.paymentMethodEfectivo)}</td> : <td>{convertNum(0)}</td>}
+                  {/* {sale.paymentMethodEfectivo ? <td>{convertNum(sale.paymentMethodEfectivo)}</td> : <td>{convertNum(0)}</td>}
                   {sale.paymentMethodTransferencia ? <td>{convertNum(sale.paymentMethodTransferencia)}</td> : <td>{convertNum(0)}</td>}
 
-                  {sale.paymentMethodTarjeta ? <td>{convertNum(sale.paymentMethodTarjeta)}</td> : <td>{convertNum(0)}</td>}
+                  {sale.paymentMethodTarjeta ? <td>{convertNum(sale.paymentMethodTarjeta)}</td> : <td>{convertNum(0)}</td>} */}
                   {sale.platformMethod ? <td>{sale.platformMethod}</td> : <td>{"Plataforna NO Declarada"}</td>}
+                  {sale.numeSale ? <td>{sale.numeSale}</td> : <td>{0}</td>}
                 </tr>
 
 
@@ -515,8 +526,8 @@ export default function TodoList() {
         </div>
       )}
 
-
-      <div className="containerInforme">
+      {/* PREDICCION DE VENTAS PARA EL MES SELECCIONADO */}
+      {/* <div className="containerInforme">
         <div className="cardInf">
           <div className="titGral">
 
@@ -527,7 +538,7 @@ export default function TodoList() {
           </p>
         </div>
 
-      </div>
+      </div> */}
 
       <div className="container-lg p-1 instrument-serif-regular">
         <Select
@@ -670,13 +681,13 @@ export default function TodoList() {
                       <tr>
                         <th>
                           Fecha{" "}
-                          <FontAwesomeIcon
+                          {/* <FontAwesomeIcon
                             onClick={(e) => handleOrder2(e)}
                             color={order2 ? "#FF846A" : "#A2DFFF"}
                             icon={faSortAlphaDown}
                             size="lg"
                             style={{ cursor: "pointer" }}
-                          />
+                          /> */}
                         </th>
                         <th>Valor de Venta</th>
                         <th>Plataforma</th>

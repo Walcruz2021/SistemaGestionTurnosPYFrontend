@@ -119,7 +119,7 @@ const AppRoutes = () => {
     <div>
       {!isLoading ? (
         loginUser?.emailVerified ? (
-          <div>
+          <div className="min-h-screen overflow-x-hidden">
             <NavBarLat />
             <Routes>
               <Route path="/" element={<AgendaTurnos />} />

@@ -89,22 +89,25 @@ export default function FormAddBuySupply({
 
     const handleChange = (e) => {
         let { name, value } = e.target;
-        if (name == "NInvoice") {
+        if (name === "NInvoice") {
             value = value.replace(/[^a-zA-Z0-9/-]/g, "").slice(0, 15);
             setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
-        } else if (name == "date") {
-
-
+        } else if (name === "date") {
 
             setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
-        } else {
+        } else  if (name === "iva" || name === "impuestos" || name === "montoN") {
             value = value.replace(/\D/g, "").slice(0, 10);
 
             setStateInput((prev) => ({
+                ...prev, [name]: value
+            }));
+        }else{
+            //aqui se considera montoBruto el cual NO debe tener limites de digitos
+             setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
         }
@@ -282,7 +285,7 @@ export default function FormAddBuySupply({
 
     const validationBuySupply = () => {
 
-        if (stateInput.detailsSupply[0].nameBrand && stateInput.detailsSupply[0].nameSupply && stateInput.detailsSupply[0].priceSale && stateInput.detailsSupply[0].quantity && stateInput.detailsSupply[0].unitCost && stateInput.detailsSupply[0].dueDate) {
+        if (stateInput.detailsSupply[0].nameBrand && stateInput.detailsSupply[0].nameSupply && stateInput.detailsSupply[0].priceSale && stateInput.detailsSupply[0].quantity && stateInput.detailsSupply[0].unitCost) {
             return false
         } else return true
     }
@@ -488,14 +491,14 @@ const customStyles = (hasError) => ({
                 </Button>
 
                 <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                    <div className="text-center">
+                    {/* <div className="text-center">
                         <div className="card-body">
                             <button className="btn btn-link">
                                 <img src={addSupplyIcon} onClick={addSupplyFunction} />
                             </button>
 
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="text-center">
                         <div className="card-body">

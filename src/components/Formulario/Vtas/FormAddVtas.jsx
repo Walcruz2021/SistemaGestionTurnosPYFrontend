@@ -32,12 +32,12 @@ const FormAddVtas = () => {
             </div>
             <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
                 <div className="text-center">
-                    <div className="card-body">
+                    {/* <div className="card-body">
                         <button className="btn btn-link">
                             <img src={addSupplyIcon} onClick={addSupplyFunction} />
                         </button>
 
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="text-center">

@@ -15,6 +15,7 @@ import {
 } from "../../../reducer/actions/supply/actionsSupply.js";
 import { getBrands } from "../../../reducer/actions/actionBrand.jsx";
 import TableStockBatch from "../../StockBatch/TableStockBatch.jsx";
+import { Plus, Search } from "lucide-react";
 
 const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     const dispatch = useDispatch();
@@ -166,43 +167,62 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
         <>
             <div className="container-lg table-responsive mb-4">
                 {/* BUSCADOR */}
-                <div className="containerSearch">
-                    <input
-                        className="inputBuscar instrument-serif-regular"
-                        type="text"
-                        placeholder={`Busque un Insumo (minúsculas)`}
-                        value={stateSearch}
-                        onChange={(e) => {
-                            setCurrentPage(1);
-                            setSearch(e.target.value);
-                        }}
-                    />
+                <div className="cflex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500 ">
+                        Buscar
+                    </label>
+                    <div className="relative">
+                        <div className="mb-1">
+
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
+                        <input
+                            className="w-full bg-white border border-gray-200 text-gray-900 text-sm pl-9 pr-4 py-2.5 focus:outline-none focus:border-gray-900 transition-colors placeholder:text-gray-500"
+                            type="text"
+                            placeholder={`Busque un Insumo (minúsculas)`}
+                            value={stateSearch}
+                            onChange={(e) => {
+                                setCurrentPage(1);
+                                setSearch(e.target.value);
+                            }}
+                        />
+                    </div>
                 </div>
 
-                {/* FILTRO POR MARCA */}
-                <p className="mt-3 instrument-serif-regular ">Filtrar por marca</p>
-                <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Marca"
-                    onChange={handleChangeSelectBrand}
-                    value={stateSelectedBrand}
-                    options={brandOptions}
-                    isClearable
-                />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        {/* FILTRO POR MARCA */}
+
+                        <p className="mt-3 instrument-serif-regular ">Filtrar por marca</p>
+                        <Select
+                            className="classSelect instrument-serif-regular"
+                            placeholder="Seleccione Marca"
+                            onChange={handleChangeSelectBrand}
+                            value={stateSelectedBrand}
+                            options={brandOptions}
+                            isClearable
+                        />
+                    </div>
+                    <div>
+
+                        {/* FILTRO POR CATEGORÍA */}
+                        <p className="mt-3 instrument-serif-regular">Filtrar por categoría</p>
+                        <Select
+                            className="classSelect instrument-serif-regular"
+                            placeholder="Seleccione Categoría"
+                            onChange={handleChangeSelectCategory}
+                            value={stateSelectedCategory}
+                            options={categoryOptions}
+                            isClearable
+                        />
+                    </div>
+                </div>
 
 
 
 
-                {/* FILTRO POR CATEGORÍA */}
-                <p className="mt-3 instrument-serif-regular">Filtrar por categoría</p>
-                <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Categoría"
-                    onChange={handleChangeSelectCategory}
-                    value={stateSelectedCategory}
-                    options={categoryOptions}
-                    isClearable
-                />
 
 
 

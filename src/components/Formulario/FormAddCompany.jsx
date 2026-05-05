@@ -28,7 +28,13 @@ const FormAddCompany = () => {
     address: "",
     cuit: "",
   });
-  const [validationName, setValidationName] = useState(true);
+
+
+  const [validationName, setValidationName] = useState({
+    nameCompany: false,
+    cuit: false,
+    address: false,
+  });
   const [isInputFocusedName, setIsInputFocusedName] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -40,7 +46,10 @@ const FormAddCompany = () => {
       ...prevState,
       [name]: value,
     }));
-    setValidationName(value.length >= 3);
+    setValidationName((prev) => ({
+      ...prev,
+      [name]: name === "cuit" ? value.length > 2 : value.length > 2,
+    }));
   };
 
   const handleFocusName = () => {
@@ -127,7 +136,7 @@ const FormAddCompany = () => {
           maxLength="30"
         />
 
-        {!validationName && isInputFocusedName && (
+        {!validationName.nameCompany && isInputFocusedName && (
           <div className="text-danger msgAlertInput">
             Mayor a 2 letras
           </div>
@@ -146,10 +155,17 @@ const FormAddCompany = () => {
           type="text"
           name="address"
           value={stateValue.address}
+          onFocus={handleFocusName}
           onChange={handleChange}
-          minLength="2"
-          maxLength="30"
+          minLength={2}
+          maxLength={30}
         />
+
+        {!validationName.address && isInputFocusedName && (
+          <div className="text-danger msgAlertInput">
+            Mayor a 2 letras
+          </div>
+        )}
 
         <label className="form-label mt-3" htmlFor="idCuit">
           {" "}
@@ -163,9 +179,9 @@ const FormAddCompany = () => {
           id="idCuit"
           type="text"
           name="cuit"
+          onFocus={handleFocusName}
           value={stateValue.cuit}
-          minLength="2"
-          maxLength="15"
+          maxLength={15}
           onChange={(e) => {
             // Solo permitir números y máximo 15 caracteres
             const value = e.target.value.replace(/\D/g, "").slice(0, 15);
@@ -175,6 +191,12 @@ const FormAddCompany = () => {
             }));
           }}
         />
+
+        {!validationName.cuit && isInputFocusedName && (
+          <div className="text-danger msgAlertInput">
+            Mayor a 2 números
+          </div>
+        )}
 
         <div className="d-flex justify-content-between w-100">
           <label className="p-2">
@@ -209,6 +231,8 @@ const FormAddCompany = () => {
               onClick={handleSumbit}
               disabled={
                 !stateValue.nameCompany.trim() ||
+                validationName.nameCompany === false ||
+                 validationName.address === false ||
                   !stateValue.address.trim() ||
                   !stateValue.cuit.trim() ||
                   !selectedOption

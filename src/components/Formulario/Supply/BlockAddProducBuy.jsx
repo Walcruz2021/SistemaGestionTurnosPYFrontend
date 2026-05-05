@@ -251,11 +251,10 @@ const customStyles = (hasError) => ({
                     <Form.Control
                         type="date"
                         name="dueDate"
-                        className={`mt-2 instrument-serif-regular ${!currentProduct.dueDate ? "border-danger" : ""}`}
+                        className={`mt-2 instrument-serif-regular`}
 
                         value={currentProduct?.dueDate || ""}
                         onChange={handleChangeInput}
-                        required
                     />
                 </Form.Group>
             </Col>

@@ -1,41 +1,37 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import Button from "react-bootstrap/Button";
+import { useForm, Controller } from "react-hook-form";
+
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { addGastos } from "../../../reducer/actions/actionsGastos";
+import { Plus } from "lucide-react";
 
-/**
- * FormGastosDir use form control. The states are intern and use new functions as "Watch" that control current values with "allValues"
- * "isFormValid" verify all values are completed to enabled the button
- * @returns
- */
 const FormGastosFij = () => {
   const MySwal = withReactContent(Swal);
-  const companySelectdMenu = useSelector((state) => state.company.companySelected);
   const dispatch = useDispatch();
+  const companySelectdMenu = useSelector(
+    (state) => state.company.companySelected
+  );
+
+  const { register, handleSubmit, control, reset, watch } = useForm();
+
   const [visibleCheckE, setVisibleCheckE] = useState(false);
   const [visibleCheckT, setVisibleCheckT] = useState(false);
   const [visibleCheckB, setVisibleCheckB] = useState(false);
 
-  const { handleSubmit, control, reset, watch } = useForm();
   const allValues = watch();
 
   const handleCheckChange = (type) => {
-    if (type === "Efectivo") {
-      setVisibleCheckE(!visibleCheckE);
-    } else if (type === "Transferencia") {
-      setVisibleCheckB(!visibleCheckB);
-    } else if (type === "Tarjeta") {
-      setVisibleCheckT(!visibleCheckT);
-    }
+    if (type === "Efectivo") setVisibleCheckE(!visibleCheckE);
+    if (type === "Transferencia") setVisibleCheckB(!visibleCheckB);
+    if (type === "Tarjeta") setVisibleCheckT(!visibleCheckT);
   };
 
   const arrayGastosFij = [
-    { value: "ALQUILER", label: "Alquiler" },
+{ value: "ALQUILER", label: "Alquiler" },
     { value: "DEPRECIACION MAQUINARIAS", label: "Depreciación Maquinarias" },
     {
       value: "SEGUROS",
@@ -45,35 +41,32 @@ const FormGastosFij = () => {
   ];
 
   const onSubmit = (data) => {
-    const [day, month, year] = data.date.split("/");
-    const fechaFormat = new Date(`${year}-${month}-${day}`); // yyyy-mm-dd
-    const año = fechaFormat.getFullYear();
-    const mes = fechaFormat.getMonth() + 1;
+    const fecha = new Date(data.date);
+    const año = fecha.getFullYear();
+    const mes = fecha.getMonth() + 1;
 
-    const newStateInput = {
+    const newData = {
       ...data,
-      efectivo: data.efectivo || 0,
-      transferencia: data.transferencia || 0,
-      tarjeta: data.tarjeta || 0,
+      efectivo: Number(data.efectivo) || 0,
+      transferencia: Number(data.transferencia) || 0,
+      tarjeta: Number(data.tarjeta) || 0,
     };
 
     const value =
-      Number(newStateInput.efectivo) +
-      Number(newStateInput.tarjeta) +
-      Number(newStateInput.transferencia);
+      newData.efectivo + newData.transferencia + newData.tarjeta;
 
     dispatch(
       addGastos({
-        año: año,
-        date: newStateInput.date,
-        description: newStateInput.description,
-        efectivo: newStateInput.efectivo,
-        tarjeta: newStateInput.tarjeta,
-        transferencia: newStateInput.transferencia,
+        año,
+        date: newData.date,
+        description: newData.description,
+        efectivo: newData.efectivo,
+        tarjeta: newData.tarjeta,
+        transferencia: newData.transferencia,
         categoryGasto: "GASTO FIJO",
-        value: value,
-        mes: mes,
-        typeGasto: newStateInput.category.value,
+        value,
+        mes,
+        typeGasto: newData.category.value,
         idCompany: companySelectdMenu._id,
       })
     );
@@ -81,267 +74,180 @@ const FormGastosFij = () => {
     MySwal.fire({
       title: "¡Gasto Fijo Agendado!",
       icon: "success",
-      confirmButtonText: "Aceptar",
       confirmButtonColor: "rgb(21, 151, 67)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        reset({
-          date: "",
-          description: "",
-          efectivo: 0,
-          transferencia: 0,
-          tarjeta: 0,
-          category: null,
-        });
-        setVisibleCheckE(false);
-        setVisibleCheckT(false);
-        setVisibleCheckB(false);
-      }
     });
+
+    reset({
+      date: "",
+      description: "",
+      efectivo: 0,
+      transferencia: 0,
+      tarjeta: 0,
+      category: null,
+    });
+
+    setVisibleCheckE(false);
+    setVisibleCheckT(false);
+    setVisibleCheckB(false);
   };
 
-  /**
-   * if the condition are met. this function will enabled button
-   */
   const isFormValid = () => {
     return (
       allValues.date &&
-      allValues.description.trim() &&
-      (allValues.efectivo > 0 ||
-        allValues.transferencia > 0 ||
-        allValues.tarjeta > 0) &&
+      allValues.description &&
+      allValues.description.trim() !== "" &&
+      (Number(allValues.efectivo) > 0 ||
+        Number(allValues.transferencia) > 0 ||
+        Number(allValues.tarjeta) > 0) &&
       allValues.category
     );
   };
 
   return (
-    <div className="instrument-serif-regular">
-      <div className="titGral">
-        <h2>GASTOS FIJOS</h2>
-      </div>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-12 col-md-8 col-lg-6">
-            <Form className="px-3" onSubmit={handleSubmit(onSubmit)}>
-              <Form.Group className="mb-3" controlId="categoryGasto">
-                
-                <Controller
-                  name="category"
-                  control={control}
-                  defaultValue={null}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      placeholder="* Seleccione Categoria"
-                      options={arrayGastosFij}
-                    />
-                  )}
-                />
-              </Form.Group>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mt-6 flex flex-col gap-5 px-3"
+    >
+      {/* CATEGORIA + FECHA */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold uppercase text-gray-500">
+            Categoría
+          </label>
+          <Controller
+            name="category"
+            control={control}
+            defaultValue={null}
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder="* Seleccione Categoria"
+                options={arrayGastosFij}
+              />
+            )}
+          />
+        </div>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>* Fecha</Form.Label>
-                <Controller
-                  name="date"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Form.Control
-                      type="date"
-                      placeholder="Ingrese Fecha"
-                      {...field}
-                    />
-                  )}
-                />
-              </Form.Group>
-
-              <div>
-                <Form.Check
-                  type="checkbox"
-                  id="check-efectivo"
-                  label="Efectivo"
-                  onChange={() => handleCheckChange("Efectivo")}
-                  className="mt-2"
-                  checked={visibleCheckE}
-                />
-                {visibleCheckE && (
-                  <Controller
-                    name="efectivo"
-                    control={control}
-                    defaultValue={0}
-                    render={({ field }) => (
-                      <Form.Control
-                        type="number"
-                        placeholder="Efectivo"
-                        required
-                        maxLength={10}
-                        min="0"
-                        className="mt-2"
-                        onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e" || e.key === "+") {
-                            e.preventDefault();
-                          }
-                          // Evita escribir si ya hay 10 caracteres
-                          if (
-                            e.target.value &&
-                            e.target.value.length >= 10 &&
-                            // Permite borrar
-                            e.key !== "Backspace" &&
-                            e.key !== "Delete" &&
-                            !isNaN(Number(e.key))
-                          ) {
-                            e.preventDefault();
-                          }
-                        }}
-                        onChange={(e) => {
-                          // Limita el valor a 10 caracteres
-                          if (e.target.value.length <= 10) {
-                            field.onChange(e);
-                          }
-                        }}
-                      />
-                    )}
-                  />
-                )}
-
-                <Form.Check
-                  type="checkbox"
-                  id="check-transferencia"
-                  label="Transferencia"
-                  onChange={() => handleCheckChange("Transferencia")}
-                  className="mt-2"
-                  checked={visibleCheckB}
-                />
-                {visibleCheckB && (
-                  <Controller
-                    name="transferencia"
-                    control={control}
-                    defaultValue={0}
-                    render={({ field }) => (
-                      <Form.Control
-                        type="number"
-                        placeholder="Transferencia"
-                        maxLength={10}
-                        required
-                        className="mt-2"
-                        min="0"
-                        onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e" || e.key === "+") {
-                            e.preventDefault();
-                          }
-                          // Evita escribir si ya hay 10 caracteres
-                          if (
-                            e.target.value &&
-                            e.target.value.length >= 10 &&
-                            // Permite borrar
-                            e.key !== "Backspace" &&
-                            e.key !== "Delete" &&
-                            !isNaN(Number(e.key))
-                          ) {
-                            e.preventDefault();
-                          }
-                        }}
-                        onChange={(e) => {
-                          // Limita el valor a 10 caracteres
-                          if (e.target.value.length <= 10) {
-                            field.onChange(e);
-                          }
-                        }}
-                      />
-                    )}
-                  />
-                )}
-
-                <Form.Check
-                  type="checkbox"
-                  id="check-tarjeta"
-                  label="Tarjeta"
-                  onChange={() => handleCheckChange("Tarjeta")}
-                  className="mt-2"
-                  checked={visibleCheckT}
-                />
-                {visibleCheckT && (
-                  <Controller
-                    name="tarjeta"
-                    control={control}
-                    defaultValue={0}
-                    render={({ field }) => (
-                      <Form.Control
-                        type="number"
-                        placeholder="Tarjeta"
-                        maxLength={10}
-                        required
-                        className="mt-2 mb-2"
-                        min="0"
-                        onKeyDown={(e) => {
-                          if (e.key === "-" || e.key === "e" || e.key === "+") {
-                            e.preventDefault();
-                          }
-                          // Evita escribir si ya hay 10 caracteres
-                          if (
-                            e.target.value &&
-                            e.target.value.length >= 10 &&
-                            // Permite borrar
-                            e.key !== "Backspace" &&
-                            e.key !== "Delete" &&
-                            !isNaN(Number(e.key))
-                          ) {
-                            e.preventDefault();
-                          }
-                        }}
-                        onChange={(e) => {
-                          // Limita el valor a 10 caracteres
-                          if (e.target.value.length <= 10) {
-                            field.onChange(e);
-                          }
-                        }}
-                      />
-                    )}
-                  />
-                )}
-              </div>
-
-              <Form.Group className="mb-3 pt-2">
-                <Controller
-                  name="description"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      type="text"
-                      placeholder="* Ingrese Descripcion del Gasto"
-                      maxLength="80"
-                      {...field}
-                    />
-                  )}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-1">
-                <Form.Text className="text-danger">
-                  * Valores Obligatorios.
-                </Form.Text>
-              </Form.Group>
-
-              <Button variant="primary" type="submit" disabled={!isFormValid()}>
-                Ingresar Gasto Fijo
-              </Button>
-            </Form>
-          </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold uppercase text-gray-500">
+            Fecha
+          </label>
+          <input
+            type="date"
+            {...register("date", { required: true })}
+            className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-3 py-2.5"
+          />
         </div>
       </div>
-      {/* <div className="container mt-3">
-        <p className="text-secondary font-weight-bold small">
-          Los gastos fijos son aquellos costos que una empresa incurre
-          regularmente y que no fluctúan con el nivel de producción o ventas.
-          Estos gastos se mantienen constantes en el corto plazo,
-          independientemente de la cantidad de bienes o servicios que se
-          produzcan o vendan. 
-        </p>
-      </div> */}
-    </div>
+
+      {/* MEDIOS DE PAGO */}
+      <div className="flex flex-col gap-4 max-w-md">
+        <label className="text-[11px] font-semibold uppercase text-gray-500">
+          Medio de pago
+        </label>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            {
+              label: "Efectivo",
+              checked: visibleCheckE,
+              state: "Efectivo",
+              field: "efectivo",
+            },
+            {
+              label: "Transferencia",
+              checked: visibleCheckB,
+              state: "Transferencia",
+              field: "transferencia",
+            },
+            {
+              label: "Tarjeta",
+              checked: visibleCheckT,
+              state: "Tarjeta",
+              field: "tarjeta",
+            },
+          ].map((item, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-500">
+                <input
+                  type="checkbox"
+                  checked={item.checked}
+                  onChange={() => handleCheckChange(item.state)}
+                  className="hidden"
+                />
+
+                <div
+                  className={`w-4 h-4 border flex items-center justify-center
+                  ${item.checked
+                      ? "bg-black border-black"
+                      : "bg-white border-gray-300"
+                    }`}
+                >
+                  {item.checked && (
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                {item.label}
+              </label>
+
+              {item.checked && (
+                <Controller
+                  name={item.field}
+                  control={control}
+                  defaultValue={0}
+                  render={({ field }) => (
+                    <Form.Control
+                      type="number"
+                      placeholder="$"
+                      min="0"
+                      className="w-full bg-neutral-900 border border-neutral-700 text-gray-200 px-3 py-1.5 text-sm"
+                      {...field}
+                    />
+                  )}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* DESCRIPCION */}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-[11px] font-semibold uppercase text-gray-500">
+          Descripción del gasto
+        </label>
+
+        <textarea
+          {...register("description")}
+          placeholder="Añadí un comentario..."
+          className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-3 py-2.5 resize-none"
+        />
+
+        <p className="text-red-500 text-left text-xs">* Valores obligatorios</p>
+      </div>
+
+      <div>
+
+        {/* BOTON */}
+        <button
+          type="submit"
+          disabled={!isFormValid()}
+          className={isFormValid() ? "flex items-center gap-2 bg-black text-white text-sm font-semibold tracking-[0.12em] uppercase px-7 py-3 hover:bg-gray-800 transition-colors duration-150" : "flex items-center gap-2 bg-gray-500 text-gray-300 text-sm font-semibold tracking-[0.12em] uppercase px-7 py-3 cursor-not-allowed"}
+        >
+          <Plus className="w-4 h-4" />
+          Ingresar Gasto Fijo
+        </button>
+      </div>
+    </Form>
   );
 };
 

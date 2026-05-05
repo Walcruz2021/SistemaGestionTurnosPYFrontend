@@ -19,6 +19,7 @@ import editClientIcon from "../../icons/editClient.png";
 import ModalEditClient from "../Modal/ModalEditClient";
 const REGISTER_URL = "/createUserRolUserClient";
 import RankingClients from "../Clients/RankingClients"
+import { Plus, Search } from "lucide-react";
 
 //FUNCION QUE UTILIZA EL INPUT PARA BUSCAR UN CLIENTE
 
@@ -233,16 +234,35 @@ function ListClients() {
 
       <div className="container-lg table-responsive">
         <div className="containerSearch">
-          <input
+          {/* modelo anterior */}
+          {/* <input
             className="inputBuscar instrument-serif-regular"
             type="text"
             name="search"
             placeholder={`Busque un ${personCategory}. Ingrese sólo valores en minúsculas`}
             value={stateSearch}
             onChange={(e) => setSearch(e.target.value)}
+          /> */}
+               <div className="flex flex-col gap-1.5">
+        <label className="text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500">
+          Buscar
+        </label>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <input
+            type="text"
+            name="search"
+            placeholder={`Busque un ${personCategory}. Ingrese sólo valores en minúsculas`}
+            value={stateSearch}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-white border border-gray-200 text-gray-900 text-sm pl-9 pr-4 py-2.5 focus:outline-none focus:border-gray-900 transition-colors placeholder:text-gray-500"
           />
         </div>
       </div>
+        </div>
+      </div>
+
+   
 
       <ModalAddClient state={newClient} setState={setNewClient} />
       <br />
@@ -364,6 +384,8 @@ function ListClients() {
         address={inputState.address}
         notesCli={inputState.notesCli}
         email={inputState.email}
+        stateHist={stateHist}
+        setStateHist={setStateHist}
       />
 
       <RankingClients/>

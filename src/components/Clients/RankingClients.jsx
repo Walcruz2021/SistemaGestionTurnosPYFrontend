@@ -38,6 +38,7 @@ const RankingClients = () => {
     const rankingVtas = useSelector(state => state.sales.rankingVtasByClient)
 
     //ultimas 5 ventas
+    //rankingVtasDetails se lo utilizar para hacer las predicciones de servicios a futuro
     const rankingVtasDetails = useSelector(state => state.sales.rankingVtasByClientDetails)
     // [{_id: '66ce205f9b979e00035d1da8', cliente_name: 'Franco Ariel Villanueva', totalValorServ: 808100, lastFiveSales: Array(5)}
     // {_id: '66ce20289b979e00035d1da3', cliente_name: 'Daniel Ponce', totalValorServ: 145000, lastFiveSales: Array(5)},
@@ -209,11 +210,13 @@ const RankingClients = () => {
             </div>
             <Bar data={dataValues} options={options2} />
 
-            <div className="titGral">
-                <h2>Prediccion de Servicios</h2>
-            </div>
 
-            <div className="container-lg mb-3 ml-3" style={{ maxWidth: 420, width: "100%" }}>
+            {/* se da de baja PREDICCION DE SERVICIOS MOMENTANEAMENTE */}
+            {/* <div className="titGral">
+                <h2>Prediccion de Servicios</h2>
+            </div> */}
+
+            {/* <div className="container-lg mb-3 ml-3" style={{ maxWidth: 420, width: "100%" }}>
 
                 <Select
                     inputId="cliente-select"
@@ -229,7 +232,7 @@ const RankingClients = () => {
 
             </div>
 
-            <Line data={dataPrediction} options={options3} />
+            <Line data={dataPrediction} options={options3} /> */}
 
         </div>
     )

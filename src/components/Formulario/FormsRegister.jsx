@@ -43,6 +43,7 @@ function FormRegister({ autUser }) {
 
   const [emailState, setEmailState] = useState("");
   const [validationEmail, setValidationEmail] = useState(false);
+  console.log(validationEmail)
   const [validationPassw, setValidationPassw] = useState(false);
   const [validationName, setValidationName] = useState(true);
   const [validationLastName, setValidationLastName] = useState(false);
@@ -306,9 +307,9 @@ function FormRegister({ autUser }) {
                       wrapperClass="mb-2 ms-3 w-100 mt-1"
                       type="email"
                       id="email"
-                      placeHolder="Ingrese su Email"
+                      placeHolder="(*) Ingrese su Email"
                       name="email"
-                      maxLength="50"
+                      maxLength="30"
                       onChange={handleChangeEmail}
                     />
                   </div>
@@ -331,7 +332,7 @@ function FormRegister({ autUser }) {
                       maxLength="20"
                       value={stateValue.password}
                       onChange={handleChangePassword}
-                      placeHolder="Password mayor 5 digitos"
+                      placeHolder="(*) Password mayor 5 digitos"
                     />
                   </div>
 
@@ -347,7 +348,7 @@ function FormRegister({ autUser }) {
                       minLength={6}
                       maxLength="20"
                       onChange={handleChangePasswordDuplicated}
-                      placeHolder="Ingrese de nuevo el password"
+                      placeHolder="(*) Ingrese de nuevo el password"
                     />
                   </div>
                   {!validationPassw && (

@@ -19,6 +19,8 @@ const ModalEditClient = ({
   address: initialAddress,
   notesCli: initialNotesCli,
   email: initialEmail,
+  stateHist,
+  setStateHist
 }) => {
   const listClients = useSelector((state) => state.client.allClients);
   const personCategory = useSelector((state) => state.company.typePerson);
@@ -109,6 +111,7 @@ const ModalEditClient = ({
         });
         dispatch(getClients(companySelectedMenu._id));
         handleClose();
+        setStateHist(false);
       }
     });
   };

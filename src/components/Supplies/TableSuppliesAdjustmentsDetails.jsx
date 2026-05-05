@@ -21,9 +21,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash
 } from "@fortawesome/free-solid-svg-icons";
+import { CalendarDays, Package, SlidersHorizontal, FileText, Plus } from "lucide-react";
+import { ClipLoader } from "react-spinners";
+import { set } from "react-hook-form";
 
 const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
-
+    const [isLoading, setIsLoading] = useState(false);
     const [stateOpenModalAdj, setStateOpenModalAdj] = useState(false);
     const dispatch = useDispatch()
     const MySwal = withReactContent(Swal);
@@ -36,6 +39,8 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
         noteAdjustment: "",
         quantity: 1,
     })
+
+
     const [typeAdjustment, setTypeAdjustment] = useState(null);
 
     const [dataModalAdj, setDataModalAdj] = useState(null);
@@ -85,7 +90,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
 
     const addSaleSupply = async (detailsSupplies) => {
 
-
+        setIsLoading(true)
         const listPrevArray = detailsSupplies.map(sup => {
             //ellimino todos los campos que no utilizares para cumplir con el formato del backend
             const { _id, global, idCompany, idGlobalSupply, priceSale, totalStock, ...newArray } = sup;
@@ -109,14 +114,17 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
             date: stateSaleDetail.date,
             typeAdjustment: stateSaleDetail.typeAdjustment,
             quantity: stateSaleDetail.quantity,
+            noteAdjustment: stateSaleDetail.noteAdjustment
         }
 
         const requestSale = await dispatch(addStockAdjustment(dataAdjustment))
         if (requestSale && requestSale.status == 200) {
-            //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
-            dispatch(getListSupplies(companySelectedMenu._id))
+            setIsLoading(false);
             //limpiamos el array de con insumos elegidos para vender
             setStateDetailsSupplies([]);
+            //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
+            dispatch(getListSupplies(companySelectedMenu._id))
+
             MySwal.fire({
                 title: `¡Ajuste  Agregado Correctamente!`,
                 icon: "success",
@@ -124,6 +132,8 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                 confirmButtonColor: "rgb(21, 151, 67)",
             }).then((result) => {
                 if (result.isConfirmed) {
+
+
                     setStateDetail({
                         date: "",
                         typeAdjustment: "",
@@ -135,6 +145,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
                 }
             });
         } else {
+            setIsLoading(false);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -180,7 +191,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
         }));
     };
 
-    var arrayAdjustment = ["NOTA DE CREDITO", "DAÑADO", "VENCIDO", "PERDIDO", "ROBO", "DIFERENCIA INVENTARIO", "DONACION", "MUESTRA"];
+    var arrayAdjustment = ["DAÑADO", "VENCIDO", "PERDIDO", "ROBO", "DIFERENCIA DE INVENTARIO", "DONACIÓN", "MUESTRA"];
     var selectTypeAdjuArray = [];
 
     if (Array.isArray(arrayAdjustment)) {
@@ -232,6 +243,12 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
 
     }
 
+    const isValid = () => {
+        return stateDetailsSupplies.length > 0 &&
+            stateSaleDetail.date &&
+            stateSaleDetail.quantity &&
+            stateSaleDetail.typeAdjustment;
+    }
 
     return (
         <div className="container-lg table-responsive mb-4">
@@ -290,120 +307,169 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
             </table>
 
 
+            <div className="max-w-5xl mx-auto px-6 sm:px-10 py-10 bg-gray-100">
+
+                <div className="">
+
+                    <div>
+                        <div className="mb-8">
+                            <p className="text-[10px] font-semibold tracking-[0.35em] uppercase text-gray-400 mb-1">
+                                Gestión de inventario
+                            </p>
+                            <h2 className="text-2xl font-black text-gray-900 tracking-tight">
+                                Ajuste de Stock
+                            </h2>
+                            <div className="mt-3 w-8 h-0.5 bg-black" />
+                        </div>
+
+                        <form className="flex flex-col gap-6" onSubmit={(e) => {
+
+                            e.preventDefault();
+                            addSaleSupply(stateDetailsSupplies);
+                        }}>
 
 
-            <div style={{
-                maxWidth: "400px", // Limita el ancho para que no sea gigante
-                margin: "0 auto",  // Centra el div horizontalmente
-                width: "100%",      // Asegura que responda en móviles
+                            <div className="flex flex-col gap-1.5">
+                                <label className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500">
+                                    <CalendarDays className="w-3.5 h-3.5" />
+                                    (*) Fecha de ajuste
+                                </label>
 
-            }}
-            >
-                <Modal.Body className="pt-1 pb-1">
+                                <input className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-4 py-3 
+  focus:outline-none focus:ring-0 focus:border-black transition-colors duration-150"
+                                    type="date"
+                                    name="date"
+                                    value={stateSaleDetail.date}
+                                    onChange={handleChangeData}
+                                    required
+                                />
+                            </div>
 
-                    <Form>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                        <Form.Group
-                            className="mb-1"
-                            controlId="exampleForm.ControlInput1"
-                        >
-                            <Form.Label className="instrument-serif-regular">
-                                (*) Fecha Ajuste
-                            </Form.Label>
+                                <div className="flex flex-col gap-1.5">
 
-                            <Form.Control
-                                className="instrument-serif-regular"
-                                type="date"
-                                name="date"
-                                value={stateSaleDetail.date}
-                                onChange={handleChangeData}
-                                required
-                            />
-                        </Form.Group>
+                                    <label className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500">
+                                        <Package className="w-3.5 h-3.5" />
+                                        Cantidad
+                                    </label>
 
-
-                        <Form.Group
-                            className="mb-1"
-                            controlId="exampleForm.ControlInput1"
-                        >
-                            <Form.Label className="instrument-serif-regular">
-                                (*) Cantidad
-                            </Form.Label>
-
-                            <Form.Control
-                                className="instrument-serif-regular"
-                                type="text"
-                                inputMode="numeric"
-                                pattern="[1-9]*"
-                                name="quantity"
-                                value={stateSaleDetail.quantity}
-                                onChange={handleChangeDataNumber}
-                                required
-                            />
-                        </Form.Group>
+                                    <input
+                                        className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-4 py-3 
+  focus:outline-none focus:ring-0 focus:border-black transition-colors duration-150 placeholder:text-gray-300"
+                                        type="text"
+                                        inputMode="numeric"
+                                        pattern="[1-9]*"
+                                        name="quantity"
+                                        value={stateSaleDetail.quantity}
+                                        onChange={handleChangeDataNumber}
+                                        required
+                                    />
 
 
-                        <Form.Group className="mt-2">
+                                </div>
+                                <div className="flex flex-col gap-1.5">
 
-                            <Form.Label
-                                htmlFor="tam-select"
-                                className="instrument-serif-regular"
+                                    <label className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500">
+                                        <SlidersHorizontal className="w-3.5 h-3.5" />
+                                        Tipo de ajuste
+                                    </label>
+
+                                    <Select
+                                        className="instrument-serif-regular"
+                                        inputId="tam-select"
+                                        value={typeAdjustment}
+                                        inputProps={{ "data-testid": "tam-select" }}
+                                        placeholder="Seleccione Tipo Ajuste"
+                                        onChange={(e) => {
+                                            setTypeAdjustment(e);
+                                            handleChangeAdj(e);
+                                        }}
+                                        options={selectTypeAdjuArray}
+                                    />
+                                </div>
+
+
+                            </div>
+
+
+                            <div
+                                className="flex flex-col gap-1.5"
+                                controlId="exampleForm.ControlInput1"
                             >
-                                (*) Tipo Ajuste
-                            </Form.Label>
+                                <label className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-500">
+                                    <FileText className="w-3.5 h-3.5" />
+                                    Nota de ajuste
+                                    <span className="text-gray-300 font-normal normal-case tracking-normal">(opcional)</span>
+                                </label>
 
-                            <Select
-                                className="instrument-serif-regular"
-                                inputId="tam-select"
-                                value={typeAdjustment}
-                                inputProps={{ "data-testid": "tam-select" }}
-                                placeholder="Seleccione Tipo Ajuste"
-                                onChange={(e) => {
-                                    setTypeAdjustment(e);
-                                    handleChangeAdj(e);
-                                }}
-                                options={selectTypeAdjuArray}
-                            />
-                        </Form.Group>
+                                <textarea
+                                    className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-4 py-3 focus:outline-none focus:border-gray-900 transition-colors duration-150 resize-none placeholder:text-gray-300"
+                                    type="text"
+                                    as="textarea"
+                                    name="noteAdjustment"
+                                    maxLength="50"
+                                    value={stateSaleDetail.noteAdjustment}
+                                    onChange={handleChangeData}
+
+                                />
+                            </div>
 
 
-                        <Form.Group
-                            className="mb-1"
-                            controlId="exampleForm.ControlInput1"
-                        >
-                            <Form.Label className="instrument-serif-regular">
-                                Nota Ajuste
-                            </Form.Label>
+                            {/* Divider */}
+                            <div className="border-t border-gray-100" />
 
-                            <Form.Control
-                                className="instrument-serif-regular"
-                                type="text"
-                                as="textarea"
-                                name="noteAdjustment"
-                                maxLength="50"
-                                value={stateSaleDetail.noteAdjustment}
-                                onChange={handleChangeData}
-                                required
-                            />
-                        </Form.Group>
 
-                    </Form>
-                </Modal.Body>
-                <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
-                <Modal.Footer className="mt-0 pt-3 pb-1 instrument-serif-regular">
+                            <div className="flex items-center justify-between gap-4">
 
-                    <Button
-                        className="w-100"
-                        variant="primary"
-                        type="submit"
-                        onClick={() => { addSaleSupply(stateDetailsSupplies) }}
-                        disabled={!stateDetailsSupplies.length || !stateSaleDetail.date || !stateSaleDetail.quantity || !stateSaleDetail.typeAdjustment}
-                    >
-                        Agregar Ajuste
-                    </Button>
+                                <div className="text-xs text-gray-400">
+                                    {isValid() ? (
+                                        <span className="text-gray-600 font-medium">
+                                            Ajuste listo para registrar
+                                        </span>
+                                    ) : (
+                                        "Completá los campos requeridos"
+                                    )}
+                                </div>
 
-                </Modal.Footer>
+
+                                {!isLoading ? <button
+                                    className={`flex items-center gap-2 text-sm font-semibold tracking-[0.12em] uppercase px-7 py-3 transition-all duration-150
+              ${isValid()
+                                            ? "bg-black text-white hover:bg-gray-800 cursor-pointer"
+                                            : "bg-gray-100 text-gray-300 cursor-not-allowed"
+                                        }`}
+                                    variant="primary"
+                                    type="submit"
+
+                                    disabled={!isValid()}
+                                // disabled={!stateDetailsSupplies.length || !stateSaleDetail.date || !stateSaleDetail.quantity || !stateSaleDetail.typeAdjustment}
+                                >
+                                    <Plus className="w-4 h-4" strokeWidth={2} />
+                                    Agregar Ajuste
+                                </button> : null}
+
+                                {isLoading && (
+                                    <div className="d-flex vh-50 justify-content-center align-items-center flex-column">
+                                        <ClipLoader color="#000" loading={true} size={70} />
+                                        <div className="titGral">
+                                            <h2 className="mt-3">Espere un Momento por favor ...</h2>
+                                        </div>
+                                    </div>
+                                )}
+
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
     )
 }

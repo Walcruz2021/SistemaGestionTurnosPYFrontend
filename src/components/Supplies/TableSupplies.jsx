@@ -15,6 +15,7 @@ import {
 } from "../../reducer/actions/supply/actionsSupply.js";
 import { getBrands } from "../../reducer/actions/actionBrand.jsx";
 import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
+import { list } from "postcss";
 
 const TableSupplies = ({ setInfo, stateInfo }) => {
     const dispatch = useDispatch();
@@ -22,9 +23,9 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
         (state) => state.company.companySelected
     );
 
-    //si el insumo no tiene companySupply ligado no aparecera en la lista
-    const listSupplies = useSelector((state) => state.supply.listSupplies);
 
+    const listSupplies = useSelector((state) => state.supply.listSupplies);
+console.log(listSupplies)
     const listBrand = useSelector((state) => state.gralRed.listBrands);
 
     const [order, setOrder] = useState(false);
