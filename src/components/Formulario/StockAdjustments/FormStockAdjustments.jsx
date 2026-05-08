@@ -67,12 +67,12 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     // --------------------------
     // SELECT OPTIONS
     // --------------------------
-    const brandOptions = listBrand.map((b) => ({
+    const brandOptions = listBrand?.map((b) => ({
         value: b._id,
         label: b.nameBrand
     }));
 
-    const categoryOptions = listCategories.map((c) => ({
+    const categoryOptions = listCategories?.map((c) => ({
         value: c.name,
         label: c.name
     }));
