@@ -28,6 +28,7 @@ import { RiExchangeDollarFill } from "react-icons/ri";
 import { MdOutlineMailLock } from "react-icons/md";
 import "./FormsRegister.css";
 import supportLogin from "../../icons/supportLogin.png";
+import FrontPageRegisterLogin from "./FrontPageRegisterLogin";
 
 function FormRegister({ autUser }) {
   const navigate = useNavigate();
@@ -43,7 +44,6 @@ function FormRegister({ autUser }) {
 
   const [emailState, setEmailState] = useState("");
   const [validationEmail, setValidationEmail] = useState(false);
-  console.log(validationEmail)
   const [validationPassw, setValidationPassw] = useState(false);
   const [validationName, setValidationName] = useState(true);
   const [validationLastName, setValidationLastName] = useState(false);
@@ -237,7 +237,7 @@ function FormRegister({ autUser }) {
   return (
     <div className="container py-3 mt-2">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <div className="text-center">
             <div className="card-body">
               <div className="login-wrapR">
@@ -397,45 +397,8 @@ function FormRegister({ autUser }) {
             </div>
           </div>
         </div>
-        <div className="col-md-4 pt-5">
-          <div className="text-center">
-            <div className="card-body">
-              <div className="bannerInf">
-                <h2>Gestion de Turnos PY</h2>
-                <p>Con Sistema de Gestión de Turnos de PymesYa, podrás:</p>
-                <ol>
-                  {" "}
-                  <PiDog size={30} /> Administrar tus turnos
-                </ol>
-
-                <ol>
-                  <BsPeople size={30} /> Administrar tus Clientes
-                </ol>
-
-                <ol>
-                  <BsWatch size={30} /> Ahorrar Tiempo
-                </ol>
-
-                <ol>
-                  <BsFileEarmarkBarGraph size={30} /> Detalle de tus Ingresos y
-                  Gastos
-                </ol>
-
-                <ol>
-                  <RiExchangeDollarFill size={30} /> Completamente Gratuito
-                </ol>
-
-                    <button onClick={RedirectLinkContact} className="border-0">
-                  <img
-                    src={supportLogin}
-                    alt="Contact Support"
-                    width="100"
-                    height="100"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="col-md-5">
+            <FrontPageRegisterLogin onContact={RedirectLinkContact} />
         </div>
       </div>
     </div>

@@ -10,9 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Link } from "react-router-dom";
 import { MDBContainer, MDBInput } from "mdb-react-ui-kit";
-import gmail from "../../icons/gmailLogin.png";
 import { verificationCompaniesExist } from "../../reducer/actions/actionsCompany";
 import { listenToAuthChanges } from "../../reducer/actions/actions";
 
@@ -21,14 +19,8 @@ import ModalRestPassword from "../Modal/ModalRestPassword";
 import "./FormLoginNew.css";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
-import { FaGoogle } from "react-icons/fa";
 import logoNew from "../../IMAGENES/LogoNew.png";
-import { BsWatch } from "react-icons/bs";
-import { BsFileEarmarkBarGraph } from "react-icons/bs";
-import { RiExchangeDollarFill } from "react-icons/ri";
-import { BsPeople } from "react-icons/bs";
-import supportLogin from "../../icons/supportLogin.png";
-import { PiDog } from "react-icons/pi";
+import FrontPageRegisterLogin from "./FrontPageRegisterLogin";
 
 function FormLoginNew({ autUser }) {
 
@@ -81,37 +73,13 @@ function FormLoginNew({ autUser }) {
     return response;
   };
 
-const handleSumbit = async (e) => {
-  e.preventDefault();
+  const handleSumbit = async (e) => {
+    e.preventDefault();
 
-  if (stateValue.email.trim() === "" || stateValue.password.trim() === "") {
-    MySwal.fire({
-      title: "Error Login",
-      text: "Campos vacíos",
-      icon: "warning",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: "rgb(255, 140, 0)",
-    });
-    return;
-  }
-
-  try {
-    // 🔑 Login
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      stateValue.email,
-      stateValue.password
-    );
-
-    const user = userCredential.user;
-
-
-    // ⚠️ Verifico el correo
-    if (!user.emailVerified) {
-      await auth.signOut(); // lo sacamos
+    if (stateValue.email.trim() === "" || stateValue.password.trim() === "") {
       MySwal.fire({
-        title: "¡Correo electrónico no verificado!",
-        text: "Por favor, verifica tu correo electrónico para continuar.",
+        title: "Error Login",
+        text: "Campos vacíos",
         icon: "warning",
         confirmButtonText: "Aceptar",
         confirmButtonColor: "rgb(255, 140, 0)",
@@ -119,55 +87,79 @@ const handleSumbit = async (e) => {
       return;
     }
 
-    
-    // ✅ Si está verificado, sigue el flujo normal
-    MySwal.fire({
-      title: "¡Usuario Logueado Correctamente!",
-      icon: "success",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: "rgb(21, 151, 67)",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        dispatch(listenToAuthChanges());
-        const resVerification = await verificationCompanies(user.email);
+    try {
+      // 🔑 Login
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        stateValue.email,
+        stateValue.password
+      );
 
-        if (resVerification.payload.status === 200) {
-          navigate("/");
-        } else if (resVerification.payload.status === 204) {
-          navigate("/addCompany");
-        }
+      const user = userCredential.user;
+
+
+      // ⚠️ Verifico el correo
+      if (!user.emailVerified) {
+        await auth.signOut(); // lo sacamos
+        MySwal.fire({
+          title: "¡Correo electrónico no verificado!",
+          text: "Por favor, verifica tu correo electrónico para continuar.",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: "rgb(255, 140, 0)",
+        });
+        return;
       }
-    });
 
-  } catch (error) {
-    console.log("Error:", error.code, error.message);
 
-    if (error.code === "auth/invalid-credential") {
+      // ✅ Si está verificado, sigue el flujo normal
       MySwal.fire({
-        title: "Error Login",
-        text: "Usuario o Contraseña Incorrecta",
-        icon: "warning",
+        title: "¡Usuario Logueado Correctamente!",
+        icon: "success",
         confirmButtonText: "Aceptar",
-        confirmButtonColor: "rgb(255, 140, 0)",
+        confirmButtonColor: "rgb(21, 151, 67)",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          dispatch(listenToAuthChanges());
+          const resVerification = await verificationCompanies(user.email);
+
+          if (resVerification.payload.status === 200) {
+            navigate("/");
+          } else if (resVerification.payload.status === 204) {
+            navigate("/addCompany");
+          }
+        }
       });
-    } else if (error.code === "auth/invalid-email") {
-      MySwal.fire({
-        title: "Error Login",
-        text: "Debe ingresar un Email válido",
-        icon: "warning",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "rgb(255, 140, 0)",
-      });
-    } else {
-      MySwal.fire({
-        title: "Error Login",
-        text: "Ha ocurrido un error inesperado",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-      });
+
+    } catch (error) {
+      console.log("Error:", error.code, error.message);
+
+      if (error.code === "auth/invalid-credential") {
+        MySwal.fire({
+          title: "Error Login",
+          text: "Usuario o Contraseña Incorrecta",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: "rgb(255, 140, 0)",
+        });
+      } else if (error.code === "auth/invalid-email") {
+        MySwal.fire({
+          title: "Error Login",
+          text: "Debe ingresar un Email válido",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: "rgb(255, 140, 0)",
+        });
+      } else {
+        MySwal.fire({
+          title: "Error Login",
+          text: "Ha ocurrido un error inesperado",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
     }
-  }
-};
+  };
 
 
 
@@ -181,7 +173,7 @@ const handleSumbit = async (e) => {
   return (
     <div className="container py-3 mt-2">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <div className="text-center">
             <div className="card-body">
               <div className="login-wrap">
@@ -260,45 +252,8 @@ const handleSumbit = async (e) => {
             </div>
           </div>
         </div>
-        <div className="col-md-4 pt-5">
-          <div className="text-center">
-            <div className="card-body">
-              <div className="bannerInf">
-                <h2>Gestion de Turnos PY</h2>
-                <p>Con Sistema de Gestión de Turnos de PymesYa, podrás:</p>
-                <ol>
-                  {" "}
-                  <PiDog size={30} /> Administrar tus turnos
-                </ol>
-
-                <ol>
-                  <BsPeople size={30} /> Administrar tus Clientes
-                </ol>
-
-                <ol>
-                  <BsWatch size={30} /> Ahorrar Tiempo
-                </ol>
-
-                <ol>
-                  <BsFileEarmarkBarGraph size={30} /> Detalle de tus Ingresos y
-                  Gastos
-                </ol>
-
-                <ol>
-                  <RiExchangeDollarFill size={30} /> Completamente Gratuito
-                </ol>
-
-                <button onClick={RedirectLinkContact} className="border-0">
-                  <img
-                    src={supportLogin}
-                    alt="Contact Support"
-                    width="100"
-                    height="100"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="col-md-5">
+         <FrontPageRegisterLogin onContact={RedirectLinkContact} />
         </div>
       </div>
     </div>
