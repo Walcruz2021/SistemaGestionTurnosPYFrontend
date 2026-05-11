@@ -342,15 +342,25 @@ function NavBarLat() {
                   Empresa activa
                 </span>
 
-                <h3
-                  className="
-                    uppercase font-bold
-                    text-white text-sm
-                    tracking-wide m-0
-                  "
-                >
-                  {CompanyMenuReducer?.nameCompany}
-                </h3>
+
+                <Link
+  to="/"
+  onClick={() => setOpen(false)}
+  className="
+    uppercase
+    font-bold
+    text-white
+    text-sm
+    tracking-wide
+    no-underline
+    hover:text-zinc-300
+    transition-colors
+    duration-200
+  "
+>
+  {CompanyMenuReducer?.nameCompany}
+</Link>
+
               </div>
 
               <motion.button
