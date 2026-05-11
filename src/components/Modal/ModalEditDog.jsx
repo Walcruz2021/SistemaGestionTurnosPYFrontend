@@ -69,7 +69,7 @@ const ModalEditDog = ({
   }
 
   const handleSumbit = (e) => {
-    if (stateValue.nameDog.trim() === "" || stateValue.notaP.trim() === "") {
+    if (stateValue.nameDog.trim() === "") {
       alert("valores vacios");
     } else {
       const payload = {};
@@ -142,7 +142,6 @@ const ModalEditDog = ({
                 maxLength={100}
                 value={stateValue.notaP}
                 onChange={handleChange}
-                required
               />
             </Form.Group>
 

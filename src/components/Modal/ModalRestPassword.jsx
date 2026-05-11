@@ -13,7 +13,7 @@ import withReactContent from "sweetalert2-react-content";
 function ModalRestPassword({ show, setShow }) {
   const dispatch = useDispatch();
   const userSearch = useSelector((state) => state.user.userEmailSearch);
-console.log(userSearch);
+
   const handleClose = () => {
     setShow(false);
     setEmail("");
@@ -99,10 +99,10 @@ console.log(userSearch);
   }, [userSearch, dispatch, email]); 
 
   return (
-    <div className="mt-2 mb-2">
-      <Button variant onClick={handleShow} className="buttonModal anton-regular">
+    <div className="mt-2 mb-2 text-xs text-zinc-500 hover:text-white transition-colors duration-150 underline underline-offset-2">
+      {/* <Button variant onClick={handleShow} className="buttonModal anton-regular text-gray-300">
         ¿Olvidaste la Contraseña?
-      </Button>
+      </Button> */}
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

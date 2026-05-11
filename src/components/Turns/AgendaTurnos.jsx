@@ -53,9 +53,7 @@ function AgendaTurnos() {
   return (
     <>
       <>
-        <div className="titGral">
-          <h1>DASHBOARD</h1>
-        </div>
+   
         <Dashboard setlistClients={setlistClients} />
       </>
     </>
