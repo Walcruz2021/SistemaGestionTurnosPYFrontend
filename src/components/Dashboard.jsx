@@ -571,10 +571,10 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.4 }}
-          className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-6"
+          className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
         >
 
-          <div className="px-6 py-5 border-b border-zinc-100 flex items-center justify-between">
+          <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
 
             <div>
 
@@ -595,21 +595,16 @@ function Dashboard() {
             </div>
 
           </div>
-
-          <div className="p-6 overflow-x-auto">
-
-            <TableTurns
-              setOrder={setOrder}
-              order={order}
-              setEditTurn={setEditTurn}
-              editTurn={editTurn}
-              setInfo={setInfo}
-              stateInfo={stateInfo}
-            />
-
-          </div>
-
         </motion.div>
+
+        <TableTurns
+          setOrder={setOrder}
+          order={order}
+          setEditTurn={setEditTurn}
+          editTurn={editTurn}
+          setInfo={setInfo}
+          stateInfo={stateInfo}
+        />
 
         {/* HISTORIAL */}
 
@@ -620,7 +615,7 @@ function Dashboard() {
           className="bg-white border border-zinc-200 rounded-2xl overflow-hidden"
         >
 
-          <div className="px-6 py-5 border-b border-zinc-100 flex items-center justify-between">
+          <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
 
             <div>
 
@@ -642,219 +637,220 @@ function Dashboard() {
 
           </div>
 
-          <div className="p-6">
+        </motion.div>
 
-            {!stateInfo && !newTurno && !newClient ? (
-              <div className="mb-6 max-w-sm">
+        <div className="p-1">
 
-                <label className="block text-xs uppercase tracking-widest text-zinc-400 font-medium mb-2">
-                  Buscar mascota
-                </label>
+          {!stateInfo && !newTurno && !newClient ? (
+            <div className="mb-6 max-w-sm mt-8">
 
-                <Select
-                  placeholder="Seleccioná una mascota..."
-                  options={Listdogs}
-                  onChange={ChangeDog}
-                  classNamePrefix="react-select"
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({
-                      ...base,
-                      zIndex: 9999,
-                    }),
-                  }}
-                />
+              <label className="block text-xs uppercase tracking-widest text-zinc-400 font-medium mb-2">
+                Buscar mascota
+              </label>
 
-              </div>
-            ) : null}
+              <Select
+                placeholder="Seleccioná una mascota..."
+                options={Listdogs}
+                onChange={ChangeDog}
+                classNamePrefix="react-select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: (base) => ({
+                    ...base,
+                    zIndex: 9999,
+                  }),
+                }}
+              />
 
-            <AnimatePresence>
+            </div>
+          ) : null}
 
-              {selectedDog &&
-                vtaxClient.status === 200 ? (
+          <AnimatePresence>
 
-                <motion.div
-                  key="historial"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.35 }}
-                >
+            {selectedDog &&
+              vtaxClient.status === 200 ? (
 
-                  {/* STAT CARDS */}
+              <motion.div
+                key="historial"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35 }}
+              >
 
-                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                {/* STAT CARDS */}
 
-  {/* MASCOTA */}
-  <div className="bg-zinc-950 rounded-xl p-3 flex flex-col items-center text-center gap-1.5 min-h-[110px] justify-center">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mb-4">
 
-    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-      <Dog className="w-4 h-4 text-white" />
-    </div>
+                  {/* MASCOTA */}
+                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
 
-    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-      Mascota
-    </p>
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                      <Dog className="w-4 h-4 text-white" />
+                    </div>
 
-    <h3 className="text-white font-medium text-xs leading-tight">
-      {vtaxClient.data.vta[0].Dog.nameDog}
-    </h3>
+                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                      Mascota
+                    </p>
 
-  </div>
-
-  {/* TAMAÑO */}
-  <div className="bg-zinc-950 rounded-xl p-3 flex flex-col items-center text-center gap-1.5 min-h-[110px] justify-center">
-
-    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-      <Scale className="w-4 h-4 text-white" />
-    </div>
-
-    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-      Tamaño
-    </p>
-
-    <h3 className="text-white font-medium text-xs leading-tight">
-      {vtaxClient.data.vta[0].Dog.tamaño}
-    </h3>
-
-  </div>
-
-  {/* CLIENTE */}
-  <div className="bg-zinc-950 rounded-xl p-3 flex flex-col items-center text-center gap-1.5 min-h-[110px] justify-center">
-
-    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-      <User className="w-4 h-4 text-white" />
-    </div>
-
-    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-      Cliente
-    </p>
-
-    <h3 className="text-white font-medium text-xs leading-tight">
-      {vtaxClient.data.vta[0].name}
-    </h3>
-
-  </div>
-
-  {/* NOTA */}
-  <div className="bg-zinc-950 rounded-xl p-3 flex flex-col items-center text-center gap-1.5 min-h-[110px] justify-center">
-
-    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-      <FileText className="w-4 h-4 text-white" />
-    </div>
-
-    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-      Nota
-    </p>
-
-    <h3 className="text-white font-medium text-xs leading-tight line-clamp-2">
-      {vtaxClient.data.vta[0].Dog.notaP
-        ? vtaxClient.data.vta[0].Dog.notaP
-        : "Sin nota"}
-    </h3>
-
-  </div>
-
-</div>
-
-                  {/* TABLA HISTORIAL */}
-
-                  <div className="p-6 overflow-x-auto">
-
-                    <table className="w-full min-w-[900px]">
-
-                      <thead>
-
-                        <tr className="bg-zinc-950">
-
-                          <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                            Valor
-                          </th>
-
-                          <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-
-                            <span className="flex items-center gap-1.5">
-
-                              Fecha
-
-                              <FontAwesomeIcon
-                                onClick={handleOrderHistDog}
-                                icon={faSortAlphaDown}
-                                className="cursor-pointer"
-                              />
-
-                            </span>
-
-                          </th>
-
-                          <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                            Nota
-                          </th>
-
-                          <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                            Servicio
-                          </th>
-
-                        </tr>
-
-                      </thead>
-
-                      <tbody>
-
-                        {vtaxClient.data.vta.map((vta, i) => (
-
-                          <motion.tr
-                            key={vta._id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: i * 0.06 }}
-                            className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
-                          >
-
-                            <td className="px-5 py-4 text-sm font-medium text-zinc-700">
-                              {convertNum(vta.valorServ)}
-                            </td>
-
-                            <td className="px-5 py-4 text-sm text-zinc-500">
-
-                              {convertDateFormat(vta.date)}
-
-                              <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
-                                {convertDay(vta.date)}
-                              </span>
-
-                            </td>
-
-                            <td className="px-5 py-4 text-sm text-zinc-500">
-                              {vta.notesTurn}
-                            </td>
-
-                            <td className="px-5 py-4">
-
-                              <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
-                                {vta.tipoServ}
-                              </span>
-
-                            </td>
-
-                          </motion.tr>
-                        ))}
-
-                      </tbody>
-
-                    </table>
+                    <h3 className="text-white font-medium text-xs leading-tight">
+                      {vtaxClient.data.vta[0].Dog.nameDog}
+                    </h3>
 
                   </div>
 
-                </motion.div>
+                  {/* TAMAÑO */}
+                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
 
-              ) : null}
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                      <Scale className="w-4 h-4 text-white" />
+                    </div>
 
-            </AnimatePresence>
+                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                      Tamaño
+                    </p>
 
-          </div>
+                    <h3 className="text-white font-medium text-xs leading-tight">
+                      {vtaxClient.data.vta[0].Dog.tamaño}
+                    </h3>
 
-        </motion.div>
+                  </div>
+
+                  {/* CLIENTE */}
+                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
+
+                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                      Cliente
+                    </p>
+
+                    <h3 className="text-white font-medium text-xs leading-tight">
+                      {vtaxClient.data.vta[0].name}
+                    </h3>
+
+                  </div>
+
+                  {/* NOTA */}
+                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                      <FileText className="w-4 h-4 text-white" />
+                    </div>
+
+                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                      Nota
+                    </p>
+
+                    <h3 className="text-white font-medium text-xs leading-tight line-clamp-2">
+                      {vtaxClient.data.vta[0].Dog.notaP
+                        ? vtaxClient.data.vta[0].Dog.notaP
+                        : "Sin nota"}
+                    </h3>
+
+                  </div>
+
+                </div>
+
+
+              </motion.div>
+
+            ) : null}
+
+          </AnimatePresence>
+
+        </div>
+
+        {/* TABLA HISTORIAL */}
+
+        <div className="p-1 overflow-x-auto">
+
+          <table className="w-full min-w-[900px]">
+
+            <thead>
+
+              <tr className="bg-zinc-950">
+
+                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                  Valor
+                </th>
+
+                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+
+                  <span className="flex items-center gap-1.5">
+
+                    Fecha
+
+                    <FontAwesomeIcon
+                      onClick={handleOrderHistDog}
+                      icon={faSortAlphaDown}
+                      className="cursor-pointer"
+                    />
+
+                  </span>
+
+                </th>
+
+                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                  Nota
+                </th>
+
+                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                  Servicio
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {vtaxClient.data.vta.map((vta, i) => (
+
+                <motion.tr
+                  key={vta._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: i * 0.06 }}
+                  className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
+                >
+
+                  <td className="px-5 py-4 text-sm font-medium text-zinc-700">
+                    {convertNum(vta.valorServ)}
+                  </td>
+
+                  <td className="px-5 py-4 text-sm text-zinc-500">
+
+                    {convertDateFormat(vta.date)}
+
+                    <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
+                      {convertDay(vta.date)}
+                    </span>
+
+                  </td>
+
+                  <td className="px-5 py-4 text-sm text-zinc-500">
+                    {vta.notesTurn}
+                  </td>
+
+                  <td className="px-5 py-4">
+
+                    <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
+                      {vta.tipoServ}
+                    </span>
+
+                  </td>
+
+                </motion.tr>
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 

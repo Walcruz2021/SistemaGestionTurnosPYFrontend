@@ -237,28 +237,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
           delay: 0.3,
           duration: 0.4,
         }}
-        className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-6"
+        className="bg-white  mb-6"
       >
-        {/* HEADER */}
-
-        <div className="px-6 py-5 border-b border-zinc-100 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-              Turnos
-            </h2>
-
-            <p className="text-zinc-400 text-sm mt-0.5">
-              Gestión completa de turnos
-            </p>
-          </div>
-
-          <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
-            <CalendarPlus
-              className="w-4 h-4 text-white"
-              strokeWidth={1.8}
-            />
-          </div>
-        </div>
+    
 
         {/* TABLE */}
 
