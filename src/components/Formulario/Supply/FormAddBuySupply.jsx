@@ -19,6 +19,19 @@ import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
 import ModalAddSupply from "../../Modal/Supply/ModalAddSuppply.jsx";
 import { FaBasketShopping } from "react-icons/fa6";
+import { Plus, Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
+
+const SectionDivider = ({ children }) => (
+    <div className="flex items-center gap-3 mt-10 mb-4">
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">
+            {children}
+        </span>
+        <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+    </div>
+);
+
+
 export default function FormAddBuySupply({
 }) {
     const dispatch = useDispatch();
@@ -62,7 +75,7 @@ export default function FormAddBuySupply({
         ]
     });
 
-    
+
     // Cargar lista de proveedores + insumos
     useEffect(() => {
         if (companySelectedMenu) {
@@ -99,15 +112,15 @@ export default function FormAddBuySupply({
             setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
-        } else  if (name === "iva" || name === "impuestos" || name === "montoN") {
+        } else if (name === "iva" || name === "impuestos" || name === "montoN") {
             value = value.replace(/\D/g, "").slice(0, 10);
 
             setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
-        }else{
+        } else {
             //aqui se considera montoBruto el cual NO debe tener limites de digitos
-             setStateInput((prev) => ({
+            setStateInput((prev) => ({
                 ...prev, [name]: value
             }));
         }
@@ -290,21 +303,20 @@ export default function FormAddBuySupply({
         } else return true
     }
 
-const customStyles = (hasError) => ({
-    control: (provided) => ({
-        ...provided,
-        borderColor: hasError ? "red" : provided.borderColor,
-        boxShadow: "none",
-        "&:hover": {
-            borderColor: hasError ? "red" : provided.borderColor
-        }
-    })
-});
+    const customStyles = (hasError) => ({
+        control: (provided) => ({
+            ...provided,
+            borderColor: hasError ? "red" : provided.borderColor,
+            boxShadow: "none",
+            "&:hover": {
+                borderColor: hasError ? "red" : provided.borderColor
+            }
+        })
+    });
     return (
         <Form centered size="lg">
-            <div className="titGral">
-                <h2>Detalle Compra</h2>
-            </div>
+
+            <SectionDivider>Detalle Compra</SectionDivider>
 
 
             {/* =============================== */}
@@ -436,9 +448,9 @@ const customStyles = (hasError) => ({
                 <div>
 
                     <div className="mb-3 border-top border-2">
-                        <div className="d-flex align-items-center gap-2 instrument-serif-regular mb-2 mt-3">
-                            <FaBasketShopping size={35} />
-                            <h3>Producto {index + 1}</h3>
+                        <div className="d-flex align-items-center gap-2 instrument-serif-regular  ml-5">
+                            <FaBasketShopping size={25} />
+                            <SectionDivider>Producto {index + 1} </SectionDivider>
                         </div>
 
                     </div>
@@ -457,28 +469,73 @@ const customStyles = (hasError) => ({
             {/* =============================== */}
             {/*       BOTÓN OCULTAR/VER         */}
             {/* =============================== */}
-            <div className="pt-3">
+            <div className="pt-3 flex flex-wrap gap-3">
 
-                {showContableProd < 10 ? <button
-                    className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center mb-3"
-                    onClick={() => addBlockSupply()}
-
-                >
-                    <span>Agregar Bloque Producto</span>
-
-                </button> : null}
-
-                {showContableProd > 1 ?
-                    <button
-                        className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center mb-3"
-                        onClick={() => deleteBlockSupply()}
-
+                {showContableProd < 10 && (
+                    <motion.button
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => addBlockSupply()}
+                        className="
+                inline-flex items-center gap-2
+                px-4 py-2.5
+                rounded-xl
+                bg-zinc-900
+                hover:bg-black
+                text-zinc-100
+                text-xs font-medium
+                border border-zinc-800
+                transition-all duration-200
+            "
                     >
-                        <span>Eliminar Bloque Producto</span>
 
-                    </button> : null
+                        <div className="
+                w-7 h-7 rounded-lg
+                bg-zinc-800
+                flex items-center justify-center
+            ">
+                            <Plus size={16} />
+                        </div>
 
-                }
+                        <span>
+                            Agregar Producto
+                        </span>
+
+                    </motion.button>
+                )}
+
+                {showContableProd > 1 && (
+                    <motion.button
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => deleteBlockSupply()}
+                        className="
+                inline-flex items-center gap-2
+                px-4 py-2.5
+                rounded-xl
+                bg-white dark:bg-zinc-900
+                hover:bg-zinc-100 dark:hover:bg-zinc-800
+                text-zinc-700 dark:text-zinc-200
+                text-xs font-medium
+                border border-zinc-200 dark:border-zinc-800
+                transition-all duration-200
+            "
+                    >
+
+                        <div className="
+                w-7 h-7 rounded-lg
+                bg-zinc-100 dark:bg-zinc-800
+                flex items-center justify-center
+            ">
+                            <Trash2 size={15} />
+                        </div>
+
+                        <span>
+                            Eliminar Producto
+                        </span>
+
+                    </motion.button>
+                )}
 
             </div>
 

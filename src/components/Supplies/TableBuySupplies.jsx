@@ -10,6 +10,16 @@ import TableDetailBuys from "./TableDetailBuys"
 import { use } from "react"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import { motion, AnimatePresence } from "framer-motion";
+
+const SectionDivider = ({ children }) => (
+    <div className="flex items-center gap-3 mt-10 mb-4">
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">
+            {children}
+        </span>
+        <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+    </div>
+);
 
 const TableBuySupplies = () => {
 
@@ -106,104 +116,185 @@ const TableBuySupplies = () => {
             detailsBuy: props,
         });
     }
+
+    const Th = ({ children, right }) => (
+        <th
+            className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-widest text-zinc-400 whitespace-nowrap border-b border-zinc-100 dark:border-zinc-800 ${right ? "text-right" : "text-left"
+                }`}
+        >
+            {children}
+        </th>
+    );
+    const Td = ({ children, onClick, link, right }) => (
+        <td
+            onClick={onClick}
+            className={`px-4 py-3.5 text-[13px] border-b border-zinc-100 dark:border-zinc-800 align-middle
+      ${right ? "text-right tabular-nums" : ""}
+      ${link
+                    ? "text-zinc-900 dark:text-zinc-100 font-medium cursor-pointer hover:underline underline-offset-2"
+                    : "text-zinc-500 dark:text-zinc-400"
+                }`}
+        >
+            {children}
+        </td>
+    );
+
     return (
-        <div>
-            <div className="">
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 md:px-10 py-8">
+            <div className="max-w-4xl mx-auto">
 
-                <div className="text-center ">
-                    <div className="card-body">
+                {/* ── Encabezado ── */}
+                <div className="flex items-start justify-between mb-8">
 
-                        <OverlayTrigger
-                            placement="top"
-                            overlay={<Tooltip id="tooltip-top">Ingresar Compra</Tooltip>}
+                    <div>
+                        <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+                            Compras de Insumos
+                        </h1>
+                        <p className="text-sm text-zinc-400 mt-0.5">
+                            Gestión y seguimiento de facturas
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-3 pl-1">
+
+                        {iconBuySupply && (
+                            <img
+                                src={iconBuySupply}
+                                className="w-8 h-8"
+                                alt=""
+                            />
+                        )}
+
+                        <motion.button
+                            whileHover={{ opacity: 0.85 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => setOpenFormBuySupply(!openFormBuySupply)}
+                            className="
+            inline-flex items-center
+            px-3 py-2
+            rounded-lg
+            bg-zinc-900 dark:bg-zinc-100
+            text-zinc-100 dark:text-zinc-900
+            text-sm font-medium
+            hover:opacity-85
+            transition-opacity
+        "
                         >
-                            <button
-                                className="btn btn-link"
-                                onClick={() => setOpenFormBuySupply(!openFormBuySupply)}
-                            >
-                                <img src={iconBuySupply} />
-                            </button>
-                        </OverlayTrigger>
+                            Ingresar compra
+                        </motion.button>
 
                     </div>
-                </div>
-            </div>
 
-            <div className="container-lg table-responsive mb-4">
-
-                <div className="titGral">
-                    <h1>Listado Compras Mes Actual</h1>
                 </div>
 
-                <div className="">
-                    <div className="containerSearch">
+                {/* ── Formulario ── */}
+                <AnimatePresence>
+                    {openFormBuySupply && (
+                        <motion.div
+                            key="form"
+                            initial={{ opacity: 0, y: -6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: 0.2 }}
+                            className="mb-6 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
+                        >
+                            <FormAddBuySupply />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* ── Sección: mes actual ── */}
+                <SectionDivider>Compras mes actual</SectionDivider>
+
+                {/* Buscador */}
+                <div className="mb-4">
+                    <div className="flex items-center gap-2 px-3 h-9 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 max-w-sm focus-within:border-zinc-400 dark:focus-within:border-zinc-600 transition-colors">
+                        <svg
+                            className="w-3.5 h-3.5 text-zinc-400 shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg>
                         <input
-                            className="inputBuscar instrument-serif-regular"
                             type="text"
-                            name="search"
-                            placeholder={`Busque una compra del mes actual. Ingrese 
-N Factura en minusculas`}
+                            placeholder="Filtrar por N° factura..."
                             value={stateSearch}
+                            name="search"
                             onChange={(e) => setSearch(e.target.value)}
+                            className="bg-transparent flex-1 text-[13px] text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none"
                         />
                     </div>
                 </div>
 
-                {openFormBuySupply ? <FormAddBuySupply /> : null
-                }
-                <table className="table table-bordered table-hover table-white mt-3">
-                    <thead className="thead-light table-secondary">
-                        <tr>
+                <motion.div initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden mb-2">
+                    <div className="overflow-x-auto">
 
-                            <th className="instrument-serif-regular">N Factura</th>
+                        <table className="w-full">
+                            <thead className="bg-zinc-50 dark:bg-zinc-950">
+                                <tr>
 
-                            <th className="instrument-serif-regular">Proveedor</th>
-                            <th className="instrument-serif-regular">
-                                Fecha{" "}
-                                {/* <FontAwesomeIcon
+                                    <Th className="instrument-serif-regular">N Factura</Th>
+                                    <Th className="instrument-serif-regular">Proveedor</Th>
+                                    <Th className="instrument-serif-regular">
+                                        Fecha{" "}
+                                        {/* <FontAwesomeIcon
                                     // onClick={(e) => handleOrder(e)}
                                     color={order ? "#FF846A" : "#A2DFFF"}
                                     icon={faSortAlphaDown}
                                     size="lg"
                                     style={{ cursor: "pointer" }}
                                 /> */}
-                            </th>
-                            <th className="instrument-serif-regular">Valor Bruto</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentItems ? currentItems.filter(searchBuy(stateSearch)).map((buy) => {
-                            return (
-
-                                <tr key={buy._id}>
-
-                                    <td
-                                        style={{ cursor: "pointer" }}
-                                        onClick={(e) =>
-                                            handleDetailsBuy(e,
-                                                buy
-                                            )
-                                        }
-                                        className="instrument-serif-regular"
-                                    >{buy.NInvoice}</td>
-                                    <td className="instrument-serif-regular">{buy.nameSupplier ?? "No registrado"}</td>
-                                    <td className="instrument-serif-regular">{convertDateReverse(convertDateFormat(buy.date))}</td>
-                                    <td className="instrument-serif-regular">{buy.montoB ? convertNum(buy.montoB) : 0}</td>
+                                    </Th>
+                                    <Th className="instrument-serif-regular">Valor Bruto</Th>
                                 </tr>
-                            )
-                        }) : null
+                            </thead>
+                            <tbody>
+                                {currentItems ? currentItems.filter(searchBuy(stateSearch)).map((buy) => {
+                                    return (
 
-                        }
+                                        <motion.tr
+                                            key={buy._id}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            className="hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors duration-100"
+                                        >
+                                            <Td link onClick={(e) => handleDetailsBuy(e, buy)}>
+                                                {buy.NInvoice}
+                                            </Td>
+                                            <Td>{buy.nameSupplier ?? "No registrado"}</Td>
 
-                    </tbody>
+                                            <Td>
+                                                {convertDateReverse(convertDateFormat(buy.date))}
+                                            </Td>
 
-                </table>
+                                            <Td right>
+                                                {buy.montoB ? convertNum(buy.montoB) : 0}
+                                            </Td>
+                                        </motion.tr>
+                                    )
+                                }) : null
+
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </motion.div>
+
 
                 {/* PAGINACIÓN NUMÉRICA */}
                 {suppliesFiltered.length > itemsPerPage && (
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="flex justify-center items-center gap-1 mt-4">
                         <nav>
                             <ul className="pagination">
                                 <li
@@ -270,117 +361,127 @@ N Factura en minusculas`}
                     </div>
                 )}
 
-                <div className="titGral">
-                    <h1>Busqueda de Compra General</h1>
-                </div>
+                {/* ── Sección: búsqueda general ── */}
+                <SectionDivider>Búsqueda general</SectionDivider>
 
-
-                {/* <div className="d-flex align-items-center gap-2">
-                    <div className="containerSearch">
+                <div className="flex items-center gap-2 max-w-md mb-5">
+                    <div className="flex-1 flex items-center gap-2 px-3 h-9 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus-within:border-zinc-400 dark:focus-within:border-zinc-600 transition-colors">
+                        <svg
+                            className="w-3.5 h-3.5 text-zinc-400 shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg>
                         <input
-                            className="instrument-serif-regular"
                             type="text"
-                            name="search"
-                            placeholder={`Ingrese N Factura en minusculas`}
-                            //value={stateSearch}
+                            placeholder="Ingrese N° de factura..."
                             onChange={(e) => setSearchGral(e.target.value)}
-
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && stateSearchGral)
+                                    searchBuyGralByNInvoice();
+                            }}
+                            className="bg-transparent flex-1 text-[13px] text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none"
                         />
                     </div>
-                    <button className="btn btn-outline-dark mt-2" onClick={() => searchBuyGralByNInvoice(stateSearchGral)} disabled={!stateSearchGral}>Buscar Compra</button>
-                </div> */}
-
-                <div className="flex items-center w-full max-w-xl gap-3">
-
-                    <input
-                        type="text"
-                        name="search"
-                        placeholder="Ingrese N° de factura en minúsculas"
-                        className="flex-1 px-5 py-3 text-base border border-gray-300 rounded-full outline-none focus:ring-2 focus:ring-black"
-                        onChange={(e) => setSearchGral(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && stateSearchGral) {
-                                searchBuyGralByNInvoice(stateSearchGral);
-                            }
-                        }}
-                    />
-
-
-                    <button
-                        onClick={() => searchBuyGralByNInvoice(stateSearchGral)}
+                    <motion.button
+                        whileHover={{ opacity: 0.85 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={searchBuyGralByNInvoice}
                         disabled={!stateSearchGral}
-                        className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition disabled:bg-gray-400"
+                        className="px-4 h-9 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-[13px] font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
                     >
                         Buscar
-                    </button>
-
+                    </motion.button>
                 </div>
 
+                {/* Resultado búsqueda general */}
 
-                {findSupplyByNInvoice ?
+                {findSupplyByNInvoice ? (
+                    <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden mb-6"
+                    >
 
-                    <table className="table table-bordered table-hover table-white mt-3">
-                        <thead className="thead-light table-secondary">
-                            <tr>
+                        <div className="overflow-x-auto">
 
-                                <th className="instrument-serif-regular">N Factura</th>
+                            <table className="w-full">
+                                <thead className="bg-zinc-50 dark:bg-zinc-950">
+                                    <tr>
+                                        <Th>N° Factura</Th>
+                                        <Th>Proveedor</Th>
+                                        <Th>Fecha</Th>
+                                        <Th right>Valor bruto</Th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors duration-100">
+                                        <Td
+                                            link
+                                            onClick={(e) =>
+                                                handleDetailsBuy(e, findSupplyByNInvoice)
+                                            }
+                                        >
+                                            {findSupplyByNInvoice.NInvoice}
+                                        </Td>
+                                        <Td>
+                                            {findSupplyByNInvoice.nameSupplier ?? "No registrado"}
+                                        </Td>
+                                        <Td>
+                                            {convertDateReverse(
+                                                convertDateFormat(findSupplyByNInvoice.date)
+                                            )}
+                                        </Td>
+                                        <Td right>
+                                            {findSupplyByNInvoice.montoB
+                                                ? convertNum(findSupplyByNInvoice.montoB)
+                                                : 0}
+                                        </Td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                                <th className="instrument-serif-regular">Proveedor</th>
-                                <th className="instrument-serif-regular">
-                                    Fecha{" "}
-                                    {/* <FontAwesomeIcon
-                                    // onClick={(e) => handleOrder(e)}
-                                    color={order ? "#FF846A" : "#A2DFFF"}
-                                    icon={faSortAlphaDown}
-                                    size="lg"
-                                    style={{ cursor: "pointer" }}
-                                /> */}
-                                </th>
-                                <th className="instrument-serif-regular">Valor Bruto</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            <tr key={findSupplyByNInvoice._id}>
-
-                                <td
-                                    style={{ cursor: "pointer" }}
-                                    onClick={(e) =>
-                                        handleDetailsBuy(e,
-                                            findSupplyByNInvoice
-                                        )
-                                    }
-                                    className="instrument-serif-regular"
-                                >{findSupplyByNInvoice.NInvoice}</td>
-                                <td className="instrument-serif-regular">{findSupplyByNInvoice.nameSupplier ?? "No registrado"}</td>
-                                <td className="instrument-serif-regular">{convertDateReverse(convertDateFormat(findSupplyByNInvoice.date))}</td>
-                                <td className="instrument-serif-regular">{findSupplyByNInvoice.montoB ? convertNum(findSupplyByNInvoice.montoB) : 0}</td>
-                            </tr>
-
-
-                        </tbody>
-
-                    </table> : isActiveMessage && !findSupplyByNInvoice ?
-                        <div className="titGral">
-                            <h2>No se encontraron compras para la factura ingresada: {stateSearchGral}</h2>
-                        </div> : null
-
-                }
+                    </motion.div>
+                ) : isActiveMessage && !findSupplyByNInvoice ? (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center gap-2.5 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 mb-6"
+                    >
+                        <svg
+                            className="w-3.5 h-3.5 text-zinc-400 shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8v4m0 4h.01" />
+                        </svg>
+                        <p className="text-[13px] text-zinc-500">
+                            No se encontraron compras para la factura:{" "}
+                            <span className="text-zinc-900 dark:text-zinc-100 font-medium">
+                                {stateSearchGral}
+                            </span>
+                        </p>
+                    </motion.div>
+                ) : null}
 
 
 
-                <div className="titGral">
-                    <h1>Detalle de Compra Seleccionada</h1>
+                {/* ── Sección: detalle ── */}
+                <SectionDivider>Detalle de compra seleccionada</SectionDivider>
+
+
+                <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
+                    <TableDetailBuys stateDetailsBuy={stateDetailsBuy?.detailsBuy} />
                 </div>
-                <TableDetailBuys stateDetailsBuy={stateDetailsBuy.detailsBuy} />
-
             </div>
-
-
-
         </div>
     )
 }
