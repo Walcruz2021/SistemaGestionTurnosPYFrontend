@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import convertNum from "../../functions/convertNum";
 import convertDateReverse from "../../functions/convertDateReverse";
 import convertDateFormat from "../../functions/convertDateFormat";
+import { motion } from "framer-motion";
+import { Search, X, ChevronDown, Tag, Layers, CalendarPlus } from "lucide-react";
+
 
 const TableStockBatch = ({ idSupply }) => {
 
@@ -20,53 +23,83 @@ const TableStockBatch = ({ idSupply }) => {
 
 
     return (
-        <div >
-            <div className="titGral">
-                <h1>Detalle Lotes</h1>
+        <motion.div initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                delay: 0.3,
+                duration: 0.4,
+            }}
+            className="bg-white  mb-2">
+
+            <div className="p-1 overflow-x-auto">
+
+                {/* TABLE */}
+                <motion.div initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0.3,
+                        duration: 0.4,
+                    }}
+                    className="bg-white  mb-1">
+
+
+                    <div>
+                        <table className="w-full">
+                            <thead>
+                                <tr className="bg-zinc-950">
+                                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Nombre Lote</th>
+                                    {/* este valor es la cantidad que existe del lote en particular */}
+                                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Cant</th>
+                                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Costo Unit</th>
+                                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Fecha Compra</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listStockBatches ? listStockBatches.map((buy, index) => {
+                                    return (
+
+                                        <motion.tr key={buy._id} animate={{
+                                            opacity: 1,
+                                        }}
+                                            transition={{
+                                                delay:
+                                                    0.35 +
+                                                    index * 0.05,
+                                            }}
+                                            className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
+                                            <td
+
+                                                className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                            >{buy.nameLot ? buy.nameLot : "S/N"}</td>
+                                            <td
+
+                                                className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                            >{buy.quantity}</td>
+                                            <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{convertNum(buy.unitCost)}</td>
+
+                                            <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{convertDateReverse(convertDateFormat(buy.datePurchase))}</td>
+                                        </motion.tr>
+                                    )
+                                }) :
+
+                                    <div className="titGral">
+                                        <h2>No hay Datos</h2>
+                                    </div>
+
+
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </motion.div>
+
             </div>
-            <table className="table table-bordered table-hover table-white">
-                <thead className="thead-light table-secondary">
-                    <tr>
-                        <th className="instrument-serif-regular">Nombre Lote</th>
-                        {/* este valor es la cantidad que existe del lote en particular */}
-                        <th className="instrument-serif-regular">Cantidad</th>
-                        <th className="instrument-serif-regular">Costo Unit</th>
-                        <th className="instrument-serif-regular">Fecha Compra</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {listStockBatches ? listStockBatches.map((buy) => {
-                        return (
-
-                            <tr key={buy._id}>
-                                <td
-
-                                    className="instrument-serif-regular"
-                                >{buy.nameLot ? buy.nameLot : "S/N"}</td>
-                                <td
-
-                                    className="instrument-serif-regular"
-                                >{buy.quantity}</td>
-                                <td className="instrument-serif-regular">{convertNum(buy.unitCost)}</td>
-
-                                <td className="instrument-serif-regular">{convertDateReverse(convertDateFormat(buy.datePurchase))}</td>
-                            </tr>
-                        )
-                    }) :
-
-                        <div className="titGral">
-                            <h2>No hay Datos</h2>
-                        </div>
 
 
-                    }
-
-                </tbody>
-
-            </table>
-
-
-        </div>
+        </motion.div>
     )
 }
 

@@ -243,21 +243,29 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
         {/* TABLE */}
 
-        <div className="p-2 overflow-x-auto">
-          <table className="w-full min-w-[900px]">
+        <div className="p-1 overflow-x-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0.3,
+                        duration: 0.4,
+                    }}
+                    className="bg-white  mb-1">
+
+          <table className="w-full">
             <thead>
               <tr className="bg-zinc-950">
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   {isMedicine
                     ? "Paciente"
                     : "Mascota"}
                 </th>
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   Cliente
                 </th>
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   <button
                     onClick={(e) =>
                       handleOrder(e)
@@ -276,15 +284,15 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                   </button>
                 </th>
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   Hora
                 </th>
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   Opciones
                 </th>
 
-                <th className="px-5 py-3.5 text-center text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                   Aviso
                 </th>
               </tr>
@@ -319,7 +327,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                             )
                           }
                           title={`Informe ${personCategory}`}
-                          className="px-5 py-4 text-sm font-medium text-zinc-800 cursor-pointer"
+                          className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal cursor-pointer"
                         >
                           {isMedicine &&
                           turn.name ? (
@@ -341,13 +349,13 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                         {/* CLIENTE */}
 
-                        <td className="px-5 py-4 text-sm text-zinc-500">
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
                           {turn.name || "-"}
                         </td>
 
                         {/* FECHA */}
 
-                        <td className="px-5 py-4 text-sm text-zinc-500">
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
                           {convertDateFormat(
                             turn.date
                           )}{" "}
@@ -360,13 +368,13 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                         {/* HORA */}
 
-                        <td className="px-5 py-4 text-sm text-zinc-500">
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
                           {turn.time}
                         </td>
 
                         {/* OPCIONES */}
 
-                        <td className="px-5 py-4">
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
                           <div className="flex items-center gap-2">
                             {/* VENTAS */}
 
@@ -470,7 +478,7 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
 
                         {/* NOTIFICACION */}
 
-                        <td className="px-5 py-4 text-center">
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
                           {turn.isNotifications ? (
                             <div className="flex justify-center">
                               <div className="w-5 h-5 rounded-full bg-emerald-600 animate-pulse" />
@@ -487,6 +495,9 @@ const TableTurns = ({ order, setInfo, stateInfo, setOrder }) => {
                 : null}
             </tbody>
           </table>
+
+          </motion.div>
+          
         </div>
       </motion.div>
 

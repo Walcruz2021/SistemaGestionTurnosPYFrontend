@@ -259,6 +259,8 @@ const InfGastosAndVtas = () => {
 
   return (
     <div className="container-lg mb-4">
+
+
       <Select
         placeholder="Seleccione Año"
         options={ListAños}

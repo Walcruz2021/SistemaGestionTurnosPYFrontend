@@ -4,6 +4,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {thunk} from 'redux-thunk'; // Importar redux-thunk
+
+import cartReducer from "./cartSlice";
+
 import rootReducer from "../reducer"; // Ajusta la ruta según la estructura de tu proyecto
 
 //here use library redux-persist for mantain state constant. in the moment refresh page the state will constant

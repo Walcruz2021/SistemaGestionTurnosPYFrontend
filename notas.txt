@@ -43,3 +43,20 @@ https://www.youtube.com/watch?v=f3902x_dqqQ&ab_channel=YoelvisMulen%7Bcode%7D GR
 https://parzibyte.me/blog/2019/07/07/select-javascript-agregar-limpiar-obtener-escuchar-cambios/ (SELECT)INFORMCION IMPORTANTE
 
 --------------------------TEST PROYECTO--------------------------
+
+
+
+-----------------------SOLUCIONES ENCONTRADAS ANTE SPROBLEMAS AL USAR EL SISTEMA-------------------------------
+el carrito de compras que guarda los productos no debe reiniciarse ni perderse al resfrescar la pantalla. Solo debe anularse al cerrar sesion
+Se aplico una solucion que usan tiendanube, shopify y mercado libre el cual es utilizar un estado global , una persistencia global y luego un backend sincronizado
+* Redux Toolkit (solo es una variacion, ya se ocupa un estado global el cual lo manejo con actions y reducer)
+* Redux-persist
+Usuario agrega productos
+        ↓
+Redux guarda estado global
+        ↓
+redux-persist guarda en localStorage
+--> npm install redux-persist
+
+Se ocupo "createSlice". Es una funcion de Redux Toolkit que sirve para crear el estado, acciones y reducer
+Mas que nada se evita tener que crear las ACTIONS y luego el REDUCER 

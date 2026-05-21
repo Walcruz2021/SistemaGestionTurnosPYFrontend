@@ -11,6 +11,7 @@ import supplierReducer from "./hooksReducer/supplier/supplierReducer"
 import supplyReducer from "./hooksReducer/supply/supplyReducer"
 import stockBatchReducer from "./hooksReducer/stockBatchReducer"
 import informSalesSupply from "./hooksReducer/supply/informSalesSupply"
+import cartReducer from "../store/cartSlice";
 
 const rootReducer = combineReducers({
   bills: billsReducer,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   supplier: supplierReducer,
   supply: supplyReducer,
   stockBatch: stockBatchReducer,
-  salesSupply: informSalesSupply
+  salesSupply: informSalesSupply,
+  cart: cartReducer
 });
 
 export default rootReducer;

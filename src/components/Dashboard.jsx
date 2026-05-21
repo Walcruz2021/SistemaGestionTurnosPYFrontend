@@ -14,6 +14,8 @@ import {
   FileText,
   ArrowUpDown,
   ChevronRight,
+  Boxes,
+  ShoppingBag
 } from "lucide-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,6 +66,8 @@ function Dashboard() {
   const companySelectedMenu = useSelector(
     (state) => state.company.companySelected
   );
+
+
 
   const listadoTurnos = useSelector(
     (state) => state.turns.allTurnos
@@ -300,6 +304,14 @@ function Dashboard() {
       action: "/compraInsumos",
       type: "link",
     },
+    {
+      id: "insumos",
+      label: "Insumos",
+      sub: "Listado de Insumos",
+      icon: Boxes,
+      action: "/insumos",
+      type: "link",
+    },
 
     {
       id: "cliente",
@@ -350,6 +362,14 @@ function Dashboard() {
       action: "/addVtas",
       type: "link",
     },
+    // {
+    //   id: "tiendavirtual",
+    //   label: "Tienda Virtual",
+    //   sub: "Tu tienda virtual",
+    //   icon: ShoppingBag,
+    //   action: `/tiendavirtual/${companySelectedMenu?.slug}`,
+    //   type: "link",
+    // }
   ];
 
   if (isLoading) {
@@ -765,92 +785,112 @@ function Dashboard() {
 
         {/* TABLA HISTORIAL */}
 
-        <div className="p-1 overflow-x-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.4,
+          }}
+          className="bg-white  mb-2">
 
-          <table className="w-full min-w-[900px]">
 
-            <thead>
+          <div className="p-1 overflow-x-auto">
 
-              <tr className="bg-zinc-950">
+            <motion.div initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.3,
+                duration: 0.4,
+              }}
+              className="bg-white  mb-1">
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                  Valor
-                </th>
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+              <table className="w-full">
 
-                  <span className="flex items-center gap-1.5">
+                <thead>
 
-                    Fecha
+                  <tr className="bg-zinc-950">
 
-                    <FontAwesomeIcon
-                      onClick={handleOrderHistDog}
-                      icon={faSortAlphaDown}
-                      className="cursor-pointer"
-                    />
+                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                      Valor
+                    </th>
 
-                  </span>
+                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
 
-                </th>
+                      <span className="flex items-center gap-1.5">
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                  Nota
-                </th>
+                        Fecha
 
-                <th className="px-5 py-3.5 text-left text-xs font-semibold text-zinc-400 uppercase tracking-widest">
-                  Servicio
-                </th>
+                        <FontAwesomeIcon
+                          onClick={handleOrderHistDog}
+                          icon={faSortAlphaDown}
+                          className="cursor-pointer"
+                        />
 
-              </tr>
+                      </span>
 
-            </thead>
+                    </th>
 
-            <tbody>
+                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                      Nota
+                    </th>
 
-              {vtaxClient.data.vta.map((vta, i) => (
+                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                      Servicio
+                    </th>
 
-                <motion.tr
-                  key={vta._id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.06 }}
-                  className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
-                >
+                  </tr>
 
-                  <td className="px-5 py-4 text-sm font-medium text-zinc-700">
-                    {convertNum(vta.valorServ)}
-                  </td>
+                </thead>
 
-                  <td className="px-5 py-4 text-sm text-zinc-500">
+                <tbody>
 
-                    {convertDateFormat(vta.date)}
+                  {vtaxClient.data.vta.map((vta, i) => (
 
-                    <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
-                      {convertDay(vta.date)}
-                    </span>
+                    <motion.tr
+                      key={vta._id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: i * 0.06 }}
+                      className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
+                    >
 
-                  </td>
+                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+                        {convertNum(vta.valorServ)}
+                      </td>
 
-                  <td className="px-5 py-4 text-sm text-zinc-500">
-                    {vta.notesTurn}
-                  </td>
+                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
 
-                  <td className="px-5 py-4">
+                        {convertDateFormat(vta.date)}
 
-                    <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
-                      {vta.tipoServ}
-                    </span>
+                        <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
+                          {convertDay(vta.date)}
+                        </span>
 
-                  </td>
+                      </td>
 
-                </motion.tr>
-              ))}
+                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+                        {vta.notesTurn}
+                      </td>
 
-            </tbody>
+                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
 
-          </table>
+                        <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
+                          {vta.tipoServ}
+                        </span>
 
-        </div>
+                      </td>
+
+                    </motion.tr>
+                  ))}
+
+                </tbody>
+
+              </table>
+            </motion.div>
+
+          </div>
+        </motion.div>
 
       </div>
 

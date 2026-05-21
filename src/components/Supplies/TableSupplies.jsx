@@ -6,7 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import TableDetailSupplies from "./TableDetailSupplies.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import listCategories from "../../functions/categoriesSupplies.json";
 import "../../../src/App.css";
 import {
@@ -16,6 +16,8 @@ import {
 import { getBrands } from "../../reducer/actions/actionBrand.jsx";
 import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
 import { list } from "postcss";
+import { Search, X, ChevronDown, Tag, Layers, CalendarPlus } from "lucide-react";
+import { motion } from "framer-motion";
 
 const TableSupplies = ({ setInfo, stateInfo }) => {
     const dispatch = useDispatch();
@@ -23,9 +25,13 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
         (state) => state.company.companySelected
     );
 
+    const [brand, setBrand] = useState(null);
+    const [category, setCategory] = useState(null);
+
+
 
     const listSupplies = useSelector((state) => state.supply.listSupplies);
-console.log(listSupplies)
+
     const listBrand = useSelector((state) => state.gralRed.listBrands);
 
     const [order, setOrder] = useState(false);
@@ -33,6 +39,7 @@ console.log(listSupplies)
     const [stateFilterBrand, setStateFilterBrand] = useState(false);
 
     const [stateSelectedCategory, setStateSelectedCategory] = useState();
+
     const [stateSelectedBrand, setStateSelectedBrand] = useState();
     const [supplySelected, setSupplySelected] = useState(null);
 
@@ -103,6 +110,7 @@ console.log(listSupplies)
         // Filtrar por categoría
         if (stateSelectedCategory) {
             result = result.filter((s) => s.global.categorySupply === stateSelectedCategory.value);
+            console.log(result)
         }
 
         if (!stateSearch && !stateSelectedBrand && !stateSelectedCategory) {
@@ -162,188 +170,471 @@ console.log(listSupplies)
             currentPage * itemsPerPage
         ) ?? [];
 
+    const CustomControl = ({ children, ...props }) => {
+        return (
+            <components.Control {...props}>
+                <Tag size={18} className="ml-2 text-gray-500" />
+                {children}
+            </components.Control>
+        );
+    };
+
+    const CustomControlSelect1 = ({ children, ...props }) => {
+        return (
+            <components.Control {...props}>
+                <Tag size={14} className="ml-2 text-gray-500" />
+                {children}
+            </components.Control>
+        );
+    };
+
+    const CustomControlSelect2 = ({ children, ...props }) => {
+        return (
+            <components.Control {...props}>
+                <Layers size={14} className="ml-2 text-gray-500" />
+                {children}
+            </components.Control>
+        );
+    };
+
     return (
-        <>
-            <div className="container-lg table-responsive mb-4">
-                {/* BUSCADOR */}
-                <div className="containerSearch">
-                    <input
-                        className="inputBuscar instrument-serif-regular"
-                        type="text"
-                        placeholder={`Busque un Insumo (minúsculas)`}
-                        value={stateSearch}
-                        onChange={(e) => {
-                            setCurrentPage(1);
-                            setSearch(e.target.value);
-                        }}
-                    />
-                </div>
+        <div className="px-0.5 md:px-8 py-8 max-w-7xl mx-auto">
+            <div className="bg-gray-50 flex items-center justify-center px-4 py-0">
+                <div className="w-full max-w-2xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="w-full max-w-2xl mx-auto"
+                    >
 
-                {/* FILTRO POR MARCA */}
-                <p className="mt-3 instrument-serif-regular ">Filtrar por marca</p>
-                <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Marca"
-                    onChange={handleChangeSelectBrand}
-                    value={stateSelectedBrand}
-                    options={brandOptions}
-                    isClearable
-                />
+                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-visible mb-3">
+                            {/* Top accent line */}
+                            <div className="h-[2px] w-full bg-gradient-to-r from-gray-200 via-gray-400 to-gray-200" />
+                            <div className="px-6 py-6 space-y-5">.
 
+                                <div className="inline-flex items-center bg-black px-4 py-2">
+                                    <p className="text-[10px] uppercase tracking-[0.3em] text-white font-medium flex items-center gap-2 mt-3">
+                                        <span className="inline-block w-4 h-px bg-white" />
+                                        Explorar insumos
+                                    </p>
+                                </div>
 
-
-
-                {/* FILTRO POR CATEGORÍA */}
-                <p className="mt-3 instrument-serif-regular">Filtrar por categoría</p>
-                <Select
-                    className="classSelect instrument-serif-regular"
-                    placeholder="Seleccione Categoría"
-                    onChange={handleChangeSelectCategory}
-                    value={stateSelectedCategory}
-                    options={categoryOptions}
-                    isClearable
-                />
+                                {/* BUSCADOR */}
+                                <div className="relative group">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-gray-600 transition-colors duration-200" />
+                                    <input
+                                        className="w-full pl-11 pr-10 py-3 rounded-lg border border-gray-500 text-sm text-gray-800 placeholder-gray-500 bg-gray-50 focus:bg-white focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-200"
+                                        type="text"
+                                        placeholder={`Busque un Insumo (minúsculas)`}
+                                        value={stateSearch}
+                                        onChange={(e) => {
+                                            setCurrentPage(1);
+                                            setSearch(e.target.value);
+                                        }}
+                                    />
 
 
+                                </div>
 
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
+                                    <div className="space-y-1.5">
 
-                {/* TABLA + PAGINACIÓN SOLO SI HAY RESULTADOS */}
-                {suppliesFiltered && (
-                    <>
-                        <table className="table table-bordered table-hover table-white mt-3">
-                            <thead className="thead-light table-secondary">
-                                <tr>
-                                    <th className="instrument-serif-regular">
-                                        Insumo{" "}
-                                        <FontAwesomeIcon
-                                            onClick={handleOrder}
-                                            color={order ? "#FF846A" : "#A2DFFF"}
-                                            icon={faSortAlphaDown}
-                                            size="lg"
-                                            style={{ cursor: "pointer" }}
-                                        />
-                                    </th>
-                                    <th className="instrument-serif-regular">Categoria</th>
-                                    <th className="instrument-serif-regular">Marca</th>
-                                    <th className="instrument-serif-regular">Stock</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {currentItems.map((sup) => (
-                                    <tr key={sup._id}>
-                                        <td className="instrument-serif-regular"
-                                            style={{ cursor: "pointer" }}
-                                            onClick={(e) =>
-                                                handleDetailsSupplies(e, {
-                                                    sup,
+                                        {/* FILTRO POR MARCA */}
+                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
+                                            <Tag className="w-4 h-4" />
+                                            Marca
+                                        </label>
+                                        <Select
+                                            className="classSelect instrument-serif-regular"
+                                            placeholder="Seleccione Marca"
+                                            onChange={handleChangeSelectBrand}
+                                            value={stateSelectedBrand}
+                                            options={brandOptions}
+                                            isClearable
+                                            components={{
+                                                Control: CustomControlSelect1
+                                            }}
+                                            menuPortalTarget={document.body}
+                                            menuPosition="fixed"
+                                            styles={{
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999
                                                 })
-                                            }
-                                        >
-                                            {sup.global.nameSupply}
-                                        </td>
-                                        <td className="instrument-serif-regular">{sup.global.categorySupply}</td>
-                                        <td className="instrument-serif-regular">{sup.global.nameBrand}</td>
-                                        <td className="instrument-serif-regular">{sup.totalStock ?? 0}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                            }}
+                                        />
+                                    </div>
 
-                        {/* PAGINACIÓN NUMÉRICA */}
-                        {suppliesFiltered.length > itemsPerPage && (
-                            <div className="d-flex justify-content-center mt-3">
-                                <nav>
-                                    <ul className="pagination">
-                                        <li
-                                            className={`page-item ${currentPage === 1
-                                                ? "disabled"
-                                                : ""
-                                                }`}
-                                        >
-                                            <button
-                                                className="page-link"
-                                                onClick={() =>
-                                                    setCurrentPage(
-                                                        currentPage - 1
-                                                    )
-                                                }
-                                            >
-                                                «
-                                            </button>
-                                        </li>
+                                    <div className="space-y-1.5">
+                                        {/* FILTRO POR CATEGORÍA */}
+                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
+                                            <Layers className="w-4 h-4" />
+                                            Categoría
+                                        </label>
+                                        <Select
+                                            className="classSelect instrument-serif-regular"
+                                            placeholder="Seleccione Categoría"
+                                            onChange={handleChangeSelectCategory}
+                                            value={stateSelectedCategory}
+                                            options={categoryOptions}
+                                            isClearable
+                                            components={{
+                                                Control: CustomControlSelect2
+                                            }}
+                                            menuPortalTarget={document.body}
+                                            menuPosition="fixed"
+                                            styles={{
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999
+                                                })
+                                            }}
+                                        />
+                                    </div>
+                                </div>
 
-                                        {Array.from(
-                                            { length: totalPages },
-                                            (_, i) => (
-                                                <li
-                                                    key={i}
-                                                    className={`page-item ${currentPage === i + 1
-                                                        ? "active"
-                                                        : ""
-                                                        }`}
+                                {/* Active filters indicator */}
+                                {(stateSearch || stateSelectedBrand || stateSelectedCategory) && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="flex flex-wrap gap-2 pt-1"
+                                    >
+                                        {stateSearch && (
+                                            <FilterChip label={`"${stateSearch}"`} onRemove={() => { setSearch(""); setCurrentPage?.(1); }} />
+                                        )}
+                                        {stateSelectedBrand && (
+                                            <FilterChip label={stateSelectedBrand.label} onRemove={() => handleChangeSelectBrand(null)} />
+                                        )}
+                                        {stateSelectedCategory && (
+                                            <FilterChip label={stateSelectedCategory.label} onRemove={() => handleChangeSelectCategory(null)} />
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* Debug info */}
+                                {/* <div className="mt-8 p-4 rounded-xl bg-white border border-gray-200 text-xs text-gray-400 space-y-1">
+                                    <p><span className="text-gray-600 font-medium">Búsqueda:</span> {stateSearch || "—"}</p>
+                                    <p><span className="text-gray-600 font-medium">Marca:</span> {brand?.label || "—"}</p>
+                                    <p><span className="text-gray-600 font-medium">Categoría:</span> {category?.label || "—"}</p>
+                                    <p><span className="text-gray-600 font-medium">Página:</span> {currentPage}</p>
+                                </div> */}
+                            </div>
+
+                        </div>
+                    </motion.div>
+
+                </div>
+            </div>
+
+            {/* INSUMOS */}
+
+
+            {/* TABLA + PAGINACIÓN SOLO SI HAY RESULTADOS */}
+
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                    delay: 0.3,
+                    duration: 0.4,
+                }}
+                className="bg-white  mb-4"
+            >
+
+                <div className="p-1 overflow-x-auto">
+
+                    {suppliesFiltered && (
+                        <>
+                            {/* CARD TITLE */}
+                            <div>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3, duration: 0.4 }}
+                                    className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                                >
+
+
+                                    <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                        <div>
+
+                                            <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                                Tabla de Insumos
+                                            </h2>
+
+                                            <p className="text-zinc-500 text-sm mt-0.5">
+                                                Listado Completo de Insumos
+                                            </p>
+
+                                        </div>
+
+                                        <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                            <CalendarPlus className="w-4 h-4 text-white" />
+
+                                        </div>
+
+                                    </div>
+
+                                </motion.div>
+                            </div>
+
+                            <motion.div initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    delay: 0.3,
+                                    duration: 0.4,
+                                }}
+                                className="bg-white  mb-6">
+
+
+                                <div>
+                                    <table className="w-full">
+                                        <thead>
+                                            <tr className="bg-zinc-950">
+                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                                                    Insumo{" "}
+                                                    <FontAwesomeIcon
+                                                        // onClick={handleOrder}
+                                                        // color={order ? "#FF846A" : "#A2DFFF"}
+                                                        // icon={faSortAlphaDown}
+                                                        // size="lg"
+                                                        // style={{ cursor: "pointer" }}
+                                                    />
+                                                </th>
+                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoria</th>
+                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Marca</th>
+                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Stock</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {currentItems.map((sup, index) => (
+                                                <motion.tr key={sup._id} animate={{
+                                                    opacity: 1,
+                                                }}
+                                                    transition={{
+                                                        delay:
+                                                            0.35 +
+                                                            index * 0.05,
+                                                    }}
+                                                    className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
                                                 >
-                                                    <button
-                                                        className="page-link"
-                                                        onClick={() =>
-                                                            setCurrentPage(
-                                                                i + 1
-                                                            )
+                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                                        style={{ cursor: "pointer" }}
+                                                        onClick={(e) =>
+                                                            handleDetailsSupplies(e, {
+                                                                sup,
+                                                            })
                                                         }
                                                     >
-                                                        {i + 1}
-                                                    </button>
-                                                </li>
-                                            )
-                                        )}
+                                                        {sup.global.nameSupply}
+                                                    </td>
+                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.categorySupply}</td>
+                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameBrand}</td>
+                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.totalStock ?? 0}</td>
+                                                </motion.tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </motion.div>
 
-                                        <li
-                                            className={`page-item ${currentPage === totalPages
-                                                ? "disabled"
-                                                : ""
-                                                }`}
-                                        >
-                                            <button
-                                                className="page-link"
-                                                onClick={() =>
-                                                    setCurrentPage(
-                                                        currentPage + 1
-                                                    )
-                                                }
+                            {/* PAGINACIÓN NUMÉRICA */}
+                            {suppliesFiltered.length > itemsPerPage && (
+                                <div className="d-flex justify-content-center mt-3">
+                                    <nav>
+                                        <ul className="pagination">
+                                            <li
+                                                className={`page-item ${currentPage === 1
+                                                    ? "disabled"
+                                                    : ""
+                                                    }`}
                                             >
-                                                »
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() =>
+                                                        setCurrentPage(
+                                                            currentPage - 1
+                                                        )
+                                                    }
+                                                >
+                                                    «
+                                                </button>
+                                            </li>
+
+                                            {Array.from(
+                                                { length: totalPages },
+                                                (_, i) => (
+                                                    <li
+                                                        key={i}
+                                                        className={`page-item ${currentPage === i + 1
+                                                            ? "active"
+                                                            : ""
+                                                            }`}
+                                                    >
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() =>
+                                                                setCurrentPage(
+                                                                    i + 1
+                                                                )
+                                                            }
+                                                        >
+                                                            {i + 1}
+                                                        </button>
+                                                    </li>
+                                                )
+                                            )}
+
+                                            <li
+                                                className={`page-item ${currentPage === totalPages
+                                                    ? "disabled"
+                                                    : ""
+                                                    }`}
+                                            >
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() =>
+                                                        setCurrentPage(
+                                                            currentPage + 1
+                                                        )
+                                                    }
+                                                >
+                                                    »
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    {/* DETALLES */}
+
+                    {supplySelected ? <>
+
+                        {/* CARD TITLE */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.4 }}
+                            className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                        >
+
+
+                            <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                <div>
+
+                                    <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                        Insumo
+                                    </h2>
+
+                                    <p className="text-zinc-500 text-sm mt-0.5">
+                                        Insumo Seleccionado
+                                    </p>
+
+                                </div>
+
+                                <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                    <CalendarPlus className="w-4 h-4 text-white" />
+
+                                </div>
+
                             </div>
-                        )}
-                    </>
-                )}
 
-                {/* DETALLES */}
+                        </motion.div>
+                        
+                        <TableDetailSupplies
+                            // stateDetailsSup={stateDetailsSup.detailsSup}
+                            stateDetailsSup={stateDetailsSup}
+                            setSupplySelected={setSupplySelected}
+                        />
 
-                {supplySelected ? <>
+                        {/* CARD TITLE */}
+                        <div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3, duration: 0.4 }}
+                                className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                            >
 
-                    <div className="titGral">
-                        <h1>Insumo Seleccionado</h1>
-                    </div>
-                    <TableDetailSupplies
-                        // stateDetailsSup={stateDetailsSup.detailsSup}
-                        stateDetailsSup={stateDetailsSup}
-                        setSupplySelected={setSupplySelected}
-                    />
-                    <TableStockBatch
-                        // idSupply={stateDetailsSup.detailsSup?.idGlobalSupply}
-                        idSupply={stateDetailsSup.idGlobalSupply}
-                    />
-                </> : <div className="titGral">
-                    <h1>Seleccione un Insumo para ver sus Detalles</h1>
+
+                                <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                    <div>
+
+                                        <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                            Tabla de Lotes
+                                        </h2>
+
+                                        <p className="text-zinc-500 text-sm mt-0.5">
+                                            Lotes y Detalles del Insumo Seleccionado
+                                        </p>
+
+                                    </div>
+
+                                    <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                        <CalendarPlus className="w-4 h-4 text-white" />
+
+                                    </div>
+
+                                </div>
+
+                            </motion.div>
+                        </div>
+
+                        <TableStockBatch
+                            // idSupply={stateDetailsSup.detailsSup?.idGlobalSupply}
+                            idSupply={stateDetailsSup.idGlobalSupply}
+                        />
+                    </> :
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.4 }}
+                            className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                        >
+
+                            {/* CARD TITLE */}
+                            <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                <div>
+
+                                    <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                        Insumos
+                                    </h2>
+
+                                    <p className="text-zinc-500 text-sm mt-0.5">
+                                        Seleccione un Inusmo para ver sus detalles
+                                    </p>
+
+                                </div>
+
+                                <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                    <CalendarPlus className="w-4 h-4 text-white" />
+
+                                </div>
+
+                            </div>
+
+                        </motion.div>
+
+                    }
                 </div>
 
-                }
-            </div>
+            </motion.div>
 
             <ModalEditSupply
                 stateOpenModal={stateOpenModal}
@@ -351,8 +642,19 @@ console.log(listSupplies)
                 stateDataSupply={stateDataSupply}
                 setDataSupply={setDataSupply}
             />
-        </>
+        </div>
     );
 };
+
+function FilterChip({ label, onRemove }) {
+    return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium border border-gray-200">
+            {label}
+            <button onClick={onRemove} className="text-gray-400 hover:text-gray-700 transition-colors">
+                <X className="w-3 h-3" />
+            </button>
+        </span>
+    );
+}
 
 export default TableSupplies;

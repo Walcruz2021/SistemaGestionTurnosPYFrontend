@@ -24,6 +24,9 @@ import Supplies from "./components/Supplies/Supplies.jsx";
 import TableBuySupplies from "./components/Supplies/TableBuySupplies.jsx"
 import FormAddVtas from "./components/Formulario/Vtas/FormAddVtas.jsx";
 import FormStockAdjustments from "./components/Formulario/StockAdjustments/FormStockAdjustments.jsx";
+import StoreVirtual from "./components/StoreVirtual/StoreVirtual.jsx"
+import ProductDetail from "./components/StoreVirtual/ProductDetails.jsx";
+import ShoppingCart from "../src/components/StoreVirtual/ShoppingCart.jsx"
 
 import {
   functionCompanySelected,
@@ -117,51 +120,173 @@ const AppRoutes = () => {
 
   return (
     <div>
+
       {!isLoading ? (
-        loginUser?.emailVerified ? (
-          <div className="min-h-screen overflow-x-hidden">
-            <NavBarLat />
-            <Routes>
-              <Route path="/" element={<AgendaTurnos />} />
-              <Route path="/listClient" element={<ListClients />} />
-              <Route path="/InformeVentas" element={<InformeVentas />} />
-              <Route path="/InformeAnualVtas" element={<InformeAnualVtas />} />
-              <Route path="/InformeAnualGtos" element={<InformeAnualGtos />} />
-              <Route path="/gastos" element={<Gastos />} />
-              <Route path="/settingClient" element={<SettingClient />} />
-              <Route path="/addCompany" element={<FormAddCompany />} />
-              <Route path="/listCompanies" element={<ListCompanies />} />
-              <Route path="/InformeGastos" element={<InformeGastos />} />
-              <Route path="/informes" element={<InfGastosAndVtas />} />
-              <Route path="/insumos" element={<Supplies />} />
-              <Route path="/support" element={<FormSoporteContact />} />
-              <Route path="/historialPet" element={<HistorialPet />} />
-              <Route path="/compraInsumos" element={<TableBuySupplies />} />
-              <Route path="/addVtas" element={<FormAddVtas />} />
-              <Route path="/addStockAdjustments" element={<FormStockAdjustments />} />
-              <Route path="*" element={<div>404 Not Found</div>} />
-            </Routes>
-            <Footer />
-          </div>
-        ) : (
-          <Routes>
-            <Route path="/register" element={<FormRegister />} />
-            <Route path="/login" element={<FormLoginNew />} />
-            <Route path="*" element={<FormLoginNew />} />
+
+        <Routes>
+
+          {/* ========================= */}
+          {/* RUTAS PUBLICAS */}
+          {/* ========================= */}
+
+          <Route path="/register" element={<FormRegister />} />
+
+          <Route path="/login" element={<FormLoginNew />} />
+
+          <Route
+            path="/tiendavirtual/:slugCompany"
+            element={<StoreVirtual />}
+          />
+
+          <Route
+            path="/tiendavirtual/:slugCompany/product/:id"
+            element={<ProductDetail />}
+          />
+
+          <Route
+            path="/tiendavirtual/:slugCompany/shoppingCart"
+            element={<ShoppingCart />}
+          />
+
+
+          <Route
+            path="/supportForm"
+            element={<FormSoporteContactLoginReg />}
+          />
+
+          {/* ========================= */}
+          {/* RUTAS PRIVADAS */}
+          {/* ========================= */}
+
+          {loginUser?.emailVerified && (
             <Route
-              path="/supportForm"
-              element={<FormSoporteContactLoginReg />}
+              path="/*"
+              element={
+                <div className="min-h-screen overflow-x-hidden">
+
+                  <NavBarLat />
+
+                  <Routes>
+
+                    <Route path="/" element={<AgendaTurnos />} />
+
+                    <Route
+                      path="/listClient"
+                      element={<ListClients />}
+                    />
+
+                    <Route
+                      path="/InformeVentas"
+                      element={<InformeVentas />}
+                    />
+
+                    <Route
+                      path="/InformeAnualVtas"
+                      element={<InformeAnualVtas />}
+                    />
+
+                    <Route
+                      path="/InformeAnualGtos"
+                      element={<InformeAnualGtos />}
+                    />
+
+                    <Route path="/gastos" element={<Gastos />} />
+
+                    <Route
+                      path="/settingClient"
+                      element={<SettingClient />}
+                    />
+
+                    <Route
+                      path="/addCompany"
+                      element={<FormAddCompany />}
+                    />
+
+                    <Route
+                      path="/listCompanies"
+                      element={<ListCompanies />}
+                    />
+
+                    <Route
+                      path="/InformeGastos"
+                      element={<InformeGastos />}
+                    />
+
+                    <Route
+                      path="/informes"
+                      element={<InfGastosAndVtas />}
+                    />
+
+                    <Route
+                      path="/insumos"
+                      element={<Supplies />}
+                    />
+
+                    <Route
+                      path="/support"
+                      element={<FormSoporteContact />}
+                    />
+
+                    <Route
+                      path="/historialPet"
+                      element={<HistorialPet />}
+                    />
+
+                    <Route
+                      path="/compraInsumos"
+                      element={<TableBuySupplies />}
+                    />
+
+                    <Route
+                      path="/addVtas"
+                      element={<FormAddVtas />}
+                    />
+
+                    <Route
+                      path="/addStockAdjustments"
+                      element={<FormStockAdjustments />}
+                    />
+
+                    <Route
+                      path="*"
+                      element={<div>404 Not Found</div>}
+                    />
+
+                  </Routes>
+
+                  <Footer />
+
+                </div>
+              }
             />
-          </Routes>
-        )
+          )}
+
+          {/* ========================= */}
+          {/* FALLBACK */}
+          {/* ========================= */}
+
+          {!loginUser?.emailVerified && (
+            <Route path="*" element={<FormLoginNew />} />
+          )}
+
+        </Routes>
+
       ) : (
+
         <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
+
           <ClipLoader color="#000" loading={true} size={70} />
+
           <div className="titGral">
-            <h2 className="mt-3">Espere un Momento por favor ...</h2>
+            <h2 className="mt-3">
+              Espere un Momento por favor ...
+            </h2>
           </div>
+
         </div>
+
       )}
+
     </div>
   );
 };

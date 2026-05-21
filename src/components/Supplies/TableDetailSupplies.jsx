@@ -18,7 +18,7 @@ import convertDateReverse from "../../functions/convertDateReverse";
 
 const TableDetailSupplies = ({ stateDetailsSup, setSupplySelected }) => {
 
-    console.log(stateDetailsSup, "sss")
+
     const [modalOpenEditSupply, setModalOpenEditSupply] = useState(false);
     const [dataSupplyEdit, setDataSupplyEdit] = useState({})
     const onClickEditSUpply = () => {
@@ -34,9 +34,6 @@ const TableDetailSupplies = ({ stateDetailsSup, setSupplySelected }) => {
     return (
 
         <>
-
-
-
 
             <div className="container my-4">
                 <div className="row g-3 text-center">
@@ -112,11 +109,7 @@ const TableDetailSupplies = ({ stateDetailsSup, setSupplySelected }) => {
                 </div>
 
 
-
-
-
             </div>
-
 
             <ModalPriceSupply modalOpenEditSupply={modalOpenEditSupply} setModalOpenEditSupply={setModalOpenEditSupply} dataSupply={stateDetailsSup} setSupplySelected={setSupplySelected} />
         </>
