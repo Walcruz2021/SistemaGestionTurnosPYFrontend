@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import converNum from "../../functions/convertNum"
 import { getListSupplies } from "../../reducer/actions/supply/actionsSupply.js"
+import { motion } from "framer-motion";
 
 const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
@@ -247,7 +248,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return true;
         const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
         if (totalPay !== totalSale) return true;
- 
+
 
         return false;
     };
@@ -260,101 +261,121 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return "Ingrese al menos un método de pago";
         const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
         if (totalPay !== totalSale) {
- 
+
             return "La suma de los métodos de pago no coincide con el total de la venta";
         }
 
     }
 
     return (
-        <div className="container-lg table-responsive mb-4">
+        <motion.div initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                delay: 0.3,
+                duration: 0.4,
+            }}
+            className="bg-white  mb-2">
 
+            <div className="p-1 overflow-x-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0.3,
+                        duration: 0.4,
+                    }}
+                    className="bg-white  mb-1">
 
-            <table className="table table-bordered table-hover table-white mt-3">
-                <thead className="thead-light table-secondary">
-                    <tr>
-                        <th className="instrument-serif-regular">
-                            Insumo{" "}
-                            {/* <FontAwesomeIcon
+                    <table className="w-full">
+                        <thead className="thead-light table-secondary">
+                            <tr className="bg-zinc-950">
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                                    Insumo{" "}
+                                    {/* <FontAwesomeIcon
                                 onClick={handleOrder}
                                 icon={faSortAlphaDown}
                                 style={{ cursor: "pointer" }}
                                 color={order ? "#FF846A" : "#A2DFFF"}
                             /> */}
-                        </th>
+                                </th>
 
-                        <th className="instrument-serif-regular">Cantidad</th>
-                        <th className="instrument-serif-regular">$ Venta Unid</th>
-                        <th className="instrument-serif-regular">$ Venta Total</th>
-                        <th className="instrument-serif-regular">Opciones</th>
-                    </tr>
-                </thead>
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Cant</th>
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">$ Venta Unid</th>
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">$ Venta Total</th>
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Opciones</th>
+                            </tr>
+                        </thead>
 
-                {
+                        {
 
-                    <tbody>
+                            <tbody>
 
-                        {stateDetailsSupplies && stateDetailsSupplies.length > 0 && stateDetailsSupplies.map((sup) => (
-                            <tr>
-                                <td
-                                    className="instrument-serif-regular"
-                                    style={{ cursor: "pointer" }}
-                                // onClick={(e) =>
-                                //     handleDetailsSupplies(e, { sup })
-                                // }
-                                >
-                                    {sup.global?.nameSupply}
-                                </td>
+                                {stateDetailsSupplies && stateDetailsSupplies.length > 0 && stateDetailsSupplies.map((sup) => (
+                                    <motion.tr animate={{
+                                            opacity: 1,
+                                        }}
+                                            transition={{
+                                                delay:
+                                                    0.35 
+                                            }}
+                                            className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
+                                        <td
+                                            className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                            style={{ cursor: "pointer" }}
+                                        // onClick={(e) =>
+                                        //     handleDetailsSupplies(e, { sup })
+                                        // }
+                                        >
+                                            {sup.global?.nameSupply}
+                                        </td>
 
 
 
-                                <td className="instrument-serif-regular">{sup.quantitySale ?? 0}</td>
+                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.quantitySale ?? 0}</td>
 
-                                {/* row priceSale unid */}
-                                <td className="instrument-serif-regular">{converNum(Math.round(sup.priceSale))}</td>
+                                        {/* row priceSale unid */}
+                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{converNum(Math.round(sup.priceSale))}</td>
 
-                                {/* row TOTAL SALE */}
-                                <td className="instrument-serif-regular">
+                                        {/* row TOTAL SALE */}
+                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
 
-                                    {
+                                            {
 
-                                        converNum(
-                                            Math.round(
-                                                (sup.priceSale * (sup.quantitySale ?? 0)) - Number(sup.discount * sup.quantitySale || 0) +
-                                                Number(sup.surcharge * sup.quantitySale || 0)
-                                            )
-                                        )
-                                    }
-                                </td>
+                                                converNum(
+                                                    Math.round(
+                                                        (sup.priceSale * (sup.quantitySale ?? 0)) - Number(sup.discount * sup.quantitySale || 0) +
+                                                        Number(sup.surcharge * sup.quantitySale || 0)
+                                                    )
+                                                )
+                                            }
+                                        </td>
 
-                                {/* row options */}
-                                <td>
+                                        {/* row options */}
+                                        <td>
 
-                                    <FaCheckToSlot size={"2rem"} onClick={() => openModalSaleDetails(sup)} />
-                                </td>
+                                            <FaCheckToSlot size={"2rem"} onClick={() => openModalSaleDetails(sup)} />
+                                        </td>
 
-                            </tr>))
+                                    </motion.tr>))
+
+                                }
+
+                            </tbody>
 
                         }
+                        <div className="p-2 instrument-serif-regular d-flex justify-content-end">
+                            <p className="text-end fw-bold f-20  me-2">
+                                Total Venta:
+                            </p>
+                            <p className="text-end fw-bold">
+                                {converNum(totalSale)}
+                            </p>
 
-                    </tbody>
-
-                }
-                <div className="p-2 instrument-serif-regular d-flex justify-content-end">
-                    <p className="text-end fw-bold f-20  me-2">
-                        Total Venta:
-                    </p>
-                    <p className="text-end fw-bold">
-                        {converNum(totalSale)}
-                    </p>
-
-                </div>
+                        </div>
 
 
-            </table>
-
-
-
+                    </table>
+                </motion.div>
+            </div>
 
             <div style={{
                 maxWidth: "400px", // Limita el ancho para que no sea gigante
@@ -510,7 +531,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                 </Modal.Footer>
             </div>
             <ModalAddSaleSupply openModal={stateOpenModalSale} setOpenModal={setStateOpenModalSale} dataModalSale={dataModalSale} stateDetailsSupplies={stateDetailsSupplies} setStateDetailsSupplies={setStateDetailsSupplies} />
-        </div>
+        </motion.div>
     )
 }
 
