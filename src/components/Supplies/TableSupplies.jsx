@@ -199,6 +199,8 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
 
     return (
         <div className="px-0.5 md:px-8 py-8 max-w-7xl mx-auto">
+
+            {/* CONTAINER SEARCH */}
             <div className="bg-gray-50 flex items-center justify-center px-4 py-0">
                 <div className="w-full max-w-2xl">
                     <motion.div
@@ -400,11 +402,11 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                                                     Insumo{" "}
                                                     <FontAwesomeIcon
-                                                        // onClick={handleOrder}
-                                                        // color={order ? "#FF846A" : "#A2DFFF"}
-                                                        // icon={faSortAlphaDown}
-                                                        // size="lg"
-                                                        // style={{ cursor: "pointer" }}
+                                                    // onClick={handleOrder}
+                                                    // color={order ? "#FF846A" : "#A2DFFF"}
+                                                    // icon={faSortAlphaDown}
+                                                    // size="lg"
+                                                    // style={{ cursor: "pointer" }}
                                                     />
                                                 </th>
                                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoria</th>
@@ -449,62 +451,90 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                             {suppliesFiltered.length > itemsPerPage && (
                                 <div className="d-flex justify-content-center mt-3">
                                     <nav>
-                                        <ul className="pagination">
+                                        <ul className="pagination flex-wrap">
+
+                                            {/* BOTÓN ANTERIOR */}
                                             <li
-                                                className={`page-item ${currentPage === 1
-                                                    ? "disabled"
-                                                    : ""
-                                                    }`}
+                                                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
                                             >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() =>
-                                                        setCurrentPage(
-                                                            currentPage - 1
-                                                        )
-                                                    }
+                                                    onClick={() => setCurrentPage(currentPage - 1)}
                                                 >
                                                     «
                                                 </button>
                                             </li>
 
-                                            {Array.from(
-                                                { length: totalPages },
-                                                (_, i) => (
+                                            {/* PRIMERA PÁGINA */}
+                                            {currentPage > 3 && (
+                                                <>
+                                                    <li className="page-item">
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() => setCurrentPage(1)}
+                                                        >
+                                                            1
+                                                        </button>
+                                                    </li>
+
+                                                    {currentPage > 4 && (
+                                                        <li className="page-item disabled">
+                                                            <span className="page-link">...</span>
+                                                        </li>
+                                                    )}
+                                                </>
+                                            )}
+
+                                            {/* PÁGINAS CENTRALES */}
+                                            {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                                .filter(
+                                                    (page) =>
+                                                        page >= currentPage - 1 &&
+                                                        page <= currentPage + 1
+                                                )
+                                                .map((page) => (
                                                     <li
-                                                        key={i}
-                                                        className={`page-item ${currentPage === i + 1
-                                                            ? "active"
-                                                            : ""
+                                                        key={page}
+                                                        className={`page-item ${currentPage === page ? "active" : ""
                                                             }`}
                                                     >
                                                         <button
                                                             className="page-link"
-                                                            onClick={() =>
-                                                                setCurrentPage(
-                                                                    i + 1
-                                                                )
-                                                            }
+                                                            onClick={() => setCurrentPage(page)}
                                                         >
-                                                            {i + 1}
+                                                            {page}
                                                         </button>
                                                     </li>
-                                                )
+                                                ))}
+
+                                            {/* ÚLTIMA PÁGINA */}
+                                            {currentPage < totalPages - 2 && (
+                                                <>
+                                                    {currentPage < totalPages - 3 && (
+                                                        <li className="page-item disabled">
+                                                            <span className="page-link">...</span>
+                                                        </li>
+                                                    )}
+
+                                                    <li className="page-item">
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() => setCurrentPage(totalPages)}
+                                                        >
+                                                            {totalPages}
+                                                        </button>
+                                                    </li>
+                                                </>
                                             )}
 
+                                            {/* BOTÓN SIGUIENTE */}
                                             <li
-                                                className={`page-item ${currentPage === totalPages
-                                                    ? "disabled"
-                                                    : ""
+                                                className={`page-item ${currentPage === totalPages ? "disabled" : ""
                                                     }`}
                                             >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() =>
-                                                        setCurrentPage(
-                                                            currentPage + 1
-                                                        )
-                                                    }
+                                                    onClick={() => setCurrentPage(currentPage + 1)}
                                                 >
                                                     »
                                                 </button>
@@ -552,7 +582,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                             </div>
 
                         </motion.div>
-                        
+
                         <TableDetailSupplies
                             // stateDetailsSup={stateDetailsSup.detailsSup}
                             stateDetailsSup={stateDetailsSup}
