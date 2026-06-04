@@ -21,7 +21,6 @@ export function addBrand(payload) {
 export function getBrands() {
   return async function (dispatch) {
     const listBrands = await axios.get(
-
       `${host}/api/listBrands`,
       {}
     );

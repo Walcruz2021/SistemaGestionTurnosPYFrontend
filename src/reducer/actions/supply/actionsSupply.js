@@ -78,6 +78,13 @@ export function actionEditSupplyByList(payload) {
   };
 }
 
+/**
+ * @module Supply
+ * @endpoint GET /api/getListSupplies/:idCompany
+ * @store supply.listSupplies
+ * @usedBy SuppliesPage
+ * @description Obtiene todos los insumos asociados a una empresa.
+ */
 
 export function getListSupplies(idCompany) {
 
@@ -86,7 +93,6 @@ export function getListSupplies(idCompany) {
       //"http://localhost:3002/api/listClients",
       //`${host.development}/api/listClientsCompany/66465ac8c1212f4dc0088087`,
       `${host}/api/getListSupplies/${idCompany}`,
-      {}
     );
     return dispatch({
       type: GET_LIST_SUPPLIES,
@@ -95,7 +101,7 @@ export function getListSupplies(idCompany) {
   };
 }
 
-export function getListSuppliesGral(idCopany) {
+export function getListSuppliesGral() {
 
   return async function (dispatch) {
     const listSuppliesGral = await axios.get(

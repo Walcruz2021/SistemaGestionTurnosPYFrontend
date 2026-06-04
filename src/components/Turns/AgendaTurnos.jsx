@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../Message";
 import Dashboard from "../Dashboard";
 import { getTurnos } from "../../reducer/actions/actionsTurnos";
-
 import {
   verificationCompaniesExist,
   companySelected,
 } from "../../reducer/actions/actionsCompany";
+import {listCategories} from "../../reducer/actions/category/actionCategory.jsx";
 import "./AgendaTurnos.css";
 import linkBack from "../ruteBack/vbledeploy";
 
@@ -27,6 +27,8 @@ function AgendaTurnos() {
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
   }, [dispatch, loginUser]);
+
+
 
   useEffect(() => {
     const getTurnosList = async () => {
@@ -53,7 +55,7 @@ function AgendaTurnos() {
   return (
     <>
       <>
-   
+
         <Dashboard setlistClients={setlistClients} />
       </>
     </>

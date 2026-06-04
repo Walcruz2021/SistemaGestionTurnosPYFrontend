@@ -12,12 +12,18 @@ export const resetCompanySelected = () => ({
 });
 
 export function functionCompanySelected(payload) {
+
   return {
     type: FUNCTION_COMPANY_SELECTED,
     payload,
   };
 }
 
+/**
+ * Verifies if companies exist for a given email.array companies.length>0 in collection User
+ * @param {*} email 
+ * @returns 
+ */
 
 export function verificationCompaniesExist(email) {
 

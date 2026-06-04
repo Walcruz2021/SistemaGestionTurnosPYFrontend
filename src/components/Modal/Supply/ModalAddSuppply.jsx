@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
-import listCategories from "../../../functions/categoriesSupplies.json"
+import { listCategories } from "../../../reducer/actions/category/actionCategory"
 import { actionListSupplier } from "../../../reducer/actions/supplier/actionsSupplier"
 import { actionAddSupply, getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
 import { getBrands } from "../../../reducer/actions/actionBrand"
@@ -20,8 +20,7 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
     const listSupplier = useSelector((state) => state.supplier.listSupplier)
     const listBrands = useSelector((state) => state.gralRed.listBrands)
     const [stateSeletedBrand, setStateSeletedBrand] = useState()
-
-    // const [stateListSupplier, setListSupplier] = useState([])
+    const listCategories = useSelector((state) => state.category.listCategories)   
 
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
@@ -95,7 +94,7 @@ const ModalAddSupply = ({ openModal, setOpenModal }) => {
                 confirmButtonColor: "rgb(21, 151, 67)",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    dispatch(getListSupplies(companySelectedMenu._id));
+                    dispatch(getListSupplies(companySelectedMenu));
                     setOpenModal(!openModal);
 
                     setStateInput({

@@ -116,16 +116,35 @@ function FormLoginNew({ autUser }) {
         return;
       }
 
-
       // ✅ Si está verificado, sigue el flujo normal
+      // MySwal.fire({
+      //   title: "¡Usuario Logueado Correctamente!",
+      //   icon: "success",
+      //   confirmButtonText: "Aceptar",
+      //   confirmButtonColor: "rgb(21, 151, 67)",
+      // }).then(async (result) => {
+      //   if (result.isConfirmed) {
+      //     dispatch(listenToAuthChanges());
+      //     const resVerification = await verificationCompanies(user.email);
+
+      //     if (resVerification.payload.status === 200) {
+      //       navigate("/");
+      //     } else if (resVerification.payload.status === 204) {
+      //       navigate("/addCompany");
+      //     }
+      //   }
+      // });
       MySwal.fire({
         title: "¡Usuario Logueado Correctamente!",
         icon: "success",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "rgb(21, 151, 67)",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
+        showConfirmButton: false,
+        timer: 1800,
+        timerProgressBar: true,
+        allowOutsideClick: false,
+
+        willClose: async () => {
           dispatch(listenToAuthChanges());
+
           const resVerification = await verificationCompanies(user.email);
 
           if (resVerification.payload.status === 200) {
@@ -133,7 +152,7 @@ function FormLoginNew({ autUser }) {
           } else if (resVerification.payload.status === 204) {
             navigate("/addCompany");
           }
-        }
+        },
       });
 
     } catch (error) {
@@ -302,19 +321,19 @@ function FormLoginNew({ autUser }) {
     //   </div>
     // </div>
     <div className="container px-3 sm:px-4 md:px-6 py-4 sm:py-6 mt-2">
-  <div className="row justify-content-center g-4">
+      <div className="row justify-content-center g-4">
 
-    {/* LOGIN */}
-    <div className="col-12 col-lg-5">
-      <div className="text-center">
-        <div className="card-body p-0">
-          <div className="login-form">
+        {/* LOGIN */}
+        <div className="col-12 col-lg-5">
+          <div className="text-center">
+            <div className="card-body p-0">
+              <div className="login-form">
 
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="
                 w-full
                 flex flex-col justify-center
                 px-5 sm:px-8 md:px-10
@@ -324,54 +343,54 @@ function FormLoginNew({ autUser }) {
                 shadow-2xl
                 bg-black
               "
-              style={{ background: "#050505" }}
-            >
+                  style={{ background: "#050505" }}
+                >
 
-              {/* Logo + Title */}
-              <div className="mb-8 sm:mb-10 text-center">
+                  {/* Logo + Title */}
+                  <div className="mb-8 sm:mb-10 text-center">
 
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mx-auto mb-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mx-auto mb-4">
 
-                  <svg
-                    width="28"
-                    height="28"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1.6"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
+                      <svg
+                        width="28"
+                        height="28"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="1.6"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
 
-                </div>
+                    </div>
 
-                <h2 className="text-white font-bold text-xl sm:text-2xl tracking-tight leading-tight">
-                  Gestión de Turnos PY
-                </h2>
+                    <h2 className="text-white font-bold text-xl sm:text-2xl tracking-tight leading-tight">
+                      Gestión de Turnos PY
+                    </h2>
 
-                <p className="text-zinc-500 text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-3">
-                  Acceso al sistema
-                </p>
+                    <p className="text-zinc-500 text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-3">
+                      Acceso al sistema
+                    </p>
 
-              </div>
+                  </div>
 
-              <form onSubmit={handleSumbit} className="flex flex-col gap-5">
+                  <form onSubmit={handleSumbit} className="flex flex-col gap-5">
 
-                {/* EMAIL */}
-                <div className="flex flex-col gap-2">
+                    {/* EMAIL */}
+                    <div className="flex flex-col gap-2">
 
-                  <label className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-zinc-400 font-medium">
+                      <label className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-zinc-400 font-medium">
 
-                    <IconUser />
-                    Correo electrónico
+                        <IconUser />
+                        Correo electrónico
 
-                  </label>
+                      </label>
 
-                  <div className="
+                      <div className="
                     mt-1
                     flex items-center gap-3
                     px-4 py-3
@@ -382,8 +401,8 @@ function FormLoginNew({ autUser }) {
                     focus-within:border-white/30
                   ">
 
-                    <input
-                      className="
+                        <input
+                          className="
                         bg-transparent
                         flex-1
                         text-white
@@ -392,30 +411,30 @@ function FormLoginNew({ autUser }) {
                         placeholder-zinc-600
                         outline-none
                       "
-                      id="form1"
-                      type="email"
-                      name="email"
-                      value={stateValue.email}
-                      placeholder="Ingrese su Email"
-                      onChange={handleChange}
-                      maxLength={30}
-                      required
-                    />
+                          id="form1"
+                          type="email"
+                          name="email"
+                          value={stateValue.email}
+                          placeholder="Ingrese su Email"
+                          onChange={handleChange}
+                          maxLength={35}
+                          required
+                        />
 
-                  </div>
-                </div>
+                      </div>
+                    </div>
 
-                {/* PASSWORD */}
-                <div className="flex flex-col gap-2">
+                    {/* PASSWORD */}
+                    <div className="flex flex-col gap-2">
 
-                  <label className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-zinc-400 font-medium">
+                      <label className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-zinc-400 font-medium">
 
-                    <RiLockPasswordFill />
-                    Password
+                        <RiLockPasswordFill />
+                        Password
 
-                  </label>
+                      </label>
 
-                  <div className="
+                      <div className="
                     mt-1
                     flex items-center gap-3
                     px-4 py-3
@@ -426,8 +445,8 @@ function FormLoginNew({ autUser }) {
                     focus-within:border-white/30
                   ">
 
-                    <input
-                      className="
+                        <input
+                          className="
                         bg-transparent
                         flex-1
                         text-white
@@ -436,46 +455,46 @@ function FormLoginNew({ autUser }) {
                         placeholder-zinc-600
                         outline-none
                       "
-                      id="form2"
-                      type="password"
-                      name="password"
-                      value={stateValue.password}
-                      placeholder="Ingrese Contraseña"
-                      maxLength={20}
-                      onChange={handleChange}
-                      required
-                    />
+                          id="form2"
+                          type="password"
+                          name="password"
+                          value={stateValue.password}
+                          placeholder="Ingrese Contraseña"
+                          maxLength={20}
+                          onChange={handleChange}
+                          required
+                        />
 
-                  </div>
+                      </div>
 
-                  {/* OLVIDASTE CONTRASEÑA */}
-                  <div className="flex justify-end mt-1">
+                      {/* OLVIDASTE CONTRASEÑA */}
+                      <div className="flex justify-end mt-1">
 
-                    <button
-                      type="button"
-                      onClick={handleShow}
-                      className="
+                        <button
+                          type="button"
+                          onClick={handleShow}
+                          className="
                         text-sm
                         text-zinc-300
                         hover:text-white
                         transition-colors duration-200
                         underline underline-offset-4
                       "
-                    >
-                      ¿Olvidaste la contraseña?
-                    </button>
+                        >
+                          ¿Olvidaste la contraseña?
+                        </button>
 
-                  </div>
+                      </div>
 
-                  <ModalRestPassword show={show} setShow={setShow} />
+                      <ModalRestPassword show={show} setShow={setShow} />
 
-                  {/* BUTTON */}
-                  <motion.button className="w-full">
+                      {/* BUTTON */}
+                      <motion.button className="w-full">
 
-                    {!stateValue.email || !stateValue.password ? (
+                        {!stateValue.email || !stateValue.password ? (
 
-                      <button
-                        className="
+                          <button
+                            className="
                           mt-3
                           w-full
                           py-3 sm:py-3.5
@@ -489,16 +508,16 @@ function FormLoginNew({ autUser }) {
                           border border-white/[0.06]
                           cursor-not-allowed
                         "
-                        type="submit"
-                        disabled
-                      >
-                        Inicio de Sesión
-                      </button>
+                            type="submit"
+                            disabled
+                          >
+                            Inicio de Sesión
+                          </button>
 
-                    ) : (
+                        ) : (
 
-                      <button
-                        className="
+                          <button
+                            className="
                           mt-3
                           w-full
                           py-3 sm:py-3.5
@@ -512,17 +531,17 @@ function FormLoginNew({ autUser }) {
                           hover:bg-zinc-100
                           shadow-lg shadow-white/10
                         "
-                        type="submit"
-                      >
-                        Inicio de Sesión
-                      </button>
+                            type="submit"
+                          >
+                            Inicio de Sesión
+                          </button>
 
-                    )}
+                        )}
 
-                  </motion.button>
+                      </motion.button>
 
-                  {/* REGISTER */}
-                  <div className="
+                      {/* REGISTER */}
+                      <div className="
                     mt-8 sm:mt-10
                     text-center
                     flex flex-col sm:flex-row
@@ -531,12 +550,12 @@ function FormLoginNew({ autUser }) {
                     gap-2 sm:gap-3
                   ">
 
-                    <span className="text-xs sm:text-sm text-zinc-500">
-                      ¿No tenés cuenta?
-                    </span>
+                        <span className="text-xs sm:text-sm text-zinc-500">
+                          ¿No tenés cuenta?
+                        </span>
 
-                    <button
-                      className="
+                        <button
+                          className="
                         text-xs sm:text-sm
                         text-white
                         underline
@@ -545,33 +564,33 @@ function FormLoginNew({ autUser }) {
                         transition-colors duration-150
                         font-medium
                       "
-                      onClick={RedirectLink}
-                    >
-                      Registrarse
-                    </button>
+                          onClick={RedirectLink}
+                        >
+                          Registrarse
+                        </button>
 
-                  </div>
+                      </div>
 
-                </div>
+                    </div>
 
-              </form>
+                  </form>
 
-            </motion.div>
+                </motion.div>
 
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* PANEL DERECHO */}
+        <div className="col-12 col-lg-5">
+          <div className="h-full">
+            <FrontPageRegisterLogin onContact={RedirectLinkContact} />
+          </div>
+        </div>
+
       </div>
     </div>
-
-    {/* PANEL DERECHO */}
-    <div className="col-12 col-lg-5">
-      <div className="h-full">
-        <FrontPageRegisterLogin onContact={RedirectLinkContact} />
-      </div>
-    </div>
-
-  </div>
-</div>
   );
 }
 

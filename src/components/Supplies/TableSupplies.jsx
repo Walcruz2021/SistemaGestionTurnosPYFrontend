@@ -7,17 +7,26 @@ import TableDetailSupplies from "./TableDetailSupplies.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
 import Select, { components } from "react-select";
-import listCategories from "../../functions/categoriesSupplies.json";
+import listCategories from "../../reducer/actions/category/actionCategory";
 import "../../../src/App.css";
 import {
     getListSupplies,
     actionsOrderSupplies,
 } from "../../reducer/actions/supply/actionsSupply.js";
-import { getBrands } from "../../reducer/actions/actionBrand.jsx";
+
 import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
 import { list } from "postcss";
 import { Search, X, ChevronDown, Tag, Layers, CalendarPlus } from "lucide-react";
 import { motion } from "framer-motion";
+import TableSupplyVariants from "./TableSupplyVariants.jsx";
+import { FaFileInvoice } from "react-icons/fa6";
+import { MdDiscount } from "react-icons/md";
+
+/**
+ * Main table of supplies, with search, filter and pagination. When selecting a supply, it shows its details, variants and related batches.
+ * @param {*} 
+ * @returns table supplies, variants and batches
+ */
 
 const TableSupplies = ({ setInfo, stateInfo }) => {
     const dispatch = useDispatch();
@@ -26,26 +35,31 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     );
 
     const [brand, setBrand] = useState(null);
-    const [category, setCategory] = useState(null);
+    const listCategories = useSelector((state) => state.category.arrayCategories);
 
-
-
+    //@endpoint GET /api/getListSupplies/:idCompany
     const listSupplies = useSelector((state) => state.supply.listSupplies);
 
     const listBrand = useSelector((state) => state.gralRed.listBrands);
+
 
     const [order, setOrder] = useState(false);
     const [stateFilterCategory, setStateFilterCategory] = useState(false);
     const [stateFilterBrand, setStateFilterBrand] = useState(false);
 
     const [stateSelectedCategory, setStateSelectedCategory] = useState();
-
+    const [categoryToSearch, setCategoryToSearch] = useState(null);
     const [stateSelectedBrand, setStateSelectedBrand] = useState();
+    //will indicate the search engine's actions
+    const [brandToSearch, setBrandToSearch] = useState(null);
+
+
     const [supplySelected, setSupplySelected] = useState(null);
 
     const [stateSearch, setSearch] = useState("");
     const [stateOpenModal, setStateOpenModal] = useState(false);
     const [stateDataSupply, setDataSupply] = useState();
+    const [stateBatches, setStateBatches] = useState([]);
     const [stateDetailsSup, setStateDetailsSup] = useState({
         detailsSup: "",
     });
@@ -55,7 +69,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands());
+
         }
     }, [companySelectedMenu, dispatch]);
 
@@ -66,64 +80,101 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     }));
 
     // ------- SELECTOR CATEGORIAS -------
-    const selectCategory = listCategories?.map((c) => ({
-        value: c.name,
-        label: c.name,
-    }));
+    // const selectCategory = listCategories?.map((c) => ({
+    //     value: c._id,
+    //     label: c.name,
+    // }));
 
     // --------------------------
     // SELECT OPTIONS
     // --------------------------
-    const brandOptions = listBrand?.map((b) => ({
-        value: b._id,
-        label: b.nameBrand
-    }));
-
-    const categoryOptions = listCategories.map((c) => ({
-        value: c.name,
+    const categoryOptions = listCategories?.map((c) => ({
+        value: c._id,
         label: c.name
     }));
 
-    //-------------------------------------------------
-    // FILTRADO OPTIMIZADO
-    //-------------------------------------------------
+    const filteredBrands = useMemo(() => {
+
+
+        const brands = !stateSelectedCategory
+            ? listBrand
+            : listBrand?.filter((b) =>
+                b.categories?.some(
+                    (cat) => cat._id === stateSelectedCategory.value
+                )
+            );
+
+
+
+        return brands?.map((b) => ({
+            value: b._id,
+            label: b.nameBrand
+        }));
+
+    }, [listBrand, stateSelectedCategory]);
+
+
+
     const suppliesFiltered = useMemo(() => {
-        // Si se seleccionó un insumo → tabla vacía
+        let result = [...listSupplies];
 
-        //en la tabla de ventas esta esta condicion pero aqui no me sirve ya que se seleeciona un insumo pero quiero seguir realizando busquedas 
-        // if (supplySelected) return [];
-
-        let result = listSupplies;
-
-        // Buscar por texto
-        if (stateSearch.trim() !== "") {
+        // Buscar por nombre
+        if (stateSearch.trim()) {
             result = result.filter((s) =>
-                s.global.nameSupply.toLowerCase().includes(stateSearch.toLowerCase())
+                s.global.nameSupply
+                    .toLowerCase()
+                    .includes(stateSearch.toLowerCase())
+            );
+        }
+
+        // Filtrar por categoría
+        if (categoryToSearch) {
+            result = result.filter((s) =>
+                s.global.categories?.some(
+                    (cat) => cat._id === categoryToSearch.value
+                )
             );
         }
 
         // Filtrar por marca
-        if (stateSelectedBrand) {
-            result = result.filter((s) => s.global.idBrand === stateSelectedBrand.value);
+        if (brandToSearch) {
+            result = result.filter(
+                (s) => s.global.idBrand === brandToSearch.value
+            );
         }
 
-        // Filtrar por categoría
-        if (stateSelectedCategory) {
-            result = result.filter((s) => s.global.categorySupply === stateSelectedCategory.value);
-            console.log(result)
-        }
-
-        if (!stateSearch && !stateSelectedBrand && !stateSelectedCategory) {
-            return null;
-        }
         return result;
-    }, [listSupplies, stateSearch, stateSelectedBrand, stateSelectedCategory, supplySelected]);
+    }, [
+        listSupplies,
+        stateSearch,
+        categoryToSearch,
+        brandToSearch
+    ]);
 
+
+    const handleChangeSelectCategory = (selected) => {
+        setSupplySelected(null);
+
+        setStateSelectedCategory(selected);
+
+        // clean brand
+        setStateSelectedBrand(null);
+
+        // clean applied filters
+        setCategoryToSearch(null);
+        setBrandToSearch(null);
+    };
 
     function handleOrder(e) {
         setOrder(!order);
         dispatch(actionsOrderSupplies(order));
     }
+
+    //when the user clicks the search button
+    const handleSearch = () => {
+       setCategoryToSearch(stateSelectedCategory);
+    setBrandToSearch(stateSelectedBrand);
+    };
 
     //-------------------------------------------------
     // MANEJO DE SELECCIÓN DE INSUMO
@@ -139,6 +190,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
         // // Reset filtros
         setStateSelectedBrand(null);
         setStateSelectedCategory(null);
+        setStateBatches([]);
         setSearch("");
     };
 
@@ -148,12 +200,10 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
     const handleChangeSelectBrand = (selected) => {
         setSupplySelected(null);
         setStateSelectedBrand(selected);
+        setBrandToSearch(null);
     };
 
-    const handleChangeSelectCategory = (selected) => {
-        setSupplySelected(null);
-        setStateSelectedCategory(selected);
-    };
+
 
     // ---------------- PAGINACIÓN ----------------
 
@@ -242,34 +292,6 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                                     <div className="space-y-1.5">
-
-                                        {/* FILTRO POR MARCA */}
-                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
-                                            <Tag className="w-4 h-4" />
-                                            Marca
-                                        </label>
-                                        <Select
-                                            className="classSelect instrument-serif-regular"
-                                            placeholder="Seleccione Marca"
-                                            onChange={handleChangeSelectBrand}
-                                            value={stateSelectedBrand}
-                                            options={brandOptions}
-                                            isClearable
-                                            components={{
-                                                Control: CustomControlSelect1
-                                            }}
-                                            menuPortalTarget={document.body}
-                                            menuPosition="fixed"
-                                            styles={{
-                                                menuPortal: (base) => ({
-                                                    ...base,
-                                                    zIndex: 9999
-                                                })
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className="space-y-1.5">
                                         {/* FILTRO POR CATEGORÍA */}
                                         <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
                                             <Layers className="w-4 h-4" />
@@ -295,6 +317,36 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                             }}
                                         />
                                     </div>
+
+                                    <div className="space-y-1.5">
+
+                                        {/* FILTRO POR MARCA */}
+                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
+                                            <Tag className="w-4 h-4" />
+                                            Marca
+                                        </label>
+                                        <Select
+                                            className="classSelect instrument-serif-regular"
+                                            placeholder="Seleccione Marca"
+                                            onChange={handleChangeSelectBrand}
+                                            value={stateSelectedBrand}
+                                            options={filteredBrands}
+                                            isClearable
+                                            components={{
+                                                Control: CustomControlSelect1
+                                            }}
+                                            menuPortalTarget={document.body}
+                                            menuPosition="fixed"
+                                            styles={{
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999
+                                                })
+                                            }}
+                                        />
+                                    </div>
+
+
                                 </div>
 
                                 {/* Active filters indicator */}
@@ -324,12 +376,23 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                     <p><span className="text-gray-600 font-medium">Categoría:</span> {category?.label || "—"}</p>
                                     <p><span className="text-gray-600 font-medium">Página:</span> {currentPage}</p>
                                 </div> */}
+                                <button
+                                    disabled={!stateSelectedCategory && !stateSelectedBrand}
+                                    onClick={handleSearch}
+                                >
+                                    Buscar
+                                </button>
                             </div>
 
+
                         </div>
+
+
                     </motion.div>
 
+
                 </div>
+
             </div>
 
             {/* INSUMOS */}
@@ -409,14 +472,14 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                                     // style={{ cursor: "pointer" }}
                                                     />
                                                 </th>
-                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoria</th>
                                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Marca</th>
-                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Stock</th>
+                                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoria</th>
+
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            {currentItems.map((sup, index) => (
+                                            {currentItems && currentItems.map((sup, index) => (
                                                 <motion.tr key={sup._id} animate={{
                                                     opacity: 1,
                                                 }}
@@ -435,11 +498,12 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                                             })
                                                         }
                                                     >
+
                                                         {sup.global.nameSupply}
                                                     </td>
-                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.categorySupply}</td>
+
                                                     <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameBrand}</td>
-                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.totalStock ?? 0}</td>
+                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameCategory}</td>
                                                 </motion.tr>
                                             ))}
                                         </tbody>
@@ -571,6 +635,44 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                         Insumo Seleccionado
                                     </p>
 
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+                                        {/* Imagen */}
+                                        <div className="flex justify-center md:justify-start ">
+                                            <img
+                                                src={stateDetailsSup.global?.imgStore}
+                                                alt="Insumo"
+                                                className="w-24 h-28 object-cover"
+                                            />
+                                        </div>
+
+                                        {/* Insumo */}
+                                        <div className="flex flex-col justify-center">
+                                            <FaFileInvoice size="1.7rem" className="mb-2 text-zinc-700" />
+
+                                            <small className="text-zinc-500 instrument-serif-regular">
+                                                Insumo
+                                            </small>
+
+                                            <strong className="instrument-serif-regular text-zinc-900">
+                                                {stateDetailsSup.global?.nameSupply ?? ""}
+                                            </strong>
+                                        </div>
+
+                                        {/* Marca */}
+                                        <div className="flex flex-col justify-center">
+                                            <MdDiscount size="1.7rem" className="mb-2 text-zinc-700" />
+
+                                            <small className="text-zinc-500 instrument-serif-regular">
+                                                Marca
+                                            </small>
+
+                                            <strong className="instrument-serif-regular text-zinc-900">
+                                                {stateDetailsSup.global?.nameBrand ?? ""}
+                                            </strong>
+                                        </div>
+
+                                    </div>
                                 </div>
 
                                 <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
@@ -581,53 +683,11 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
 
                             </div>
 
+
                         </motion.div>
 
-                        <TableDetailSupplies
-                            // stateDetailsSup={stateDetailsSup.detailsSup}
-                            stateDetailsSup={stateDetailsSup}
-                            setSupplySelected={setSupplySelected}
-                        />
+                        <TableSupplyVariants supplySelected={stateDetailsSup} setSupplySelected={setSupplySelected} stateBatches={stateBatches} setStateBatches={setStateBatches} />
 
-                        {/* CARD TITLE */}
-                        <div>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3, duration: 0.4 }}
-                                className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
-                            >
-
-
-                                <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
-
-                                    <div>
-
-                                        <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                                            Tabla de Lotes
-                                        </h2>
-
-                                        <p className="text-zinc-500 text-sm mt-0.5">
-                                            Lotes y Detalles del Insumo Seleccionado
-                                        </p>
-
-                                    </div>
-
-                                    <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
-
-                                        <CalendarPlus className="w-4 h-4 text-white" />
-
-                                    </div>
-
-                                </div>
-
-                            </motion.div>
-                        </div>
-
-                        <TableStockBatch
-                            // idSupply={stateDetailsSup.detailsSup?.idGlobalSupply}
-                            idSupply={stateDetailsSup.idGlobalSupply}
-                        />
                     </> :
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -665,6 +725,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                 </div>
 
             </motion.div>
+
 
             <ModalEditSupply
                 stateOpenModal={stateOpenModal}

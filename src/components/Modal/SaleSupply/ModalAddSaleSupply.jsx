@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
-import listCategories from "../../../functions/categoriesSupplies.json"
+import listCategories from "../../../reducer/actions/category/actionCategory";
 import { actionListSupplier } from "../../../reducer/actions/supplier/actionsSupplier"
 import { actionAddSupply, getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
 import { getBrands } from "../../../reducer/actions/actionBrand"
@@ -17,6 +17,8 @@ import { getBrands } from "../../../reducer/actions/actionBrand"
 
 const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDetailsSupplies }) => {
 
+    const listCategories = useSelector(state => state.category.listCategories);
+    
     const [stateInputSupply, setStateInputSupply] = useState({
         quantitySale: "",
         discount: 0,

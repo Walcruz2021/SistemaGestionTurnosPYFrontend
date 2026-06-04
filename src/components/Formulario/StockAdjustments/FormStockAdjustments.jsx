@@ -7,7 +7,6 @@ import TableSuppliesAdjustmentsDetails from "../../Supplies/TableSuppliesAdjustm
 import { useSelector, useDispatch } from "react-redux";
 import ModalEditSupply from "../../Modal/Supply/ModalEditSupply.js";
 import Select from "react-select";
-import listCategories from "../../../functions/categoriesSupplies.json";
 import "../../../../src/App.css";
 import {
     getListSupplies,
@@ -25,7 +24,7 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
 
     //si el insumo no tiene companySupply ligado no aparecera en la lista
     const listSupplies = useSelector((state) => state.supply.listSupplies);
-
+    const listCategories = useSelector((state) => state.category.arrayCategories);
     const listBrand = useSelector((state) => state.gralRed.listBrands);
 
     const [order, setOrder] = useState(false);
@@ -42,7 +41,7 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     const [stateDetailsSup, setStateDetailsSup] = useState({
         detailsSup: "",
     });
-
+      
 
 
     useEffect(() => {

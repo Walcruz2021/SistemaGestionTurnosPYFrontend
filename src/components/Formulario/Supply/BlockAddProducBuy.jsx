@@ -13,6 +13,7 @@ import {
     getListSuppliesGral
 } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand";
+import { getListSuppliesVariant } from "../../../reducer/actions/supply/actionsSupplyVariant"
 
 const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupply }) => {
 
@@ -20,14 +21,18 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplies = useSelector((state) => state.supply.listSupplies);
     const listSuppliesGral = useSelector((state) => state.supply.listSuppliesGral)
+
     const listBrands = useSelector((state) => state.gralRed.listBrands);
     const [stateMargen, setmargen] = useState(50)
-
     const [suppliesOptions, setSuppliesOptions] = useState([]);
+    const [variantOptions, setVariantOptions] = useState([]);
 
     const [brandOptions, setBrandOptions] = useState([]);
+    //list supplyVariant
+    const listSuppliesVariant = useSelector((state) => state.supplyVariant.listSuppliesVariant.listSupplyVariants);
 
-    // Acceso directo al producto actual
+
+    // marca que se elige en el select MARCA
     const currentProduct = stateInput.detailsSupply[index];
 
     useEffect(() => {
@@ -39,6 +44,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
     useEffect(() => {
         dispatch(getListSuppliesGral())
+        dispatch(getListSuppliesVariant());
     }, [])
 
 
@@ -53,10 +59,10 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     }, [listBrands]);
 
     useEffect(() => {
-        if (currentProduct?.nameBrand && listSuppliesGral) {
+        if (currentProduct?.idBrand && listSuppliesGral) {
 
             const filtered = listSuppliesGral
-                .filter((prod) => prod.nameBrand === currentProduct.nameBrand)
+                .filter((prod) => prod?.idBrand === currentProduct?.idBrand)
                 .map((prod) => ({
                     value: prod._id,
                     label: prod.nameSupply
@@ -64,7 +70,26 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             setSuppliesOptions(filtered);
         }
-    }, [currentProduct?.nameBrand, listSuppliesGral]);
+    }, [currentProduct?.idBrand, listSuppliesGral]);
+
+    useEffect(() => {
+        if (currentProduct?.idSupply && listSuppliesVariant) {
+
+            const filteredVariants = listSuppliesVariant
+                .filter(
+                    (variant) => variant?.idSupply === currentProduct?.idSupply
+                )
+                .map((variant) => ({
+                    value: variant._id,
+                    label: variant.name,
+                    // typeUnidMed: variant.typeUnidMed,
+                    // valueUnitMed: variant.valueUnitMed,
+                    // imgStore: variant.imgStore
+                }));
+
+            setVariantOptions(filteredVariants);
+        }
+    }, [currentProduct?.idSupply, listSuppliesVariant]);
 
     useEffect(() => {
         if (currentProduct?.unitCost != null) {
@@ -103,6 +128,11 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
         handleChangeField("idSupply", option.value);
     };
 
+    const handleChangeSelectVariant = (option) => {
+        handleChangeField("nameVariant", option.label);
+        handleChangeField("idVariant", option.value);
+    };
+
     const handleChangeInput = (e) => {
         const { name, value, type } = e.target;
 
@@ -119,16 +149,18 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     }
 
 
-const customStyles = (hasError) => ({
-    control: (provided) => ({
-        ...provided,
-        borderColor: hasError ? "red" : provided.borderColor,
-        boxShadow: "none",
-        "&:hover": {
-            borderColor: hasError ? "red" : provided.borderColor
-        }
-    })
-});
+    const customStyles = (hasError) => ({
+        control: (provided) => ({
+            ...provided,
+            borderColor: hasError ? "red" : provided.borderColor,
+            boxShadow: "none",
+            "&:hover": {
+                borderColor: hasError ? "red" : provided.borderColor
+            }
+        })
+    });
+
+
 
 
     return (
@@ -171,6 +203,29 @@ const customStyles = (hasError) => ({
             </Col>
 
 
+            <Col xs={6}>
+                <Form.Group>
+                    <Form.Label>Variante de producto</Form.Label>
+
+                    <Select
+                        styles={customStyles(!currentProduct?.nameSupply)}
+                        className="instrument-serif-regular"
+                        placeholder="Variante"
+                        options={variantOptions}
+
+                        onChange={handleChangeSelectVariant}
+
+                        value={
+                            currentProduct?.nameVariant
+                                ? variantOptions.find(
+                                    (v) => v.label === currentProduct.nameVariant
+                                )
+                                : null
+                        }
+                    />
+                </Form.Group>
+            </Col>
+
 
             <Col xs={4}>
                 <Form.Group>
@@ -178,7 +233,7 @@ const customStyles = (hasError) => ({
                     <Form.Control
                         type="text"
                         name="quantity"
-                        className={`mt-2 instrument-serif-regular ${!currentProduct.quantity ? "border-danger" : ""}`}
+                        className={`mt-2 instrument-serif-regular ${!currentProduct?.quantity ? "border-danger" : ""}`}
                         value={currentProduct?.quantity || ""}
                         onChange={handleChangeInput}
                         required
@@ -193,7 +248,7 @@ const customStyles = (hasError) => ({
                     <Form.Control
                         type="text"
                         name="unitCost"
-                        className={`mt-2 instrument-serif-regular ${!currentProduct.unitCost ? "border-danger" : ""}`}
+                        className={`mt-2 instrument-serif-regular ${!currentProduct?.unitCost ? "border-danger" : ""}`}
                         value={currentProduct?.unitCost || ""}
                         onChange={handleChangeInput}
                         required

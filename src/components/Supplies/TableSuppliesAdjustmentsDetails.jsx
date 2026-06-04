@@ -123,7 +123,7 @@ const TableSuppliesAdjustmentsDetails = ({ dataSupplySeleted }) => {
             //limpiamos el array de con insumos elegidos para vender
             setStateDetailsSupplies([]);
             //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
-            dispatch(getListSupplies(companySelectedMenu._id))
+            dispatch(getListSupplies(companySelectedMenu._id));
 
             MySwal.fire({
                 title: `¡Ajuste  Agregado Correctamente!`,

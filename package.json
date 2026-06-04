@@ -9,7 +9,8 @@
     "test": "react-scripts test",
     "coverage": "jest --coverage",
     "eject": "react-scripts eject",
-    "vercel-build": "react-scripts build"
+    "vercel-build": "react-scripts build",
+    "doctor": "npx react-doctor@latest"
   },
   "author": "Walter Cruz",
   "license": "MIT",
@@ -91,7 +92,8 @@
     "identity-obj-proxy": "^3.0.0",
     "intersection-observer": "^0.12.2",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "react-doctor": "^0.2.10"
   },
   "jest": {
     "transformIgnorePatterns": [

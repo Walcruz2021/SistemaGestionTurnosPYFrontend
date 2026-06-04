@@ -75,7 +75,7 @@ const FormAddCompany = () => {
       });
     } else {
       try {
-        dispatch(
+        const newCompany = await dispatch(
           addCompany({
             nameCompany: stateValue.nameCompany,
             address: stateValue.address,
@@ -84,19 +84,24 @@ const FormAddCompany = () => {
             country: "Argentina",
             emailUser: loginUser.email,
             category: selectedOption,
+            slug: stateValue.nameCompany.toLowerCase().replace(/\s+/g, "-")
           })
         );
-        MySwal.fire({
-          title: "¡Empresa Creada!",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-          confirmButtonColor: "rgb(21, 151, 67)",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate("/");
-            //alert("add company")
-          }
-        });
+     
+        if (newCompany && newCompany.status === 200) {
+
+          MySwal.fire({
+            title: "¡Empresa Creada!",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "rgb(21, 151, 67)",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/");
+              //alert("add company")
+            }
+          });
+        }
       } catch (error) {
         console.error(error.code, error.message);
       }
@@ -231,8 +236,8 @@ const FormAddCompany = () => {
               onClick={handleSumbit}
               disabled={
                 !stateValue.nameCompany.trim() ||
-                validationName.nameCompany === false ||
-                 validationName.address === false ||
+                  validationName.nameCompany === false ||
+                  validationName.address === false ||
                   !stateValue.address.trim() ||
                   !stateValue.cuit.trim() ||
                   !selectedOption
