@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalAddSupply from '../../Modal/Supply/ModalAddSuppply';
+import ModalAddSupplyGral from '../../Modal/Supply/ModalAddSupplyGral';
 import ModalAddSupplier from '../../Modal/Suppier/ModalAddSupplier';
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
@@ -218,7 +218,7 @@ const FormAddVtas = () => {
 
 
                 <TableSuppliesSale />
-                <ModalAddSupply
+                <ModalAddSupplyGral
                     openModal={openModalSupply}
                     setOpenModal={setOpenModalSupply}
                 />

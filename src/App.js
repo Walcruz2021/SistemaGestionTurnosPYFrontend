@@ -128,6 +128,7 @@ const AppRoutes = () => {
     useEffect(() => {
       dispatch(listCategories());
       dispatch(getBrands());
+      dispatch(listCategories());
     }, [dispatch])
   
     

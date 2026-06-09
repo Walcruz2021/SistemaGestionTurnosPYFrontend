@@ -11,8 +11,19 @@ export const GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT = "GET_LIST_BUY_SUPPLIES_BY_D
 export const UPDATE_SUPPLY_By_LIST = "UPDATE_SUPPLY_By_LIST"
 export const ADD_SALE_SUPPLY = "ADD_SALE_SUPPLY"
 export const GET_BUYSUPPLY_BY_NINVOICE = "GET_BUYSUPPLY_BY_NINVOICE"
-export const GET_LIST_SUPPLIES_GRAL="GET_LIST_SUPPLIES_GRAL"
+export const GET_LIST_SUPPLIES_GRAL = "GET_LIST_SUPPLIES_GRAL"
 
+
+/**
+ * add supply gral
+ * @param {*} nameSupply
+ * @param {*} idBrand
+ * @param {*} description 
+ * @param {*} imgStore
+ * @returns newSupply
+ */
+
+//MANEJAR ESSTE MODELO DE ACTION PARA TODOS
 export function actionAddSupply(payload) {
 
   return async function (dispatch) {
@@ -24,6 +35,7 @@ export function actionAddSupply(payload) {
       return newSupply;
     } catch (error) {
       console.log(error);
+      return error.response;
     }
   };
 }
@@ -172,6 +184,35 @@ export function actionAddSaleSupply(payload) {
       return newSaleSupply;
     } catch (error) {
       console.log(error);
+    }
+  };
+}
+
+export function actionAddImgSupply(image, idSupply) {
+  return async function (dispatch) {
+    try {
+
+      const formData = new FormData();
+
+      if (image) {
+        formData.append("image", image);
+      }
+      // console.log(formData,"actions")
+      const response = await axios.post(
+        `${host}/api/addSupplyImage/${idSupply}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return response;
+
+    } catch (error) {
+      console.log(error);
+      return error.response;
     }
   };
 }

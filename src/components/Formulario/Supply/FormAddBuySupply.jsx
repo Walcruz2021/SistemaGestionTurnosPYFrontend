@@ -18,7 +18,7 @@ import BlockAddProducBuy from "../Supply/BlockAddProducBuy.jsx"
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
-import ModalAddSupply from "../../Modal/Supply/ModalAddSuppply.jsx";
+import ModalAddSupplyGral from "../../Modal/Supply/ModalAddSupplyGral.jsx";
 import { FaBasketShopping } from "react-icons/fa6";
 import { Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -562,20 +562,13 @@ export default function FormAddBuySupply({
                         </div>
                     </div> */}
 
-                    <div className="text-center">
-                        <div className="card-body">
-                            <button className="btn btn-link">
-                                <img src={addSupplierIcon} onClick={addSupplierFunction} />
-                            </button>
-
-                        </div>
-                    </div>
+         
                 </div>
 
 
             </Modal.Footer >
 
-            <ModalAddSupply
+            <ModalAddSupplyGral
                 openModal={openModalSupply}
                 setOpenModal={setOpenModalSupply}
             />

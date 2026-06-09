@@ -1,4 +1,4 @@
-import { GET_LIST_SUPPLIES_VARIANT} from "../../actions/supply/actionsSupplyVariant";
+import { GET_LIST_SUPPLIES_VARIANT, ADD_SUPPLY_VARIANT,UPDATE_SUPPLY_VARIANT_ADDIMAGES} from "../../actions/supply/actionsSupplyVariant";
 
 
 const initialState = {
@@ -15,7 +15,13 @@ export default function supplyReducer(state = initialState, action) {
                 listSuppliesVariant: action.payload
             }
 
-       
+        case ADD_SUPPLY_VARIANT:
+            return {
+                ...state
+            };
+
+
+
         default:
             return state;
     }

@@ -13,6 +13,7 @@ export default function ProductCard({
   index,
   slug,
 }) {
+
   const [imgLoaded, setImgLoaded] = useState(false);
 
   const image =

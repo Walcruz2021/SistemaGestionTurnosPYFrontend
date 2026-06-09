@@ -22,17 +22,14 @@ const StoreVirtual = () => {
     const companySelectedMenu = useSelector(
         (state) => state.company.companySelected
     );
-
     const listCategories = useSelector((state) => state.gralRed.listCategories);
     const listSuppliesEcommerce = useSelector(
         (state) => state.companySupply.listSuppliesStore
     );
 
 
+
     const listBrand = useSelector((state) => state.gralRed.listBrands);
-
-
-
     const [order, setOrder] = useState(false);
     const [stateFilterCategory, setStateFilterCategory] = useState(false);
     const [stateFilterBrand, setStateFilterBrand] = useState(false);
@@ -52,9 +49,14 @@ const StoreVirtual = () => {
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(listSuppliesStore(companySelectedMenu._id));
-            dispatch(getBrands());
+
         }
     }, [companySelectedMenu, dispatch]);
+
+    // ------------------------------------------------
+    //will indicate the search engine's actions
+    const [brandToSearch, setBrandToSearch] = useState(null);
+    const [categoryToSearch, setCategoryToSearch] = useState(null);
 
     // ------- SELECTOR MARCAS -------
     const selectBrand = listBrand?.map((b) => ({
@@ -62,59 +64,84 @@ const StoreVirtual = () => {
         label: b.nameBrand,
     }));
 
-    // ------- SELECTOR CATEGORIAS -------
-    const selectCategory = listCategories?.map((c) => ({
-        value: c.name,
-        label: c.name,
-    }));
 
-    // --------------------------
-    // SELECT OPTIONS
-    // --------------------------
-    const brandOptions = listBrand?.map((b) => ({
-        value: b._id,
-        label: b.nameBrand
-    }));
 
-    const categoryOptions = listCategories.map((c) => ({
-        value: c.name,
+    const categoryOptions = listCategories?.map((c) => ({
+        value: c._id,
         label: c.name
     }));
+
+    const filteredBrands = useMemo(() => {
+
+
+        const brands = !stateSelectedCategory
+            ? listBrand
+            : listBrand?.filter((b) =>
+                b.categories?.some(
+                    (cat) => cat._id === stateSelectedCategory.value
+                )
+            );
+
+
+
+        return brands?.map((b) => ({
+            value: b._id,
+            label: b.nameBrand
+        }));
+
+    }, [listBrand, stateSelectedCategory]);
+
 
     //-------------------------------------------------
     // FILTRADO OPTIMIZADO
     //-------------------------------------------------
     const suppliesFiltered = useMemo(() => {
-        // Si se seleccionó un insumo → tabla vacía
+        let result = [...listSuppliesEcommerce];
 
-        //en la tabla de ventas esta esta condicion pero aqui no me sirve ya que se seleeciona un insumo pero quiero seguir realizando busquedas 
-        // if (supplySelected) return [];
-
-        let result = listSuppliesEcommerce || [];
-
-        // Buscar por texto
-        if (stateSearch.trim() !== "") {
+        // Buscar por nombre
+        if (stateSearch.trim()) {
             result = result.filter((s) =>
-                s.global.nameSupply.toLowerCase().includes(stateSearch.toLowerCase())
+                s.idGlobalSupply.nameSupply
+                    .toLowerCase()
+                    .includes(stateSearch.toLowerCase())
+            );
+        }
+
+        // Filtrar por categoría
+        if (categoryToSearch) {
+            result = result.filter((s) =>
+                s.idGlobalSupply?.idCategory===categoryToSearch.value
             );
         }
 
         // Filtrar por marca
-        if (stateSelectedBrand) {
-            result = result.filter((s) => s.global.idBrand === stateSelectedBrand.value);
+        if (brandToSearch) {
+            result = result.filter(
+                (s) => s.idGlobalSupply?.idBrand?._id === brandToSearch.value
+            );
         }
 
-        // Filtrar por categoría
-        if (stateSelectedCategory) {
-            result = result.filter((s) => s.global.categorySupply === stateSelectedCategory.value);
-            console.log(result)
-        }
-
-        if (!stateSearch && !stateSelectedBrand && !stateSelectedCategory) {
-            return result;
-        }
         return result;
-    }, [listSuppliesEcommerce, stateSearch, stateSelectedBrand, stateSelectedCategory, supplySelected]);
+    }, [
+        listSuppliesEcommerce,
+        stateSearch,
+        categoryToSearch,
+        brandToSearch
+    ]);
+
+    const handleChangeSelectCategory = (selected) => {
+        setSupplySelected(null);
+        setStateSelectedCategory(selected);
+        setCategoryToSearch(null);
+
+    }
+    //when the user clicks the search button
+    const handleSearch = () => {
+        setCategoryToSearch(stateSelectedCategory);
+        setBrandToSearch(stateSelectedBrand);
+    };
+
+    // ----------------------------------------------------------
 
 
     function handleOrder(e) {
@@ -146,12 +173,11 @@ const StoreVirtual = () => {
     const handleChangeSelectBrand = (selected) => {
         setSupplySelected(null);
         setStateSelectedBrand(selected);
+        setBrandToSearch(null);
     };
 
-    const handleChangeSelectCategory = (selected) => {
-        setSupplySelected(null);
-        setStateSelectedCategory(selected);
-    };
+
+
 
     // PAGINACION
     const itemsPerPage = 20;
@@ -315,34 +341,6 @@ const StoreVirtual = () => {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                                     <div className="space-y-1.5">
-
-                                        {/* FILTRO POR MARCA */}
-                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
-                                            <Tag className="w-4 h-4" />
-                                            Marca
-                                        </label>
-                                        <Select
-                                            className="classSelect instrument-serif-regular"
-                                            placeholder="Seleccione Marca"
-                                            onChange={handleChangeSelectBrand}
-                                            value={stateSelectedBrand}
-                                            options={brandOptions}
-                                            isClearable
-                                            components={{
-                                                Control: CustomControlSelect1
-                                            }}
-                                            menuPortalTarget={document.body}
-                                            menuPosition="fixed"
-                                            styles={{
-                                                menuPortal: (base) => ({
-                                                    ...base,
-                                                    zIndex: 9999
-                                                })
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className="space-y-1.5">
                                         {/* FILTRO POR CATEGORÍA */}
                                         <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
                                             <Layers className="w-4 h-4" />
@@ -368,6 +366,35 @@ const StoreVirtual = () => {
                                             }}
                                         />
                                     </div>
+
+                                    <div className="space-y-1.5">
+
+                                        {/* FILTRO POR MARCA */}
+                                        <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
+                                            <Tag className="w-4 h-4" />
+                                            Marca
+                                        </label>
+                                        <Select
+                                            className="classSelect instrument-serif-regular"
+                                            placeholder="Seleccione Marca"
+                                            onChange={handleChangeSelectBrand}
+                                            value={stateSelectedBrand}
+                                            options={filteredBrands}
+                                            isClearable
+                                            components={{
+                                                Control: CustomControlSelect1
+                                            }}
+                                            menuPortalTarget={document.body}
+                                            menuPosition="fixed"
+                                            styles={{
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999
+                                                })
+                                            }}
+                                        />
+                                    </div>
+
                                 </div>
 
                                 {/* Active filters indicator */}
@@ -389,7 +416,24 @@ const StoreVirtual = () => {
                                         )}
                                     </motion.div>
                                 )}
-
+                                <button
+                                    disabled={!stateSelectedCategory && !stateSelectedBrand}
+                                    onClick={handleSearch}
+                                    className={`
+        flex items-center gap-2 px-5 py-2.5
+        bg-gray-900 text-white
+        rounded-lg font-medium
+        shadow-sm transition-all duration-200
+        hover:bg-black hover:shadow-md
+        active:scale-95
+        disabled:bg-gray-400
+        disabled:text-gray-500
+        disabled:cursor-not-allowed
+    `}
+                                >
+                                    <Search className="w-4 h-4" />
+                                    Buscar
+                                </button>
                                 {/* Debug info */}
                                 {/* <div className="mt-8 p-4 rounded-xl bg-white border border-gray-200 text-xs text-gray-400 space-y-1">
                                     <p><span className="text-gray-600 font-medium">Búsqueda:</span> {stateSearch || "—"}</p>

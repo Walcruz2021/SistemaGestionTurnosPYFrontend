@@ -73,17 +73,13 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
         }
     }, [companySelectedMenu, dispatch]);
 
+
     // ------- SELECTOR MARCAS -------
     const selectBrand = listBrand?.map((b) => ({
         value: b._id,
         label: b.nameBrand,
     }));
 
-    // ------- SELECTOR CATEGORIAS -------
-    // const selectCategory = listCategories?.map((c) => ({
-    //     value: c._id,
-    //     label: c.name,
-    // }));
 
     // --------------------------
     // SELECT OPTIONS
@@ -172,8 +168,8 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
 
     //when the user clicks the search button
     const handleSearch = () => {
-       setCategoryToSearch(stateSelectedCategory);
-    setBrandToSearch(stateSelectedBrand);
+        setCategoryToSearch(stateSelectedCategory);
+        setBrandToSearch(stateSelectedBrand);
     };
 
     //-------------------------------------------------
@@ -368,18 +364,22 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                         )}
                                     </motion.div>
                                 )}
-
-                                {/* Debug info */}
-                                {/* <div className="mt-8 p-4 rounded-xl bg-white border border-gray-200 text-xs text-gray-400 space-y-1">
-                                    <p><span className="text-gray-600 font-medium">Búsqueda:</span> {stateSearch || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Marca:</span> {brand?.label || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Categoría:</span> {category?.label || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Página:</span> {currentPage}</p>
-                                </div> */}
                                 <button
                                     disabled={!stateSelectedCategory && !stateSelectedBrand}
                                     onClick={handleSearch}
+                                    className={`
+        flex items-center gap-2 px-5 py-2.5
+        bg-gray-900 text-white
+        rounded-lg font-medium
+        shadow-sm transition-all duration-200
+        hover:bg-black hover:shadow-md
+        active:scale-95
+        disabled:bg-gray-400
+        disabled:text-gray-500
+        disabled:cursor-not-allowed
+    `}
                                 >
+                                    <Search className="w-4 h-4" />
                                     Buscar
                                 </button>
                             </div>
