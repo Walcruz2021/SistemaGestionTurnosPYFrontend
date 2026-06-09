@@ -13,11 +13,12 @@ import {
     getListSuppliesGral
 } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand"
+import { addInventory } from "../../../reducer/actions/inventory/actionsInventory";
 import BlockAddProducBuy from "../Supply/BlockAddProducBuy.jsx"
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
-import ModalAddSupply from "../../Modal/Supply/ModalAddSuppply.jsx";
+import ModalAddSupplyGral from "../../Modal/Supply/ModalAddSupplyGral.jsx";
 import { FaBasketShopping } from "react-icons/fa6";
 import { Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -70,11 +71,11 @@ export default function FormAddBuySupply({
                 nameBrand: "",
                 valueUnidMed: "",
                 details: "",
-                priceSale: ""
+                priceSale: "",
+                idVariant: "",
             }
         ]
     });
-
 
     // Cargar lista de proveedores + insumos
     useEffect(() => {
@@ -185,64 +186,67 @@ export default function FormAddBuySupply({
 
     // SUBMIT
     const handleSubmit = async () => {
-        // if (
-        //     stateInput.nameSupply.trim() === "" ||
-        //     stateInput.date.trim() === ""
-        // ) {
-        //     Swal.fire({
-        //         icon: "error",
-        //         title: "Oops...",
-        //         text: "Faltan Datos por Completar",
-        //     });
-        //     return;
-        // }
+
 
         const resp = await dispatch(actionAddBuySupply({
             ...stateInput,
             Company: companySelectedMenu._id
         }));
 
-        setStateInput({
-            montoN: "",
-            montoB: "",
-            paymentMethod: "",
-            iva: "",
-            typeInvoice: "",
-            NInvoice: "",
-            taxes: "",
-            date: "",
-            nameSupplier: "",
-            idSupplier: "",
-            detailsSupply: [
-                {
-                    idSupply: "",
-                    nameSupply: "",
-                    quantity: "",
-                    unitCost: "",
-                    idBrand: "",
-                    nameBrand: "",
-                    valueUnidMed: "",
-                    details: "",
-                    priceSale: ""
-                }
-            ]
-        })
 
         if (resp && resp.status === 200) {
-            MySwal.fire({
-                title: "¡Compra registrada!",
-                icon: "success",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "rgb(21, 151, 67)",
-            }).then(() => {
-                dispatch(getListSupplies(companySelectedMenu._id));
 
-            });
+            const addINventory = await dispatch(addInventory(stateInput.detailsSupply,companySelectedMenu._id ));
+
+            if (addINventory && addINventory.status === 200) {
+                MySwal.fire({
+                    title: "¡Stock y compra registrada!",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(21, 151, 67)",
+                }).then(() => {
+                    dispatch(getListSupplies(companySelectedMenu._id));
+
+                });
+
+                setStateInput({
+                    montoN: "",
+                    montoB: "",
+                    paymentMethod: "",
+                    iva: "",
+                    typeInvoice: "",
+                    NInvoice: "",
+                    taxes: "",
+                    date: "",
+                    nameSupplier: "",
+                    idSupplier: "",
+                    detailsSupply: [
+                        {
+                            idSupply: "",
+                            nameSupply: "",
+                            quantity: "",
+                            unitCost: "",
+                            idBrand: "",
+                            nameBrand: "",
+                            valueUnidMed: "",
+                            details: "",
+                            priceSale: "",
+                            idVariant: "",
+                        }
+                    ]
+                })
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Ocurrio un Error de Inventario",
+                });
+            }
         } else {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Ocurrio un Error",
+                text: "Ocurrio un Error de Compra",
             });
         }
 
@@ -259,7 +263,8 @@ export default function FormAddBuySupply({
             idBrand: "",
             nameBrand: "",
             valueUnidMed: "",
-            details: ""
+            details: "",
+            idVariant: ""
         }
         setStateInput((prev) => ({
             ...prev,
@@ -298,7 +303,7 @@ export default function FormAddBuySupply({
 
     const validationBuySupply = () => {
 
-        if (stateInput.detailsSupply[0].nameBrand && stateInput.detailsSupply[0].nameSupply && stateInput.detailsSupply[0].priceSale && stateInput.detailsSupply[0].quantity && stateInput.detailsSupply[0].unitCost) {
+        if (stateInput.detailsSupply[0].nameBrand && stateInput.detailsSupply[0].nameSupply && stateInput.detailsSupply[0].priceSale && stateInput.detailsSupply[0].quantity && stateInput.detailsSupply[0].unitCost && stateInput.detailsSupply[0].idVariant) {
             return false
         } else return true
     }
@@ -557,20 +562,13 @@ export default function FormAddBuySupply({
                         </div>
                     </div> */}
 
-                    <div className="text-center">
-                        <div className="card-body">
-                            <button className="btn btn-link">
-                                <img src={addSupplierIcon} onClick={addSupplierFunction} />
-                            </button>
-
-                        </div>
-                    </div>
+         
                 </div>
 
 
             </Modal.Footer >
 
-            <ModalAddSupply
+            <ModalAddSupplyGral
                 openModal={openModalSupply}
                 setOpenModal={setOpenModalSupply}
             />

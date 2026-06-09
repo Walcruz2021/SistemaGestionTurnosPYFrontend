@@ -1,7 +1,16 @@
 import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL } from "../../actions/supply/actionsSupply";
 
 
+
+
 const initialState = {
+        /**
+* @module Supply
+* @endpoint GET /api/getListSupplies/:idCompany
+* @store supply.listSupplies
+* @usedBy SuppliesPage
+* @description Obtiene todos los insumos asociados a una empresa.
+*/
     listSupplies: [],
     listBuySupplies: [],
     findSUpplyByNInvoice: [],
@@ -37,6 +46,8 @@ export default function supplyReducer(state = initialState, action) {
             return {
                 ...state
             };
+
+
 
         case GET_LIST_SUPPLIES:
             return {
@@ -94,3 +105,4 @@ export default function supplyReducer(state = initialState, action) {
             return state;
     }
 }
+

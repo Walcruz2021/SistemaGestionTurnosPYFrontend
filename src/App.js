@@ -28,6 +28,7 @@ import StoreVirtual from "./components/StoreVirtual/StoreVirtual.jsx"
 import ProductDetail from "./components/StoreVirtual/ProductDetails.jsx";
 import ShoppingCart from "../src/components/StoreVirtual/ShoppingCart.jsx"
 
+//ACTIONS
 import {
   functionCompanySelected,
   verificationCompaniesExist,
@@ -40,6 +41,10 @@ import {
 } from "./reducer/actions/actions.jsx";
 import { searchUser } from "./reducer/actions/actionsUser.jsx";
 import { ClipLoader } from "react-spinners";
+import { listCategories } from "./reducer/actions/category/actionCategory.jsx";
+import { getBrands } from "./reducer/actions/actionBrand.jsx";
+
+
 import "./App.css";
 
 const AppRoutes = () => {
@@ -103,6 +108,7 @@ const AppRoutes = () => {
         dispatch(functionCompanySelected(companiesList.companies[0]));
         setIsLoading(false);
         navigate("/");
+
       } else {
         if (companySelected.category === "medicinaGral") {
           dispatch(isMedicine(true))
@@ -117,6 +123,15 @@ const AppRoutes = () => {
       setIsLoading(false);
     }
   }, [companiesList, dispatch, loginUser, companySelected, navigate]);
+
+    //send dispatch routes grales
+    useEffect(() => {
+      dispatch(listCategories());
+      dispatch(getBrands());
+      dispatch(listCategories());
+    }, [dispatch])
+  
+    
 
   return (
     <div>

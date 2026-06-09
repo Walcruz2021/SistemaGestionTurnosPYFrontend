@@ -10,50 +10,31 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
-import listCategories from "../../../functions/categoriesSupplies.json"
-import { actionEditCompanySupply } from "../../../reducer/actions/companySupply/actionCompanySupply"
-import {getListSupplies} from "../../../reducer/actions/supply/actionsSupply"
+import {listCategories} from "../../../reducer/actions/category/actionCategory"
+import { actionEditCompanySupplyVariant } from "../../../reducer/actions/companySupplyVariant/actionsCompanySupplyVariant";
+import { getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
 import { getBrands } from "../../../reducer/actions/actionBrand"
 
 const ModalPriceSupply = ({
     modalOpenEditSupply,
     setModalOpenEditSupply,
-    dataSupply,
+    stateDetailsVariant,
+    setStateDetailsVariant,
+    stateIdCompanySupply,
     setSupplySelected
 }) => {
 
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
-
-
+    const listCategoriesState = useSelector((state) => state.category.listCategories);
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
     const [show, setShow] = useState(false);
-
-    const handleClose = () => setModalOpenEditSupply(!modalOpenEditSupply);
-    const [stateSeletedBrand, setStateSeletedBrand] = useState()
     const [stateInput, setStateInput] = useState({
-        nameSupply: "",
-        categorySupply: "",
-        // idSupplier: "",
-        idBrand: "",
-        nameBrand: "",
-        typeUnidMed: "",
-        valueUnidMed: "",
-        priceSale: ""
+        nameVariant: "",
+        priceSale: "",
     });
-
-
-    useEffect(() => {
-        if (dataSupply) {
-            setStateInput({
-                nameSupply: dataSupply.global.nameSupply,
-                priceSale: dataSupply.priceSale
-            })
-        }
-    }, [dataSupply])
-
-
+    const handleClose = () => setModalOpenEditSupply(!modalOpenEditSupply);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setStateInput((prevState) => ({
@@ -62,44 +43,61 @@ const ModalPriceSupply = ({
         }));
     };
 
+    useEffect(() => {
+        if (stateDetailsVariant) {
+            setStateInput({
+                idVariant: stateDetailsVariant.idSupplyVariant,
+                nameVariant: stateDetailsVariant.variant?.name || "",
+                priceSale: stateDetailsVariant?.priceSale || ""
+            });
+        }
+    }, [stateDetailsVariant]);
 
     const handleSubmit = async () => {
 
 
-        const supplyData = {
-            idGlobalSupply: dataSupply.global._id,
+        const variantData = {
+            idVariant: stateInput.idVariant,
+            nameVariant: stateInput.nameVariant,
             priceSale: stateInput.priceSale,
-
+            idCompanySupply: stateIdCompanySupply
         };
-        const dispatchEditPrice = await dispatch(actionEditCompanySupply(supplyData, companySelectedMenu._id));
 
-        if (dispatchEditPrice && dispatchEditPrice.status === 200) {
+        try {
+            const dispatchEditPrice = await dispatch(actionEditCompanySupplyVariant(variantData));
 
-            MySwal.fire({
-                title: "¡Precio Modificado correctamente!",
-                icon: "success",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "rgb(21, 151, 67)",
+            if (dispatchEditPrice && dispatchEditPrice.status === 200) {
 
-            })
-            dispatch(getListSupplies(companySelectedMenu._id));
-            setModalOpenEditSupply(!modalOpenEditSupply);
+                MySwal.fire({
+                    title: "Variante Modificada correctamente!",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(21, 151, 67)",
 
-            setStateInput({
-                nameSupplier: "",
-                categorySupply: "",
-                idSupplier: "",
-            });
- 
-            setSupplySelected(null);
-        } else {
-            MySwal.fire({
-                title: "¡Error al modificar el precio!",
-                icon: "error",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "rgb(21, 151, 67)",
-            })
-        };
+                })
+                setSupplySelected(null)
+                dispatch(getListSupplies(companySelectedMenu._id));
+                setModalOpenEditSupply(!modalOpenEditSupply);
+
+                setStateInput({
+                    nameVariant: "",
+                    priceSale: ""
+                });
+
+
+            } else {
+   
+                MySwal.fire({
+                    title: "¡Error al modificar el precio!",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(21, 151, 67)",
+                })
+            };
+
+        } catch (error) {
+            console.log(error)
+        }
 
     }
     return (
@@ -115,27 +113,24 @@ const ModalPriceSupply = ({
                         <Form>
 
                             <>
-
-
-                                <Form.Group
+                                {/* <Form.Group
                                     className="mb-1 mt-1"
                                     controlId="exampleForm.ControlInput1"
                                 >
                                     <Form.Label className="instrument-serif-regular mt-1">
-                                        Nombre Insumo
+                                        Nombre Variante
                                     </Form.Label>
 
                                     <Form.Control
                                         className="instrument-serif-regular"
                                         type="text"
-                                        name="nameSupply"
+                                        name="nameVariant"
                                         autoFocus
                                         maxLength={50}
-                                        value={stateInput ? stateInput.nameSupply : ""}
-                                  
+                                        value={stateInput.nameVariant}
                                         required
                                     />
-                                </Form.Group>
+                                </Form.Group> */}
 
                                 <Form.Group
                                     className="mb-1 mt-1"
@@ -152,7 +147,7 @@ const ModalPriceSupply = ({
                                         autoFocus
                                         maxLength={50}
                                         min="0"
-                                        value={stateInput ? stateInput.priceSale : ""}
+                                        value={stateInput.priceSale}
                                         onChange={handleChange}
                                         required
                                     />
@@ -168,9 +163,9 @@ const ModalPriceSupply = ({
                             variant="primary"
                             type="submit"
                             onClick={handleSubmit}
-                            disabled={ !stateInput.priceSale}
+                            disabled={!stateDetailsVariant?.priceSale || stateDetailsVariant?.priceSale < 0}
                         >
-                            Editar Insumo
+                            Editar Variante
                         </Button>
 
                     </Modal.Footer>

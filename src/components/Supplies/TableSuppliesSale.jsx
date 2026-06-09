@@ -12,7 +12,7 @@ import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
 
 // Datos
-import listCategories from "../../functions/categoriesSupplies.json";
+import {listCategories} from "../../reducer/actions/category/actionCategory.jsx";
 
 // Actions
 import { getListSupplies, actionsOrderSupplies } from "../../reducer/actions/supply/actionsSupply.js";
@@ -22,7 +22,7 @@ const TableSuppliesSale = () => {
     const dispatch = useDispatch();
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplies = useSelector((state) => state.supply.listSupplies);
-
+    const listCategories = useSelector((state) => state.category.listCategories);
     const listBrand = useSelector((state) => state.gralRed.listBrands);
     const [order, setOrder] = useState(false);
     const [stateSearch, setSearch] = useState("");
@@ -44,7 +44,7 @@ const TableSuppliesSale = () => {
 
     useEffect(() => {
         if (companySelectedMenu) {
-            dispatch(getListSupplies(companySelectedMenu._id));
+            dispatch(getListSupplies(copmanySelectedMenu._id));
             dispatch(getBrands());
         }
     }, [companySelectedMenu, dispatch]);

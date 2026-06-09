@@ -129,7 +129,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         const requestSale = await dispatch(actionAddSaleSupply(dataSaleSupply))
         if (requestSale && requestSale.status == 200) {
             //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
-            dispatch(getListSupplies(companySelectedMenu._id))
+            dispatch(getListSupplies(companySelectedMenu._id));
             //limpiamos el array de con insumos elegidos para vender
             setStateDetailsSupplies([]);
             MySwal.fire({

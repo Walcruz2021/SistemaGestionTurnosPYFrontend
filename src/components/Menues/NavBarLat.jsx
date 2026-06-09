@@ -9,7 +9,7 @@ import { resetCompanySelected } from "../../reducer/actions/actionsCompany";
 import { resetAllClients } from "../../reducer/actions/actionsClients";
 import { resetGastosXanioandMesParam } from "../../reducer/actions/actionsGastos";
 import { resetVentasXanioandMesParam } from "../../reducer/actions/actionsVentas";
-
+import { resetProductsStore } from "../../reducer/actions/companySupply/actionCompanySupply";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -200,6 +200,7 @@ function NavBarLat() {
       dispatch(resetAllClients());
       dispatch(resetGastosXanioandMesParam());
       dispatch(resetVentasXanioandMesParam());
+      dispatch(resetProductsStore())
 
       await signOut(auth);
 

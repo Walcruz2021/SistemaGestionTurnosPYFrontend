@@ -11,6 +11,11 @@ import { use } from "react"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { motion, AnimatePresence } from "framer-motion";
+import { Boxes, UserPlus, ChevronRight } from "lucide-react"
+import ModalAddSupplyGral from '../Modal/Supply/ModalAddSupplyGral';
+import ModalAddSupplier from '../Modal/Suppier/ModalAddSupplier';
+
+import FormAddSupplyVariant from "../Formulario/Supply/FormAddSupplyVariant"
 
 const SectionDivider = ({ children }) => (
     <div className="flex items-center gap-3 mt-10 mb-4">
@@ -34,6 +39,22 @@ const TableBuySupplies = () => {
     const [stateDetailsBuy, setStateDetailsBuy] = useState({
         detailsBuy: ""
     })
+    const [openModalSupplier, setOpenModalSupplier] = useState(false);
+    const [openModalSupply, setOpenModalSupply] = useState(false);
+    const [openModalAddVariant, setOpenModalAddVariant] = useState(false);
+
+  
+    const addSupplyFunction = () => {
+
+        setOpenModalSupply(!openModalSupply);
+
+    };
+
+    const addSupplierFunction = () => {
+
+        setOpenModalSupplier(!openModalSupplier);
+
+    };
 
     useEffect(() => {
         if (companySelectedMenu) {
@@ -139,69 +160,217 @@ const TableBuySupplies = () => {
         </td>
     );
 
+    const ACTION_CARDS = [
+
+        {
+            id: "supply",
+            label: "Insumo",
+            sub: "Agregar insumo",
+            icon: Boxes,
+            action: () => setOpenModalSupply(!openModalSupply),
+            type: "button",
+
+        },
+
+        {
+            id: "supplier",
+            label: "Proveedor",
+            sub: "Agregar proveedor",
+            icon: UserPlus,
+            action: () => setOpenModalSupplier(!openModalSupplier),
+            type: "button",
+        },
+
+        {
+            id: "addVariant",
+            label: "Variantes",
+            sub: "Agregar Variante",
+            icon: UserPlus,
+            action: () => { setOpenModalAddVariant(true), setOpenFormBuySupply(false) },
+            type: "button",
+            disabled: openModalAddVariant
+        },
+
+        {
+            id: "addBuySupply",
+            label: "Compras",
+            sub: "Ingresar Compra",
+            icon: UserPlus,
+            action: () => { setOpenFormBuySupply(true),setOpenModalAddVariant(false)},
+            type: "button",
+            disabled: openFormBuySupply
+        },
+    ];
+
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 md:px-10 py-8">
+            <div className="not-bootstrap">
+
+                <div className="px-0.5 md:px-8 pt-4 max-w-7xl mx-auto">
+
+                    <p className="text-xs uppercase tracking-widest text-zinc-400 font-medium mb-4">
+                        Acciones rápidas
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-2">
+
+                        {ACTION_CARDS
+                            .filter((card) => !card.hidden)
+                            .map((card, i) => {
+
+                                const Icon = card.icon;
+
+                                const content = (
+                                    <motion.div
+                                        custom={i}
+                                        // variants={cardVariants}
+                                        initial="hidden"
+                                        animate="visible"
+                                        whileHover={{ y: -4, scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="
+              relative
+              overflow-hidden
+              group
+              bg-gray
+              hover:bg-black
+              border
+              border-zinc-200
+              hover:border-black
+              rounded-2xl
+
+              h-[140px]
+              min-h-[140px]
+
+              p-4
+              cursor-pointer
+              transition-all
+              duration-300
+              hover:shadow-2xl
+
+              flex
+              flex-col
+              justify-between
+            "
+                                    >
+
+                                        {/* CONTENIDO */}
+                                        <div className="relative z-10 flex flex-col h-full">
+
+                                            {/* ICON */}
+                                            <div className="w-9 h-9 rounded-xl  group-hover:bg-white/10 flex items-center justify-center mb-3 transition-colors duration-300">
+
+                                                <Icon
+                                                    className="w-5 h-5 text-zinc-700 group-hover:text-white transition-colors duration-300"
+                                                    strokeWidth={1.8}
+                                                />
+
+                                            </div>
+
+                                            {/* TITULO */}
+                                            <div>
+
+                                                <h3 className="text-zinc-900 group-hover:text-white font-semibold text-sm transition-colors duration-300">
+                                                    {card.label}
+                                                </h3>
+
+                                                <p className="text-zinc-500 group-hover:text-zinc-300 text-[11px] leading-tight mt-1 transition-colors duration-300 no-underline">
+                                                    {card.sub}
+                                                </p>
+
+                                            </div>
+
+                                            {/* FLECHA */}
+                                            <div className="flex justify-end mt-auto">
+
+                                                <ChevronRight
+                                                    className="
+                    w-4
+                    h-4
+                    text-zinc-300
+                    group-hover:text-white
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-all
+                    duration-300
+                  "
+                                                />
+
+                                            </div>
+
+                                        </div>
+
+                                    </motion.div>
+                                );
+
+                                if (card.type === "link") {
+                                    return (
+                                        <Link
+                                            key={card.id}
+                                            to={card.action}
+                                            className="block w-full no-underline"
+                                            style={{ textDecoration: "none" }}
+                                        >
+                                            {content}
+                                        </Link>
+                                    );
+                                }
+
+                                return (
+                                    <button
+                                        key={card.id}
+                                        onClick={card.action}
+                                        className="w-full text-left bg-transparent border-0"
+                                        disabled={card.disabled}
+                                    >
+                                        {content}
+                                    </button>
+                                );
+                            })}
+                    </div>
+                </div>
+            </div>
+
             <div className="max-w-4xl mx-auto">
 
                 {/* ── Encabezado ── */}
-                <div className="flex items-start justify-between mb-8">
 
-                    <div>
-                        <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
-                            Compras de Insumos
-                        </h1>
-                        <p className="text-sm text-zinc-400 mt-0.5">
-                            Gestión y seguimiento de facturas
-                        </p>
-                    </div>
+                {openModalAddVariant &&
+                    <>
 
-                    <div className="flex items-center gap-3 pl-1">
+                        <div className="flex items-start justify-between mb-8">
 
-                        {iconBuySupply && (
-                            <img
-                                src={iconBuySupply}
-                                className="w-8 h-8"
-                                alt=""
-                            />
-                        )}
+                            <div>
+                                <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+                                    Agregar Variantes
+                                </h1>
+                                <p className="text-sm text-zinc-400 mt-0.5">
+                                    Gestión de nuevas variantes para productos
+                                </p>
+                            </div>
+                        </div>
+                        <FormAddSupplyVariant />
+                    </>
+                }
 
-                        <motion.button
-                            whileHover={{ opacity: 0.85 }}
-                            whileTap={{ scale: 0.97 }}
-                            onClick={() => setOpenFormBuySupply(!openFormBuySupply)}
-                            className="
-            inline-flex items-center
-            px-3 py-2
-            rounded-lg
-            bg-zinc-900 dark:bg-zinc-100
-            text-zinc-100 dark:text-zinc-900
-            text-sm font-medium
-            hover:opacity-85
-            transition-opacity
-        "
-                        >
-                            Ingresar compra
-                        </motion.button>
+                {openFormBuySupply&&
+                    <>
 
-                    </div>
+                        <div className="flex items-start justify-between mb-8">
+                            <div>
+                                <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+                                    Compras de Insumos
+                                </h1>
+                                <p className="text-sm text-zinc-400 mt-0.5">
+                                    Gestión y seguimiento de facturas
+                                </p>
+                            </div>
+                        </div>
+                        <FormAddBuySupply />
+                    </>
 
-                </div>
+                }
 
-                {/* ── Formulario ── */}
-                <AnimatePresence>
-                    {openFormBuySupply && (
-                        <motion.div
-                            key="form"
-                            initial={{ opacity: 0, y: -6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -6 }}
-                            transition={{ duration: 0.2 }}
-                            className="mb-6 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-                        >
-                            <FormAddBuySupply />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+
 
                 {/* ── Sección: mes actual ── */}
                 <SectionDivider>Compras mes actual</SectionDivider>
@@ -482,6 +651,16 @@ const TableBuySupplies = () => {
                     <TableDetailBuys stateDetailsBuy={stateDetailsBuy?.detailsBuy} />
                 </div>
             </div>
+            <ModalAddSupplyGral
+                openModal={openModalSupply}
+                setOpenModal={setOpenModalSupply}
+            />
+
+            <ModalAddSupplier
+                openModal={openModalSupplier}
+                setOpenModal={setOpenModalSupplier}
+            />
+
         </div>
     )
 }

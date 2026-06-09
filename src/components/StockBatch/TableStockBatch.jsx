@@ -9,17 +9,18 @@ import { motion } from "framer-motion";
 import { Search, X, ChevronDown, Tag, Layers, CalendarPlus } from "lucide-react";
 
 
-const TableStockBatch = ({ idSupply }) => {
+const TableStockBatch = ({ stateBatches }) => {
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if (idSupply) {
-            dispatch(getStockBatchByIdSupply(idSupply));
-        }
-    }, [idSupply, dispatch]);
+    // useEffect(() => {
+    //     if (idSupply) {
+    //         dispatch(getStockBatchByIdSupply(idSupply));
+    //     }
+    // }, [idSupply, dispatch]);
 
-    const listStockBatches = useSelector((state) => state.stockBatch.listStockBatch);
+    //figure out this query if delete or modified
+    //const listStockBatches = useSelector((state) => state.stockBatch.listStockBatch);
 
 
     return (
@@ -32,6 +33,42 @@ const TableStockBatch = ({ idSupply }) => {
             className="bg-white  mb-2">
 
             <div className="p-1 overflow-x-auto">
+
+                {/* CARD TITLE */}
+                <div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.4 }}
+                        className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                    >
+
+
+                        <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                            <div>
+
+                                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                    Tabla de Lotes
+                                </h2>
+
+                                <p className="text-zinc-500 text-sm mt-0.5">
+                                    Lotes y Detalles del Insumo Seleccionado
+                                </p>
+
+
+                            </div>
+
+                            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                <CalendarPlus className="w-4 h-4 text-white" />
+
+                            </div>
+
+                        </div>
+
+                    </motion.div>
+                </div>
 
                 {/* TABLE */}
                 <motion.div initial={{ opacity: 0, y: 20 }}
@@ -55,7 +92,7 @@ const TableStockBatch = ({ idSupply }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listStockBatches ? listStockBatches.map((buy, index) => {
+                                {stateBatches ? stateBatches.batches?.map((buy, index) => {
                                     return (
 
                                         <motion.tr key={buy._id} animate={{
@@ -85,7 +122,6 @@ const TableStockBatch = ({ idSupply }) => {
                                     <div className="titGral">
                                         <h2>No hay Datos</h2>
                                     </div>
-
 
                                 }
 

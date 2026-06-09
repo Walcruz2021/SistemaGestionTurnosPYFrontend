@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
-import listCategories from "../../../functions/categoriesSupplies.json"
+import { listCategories } from "../../../reducer/actions/category/actionCategory"
 import { getListSupplies, actionEditSupply } from "../../../reducer/actions/supply/actionsSupply"
 import { getBrands } from "../../../reducer/actions/actionBrand"
 
@@ -19,12 +19,12 @@ const ModalEditSupply = ({
     setModalOpenEditSupply,
     dataSupply,
 }) => {
-  
+
 
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplier = useSelector((state) => state.supplier.listSupplier)
     const listBrands = useSelector((state) => state.gralRed.listBrands)
-
+    const listCategories = useSelector((state) => state.category.listCategories)
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
     const [show, setShow] = useState(false);
@@ -135,37 +135,37 @@ const ModalEditSupply = ({
         //         text: "Faltan Datos por Completar",
         //     });
         // }
-        
-            const supplyData = {
-                categorySupply: stateInput.categorySupply,
-                idSUpply: stateInput.idSupply,
-                nameBrand: stateInput.nameBrand,
-                nameSupply: stateInput.nameSupply,
-                idBrand: stateInput.idBrand,
-                priceSale: stateInput.priceSale,
-                typeUnidMed: stateInput.typeUnidMed,
-                valueUnidMed: stateInput.valueUnidMed,
-                Company: companySelectedMenu._id
-            };
-            dispatch(actionEditSupply(supplyData, stateInput.idSupply));
-            MySwal.fire({
-                title: "¡Insumo editado correctamente!",
-                icon: "success",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "rgb(21, 151, 67)",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    dispatch(getListSupplies(companySelectedMenu._id));
-                    setStateOpenModal(!stateOpenModal);
 
-                    setStateInput({
-                        nameSupplier: "",
-                        categorySupply: "",
-                        idSupplier: "",
-                    });
-                }
-            });
-        
+        const supplyData = {
+            categorySupply: stateInput.categorySupply,
+            idSUpply: stateInput.idSupply,
+            nameBrand: stateInput.nameBrand,
+            nameSupply: stateInput.nameSupply,
+            idBrand: stateInput.idBrand,
+            priceSale: stateInput.priceSale,
+            typeUnidMed: stateInput.typeUnidMed,
+            valueUnidMed: stateInput.valueUnidMed,
+            Company: companySelectedMenu._id
+        };
+        dispatch(actionEditSupply(supplyData, stateInput.idSupply));
+        MySwal.fire({
+            title: "¡Insumo editado correctamente!",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "rgb(21, 151, 67)",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(getListSupplies(companySelectedMenu._id));
+                setStateOpenModal(!stateOpenModal);
+
+                setStateInput({
+                    nameSupplier: "",
+                    categorySupply: "",
+                    idSupplier: "",
+                });
+            }
+        });
+
     };
 
     //SELECT UNIDAD

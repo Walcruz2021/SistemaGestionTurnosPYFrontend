@@ -8,13 +8,13 @@ import Button from "react-bootstrap/Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
-import listCategories from "../../../functions/categoriesSupplies.json"
-import { actionListSupplier,actionAddSupplier } from "../../../reducer/actions/supplier/actionsSupplier"
+import { listCategories } from "../../../reducer/actions/category/actionCategory";
+import { actionListSupplier, actionAddSupplier } from "../../../reducer/actions/supplier/actionsSupplier"
 
 
 const ModalAddSupplier = ({ openModal, setOpenModal }) => {
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
-
+    const listCategories = useSelector((state) => state.category.listCategories);
     // const [stateListSupplier, setListSupplier] = useState([])
 
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                 address: stateInput.address,
                 cuit: stateInput.cuit,
                 phone: stateInput.phone,
-                Company:companySelectedMenu._id
+                Company: companySelectedMenu._id
             };
             dispatch(actionAddSupplier(supplierData));
             MySwal.fire({
@@ -141,7 +141,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                                 />
                             </Form.Group>
 
-                   
+
 
                             <Form.Group
                                 className="mb-1"

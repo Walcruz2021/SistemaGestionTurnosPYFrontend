@@ -309,7 +309,7 @@ function FormRegister({ autUser }) {
                       id="email"
                       placeHolder="(*) Ingrese su Email"
                       name="email"
-                      maxLength="30"
+                      maxLength="35"
                       onChange={handleChangeEmail}
                     />
                   </div>

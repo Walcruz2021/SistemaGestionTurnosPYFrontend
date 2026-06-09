@@ -362,14 +362,14 @@ function Dashboard() {
       action: "/addVtas",
       type: "link",
     },
-    // {
-    //   id: "tiendavirtual",
-    //   label: "Tienda Virtual",
-    //   sub: "Tu tienda virtual",
-    //   icon: ShoppingBag,
-    //   action: `/tiendavirtual/${companySelectedMenu?.slug}`,
-    //   type: "link",
-    // }
+    {
+      id: "tiendavirtual",
+      label: "Tienda Virtual",
+      sub: "Tu tienda virtual",
+      icon: ShoppingBag,
+      action: `/tiendavirtual/${companySelectedMenu?.slug}`,
+      type: "link",
+    }
   ];
 
   if (isLoading) {
