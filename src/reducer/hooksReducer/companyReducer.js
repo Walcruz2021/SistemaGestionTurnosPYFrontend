@@ -9,12 +9,15 @@ import {
     TYPE_PERSON_CATEGORY,
 } from "../actions/actionsCompany";
 
+import {GET_COMPANY_BY_SLUGCOMPANY} from "../actions/company/actionCompany"
+
 const initialState = {
 
     arrayCompanies: [],
     companySelected: null,
     categoryMedicine: false,
     typePerson: "Cliente",
+    companySlugCompany:null
 };
 
 
@@ -54,6 +57,13 @@ export default function companyReducer(state = initialState, action) {
                 ...state,
                 companySelected: null,
                 arrayCompanies: [],
+            };
+
+            
+        case GET_COMPANY_BY_SLUGCOMPANY:
+            return {
+                ...state,
+                companySlugCompany: action.payload,
             };
 
         default:

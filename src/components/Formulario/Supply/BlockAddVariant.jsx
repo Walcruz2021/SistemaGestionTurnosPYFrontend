@@ -261,7 +261,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                     styles={selectStyles}
                                     options={[
                                         { value: "kg", label: "Kg" },
-                                        { value: "gramos", label: "Gramos" }
+                                        { value: "gramos", label: "Gramos" }           
                                     ]}
                                     onChange={onChangeSelectUnidad}
 
@@ -283,7 +283,8 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                         { value: "carne,leche,cereales", label: "Carne,Leche,Cereales" },
                                         { value: "pollo y arroz", label: "Pollo y Arroz" },
                                         { value: "carne, pollo y cerdo", label: "Carne, Pollo y Cerdo" },
-                                        { value: "pollo, carne y vegetales", label: "Pollo, Carne y Vegetales" }
+                                        { value: "pollo, carne y vegetales", label: "Pollo, Carne y Vegetales" },
+                                        { value: "pescado", label: "Pescado" }
                                     ]}
                                     onChange={onChangeSelectSabor}
 

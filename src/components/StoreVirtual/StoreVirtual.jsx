@@ -16,40 +16,44 @@ import { listSuppliesStore } from "../../reducer/actions/companySupply/actionCom
 import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 import ProductGrid from "./ProductGrid.jsx"
 import { Search, X, ChevronDown, Tag, Layers, CalendarPlus } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { getCompantBySlugCompany } from "../../reducer/actions/company/actionCompany.jsx"
 
 const StoreVirtual = () => {
     const dispatch = useDispatch();
-    const companySelectedMenu = useSelector(
-        (state) => state.company.companySelected
-    );
+    const { slugCompany } = useParams();
+
     const listCategories = useSelector((state) => state.gralRed.listCategories);
     const listSuppliesEcommerce = useSelector(
         (state) => state.companySupply.listSuppliesStore
     );
-
-
-
+console.log(listSuppliesEcommerce)
     const listBrand = useSelector((state) => state.gralRed.listBrands);
     const [order, setOrder] = useState(false);
     const [stateFilterCategory, setStateFilterCategory] = useState(false);
     const [stateFilterBrand, setStateFilterBrand] = useState(false);
-
     const [stateSelectedCategory, setStateSelectedCategory] = useState();
-
     const [stateSelectedBrand, setStateSelectedBrand] = useState();
     const [supplySelected, setSupplySelected] = useState(null);
-
     const [stateSearch, setSearch] = useState("");
     const [stateOpenModal, setStateOpenModal] = useState(false);
     const [stateDataSupply, setDataSupply] = useState();
     const [stateDetailsSup, setStateDetailsSup] = useState({
         detailsSup: "",
     });
+    const companySelectedMenu=useSelector((state) => state.company.companySlugCompany);
+
+
+    useEffect(() => {
+        if (slugCompany) {
+            dispatch(getCompantBySlugCompany(slugCompany));
+        }
+    }, [slugCompany]);
 
     useEffect(() => {
         if (companySelectedMenu) {
+         
             dispatch(listSuppliesStore(companySelectedMenu._id));
-
         }
     }, [companySelectedMenu, dispatch]);
 
@@ -110,7 +114,7 @@ const StoreVirtual = () => {
         // Filtrar por categoría
         if (categoryToSearch) {
             result = result.filter((s) =>
-                s.idGlobalSupply?.idCategory===categoryToSearch.value
+                s.idGlobalSupply?.idCategory._id === categoryToSearch.value
             );
         }
 

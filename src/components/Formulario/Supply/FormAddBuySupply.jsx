@@ -33,7 +33,7 @@ const SectionDivider = ({ children }) => (
 );
 
 
-export default function FormAddBuySupply({
+export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupply
 }) {
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
@@ -196,7 +196,7 @@ export default function FormAddBuySupply({
 
         if (resp && resp.status === 200) {
 
-            const addINventory = await dispatch(addInventory(stateInput.detailsSupply,companySelectedMenu._id ));
+            const addINventory = await dispatch(addInventory(stateInput.detailsSupply, companySelectedMenu._id));
 
             if (addINventory && addINventory.status === 200) {
                 MySwal.fire({
@@ -318,11 +318,13 @@ export default function FormAddBuySupply({
             }
         })
     });
+
+  
+
     return (
         <Form centered size="lg">
 
-            <SectionDivider>Detalle Compra</SectionDivider>
-
+          
 
             {/* =============================== */}
             {/*       BLOQUE CONTABLE           */}
@@ -562,7 +564,7 @@ export default function FormAddBuySupply({
                         </div>
                     </div> */}
 
-         
+
                 </div>
 
 

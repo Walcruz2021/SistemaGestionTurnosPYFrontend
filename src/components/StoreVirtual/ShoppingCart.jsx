@@ -9,8 +9,9 @@ const ShoppingCartComponent = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const companySelectedMenu = useSelector((state) => state.company.companySelected);
+  const companySelectedMenu=useSelector((state) => state.company.companySlugCompany);
   const listProductsCart = useSelector((state) => state.cart.products);
+  console.log(listProductsCart)
   const totalCart = listProductsCart.reduce((acc, item) => acc + item.totalPrice, 0);
 
   const handleRemove = (id) => dispatch(removeProduct(id));
@@ -100,7 +101,7 @@ const ShoppingCartComponent = () => {
                   <div className="p-3 md:p-6 flex flex-col sm:flex-row gap-5 sm:items-center justify-between">
                     {/* Image + Info */}
                     <div className="flex items-center gap-5 flex-1 min-w-0">
-                      <div className="w-[72px] h-[72px] rounded-sm overflow-hidden border border-black/[0.08] shrink-0 bg-black/[0.03]">
+                      <div className="w-[100px] h-[100px] rounded-sm overflow-hidden border border-black/[0.08] shrink-0 bg-black/[0.03]">
                         <img
                           src={item.image || "https://placehold.co/200x200/0a0a0a/333?text=—"}
                           alt={item.name}

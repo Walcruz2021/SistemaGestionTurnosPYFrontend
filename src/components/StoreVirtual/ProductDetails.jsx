@@ -71,9 +71,8 @@ const ProductDetail = () => {
     ) || []; //route /getVariantsByCompanySupply/idCompanySupply
 
 
-  const companySelectedMenu = useSelector(
-    (state) => state.company.companySelected
-  );
+    const companySelectedMenu=useSelector((state) => state.company.companySlugCompany);
+
 
   // ─────────────────────────────────────────────────────────────
   // STATES
@@ -143,8 +142,8 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     const newProduct = {
       id: product?._id,
-      name: product?.global?.nameSupply,
-      image: product?.img?.[0],
+      name: product?.idGlobalSupply?.nameSupply,
+      image: product?.idGlobalSupply?.imgStore,
       quantity,
       unitPrice,
       totalPrice,
@@ -173,7 +172,7 @@ const ProductDetail = () => {
   }
 
   const goToShoppingCart = () => {
-    navigate(`/tiendavirtual/${companySelectedMenu.slug}/shoppingCart`);
+    navigate(`/tiendavirtual/${companySelectedMenu?.slug}/shoppingCart`);
   };
 
   // ─────────────────────────────────────────────────────────────

@@ -175,7 +175,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
                                 value={supply.nameSupply || ""}
                                 onChange={handleChange}
                                 name="nameSupply"
-                                maxLength={25}
+                                maxLength={40}
                                 placeholder="Marca + nombre del insumo"
                                 className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
                                 required

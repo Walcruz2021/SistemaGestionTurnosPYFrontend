@@ -17,6 +17,7 @@ import supplyVariantReducer from "./hooksReducer/supply/supplyVariantReducer";
 import companySupplyVariantReducer from "./hooksReducer/companySupplyVariant/companySupplyVariantReducer";
 import categoryReducer from "./hooksReducer/categoryReducer/categoryReducer";
 
+
 const rootReducer = combineReducers({
   bills: billsReducer,
   client: clientReducer,
