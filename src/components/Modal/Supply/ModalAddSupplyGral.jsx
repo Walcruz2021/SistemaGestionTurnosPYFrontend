@@ -9,6 +9,7 @@ import { listCategories } from "../../../reducer/actions/category/actionCategory
 import { actionListSupplier } from "../../../reducer/actions/supplier/actionsSupplier";
 import { actionAddSupply, getListSupplies, actionAddImgSupply } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand";
+import { ClipLoader } from "react-spinners";
 
 import { Utensils, Shirt, Save, Image as ImageIcon, X } from "lucide-react";
 
@@ -25,6 +26,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
     const [openModalVariant, setOpenModalVariant] = useState(false)
     const [stateLastSupply, setStateLastSupply] = useState()
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (companySelectedMenu) {
@@ -83,6 +85,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
                 text: "Complete todos los campos",
             });
         }
+        setLoading(true)
 
         const payload = {
             nameSupply: supply.nameSupply,
@@ -94,6 +97,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
         const response = await dispatch(actionAddSupply(payload));
 
         if (response.status === 200) {
+
             if (image) {
                 const imageResponse = await dispatch(
                     actionAddImgSupply(
@@ -107,13 +111,17 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
                         title: "Error",
                         text: "El insumo fue creado pero la imagen no pudo subirse",
                     });
+                    setLoading(false)
                 }
             }
+            setLoading(false)
             Swal.fire({
                 icon: "success",
                 title: "Éxito",
                 text: "Ahora debes agregar variantes"
             });
+
+
 
             setSupply({
                 nameSupply: "",
@@ -124,11 +132,13 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
             setImage(null)
             setSelectedCategory(null)
         } else if (response.status === 400) {
+            setLoading(false)
             return Swal.fire({
                 icon: "error",
                 title: "Insumo duplicado",
                 text: "El insumo ya se encuentra cargado",
             });
+
         }
     };
 
@@ -231,7 +241,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
                                 name="description"
                                 value={supply.description}
                                 onChange={handleChange}
-                                maxLength={220}
+                                maxLength={250}
                                 className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
                             />
                         </div>
@@ -282,15 +292,30 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
                     </Modal.Body>
                     <Modal.Footer className="bg-gray-900">
 
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            onClick={handleSubmit}
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
-                            disabled={!supply.nameSupply?.trim() || !supply.idBrand || !supply.idCategory}
-                        >
-                            Agregar Insumo
-                        </Button>
+                        {
+                            loading ?
+
+                                <div className="d-flex flex-column align-items-center justify-content-center w-100 py-3">
+
+                                    <ClipLoader color="#0e0202" loading={true} size={70} />
+
+                                    <div className="titGral">
+                                        <h2 className="mt-3">
+                                            Espere un Momento por favor ...
+                                        </h2>
+                                    </div>
+
+                                </div> :
+
+                                <Button
+                                    variant="primary"
+                                    type="submit"
+                                    onClick={handleSubmit}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    disabled={!supply.nameSupply?.trim() || !supply.idBrand || !supply.idCategory || loading}
+                                >
+                                    Agregar Insumo
+                                </Button>}
                     </Modal.Footer>
                 </Modal>
             </div>

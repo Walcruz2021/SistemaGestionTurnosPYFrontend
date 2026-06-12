@@ -16,19 +16,21 @@ import { getBrands } from "../../../reducer/actions/actionBrand";
 import { getListSuppliesVariant } from "../../../reducer/actions/supply/actionsSupplyVariant"
 import { actionAddSupplyVariant, actionAddImgSupplyVariant } from "../../../reducer/actions/supply/actionsSupplyVariant"
 import { Utensils, Shirt, Save, Image as ImageIcon, X } from "lucide-react";
-
+import { ClipLoader } from "react-spinners";
 
 const selectClass = "w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200";
 
 
 const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
-    console.log(stateSupplySelected)
+
 
     const dispatch = useDispatch();
 
     const [productType, setProductType] = useState("");
     const [sizeType, setSizeType] = useState("");
     const [images, setImages] = useState([null, null, null]);
+    const [loading, setLoading] = useState(false)
+
     // const handleChangeSelectVariant = (option) => {
     //     handleChangeField("nameVariant", option.label);
     //     handleChangeField("idVariant", option.value);
@@ -75,12 +77,13 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
         });
     };
 
+
     const removeImage = (index) => {
         setImages(prev => { const n = [...prev]; n[index] = null; return n; });
     };
 
     const handleSubmit = async () => {
-
+        setLoading(true)
         if (!stateSupplySelected.idSupply) {
             return Swal.fire({
                 icon: "error",
@@ -117,12 +120,14 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
             const responseImg = await dispatch(actionAddImgSupplyVariant(formData, response?.data?.supplyVariant._id))
 
             if (responseImg?.status !== 200) {
+                setLoading(false)
                 return Swal.fire({
                     icon: "error",
                     title: "Error",
                     text: "El insumo fue creado pero la imagen no pudo subirse",
                 });
             } else {
+                setLoading(false)
                 Swal.fire({
                     icon: "success",
                     title: "Éxito",
@@ -144,6 +149,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
             setProductType("")
 
         } else {
+            setLoading(false)
             if (response.status === 400) {
                 Swal.fire({
                     icon: "error",
@@ -151,6 +157,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                     text: "Ya existe la variante",
                 });
             }
+
         }
     };
 
@@ -291,6 +298,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                         { value: "pollo y arroz", label: "Pollo y Arroz" },
                                         { value: "carne, pollo y cerdo", label: "Carne, Pollo y Cerdo" },
                                         { value: "pollo, carne y vegetales", label: "Pollo, Carne y Vegetales" },
+                                        { value: "pescado, carne y vegetales", label: "Pescado, Carne y Vegetales" },
                                         { value: "pescado", label: "Pescado" }
                                     ]}
                                     onChange={onChangeSelectSabor}
@@ -442,20 +450,39 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                 </div>
 
                 {/* Footer */}
-                <div className="px-8 py-4 border-t border-slate-800 flex justify-end">
-                    <button
-                        type="button"
-                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-sm font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-indigo-500/20 transition-all duration-200"
-                        onClick={handleSubmit}
-                    // disabled={
-                    //     !stateSupplySelected._id ||
-                    //     !stateSupplySelected.unidad
-                    // }
-                    >
-                        <Save size={15} />
-                        Guardar Variante
-                    </button>
-                </div>
+
+                {loading ?
+                    <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
+
+                        <ClipLoader color="#cec6c6" loading={true} size={70} />
+
+                        <div className="titGral">
+                            <h2 className="mt-3 text-white">
+                                Espere un Momento por favor ...
+                            </h2>
+                        </div>
+
+                    </div> :
+
+                    <div className="px-8 py-4 border-t border-slate-800 flex justify-end">
+                        <button
+                            type="button"
+                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-sm font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-indigo-500/20 transition-all duration-200"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                        // disabled={
+                        //     !stateSupplySelected._id ||
+                        //     !stateSupplySelected.unidad
+                        // }
+                        >
+
+                            <Save size={15} />
+                            Guardar Variante
+                        </button>
+                    </div>
+                }
+
+
 
                 {/* <div className="flex justify-end">
                     <button
