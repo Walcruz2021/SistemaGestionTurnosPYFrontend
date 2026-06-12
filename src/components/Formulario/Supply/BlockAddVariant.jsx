@@ -22,15 +22,13 @@ const selectClass = "w-full bg-slate-900 border border-slate-700 text-slate-100 
 
 
 const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
-
+    console.log(stateSupplySelected)
 
     const dispatch = useDispatch();
 
     const [productType, setProductType] = useState("");
     const [sizeType, setSizeType] = useState("");
     const [images, setImages] = useState([null, null, null]);
-    const [fields, setFields] = useState({ peso: "", unidad: "", sabor: "", color: "", talle: "" });
-    const setField = (key, val) => setFields(prev => ({ ...prev, [key]: val }));
     // const handleChangeSelectVariant = (option) => {
     //     handleChangeField("nameVariant", option.label);
     //     handleChangeField("idVariant", option.value);
@@ -208,7 +206,16 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                 <button
                                     key={value}
                                     type="button"
-                                    onClick={() => { setProductType(value); setSizeType(""); setFields({ peso: "", unidad: "", sabor: "", color: "", talle: "" }); }}
+                                    onClick={() => {
+                                        setProductType(value); setSizeType(""); setStateSupplySelected(prev => ({
+                                            ...prev,
+                                            peso: "",
+                                            unidad: "",
+                                            sabor: "",
+                                            color: "",
+                                            talle: ""
+                                        }));;
+                                    }}
                                     className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border transition-all duration-200 ${productType === value
                                         ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20"
                                         : "bg-slate-800/60 border-slate-700 text-slate-300 hover:border-indigo-500/50 hover:bg-slate-700/60"
@@ -261,7 +268,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                     styles={selectStyles}
                                     options={[
                                         { value: "kg", label: "Kg" },
-                                        { value: "gramos", label: "Gramos" }           
+                                        { value: "gramos", label: "Gramos" }
                                     ]}
                                     onChange={onChangeSelectUnidad}
 
