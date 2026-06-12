@@ -44,7 +44,7 @@ const TableSuppliesSale = () => {
 
     useEffect(() => {
         if (companySelectedMenu) {
-            dispatch(getListSupplies(copmanySelectedMenu._id));
+            dispatch(getListSupplies(companySelectedMenu._id));
             dispatch(getBrands());
         }
     }, [companySelectedMenu, dispatch]);
@@ -58,7 +58,7 @@ const TableSuppliesSale = () => {
         label: b.nameBrand
     }));
 
-    const categoryOptions = listCategories.map((c) => ({
+    const categoryOptions = listCategories?.map((c) => ({
         value: c.name,
         label: c.name
     }));
