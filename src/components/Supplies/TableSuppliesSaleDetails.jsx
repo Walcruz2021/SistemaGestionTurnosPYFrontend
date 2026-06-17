@@ -21,11 +21,14 @@ import { motion } from "framer-motion";
 
 const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
+
     const [stateOpenModalSale, setStateOpenModalSale] = useState(false);
     const dispatch = useDispatch()
     const MySwal = withReactContent(Swal);
+
     //estado que manejara el array de los insumos a vender que se seleccionaron
     const [stateDetailsSupplies, setStateDetailsSupplies] = useState([]);
+
     const [visibleCheckE, setVisibleCheckE] = useState(false);
     const [visibleCheckT, setVisibleCheckT] = useState(false);
     const [visibleCheckB, setVisibleCheckB] = useState(false);
@@ -99,32 +102,25 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
     const addSaleSupply = async (detailsSupplies) => {
 
 
+
         const listPrevArray = detailsSupplies.map(sup => {
             //ellimino todos los campos que no utilizares para cumplir con el formato del backend
-            const { _id, global, idCompany, idGlobalSupply, priceSale, totalStock, ...newArray } = sup;
+            const { _id, variant,nameSupply, currentStock,idSupplyVariant,priceSale, ...newArray } = sup;
             return newArray;
-        });
-
-        const listItemsSupplies = listPrevArray.map(sup => {
-            if (sup.batches.length > 0) {
-                const idCompanySupply = sup.batches[0].idCompanySupply;
-                const unitCost = sup.batches[0].unitCost;
-                const itemArrayPrev = { ...sup, idCompanySupply, unitCost }
-                const { batches, ...itemArraySale } = itemArrayPrev;
-                return itemArraySale
-            }
         });
 
 
         const dataSaleSupply = {
             idCompany: companySelectedMenu._id,
             date: stateSaleDetail.dateSale,
+            platformMethod: stateSaleDetail.platformMethod,
             paymentMethodEfectivo: stateValueMethodPay.efectivo,
             paymentMethodTransferencia: stateValueMethodPay.transferencia,
             paymentMethodTarjeta: stateValueMethodPay.tarjeta,
-            platformMethod: stateSaleDetail.platformMethod,
-            items: listItemsSupplies
+            
+            items: listPrevArray
         }
+
 
         const requestSale = await dispatch(actionAddSaleSupply(dataSaleSupply))
         if (requestSale && requestSale.status == 200) {
@@ -289,7 +285,11 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                         <thead className="thead-light table-secondary">
                             <tr className="bg-zinc-950">
                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
-                                    Insumo{" "}
+                                    Insumo Venta{" "}
+                              
+                                </th>
+                                <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                                    Variante Venta{" "}
                                     {/* <FontAwesomeIcon
                                 onClick={handleOrder}
                                 icon={faSortAlphaDown}
@@ -311,21 +311,31 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
                                 {stateDetailsSupplies && stateDetailsSupplies.length > 0 && stateDetailsSupplies.map((sup) => (
                                     <motion.tr animate={{
-                                            opacity: 1,
+                                        opacity: 1,
+                                    }}
+                                        transition={{
+                                            delay:
+                                                0.35
                                         }}
-                                            transition={{
-                                                delay:
-                                                    0.35 
-                                            }}
-                                            className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
-                                        <td
+                                        className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
+                                                  <td
                                             className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                            style={{ cursor: "pointer" }}
+                                            // style={{ cursor: "pointer" }}
                                         // onClick={(e) =>
                                         //     handleDetailsSupplies(e, { sup })
                                         // }
                                         >
-                                            {sup.global?.nameSupply}
+                                            {sup?.nameSupply}
+                                        </td>
+
+                                        <td
+                                            className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                            // style={{ cursor: "pointer" }}
+                                        // onClick={(e) =>
+                                        //     handleDetailsSupplies(e, { sup })
+                                        // }
+                                        >
+                                            {sup?.variant?.name}
                                         </td>
 
 

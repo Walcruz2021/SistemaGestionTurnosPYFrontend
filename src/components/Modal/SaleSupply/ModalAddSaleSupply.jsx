@@ -86,7 +86,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
 
     const handleChangeDataNumber = (e) => {
         const { name, value } = e.target;
-        let valMax = dataModalSale && dataModalSale.totalStock ? dataModalSale.totalStock : 0;
+        let valMax = dataModalSale && dataModalSale.currentStock ? dataModalSale.currentStock : 0;
         // solo enteros
         if (!/^\d*$/.test(value)) return;
 
@@ -114,7 +114,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
         const { name, value } = e.target;
 
         const valMax =
-            dataModalSale && dataModalSale.totalStock
+            dataModalSale && dataModalSale.currentStock
                 ? dataModalSale.priceSale
                 : 0;
 
@@ -154,7 +154,7 @@ const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDe
                 <Modal show={openModal} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title className="instrument-serif-regular">
-                            Detalle Insumo {dataModalSale && dataModalSale.global.nameSupply}
+                            Detalle Insumo {dataModalSale && dataModalSale?.variant?.name}
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="pt-1 pb-1 ">

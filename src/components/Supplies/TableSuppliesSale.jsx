@@ -12,7 +12,7 @@ import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
 
 // Datos
-import {listCategories} from "../../reducer/actions/category/actionCategory.jsx";
+import { listCategories } from "../../reducer/actions/category/actionCategory.jsx";
 
 // Actions
 import { getListSupplies, actionsOrderSupplies } from "../../reducer/actions/supply/actionsSupply.js";
@@ -22,11 +22,21 @@ const TableSuppliesSale = () => {
     const dispatch = useDispatch();
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
     const listSupplies = useSelector((state) => state.supply.listSupplies);
+
     const listCategories = useSelector((state) => state.category.listCategories);
     const listBrand = useSelector((state) => state.gralRed.listBrands);
     const [order, setOrder] = useState(false);
     const [stateSearch, setSearch] = useState("");
-    const [supplySelected, setSupplySelected] = useState(null);
+
+
+    const [supplySelected, setSupplySelected] = useState({
+        nameSupply: "", variants: [
+
+        ]
+    });
+
+
+    const [supplySelectedVariant, setSupplySelectedVariant] = useState(null);
 
     const [stateSelectedBrand, setStateSelectedBrand] = useState(null);
     const [stateSelectedCategory, setStateSelectedCategory] = useState(null);
@@ -100,10 +110,15 @@ const TableSuppliesSale = () => {
     // MANEJO DE SELECCIÓN DE INSUMO
     //-------------------------------------------------
     const handleDetailsSupplies = (e, props) => {
+
         e.preventDefault();
 
-        const selected = props.sup;
-        setSupplySelected(selected._id);
+        const selected = props?.sup;
+        setSupplySelected({
+            nameSupply: selected?.global.nameSupply,
+            variants: selected?.variants
+        });
+
         setStateDetailsSup(selected);
 
         // Reset filtros
@@ -111,6 +126,28 @@ const TableSuppliesSale = () => {
         setStateSelectedCategory(null);
         setSearch("");
     };
+
+    //-------------------------------------------------
+    // MANEJO DE SELECCIÓN DE VARIANTES
+    //-------------------------------------------------
+    const handleDetailsSuppliesVariant = (e, variant, nameSupply) => {
+        e.preventDefault();
+        const newDataVariant = {
+            ...variant,
+            nameSupply: nameSupply
+        };
+
+
+        const selected = newDataVariant;
+        setSupplySelectedVariant(selected);
+        setStateDetailsSup(selected);
+
+        // Reset filtros
+        setStateSelectedBrand(null);
+        setStateSelectedCategory(null);
+        setSearch("");
+    };
+
 
     //-------------------------------------------------
     // MANEJO DE FILTROS
@@ -155,6 +192,8 @@ const TableSuppliesSale = () => {
             currentPage * itemsPerPage
         ) ?? [];
 
+
+
     const CustomControlSelect1 = ({ children, ...props }) => {
         return (
             <components.Control {...props}>
@@ -174,6 +213,8 @@ const TableSuppliesSale = () => {
             </components.Control>
         );
     };
+
+
 
     return (
         <>
@@ -356,7 +397,7 @@ const TableSuppliesSale = () => {
                                                         </th>
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoría</th>
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Marca</th>
-                                                        <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Stock</th>
+
                                                     </tr>
                                                 </thead>
                                             }
@@ -364,7 +405,8 @@ const TableSuppliesSale = () => {
 
                                             <tbody>
 
-                                                {currentItems.map((sup, index) => (
+                                                {currentItems?.map((sup, index) => (
+
                                                     <motion.tr key={sup._id} animate={{
                                                         opacity: 1,
                                                     }}
@@ -375,29 +417,22 @@ const TableSuppliesSale = () => {
                                                         }}
                                                         className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
 
-                                                        {sup.totalStock > 0 ?
-                                                            <td
-                                                                className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                                                style={{ cursor: "pointer" }}
-                                                                onClick={(e) =>
-                                                                    handleDetailsSupplies(e, { sup })
-                                                                }
-                                                            >
-                                                                {sup.global.nameSupply}
-                                                            </td> :
 
-                                                            <td
-                                                                className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                                                style={{ color: "red" }}
 
-                                                            >
-                                                                {sup.global.nameSupply}
-                                                            </td>
+                                                        <td
+                                                            className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={(e) =>
+                                                                handleDetailsSupplies(e, { sup })
+                                                            }
+                                                        >
+                                                            {sup?.global?.nameSupply}
+                                                        </td>
 
-                                                        }
-                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.categorySupply}</td>
-                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameBrand}</td>
-                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.totalStock ?? 0}</td>
+
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{null}</td>
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup?.global?.nameBrand}</td>
+
                                                     </motion.tr>
                                                 ))}
                                             </tbody>
@@ -515,6 +550,8 @@ const TableSuppliesSale = () => {
                 }
 
 
+
+
                 {/* DETALLE DEL INSUMO */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -528,11 +565,11 @@ const TableSuppliesSale = () => {
                         <div>
 
                             <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                                Ventas
+                                Variantes
                             </h2>
 
                             <p className="text-zinc-400 text-sm mt-0.5">
-                                Insumo seleccionado
+                                Listado de Variantes
                             </p>
 
                         </div>
@@ -546,8 +583,204 @@ const TableSuppliesSale = () => {
                     </div>
                 </motion.div>
 
+                {
+                    supplySelected && (
+                        <>
 
-                <TableSuppliesSaleDetails dataSupplySeleted={stateDetailsSup} />
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    delay: 0.3,
+                                    duration: 0.4,
+                                }}
+                                className="bg-white  mb-2">
+
+                                <div className="p-1 overflow-x-auto">
+
+                                    <motion.div initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            delay: 0.3,
+                                            duration: 0.4,
+                                        }}
+                                        className="bg-white  mb-1">
+
+
+                                        <table className="w-full">
+
+                                            {
+
+
+                                                <thead>
+                                                    <tr className="bg-zinc-950">
+                                                        <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                                                            Variante{" "}
+                                                            <FontAwesomeIcon
+                                                                onClick={handleOrder}
+                                                                icon={faSortAlphaDown}
+                                                                style={{ cursor: "pointer" }}
+                                                                color={order ? "#FF846A" : "#A2DFFF"}
+                                                            />
+                                                        </th>
+                                                        <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Insumo</th>
+
+                                                        <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">stock</th>
+
+
+                                                    </tr>
+                                                </thead>
+                                            }
+
+
+                                            <tbody>
+
+                                                {supplySelected?.variants.map((sup, index) => (
+
+                                                    <motion.tr key={sup._id} animate={{
+                                                        opacity: 1,
+                                                    }}
+                                                        transition={{
+                                                            delay:
+                                                                0.35 +
+                                                                index * 0.05,
+                                                        }}
+                                                        className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
+
+
+
+                                                        <td
+                                                            className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={(e) =>
+                                                                handleDetailsSuppliesVariant(e, sup, supplySelected.nameSupply)
+                                                            }
+                                                        >
+                                                            {sup?.variant?.name}
+                                                        </td>
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{supplySelected.nameSupply}</td>
+
+
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup?.currentStock}</td>
+
+                                                    </motion.tr>
+                                                ))}
+                                            </tbody>
+
+                                        </table>
+
+                                        {/* PAGINACIÓN NUMÉRICA */}
+                                        {suppliesFiltered.length > itemsPerPage && (
+                                            <div className="d-flex justify-content-center mt-3">
+                                                <nav>
+                                                    <ul className="pagination flex-wrap">
+
+                                                        {/* BOTÓN ANTERIOR */}
+                                                        <li
+                                                            className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+                                                        >
+                                                            <button
+                                                                className="page-link"
+                                                                onClick={() => setCurrentPage(currentPage - 1)}
+                                                            >
+                                                                «
+                                                            </button>
+                                                        </li>
+
+                                                        {/* PRIMERA PÁGINA */}
+                                                        {currentPage > 3 && (
+                                                            <>
+                                                                <li className="page-item">
+                                                                    <button
+                                                                        className="page-link"
+                                                                        onClick={() => setCurrentPage(1)}
+                                                                    >
+                                                                        1
+                                                                    </button>
+                                                                </li>
+
+                                                                {currentPage > 4 && (
+                                                                    <li className="page-item disabled">
+                                                                        <span className="page-link">...</span>
+                                                                    </li>
+                                                                )}
+                                                            </>
+                                                        )}
+
+                                                        {/* PÁGINAS CENTRALES */}
+                                                        {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                                            .filter(
+                                                                (page) =>
+                                                                    page >= currentPage - 1 &&
+                                                                    page <= currentPage + 1
+                                                            )
+                                                            .map((page) => (
+                                                                <li
+                                                                    key={page}
+                                                                    className={`page-item ${currentPage === page ? "active" : ""
+                                                                        }`}
+                                                                >
+                                                                    <button
+                                                                        className="page-link"
+                                                                        onClick={() => setCurrentPage(page)}
+                                                                    >
+                                                                        {page}
+                                                                    </button>
+                                                                </li>
+                                                            ))}
+
+                                                        {/* ÚLTIMA PÁGINA */}
+                                                        {currentPage < totalPages - 2 && (
+                                                            <>
+                                                                {currentPage < totalPages - 3 && (
+                                                                    <li className="page-item disabled">
+                                                                        <span className="page-link">...</span>
+                                                                    </li>
+                                                                )}
+
+                                                                <li className="page-item">
+                                                                    <button
+                                                                        className="page-link"
+                                                                        onClick={() => setCurrentPage(totalPages)}
+                                                                    >
+                                                                        {totalPages}
+                                                                    </button>
+                                                                </li>
+                                                            </>
+                                                        )}
+
+                                                        {/* BOTÓN SIGUIENTE */}
+                                                        <li
+                                                            className={`page-item ${currentPage === totalPages ? "disabled" : ""
+                                                                }`}
+                                                        >
+                                                            <button
+                                                                className="page-link"
+                                                                onClick={() => setCurrentPage(currentPage + 1)}
+                                                            >
+                                                                »
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        )}
+
+
+                                    </motion.div>
+
+                                </div>
+
+
+                            </motion.div>
+
+                        </>
+
+                    )
+                }
+
+
+                <TableSuppliesSaleDetails dataSupplySeleted={supplySelectedVariant} />
 
 
                 {/* aqui deberia mostrar la compra mas antigua no todas las compras */}
