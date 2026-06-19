@@ -21,7 +21,7 @@ import ModalAddSupplyGral from "../../Modal/Supply/ModalAddSupplyGral.jsx";
 
 import { Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
-import SearchSupplyGral from "../../Search/SearchSupplyGral.jsx"
+import SearchSupplyFormAddvariant from "../../Search/SearchSupplyFormAddvariant.jsx"
 import TableSuppliesFiltered from "../../Supplies/TableSuppliesFiltered.jsx"
 
 
@@ -271,7 +271,7 @@ export default function FormAddSupplyVariant({
             {/* =============================== */}
             <SectionDivider>Busqueda de Insumo</SectionDivider>
 
-            <SearchSupplyGral listSuppliesGral={listSuppliesGral} stateListSuppliesGral={stateListSuppliesGral} setStateListSuppliesGral={setStateListSuppliesGral} stateActiveTable={stateActiveTable} setStateActiveTable={setStateActiveTable} />
+            <SearchSupplyFormAddvariant listSuppliesGral={listSuppliesGral} stateListSuppliesGral={stateListSuppliesGral} setStateListSuppliesGral={setStateListSuppliesGral} stateActiveTable={stateActiveTable} setStateActiveTable={setStateActiveTable} />
 
 
             {

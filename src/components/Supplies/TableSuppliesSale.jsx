@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import TableSuppliesSaleDetails from "./TableSuppliesSaleDetails.jsx";
 import TableStockBatch from "../StockBatch/TableStockBatch.jsx";
 import ModalEditSupply from "../Modal/Supply/ModalEditSupply.js";
-
+import SearchSupplyAddSale from "../Search/SearchSupplyAddSale.jsx"
 // Datos
 import { listCategories } from "../../reducer/actions/category/actionCategory.jsx";
 
@@ -28,6 +28,10 @@ const TableSuppliesSale = () => {
     const [order, setOrder] = useState(false);
     const [stateSearch, setSearch] = useState("");
 
+    //(stateListSupplies) array filtered by supply selected
+    const [stateListSupplies, setStateListSupplies] = useState([])
+
+    const [stateActiveTable, setStateActiveTable] = useState(false)
 
     const [supplySelected, setSupplySelected] = useState({
         nameSupply: "", variants: [
@@ -58,53 +62,6 @@ const TableSuppliesSale = () => {
             dispatch(getBrands());
         }
     }, [companySelectedMenu, dispatch]);
-
-
-    // --------------------------
-    // SELECT OPTIONS
-    // --------------------------
-    const brandOptions = listBrand?.map((b) => ({
-        value: b._id,
-        label: b.nameBrand
-    }));
-
-    const categoryOptions = listCategories?.map((c) => ({
-        value: c.name,
-        label: c.name
-    }));
-
-    //-------------------------------------------------
-    // FILTRADO OPTIMIZADO
-    //-------------------------------------------------
-    const suppliesFiltered = useMemo(() => {
-        // Si se seleccionó un insumo → tabla vacía
-        if (supplySelected) return [];
-
-        let result = listSupplies;
-
-        // Buscar por texto
-        if (stateSearch.trim() !== "") {
-            result = result.filter((s) =>
-                s.global.nameSupply.toLowerCase().includes(stateSearch.toLowerCase())
-            );
-        }
-
-        // Filtrar por marca
-        if (stateSelectedBrand) {
-            result = result.filter((s) => s.global.idBrand === stateSelectedBrand.value);
-        }
-
-        // Filtrar por categoría
-        if (stateSelectedCategory) {
-            result = result.filter((s) => s.global.categorySupply === stateSelectedCategory.value);
-        }
-
-        if (!stateSearch && !stateSelectedBrand && !stateSelectedCategory) {
-            return null;
-        }
-        return result;
-    }, [listSupplies, stateSearch, stateSelectedBrand, stateSelectedCategory, supplySelected]);
-
 
     //-------------------------------------------------
     // MANEJO DE SELECCIÓN DE INSUMO
@@ -150,19 +107,6 @@ const TableSuppliesSale = () => {
 
 
     //-------------------------------------------------
-    // MANEJO DE FILTROS
-    //-------------------------------------------------
-    const handleChangeSelectBrand = (selected) => {
-        setSupplySelected(null);
-        setStateSelectedBrand(selected);
-    };
-
-    const handleChangeSelectCategory = (selected) => {
-        setSupplySelected(null);
-        setStateSelectedCategory(selected);
-    };
-
-    //-------------------------------------------------
     // ORDENO LA TABLA
     //-------------------------------------------------
     const handleOrder = () => {
@@ -172,7 +116,7 @@ const TableSuppliesSale = () => {
 
 
     function addSale(supply) {
-        console.log(supply)
+
         setStateValue(prev => [...prev, supply]);
     }
 
@@ -182,18 +126,19 @@ const TableSuppliesSale = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
     //
-    const totalPages = suppliesFiltered
-        ? Math.ceil(suppliesFiltered.length / itemsPerPage)
+    const totalPages = Array.isArray(stateListSupplies)
+        ? Math.ceil(stateListSupplies.length / itemsPerPage)
         : 0;
 
-    const currentItems =
-        suppliesFiltered?.slice(
+    const currentItems = Array.isArray(stateListSupplies)
+        ? stateListSupplies.slice(
             (currentPage - 1) * itemsPerPage,
             currentPage * itemsPerPage
-        ) ?? [];
+        )
+        : [];
 
 
-
+    console.log(currentItems)
     const CustomControlSelect1 = ({ children, ...props }) => {
         return (
             <components.Control {...props}>
@@ -215,149 +160,65 @@ const TableSuppliesSale = () => {
     };
 
 
+    const filterCategories = (arrayCategories) => {
+
+        let stringCategories = ""
+        if (Array.isArray(arrayCategories)) {
+
+            arrayCategories.map((cat) => {
+                stringCategories = stringCategories.concat("/", cat.name)
+            })
+        }
+
+        return stringCategories
+    }
 
     return (
         <>
 
             <div className="px-0.5 md:px-8 py-1 max-w-7xl mx-auto">
 
+
                 {/* BUSCADOR */}
-                <div className="bg-gray-50 flex items-center justify-center px-4 py-0">
-                    <div className="w-full max-w-2xl">
-                        <motion.div
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="w-full max-w-2xl mx-auto"
-                        >
-
-                            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-visible mb-3">
-                                {/* Top accent line */}
-                                <div className="h-[2px] w-full bg-gradient-to-r from-gray-200 via-gray-400 to-gray-200" />
-                                <div className="px-6 py-6 space-y-5">.
-
-                                    <div className="inline-flex items-center bg-black px-4 py-2">
-                                        <p className="text-[10px] uppercase tracking-[0.3em] text-white font-medium flex items-center gap-2 mt-3">
-                                            <span className="inline-block w-4 h-px bg-white" />
-                                            Explorar insumos
-                                        </p>
-                                    </div>
-
-                                    {/* BUSCADOR */}
-                                    <div className="relative group">
-                                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-gray-600 transition-colors duration-200" />
-                                        <input
-                                            className="w-full pl-11 pr-10 py-3 rounded-lg border border-gray-500 text-sm text-gray-800 placeholder-gray-500 bg-gray-50 focus:bg-white focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-200"
-                                            type="text"
-                                            placeholder={`Busque un Insumo (minúsculas)`}
-                                            value={stateSearch}
-                                            onChange={(e) => {
-                                                setCurrentPage(1);
-                                                setSearch(e.target.value);
-                                            }}
-                                        />
-
-
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                                        <div className="space-y-1.5">
-
-                                            {/* FILTRO POR MARCA */}
-                                            <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
-                                                <Tag className="w-4 h-4" />
-                                                Marca
-                                            </label>
-                                            <Select
-                                                className="classSelect instrument-serif-regular"
-                                                placeholder="Seleccione Marca"
-                                                onChange={handleChangeSelectBrand}
-                                                value={stateSelectedBrand}
-                                                options={brandOptions}
-                                                isClearable
-                                                components={{
-                                                    Control: CustomControlSelect1
-                                                }}
-                                                menuPortalTarget={document.body}
-                                                menuPosition="fixed"
-                                                styles={{
-                                                    menuPortal: (base) => ({
-                                                        ...base,
-                                                        zIndex: 9999
-                                                    })
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div className="space-y-1.5">
-                                            {/* FILTRO POR CATEGORÍA */}
-                                            <label className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-gray-500 font-medium mb-3">
-                                                <Layers className="w-4 h-4" />
-                                                Categoría
-                                            </label>
-                                            <Select
-                                                className="classSelect instrument-serif-regular"
-                                                placeholder="Seleccione Categoría"
-                                                onChange={handleChangeSelectCategory}
-                                                value={stateSelectedCategory}
-                                                options={categoryOptions}
-                                                isClearable
-                                                components={{
-                                                    Control: CustomControlSelect2
-                                                }}
-                                                menuPortalTarget={document.body}
-                                                menuPosition="fixed"
-                                                styles={{
-                                                    menuPortal: (base) => ({
-                                                        ...base,
-                                                        zIndex: 9999
-                                                    })
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Active filters indicator */}
-                                    {(stateSearch || stateSelectedBrand || stateSelectedCategory) && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: "auto" }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            className="flex flex-wrap gap-2 pt-1"
-                                        >
-                                            {stateSearch && (
-                                                <FilterChip label={`"${stateSearch}"`} onRemove={() => { setSearch(""); setCurrentPage?.(1); }} />
-                                            )}
-                                            {stateSelectedBrand && (
-                                                <FilterChip label={stateSelectedBrand.label} onRemove={() => handleChangeSelectBrand(null)} />
-                                            )}
-                                            {stateSelectedCategory && (
-                                                <FilterChip label={stateSelectedCategory.label} onRemove={() => handleChangeSelectCategory(null)} />
-                                            )}
-                                        </motion.div>
-                                    )}
-
-                                    {/* Debug info */}
-                                    {/* <div className="mt-8 p-4 rounded-xl bg-white border border-gray-200 text-xs text-gray-400 space-y-1">
-                                    <p><span className="text-gray-600 font-medium">Búsqueda:</span> {stateSearch || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Marca:</span> {brand?.label || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Categoría:</span> {category?.label || "—"}</p>
-                                    <p><span className="text-gray-600 font-medium">Página:</span> {currentPage}</p>
-                                </div> */}
-                                </div>
-
-                            </div>
-                        </motion.div>
-
-                    </div>
-                </div>
-
-                {/* TABLA PRINCIPAL */}
+                <SearchSupplyAddSale listSupplies={listSupplies} stateListSupplies={stateListSupplies} setStateListSupplies={setStateListSupplies} stateActiveTable={stateActiveTable} setStateActiveTable={setStateActiveTable} setSupplySelectedFromTable={setSupplySelected}/>
 
                 {
-                    suppliesFiltered && (
+
+                    //exists supplies and exists option search selected
+                    currentItems.length > 0 && stateActiveTable ?
+
                         <>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3, duration: 0.4 }}
+                                className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                            >
+
+                                <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                    <div>
+
+                                        <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                            Ventas
+                                        </h2>
+
+                                        <p className="text-zinc-400 text-sm mt-0.5">
+                                            Listado de insumos para venta
+                                        </p>
+
+                                    </div>
+
+                                    <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                        <CalendarPlus className="w-4 h-4 text-white" />
+
+                                    </div>
+
+                                </div>
+                            </motion.div>
+
+
 
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -383,7 +244,6 @@ const TableSuppliesSale = () => {
 
                                             {
 
-                                                suppliesFiltered && !supplySelected &&
                                                 <thead>
                                                     <tr className="bg-zinc-950">
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
@@ -430,7 +290,7 @@ const TableSuppliesSale = () => {
                                                         </td>
 
 
-                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{null}</td>
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{filterCategories(sup?.global?.categories)}</td>
                                                         <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup?.global?.nameBrand}</td>
 
                                                     </motion.tr>
@@ -440,7 +300,7 @@ const TableSuppliesSale = () => {
                                         </table>
 
                                         {/* PAGINACIÓN NUMÉRICA */}
-                                        {suppliesFiltered.length > itemsPerPage && (
+                                        {stateListSupplies.length > itemsPerPage && (
                                             <div className="d-flex justify-content-center mt-3">
                                                 <nav>
                                                     <ul className="pagination flex-wrap">
@@ -545,47 +405,148 @@ const TableSuppliesSale = () => {
                             </motion.div>
 
                         </>
+                        :
 
-                    )
+                        //not exists supplies and exists option search selected
+                        currentItems.length < 0 && stateActiveTable ?
+                            <>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3, duration: 0.4 }}
+                                    className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                                >
+
+                                    <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                        <div>
+
+                                            <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                                Ventas
+                                            </h2>
+
+                                            <p className="text-zinc-400 text-sm mt-0.5">
+                                                NO HAY INSUMOS PARA LA OPCION SELECCIONADA
+                                            </p>
+
+                                        </div>
+
+                                        <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                            <CalendarPlus className="w-4 h-4 text-white" />
+
+                                        </div>
+
+                                    </div>
+                                </motion.div>
+                            </>
+                            :
+
+                            //exists supplies AND NOT EXISTS OPTIONS SEARCH SELECTED
+                            currentItems.length > 0 && !stateActiveTable ?
+                                <>
+
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.3, duration: 0.4 }}
+                                        className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                                    >
+
+                                        <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                            <div>
+
+                                                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                                    Ventas
+                                                </h2>
+
+                                                <p className="text-zinc-400 text-sm mt-0.5">
+                                                    DEBE FILTRAR UN INSUMO
+                                                </p>
+
+                                            </div>
+
+                                            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                                <CalendarPlus className="w-4 h-4 text-white" />
+
+                                            </div>
+
+                                        </div>
+                                    </motion.div>
+                                </> :
+                                //NOT exists supplies  and NOT EXISTS OPTIONS SEARCH SELECTED
+                                <>
+
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.3, duration: 0.4 }}
+                                        className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                                    >
+
+                                        <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                            <div>
+
+                                                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                                    Ventas
+                                                </h2>
+
+                                                <p className="text-zinc-400 text-sm mt-0.5">
+                                                    NO HAY INSUMO PARA LA OPCION SELECCIONADA
+                                                </p>
+
+                                            </div>
+
+                                            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                                <CalendarPlus className="w-4 h-4 text-white" />
+
+                                            </div>
+
+                                        </div>
+                                    </motion.div>
+                                </>
                 }
 
 
 
 
-                {/* DETALLE DEL INSUMO */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.4 }}
-                    className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
-                >
-
-                    <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
-
-                        <div>
-
-                            <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                                Variantes
-                            </h2>
-
-                            <p className="text-zinc-400 text-sm mt-0.5">
-                                Listado de Variantes
-                            </p>
-
-                        </div>
-
-                        <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
-
-                            <CalendarPlus className="w-4 h-4 text-white" />
-
-                        </div>
-
-                    </div>
-                </motion.div>
-
+                {/* TABLE VARIANTS */}
                 {
-                    supplySelected && (
+                   supplySelected &&  (
                         <>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3, duration: 0.4 }}
+                                className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+                            >
+
+                                <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+                                    <div>
+
+                                        <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                                            Variantes
+                                        </h2>
+
+                                        <p className="text-zinc-400 text-sm mt-0.5">
+                                            Listado de Variantes
+                                        </p>
+
+                                    </div>
+
+                                    <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                                        <CalendarPlus className="w-4 h-4 text-white" />
+
+                                    </div>
+
+                                </div>
+                            </motion.div>
 
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -670,7 +631,7 @@ const TableSuppliesSale = () => {
                                         </table>
 
                                         {/* PAGINACIÓN NUMÉRICA */}
-                                        {suppliesFiltered.length > itemsPerPage && (
+                                        {stateListSupplies.length > itemsPerPage && (
                                             <div className="d-flex justify-content-center mt-3">
                                                 <nav>
                                                     <ul className="pagination flex-wrap">

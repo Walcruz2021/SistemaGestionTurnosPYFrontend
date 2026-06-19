@@ -196,7 +196,7 @@ const TableBuySupplies = () => {
         {
             id: "addBuySupply",
             label: "Compras",
-            sub: "Ingresar Compra",
+            sub: "Ingresar Compra / listado Compras",
             icon: ShoppingBasket,
             action: () => { setOpenFormBuySupply(true), setOpenModalAddVariant(false) },
             type: "button",

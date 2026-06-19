@@ -11,10 +11,11 @@ import { useSelector, useDispatch } from "react-redux";
  * @param stateListSuppliesGral
  * @param setStateListSuppliesGral 
  * @param stateActiveTable display the table (true) does not display the table (false)
- * @returns setStateListSupplies filtered by parameters
+ * @param setStateActiveTable
+ * @returns setStateListSupplies filtered by parameters. Is used in FormAddvariant
  */
 
-const SearchSupplyGral = ({ listSuppliesGral, stateListSuppliesGral, setStateListSuppliesGral, stateActiveTable, setStateActiveTable }) => {
+const SearchSupplyFormAddvariant = ({ listSuppliesGral, stateListSuppliesGral, setStateListSuppliesGral, stateActiveTable, setStateActiveTable }) => {
     //stateSearch is word writed in input search
     const [stateSearch, setSearch] = useState("");
     const [stateSelectedCategory, setStateSelectedCategory] = useState();
@@ -328,4 +329,4 @@ const SearchSupplyGral = ({ listSuppliesGral, stateListSuppliesGral, setStateLis
     }
 }
 
-export default SearchSupplyGral
+export default SearchSupplyFormAddvariant

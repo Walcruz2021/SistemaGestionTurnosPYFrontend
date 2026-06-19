@@ -62,35 +62,7 @@ const FormAddVtas = () => {
             <div className="not-bootstrap">
 
                 <div className="px-1 md:px-8 pt-4 max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.4 }}
-                        className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
-                    >
-
-                        <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
-
-                            <div>
-
-                                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                                    Ventas
-                                </h2>
-
-                                <p className="text-zinc-400 text-sm mt-0.5">
-                                    Listado de insumos para venta
-                                </p>
-
-                            </div>
-
-                            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
-
-                                <CalendarPlus className="w-4 h-4 text-white" />
-
-                            </div>
-
-                        </div>
-                    </motion.div>
+                 
 
                     <p className="text-xs uppercase tracking-widest text-zinc-400 font-medium mb-4">
                         Acciones rápidas
