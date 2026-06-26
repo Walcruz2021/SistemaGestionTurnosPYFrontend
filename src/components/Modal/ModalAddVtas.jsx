@@ -137,7 +137,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
     } else {
       if (stateCategory === "pelu") {
         return (
-          !stateValue.tipoServ.trim()  &&
+          stateValue.tipoServ.trim()  &&
           (stateValue.efectivo > 0 ||
             stateValue.transferencia > 0 ||
             stateValue.tarjeta > 0)
@@ -158,7 +158,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
           <Form>
             <Form.Group className="mb-1" controlId="modalTipoServ">
               <Form.Label className="instrument-serif-regular">
-                Tipo de Servicio
+                (*) Tipo de Servicio
               </Form.Label>
               <Form.Control
                 className="instrument-serif-regular"
@@ -177,7 +177,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
               <Form.Check
                 type="checkbox"
                 id="check-efectivo"
-                label="Efectivo"
+                label="(*) Efectivo"
                 onChange={() => handleCheckChange("Efectivo")}
                 className="mt-2 instrument-serif-regular"
                 
@@ -209,7 +209,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
               <Form.Check
                 type="checkbox"
                 id="check-transferencia"
-                label="Transferencia"
+                label="(*) Transferencia"
                 onChange={() => handleCheckChange("Transferencia")}
                 className="mt-2 instrument-serif-regular"
               />
@@ -240,7 +240,7 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
               <Form.Check
                 type="checkbox"
                 id="check-tarjeta"
-                label="Tarjeta"
+                label="(*) Tarjeta"
                 onChange={() => handleCheckChange("Tarjeta")}
                 className="mt-2 instrument-serif-regular"
               />
@@ -268,6 +268,9 @@ const ModalAddVtas = ({ state, setState, stateNewVta, setStateNewVta }) => {
                 </>
               )}
             </div>
+            <p className="text-danger small mt-2 instrument-serif-regular">
+                (*) Campos obligatorios!!!
+              </p>
             {stateNewVta &&
             stateCategory === "peluAndVet" &&
             !stateNewVta.statusFile === true ? (

@@ -59,7 +59,7 @@ const TableSuppliesSale = () => {
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands());
+            dispatch(getBrands(companySelectedMenu?.category));
         }
     }, [companySelectedMenu, dispatch]);
 

@@ -46,7 +46,7 @@ const ModalEditSupply = ({
 
     useEffect(() => {
         if (companySelectedMenu) {
-            dispatch(getBrands())
+            dispatch(getBrands(companySelectedMenu?.category))
         }
     }, [])
 

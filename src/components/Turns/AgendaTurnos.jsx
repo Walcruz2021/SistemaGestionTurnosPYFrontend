@@ -24,6 +24,7 @@ function AgendaTurnos() {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
 
+
   useEffect(() => {
     dispatch(verificationCompaniesExist(loginUser.email));
   }, [dispatch, loginUser]);
@@ -32,7 +33,8 @@ function AgendaTurnos() {
 
   useEffect(() => {
     const getTurnosList = async () => {
-      if (companySelectedMenu) {
+      if (companySelectedMenu.category!=="indumentaria") {
+
         try {
           setLoading(false);
           const turnosResponse = await dispatch(

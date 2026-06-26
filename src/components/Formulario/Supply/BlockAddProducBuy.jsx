@@ -25,6 +25,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     const listBrands = useSelector((state) => state.gralRed.listBrands);
     const [stateMargen, setmargen] = useState(50)
     const [suppliesOptions, setSuppliesOptions] = useState([]);
+
     const [variantOptions, setVariantOptions] = useState([]);
 
     const [brandOptions, setBrandOptions] = useState([]);
@@ -38,7 +39,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands());
+            dispatch(getBrands(companySelectedMenu?.catgory));
         }
     }, [companySelectedMenu]);
 

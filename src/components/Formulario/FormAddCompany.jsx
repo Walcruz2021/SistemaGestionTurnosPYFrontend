@@ -186,7 +186,9 @@ const FormAddCompany = () => {
           name="cuit"
           onFocus={handleFocusName}
           value={stateValue.cuit}
+          minLength={2}  
           maxLength={15}
+          required
           onChange={(e) => {
             // Solo permitir números y máximo 15 caracteres
             const value = e.target.value.replace(/\D/g, "").slice(0, 15);
@@ -197,7 +199,7 @@ const FormAddCompany = () => {
           }}
         />
 
-        {!validationName.cuit && isInputFocusedName && (
+        {!validationName.cuit && isInputFocusedName && stateValue.cuit.length<=2 &&(
           <div className="text-danger msgAlertInput">
             Mayor a 2 números
           </div>
@@ -225,6 +227,18 @@ const FormAddCompany = () => {
             />
             Veterinaria y Peluqueria
           </label>
+
+           <label className="p-2">
+            <input
+              className="m-2"
+              type="radio"
+              value="indumentaria"
+              checked={selectedOption === "indumentaria"}
+              onChange={handleChangeRadioB}
+            />
+            Indumentaria
+          </label>
+
         </div>
 
         <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>

@@ -10,6 +10,7 @@ import { resetAllClients } from "../../reducer/actions/actionsClients";
 import { resetGastosXanioandMesParam } from "../../reducer/actions/actionsGastos";
 import { resetVentasXanioandMesParam } from "../../reducer/actions/actionsVentas";
 import { resetProductsStore } from "../../reducer/actions/companySupply/actionCompanySupply";
+import {resetVtaHistoryPets} from "../../reducer/actions/actionsDog"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -201,6 +202,8 @@ function NavBarLat() {
       dispatch(resetGastosXanioandMesParam());
       dispatch(resetVentasXanioandMesParam());
       dispatch(resetProductsStore())
+      dispatch(resetVtaHistoryPets())
+
 
       await signOut(auth);
 

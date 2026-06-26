@@ -47,7 +47,7 @@ const FormStockAdjustments = ({ setInfo, stateInfo }) => {
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands());
+            dispatch(getBrands(companySelectedMenu?.category));
         }
     }, [companySelectedMenu, dispatch]);
 

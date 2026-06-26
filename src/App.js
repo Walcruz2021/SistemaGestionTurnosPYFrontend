@@ -33,6 +33,7 @@ import {
   functionCompanySelected,
   verificationCompaniesExist,
   isMedicine,
+  isIndumentary,
   typePerson
 } from "./reducer/actions/actionsCompany.jsx";
 import {
@@ -113,7 +114,11 @@ const AppRoutes = () => {
         if (companySelected.category === "medicinaGral") {
           dispatch(isMedicine(true))
           dispatch(typePerson("Paciente"))
+        } else if (companySelected.category === "indumentaria") {
+          dispatch(isIndumentary(true))
+          dispatch(isMedicine(false))
         } else {
+          dispatch(isIndumentary(false))
           dispatch(isMedicine(false))
           dispatch(typePerson("Cliente"))
         }
@@ -124,14 +129,14 @@ const AppRoutes = () => {
     }
   }, [companiesList, dispatch, loginUser, companySelected, navigate]);
 
-    //send dispatch routes grales
-    useEffect(() => {
-      dispatch(listCategories());
-      dispatch(getBrands());
-      dispatch(listCategories());
-    }, [dispatch])
-  
-    
+  //send dispatch routes grales
+  useEffect(() => {
+    dispatch(listCategories());
+    dispatch(getBrands(companySelected?.category));
+    dispatch(listCategories());
+  }, [dispatch])
+
+
 
   return (
     <div>

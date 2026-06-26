@@ -12,7 +12,7 @@ import {
     actionEditSupply,
     getListSuppliesGral
 } from "../../../reducer/actions/supply/actionsSupply";
-import { getBrands } from "../../../reducer/actions/actionBrand";
+
 import { getListSuppliesVariant } from "../../../reducer/actions/supply/actionsSupplyVariant"
 import { actionAddSupplyVariant, actionAddImgSupplyVariant } from "../../../reducer/actions/supply/actionsSupplyVariant"
 import { Utensils, Shirt, Save, Image as ImageIcon, X } from "lucide-react";
@@ -324,7 +324,8 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                         { value: "negro", label: "Negro" },
                                         { value: "blanco", label: "Blanco" },
                                         { value: "rosa", label: "Rosa" },
-                                        { value: "amarillo", label: "Amarillo" }
+                                        { value: "amarillo", label: "Amarillo" },
+                                        { value: "gris", label: "Gris" }
                                     ]}
                                     onChange={onChangeSelectColor}
                                 />

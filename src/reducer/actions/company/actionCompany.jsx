@@ -12,7 +12,7 @@ export function getCompantBySlugCompany(slugCompany) {
             const findCompany = await axios.get(
                 `${host}/api/getCompanyBySlugCompany/${slugCompany}`
             );
-   
+
             return dispatch({
                 type: GET_COMPANY_BY_SLUGCOMPANY,
                 payload: findCompany.data.company,
@@ -42,6 +42,3 @@ export function listSuppliesStore(idCompany) {
 }
 
 
-export const resetProductsStore = () => ({
-    type: RESET_SUPPLIES_STORE,
-});

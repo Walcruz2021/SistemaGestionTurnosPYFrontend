@@ -19,7 +19,7 @@ export default function supplyReducer(state = initialState, action) {
         case RESET_SUPPLIES_STORE:
             return {
                 ...state,
-                listSuppliesStore: []
+                listSuppliesStore: null
             };
 
 

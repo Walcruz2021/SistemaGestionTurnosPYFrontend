@@ -68,7 +68,6 @@ function Dashboard() {
   );
 
 
-
   const listadoTurnos = useSelector(
     (state) => state.turns.allTurnos
   );
@@ -80,7 +79,7 @@ function Dashboard() {
   const vtaxClient = useSelector(
     (state) => state.pets.vtaxClient
   );
-
+console.log(vtaxClient)
   const isMedicine = useSelector(
     (state) => state.company.categoryMedicine
   );
@@ -120,11 +119,20 @@ function Dashboard() {
 
   const [stateAddDog, setStateAddDog] = useState(false);
 
+  const [companyIndumentary, setCompanyIndumentary] = useState(false)
   const [stateCategory] = useState("Cliente");
+
+
 
   useEffect(() => {
     if (companySelectedMenu) {
       dispatch(getClients(companySelectedMenu._id));
+    }
+  }, [companySelectedMenu]);
+
+  useEffect(() => {
+    if (companySelectedMenu && companySelectedMenu.category === "indumentaria") {
+      setCompanyIndumentary(true)
     }
   }, [companySelectedMenu]);
 
@@ -158,6 +166,8 @@ function Dashboard() {
 
     return () => clearInterval(interval);
   }, [dispatch]);
+
+
 
   const ModalAddDogActive = () => {
     setStateAddDog(!stateAddDog);
@@ -295,82 +305,128 @@ function Dashboard() {
     }
   };
 
-  const ACTION_CARDS = [
-    {
-      id: "compras",
-      label: "Compras",
-      sub: "Gestión de insumos",
-      icon: ShoppingCart,
-      action: "/compraInsumos",
-      type: "link",
-    },
-    {
-      id: "insumos",
-      label: "Insumos",
-      sub: "Listado de Insumos",
-      icon: Boxes,
-      action: "/insumos",
-      type: "link",
-    },
+  const returnCards = (companyIndumentary) => {
 
-    {
-      id: "cliente",
-      label: "Cliente",
-      sub: "Nuevo cliente",
-      icon: UserPlus,
-      action: () => setNewClient(!newClient),
-      type: "button",
-    },
+    if (companyIndumentary) {
+      let ACTION_CARDS = [
+        {
+          id: "compras",
+          label: "Compras",
+          sub: "Gestión de insumos",
+          icon: ShoppingCart,
+          action: "/compraInsumos",
+          type: "link",
+        },
+        {
+          id: "insumos",
+          label: "Insumos",
+          sub: "Listado de Insumos",
+          icon: Boxes,
+          action: "/insumos",
+          type: "link",
+        },
+        {
+          id: "ventas",
+          label: "Ventas",
+          sub: "Registrar venta",
+          icon: TrendingUp,
+          action: "/addVtas",
+          type: "link",
+        },
+        {
+          id: "tiendavirtual",
+          label: "Tienda Virtual",
+          sub: "Tu tienda virtual",
+          icon: ShoppingBag,
+          action: `/tiendavirtual/${companySelectedMenu?.slug}`,
+          type: "link",
+        }
+      ]
+      return ACTION_CARDS
+    } else {
 
-    {
-      id: "clientes",
-      label: "Clientes",
-      sub: "Ver listado",
-      icon: Users,
-      action: "/listClient",
-      type: "link",
-    },
+      let ACTION_CARDS = [
+        {
+          id: "compras",
+          label: "Compras",
+          sub: "Gestión de insumos",
+          icon: ShoppingCart,
+          action: "/compraInsumos",
+          type: "link",
+        },
+        {
+          id: "insumos",
+          label: "Insumos",
+          sub: "Listado de Insumos",
+          icon: Boxes,
+          action: "/insumos",
+          type: "link",
+        },
 
-    {
-      id: "mascota",
-      label: "Mascota",
-      sub: "Agregar mascota",
-      icon: PawPrint,
-      action: listClients
-        ? ModalAddDogActive
-        : messageClient,
-      type: "button",
-      hidden: isMedicine,
-    },
+        {
+          id: "cliente",
+          label: "Cliente",
+          sub: "Nuevo cliente",
+          icon: UserPlus,
+          action: () => setNewClient(!newClient),
+          type: "button",
+        },
 
-    {
-      id: "turno",
-      label: "Turno",
-      sub: "Nuevo turno",
-      icon: CalendarPlus,
-      action: listClients
-        ? addTurn
-        : messageClient,
-      type: "button",
-    },
+        {
+          id: "clientes",
+          label: "Clientes",
+          sub: "Ver listado",
+          icon: Users,
+          action: "/listClient",
+          type: "link",
+        },
 
-    {
-      id: "ventas",
-      label: "Ventas",
-      sub: "Registrar venta",
-      icon: TrendingUp,
-      action: "/addVtas",
-      type: "link",
-    },
-    {
-      id: "tiendavirtual",
-      label: "Tienda Virtual",
-      sub: "Tu tienda virtual",
-      icon: ShoppingBag,
-      action: `/tiendavirtual/${companySelectedMenu?.slug}`,
-      type: "link",
+        {
+          id: "mascota",
+          label: "Mascota",
+          sub: "Agregar mascota",
+          icon: PawPrint,
+          action: listClients
+            ? ModalAddDogActive
+            : messageClient,
+          type: "button",
+          hidden: isMedicine,
+        },
+
+        {
+          id: "turno",
+          label: "Turno",
+          sub: "Nuevo turno",
+          icon: CalendarPlus,
+          action: listClients
+            ? addTurn
+            : messageClient,
+          type: "button",
+        },
+
+        {
+          id: "ventas",
+          label: "Ventas",
+          sub: "Registrar venta",
+          icon: TrendingUp,
+          action: "/addVtas",
+          type: "link",
+        },
+        {
+          id: "tiendavirtual",
+          label: "Tienda Virtual",
+          sub: "Tu tienda virtual",
+          icon: ShoppingBag,
+          action: `/tiendavirtual/${companySelectedMenu?.slug}`,
+          type: "link",
+        }
+      ];
+      return ACTION_CARDS
     }
-  ];
+
+  }
+
+  const cards = returnCards(companyIndumentary);
 
   if (isLoading) {
     return (
@@ -451,7 +507,7 @@ function Dashboard() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-12">
 
-            {ACTION_CARDS
+            {cards
               .filter((card) => !card.hidden)
               .map((card, i) => {
 
@@ -585,312 +641,316 @@ function Dashboard() {
 
         <ModalEditTurn />
 
-        {/* TURNOS */}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.4 }}
-          className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
-        >
 
-          <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
 
-            <div>
 
-              <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                Turnos
-              </h2>
+        {!companyIndumentary && <>
 
-              <p className="text-zinc-400 text-sm mt-0.5">
-                Gestión completa de turnos
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+            className="bg-white border border-zinc-200 rounded-2xl overflow-hidden mb-3"
+          >
+
+            <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+              <div>
+
+                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                  Turnos
+                </h2>
+
+                <p className="text-zinc-400 text-sm mt-0.5">
+                  Gestión completa de turnos
+                </p>
+
+              </div>
+
+              <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                <CalendarPlus className="w-4 h-4 text-white" />
+
+              </div>
+
+            </div>
+          </motion.div>
+
+          <TableTurns
+            setOrder={setOrder}
+            order={order}
+            setEditTurn={setEditTurn}
+            editTurn={editTurn}
+            setInfo={setInfo}
+            stateInfo={stateInfo}
+          />
+
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+            className="bg-white border border-zinc-200 rounded-2xl overflow-hidden"
+          >
+
+            <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+
+              <div>
+
+                <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
+                  Historial de Mascota
+                </h2>
+
+                <p className="text-zinc-400 text-sm mt-0.5">
+                  Consultá el historial de servicios por mascota
+                </p>
+
+              </div>
+
+              <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+
+                <FileText className="w-4 h-4 text-white" />
+
+              </div>
 
             </div>
 
-            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
+          </motion.div>
 
-              <CalendarPlus className="w-4 h-4 text-white" />
+          <div className="p-1">
 
-            </div>
+            {!stateInfo && !newTurno && !newClient ? (
+              <div className="mb-6 max-w-sm mt-8">
 
-          </div>
-        </motion.div>
+                <label className="block text-xs uppercase tracking-widest text-zinc-400 font-medium mb-2">
+                  Buscar mascota
+                </label>
 
-        <TableTurns
-          setOrder={setOrder}
-          order={order}
-          setEditTurn={setEditTurn}
-          editTurn={editTurn}
-          setInfo={setInfo}
-          stateInfo={stateInfo}
-        />
+                <Select
+                  placeholder="Seleccioná una mascota..."
+                  options={Listdogs}
+                  onChange={ChangeDog}
+                  classNamePrefix="react-select"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({
+                      ...base,
+                      zIndex: 9999,
+                    }),
+                  }}
+                />
 
-        {/* HISTORIAL */}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
-          className="bg-white border border-zinc-200 rounded-2xl overflow-hidden"
-        >
-
-          <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
-
-            <div>
-
-              <h2 className="text-xl font-bold text-zinc-950 tracking-tight">
-                Historial de Mascota
-              </h2>
-
-              <p className="text-zinc-400 text-sm mt-0.5">
-                Consultá el historial de servicios por mascota
-              </p>
-
-            </div>
-
-            <div className="w-9 h-9 rounded-xl bg-zinc-950 flex items-center justify-center">
-
-              <FileText className="w-4 h-4 text-white" />
-
-            </div>
-
-          </div>
-
-        </motion.div>
-
-        <div className="p-1">
-
-          {!stateInfo && !newTurno && !newClient ? (
-            <div className="mb-6 max-w-sm mt-8">
-
-              <label className="block text-xs uppercase tracking-widest text-zinc-400 font-medium mb-2">
-                Buscar mascota
-              </label>
-
-              <Select
-                placeholder="Seleccioná una mascota..."
-                options={Listdogs}
-                onChange={ChangeDog}
-                classNamePrefix="react-select"
-                menuPortalTarget={document.body}
-                styles={{
-                  menuPortal: (base) => ({
-                    ...base,
-                    zIndex: 9999,
-                  }),
-                }}
-              />
-
-            </div>
-          ) : null}
-
-          <AnimatePresence>
-
-            {selectedDog &&
-              vtaxClient.status === 200 ? (
-
-              <motion.div
-                key="historial"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
-              >
-
-                {/* STAT CARDS */}
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mb-4">
-
-                  {/* MASCOTA */}
-                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
-
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <Dog className="w-4 h-4 text-white" />
-                    </div>
-
-                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-                      Mascota
-                    </p>
-
-                    <h3 className="text-white font-medium text-xs leading-tight">
-                      {vtaxClient.data.vta[0].Dog.nameDog}
-                    </h3>
-
-                  </div>
-
-                  {/* TAMAÑO */}
-                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
-
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <Scale className="w-4 h-4 text-white" />
-                    </div>
-
-                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-                      Tamaño
-                    </p>
-
-                    <h3 className="text-white font-medium text-xs leading-tight">
-                      {vtaxClient.data.vta[0].Dog.tamaño}
-                    </h3>
-
-                  </div>
-
-                  {/* CLIENTE */}
-                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
-
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
-                    </div>
-
-                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-                      Cliente
-                    </p>
-
-                    <h3 className="text-white font-medium text-xs leading-tight">
-                      {vtaxClient.data.vta[0].name}
-                    </h3>
-
-                  </div>
-
-                  {/* NOTA */}
-                  <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
-
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-white" />
-                    </div>
-
-                    <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
-                      Nota
-                    </p>
-
-                    <h3 className="text-white font-medium text-xs leading-tight line-clamp-2">
-                      {vtaxClient.data.vta[0].Dog.notaP
-                        ? vtaxClient.data.vta[0].Dog.notaP
-                        : "Sin nota"}
-                    </h3>
-
-                  </div>
-
-                </div>
-
-
-              </motion.div>
-
+              </div>
             ) : null}
 
-          </AnimatePresence>
+            <AnimatePresence>
 
-        </div>
+              {selectedDog &&
+                vtaxClient?.status === 200 ? (
 
-        {/* TABLA HISTORIAL */}
+                <motion.div
+                  key="historial"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35 }}
+                >
 
-        <motion.div initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.3,
-            duration: 0.4,
-          }}
-          className="bg-white  mb-2">
+                  {/* STAT CARDS */}
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mb-4">
+
+                    {/* MASCOTA */}
+                    <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <Dog className="w-4 h-4 text-white" />
+                      </div>
+
+                      <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                        Mascota
+                      </p>
+
+                      <h3 className="text-white font-medium text-xs leading-tight">
+                        {vtaxClient.data.vta[0].Dog.nameDog}
+                      </h3>
+
+                    </div>
+
+                    {/* TAMAÑO */}
+                    <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <Scale className="w-4 h-4 text-white" />
+                      </div>
+
+                      <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                        Tamaño
+                      </p>
+
+                      <h3 className="text-white font-medium text-xs leading-tight">
+                        {vtaxClient.data.vta[0].Dog.tamaño}
+                      </h3>
+
+                    </div>
+
+                    {/* CLIENTE */}
+                    <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <User className="w-4 h-4 text-white" />
+                      </div>
+
+                      <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                        Cliente
+                      </p>
+
+                      <h3 className="text-white font-medium text-xs leading-tight">
+                        {vtaxClient.data.vta[0].name}
+                      </h3>
+
+                    </div>
+
+                    {/* NOTA */}
+                    <div className="bg-zinc-950 rounded-xl px-2 py-3 flex flex-col items-center text-center gap-1 min-h-[80px] justify-center">
+
+                      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <FileText className="w-4 h-4 text-white" />
+                      </div>
+
+                      <p className="text-zinc-400 text-[10px] uppercase tracking-[2px]">
+                        Nota
+                      </p>
+
+                      <h3 className="text-white font-medium text-xs leading-tight line-clamp-2">
+                        {vtaxClient.data.vta[0].Dog.notaP
+                          ? vtaxClient.data.vta[0].Dog.notaP
+                          : "Sin nota"}
+                      </h3>
+
+                    </div>
+
+                  </div>
 
 
-          <div className="p-1 overflow-x-auto">
+                </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.3,
-                duration: 0.4,
-              }}
-              className="bg-white  mb-1">
+              ) : null}
 
-
-              <table className="w-full">
-
-                <thead>
-
-                  <tr className="bg-zinc-950">
-
-                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
-                      Valor
-                    </th>
-
-                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
-
-                      <span className="flex items-center gap-1.5">
-
-                        Fecha
-
-                        <FontAwesomeIcon
-                          onClick={handleOrderHistDog}
-                          icon={faSortAlphaDown}
-                          className="cursor-pointer"
-                        />
-
-                      </span>
-
-                    </th>
-
-                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
-                      Nota
-                    </th>
-
-                    <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
-                      Servicio
-                    </th>
-
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  {vtaxClient.data.vta.map((vta, i) => (
-
-                    <motion.tr
-                      key={vta._id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.06 }}
-                      className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
-                    >
-
-                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
-                        {convertNum(vta.valorServ)}
-                      </td>
-
-                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
-
-                        {convertDateFormat(vta.date)}
-
-                        <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
-                          {convertDay(vta.date)}
-                        </span>
-
-                      </td>
-
-                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
-                        {vta.notesTurn}
-                      </td>
-
-                      <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
-
-                        <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
-                          {vta.tipoServ}
-                        </span>
-
-                      </td>
-
-                    </motion.tr>
-                  ))}
-
-                </tbody>
-
-              </table>
-            </motion.div>
+            </AnimatePresence>
 
           </div>
-        </motion.div>
+
+
+
+          <motion.div initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.3,
+              duration: 0.4,
+            }}
+            className="bg-white  mb-2">
+
+
+            <div className="p-1 overflow-x-auto">
+
+              <motion.div initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.3,
+                  duration: 0.4,
+                }}
+                className="bg-white  mb-1">
+
+
+                <table className="w-full">
+
+                  <thead>
+
+                    <tr className="bg-zinc-950">
+
+                      <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                        Valor
+                      </th>
+
+                      <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+
+                        <span className="flex items-center gap-1.5">
+
+                          Fecha
+
+                          <FontAwesomeIcon
+                            onClick={handleOrderHistDog}
+                            icon={faSortAlphaDown}
+                            className="cursor-pointer"
+                          />
+
+                        </span>
+
+                      </th>
+
+                      <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                        Nota
+                      </th>
+
+                      <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
+                        Servicio
+                      </th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                     {vtaxClient && Array.isArray(vtaxClient?.data?.vta) && vtaxClient?.data?.vta.map((vta, i) => (
+
+                      <motion.tr
+                        key={vta._id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.06 }}
+                        className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors"
+                      >
+
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+                          {convertNum(vta.valorServ)}
+                        </td>
+
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+
+                          {convertDateFormat(vta.date)}
+
+                          <span className="ml-2 text-xs bg-zinc-100 text-zinc-600 px-1.5 py-0.5 rounded-md">
+                            {convertDay(vta.date)}
+                          </span>
+
+                        </td>
+
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+                          {vta.notesTurn}
+                        </td>
+
+                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">
+
+                          <span className="inline-block text-xs bg-zinc-950 text-white px-2.5 py-1 rounded-full font-medium">
+                            {vta.tipoServ}
+                          </span>
+
+                        </td>
+
+                      </motion.tr>
+                    ))} 
+
+                  </tbody>
+
+                </table>
+              </motion.div>
+
+            </div>
+          </motion.div>
+        </>}
 
       </div>
 

@@ -82,7 +82,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
         if (companySelectedMenu) {
             dispatch(actionListSupplier(companySelectedMenu._id));
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands())
+            dispatch(getBrands(companySelectedMenu?.category))
         }
     }, [companySelectedMenu]);
 

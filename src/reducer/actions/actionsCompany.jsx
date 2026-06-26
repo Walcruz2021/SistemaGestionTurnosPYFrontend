@@ -6,6 +6,7 @@ export const ADD_COMPANY = "ADD_COMPANY";
 export const VERIFICATION_COMPANY_EXISTS = "VERIFICATION_COMPANY_EXISTS";
 export const IS_CATEGORY_MEDICINE = "IS_CATEGORY_MEDICINE";
 export const TYPE_PERSON_CATEGORY="TYPE_PERSON_CATEGORY";
+export const IS_CATEGORY_INDUMENTARY="IS_CATEGORY_INDUMENTARY"
 
 export const resetCompanySelected = () => ({
   type: RESET_COMPANY_SELECTED,
@@ -57,6 +58,14 @@ export function addCompany(payload) {
 export function isMedicine(payload) {
   return {
     type: IS_CATEGORY_MEDICINE,
+    payload,
+  };
+}
+
+export function isIndumentary(payload) {
+
+  return {
+    type: IS_CATEGORY_INDUMENTARY,
     payload,
   };
 }

@@ -78,7 +78,7 @@ export default function FormAddSupplyVariant({
         if (companySelectedMenu) {
             dispatch(actionListSupplier(companySelectedMenu._id));
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands())
+            dispatch(getBrands(companySelectedMenu?.catgory))
         }
     }, [companySelectedMenu]);
 

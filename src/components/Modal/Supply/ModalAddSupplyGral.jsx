@@ -31,7 +31,7 @@ const ModalAddSupplyGral = ({ openModal, setOpenModal }) => {
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(actionListSupplier(companySelectedMenu._id));
-            dispatch(getBrands());
+            dispatch(getBrands(companySelectedMenu?.category));
         }
     }, [companySelectedMenu, dispatch]);
 

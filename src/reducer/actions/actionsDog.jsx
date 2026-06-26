@@ -4,8 +4,9 @@ export const DELETE_DOG = "DELETE_DOG";
 export const UPDATE_DOG = "UPDATE_DOG";
 export const ADD_DOG = "ADD_DOG";
 export const SEARCH_VTA_HISTORY_PETS = "SEARCH_VTA_HISTORY_PETS";
+export const RESET_VTA_HISTORY_PETS = "RESET_VTA_HISTORY_PETS";
 export function addDog(payload, idClient) {
-  console.log(payload, "action");
+
   return async function (dispatch) {
     try {
       const newDog = await axios.post(
@@ -62,3 +63,7 @@ export function searchHistorialDog(payload) {
     });
   };
 }
+
+export const resetVtaHistoryPets = () => ({
+  type: RESET_VTA_HISTORY_PETS,
+});

@@ -12,7 +12,7 @@ import Select from "react-select";
 import listCategories from "../../../reducer/actions/category/actionCategory";
 import { actionListSupplier } from "../../../reducer/actions/supplier/actionsSupplier"
 import { actionAddSupply, getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
-import { getBrands } from "../../../reducer/actions/actionBrand"
+
 
 
 const ModalAddSaleSupply = ({ openModal, setOpenModal, dataModalSale, setStateDetailsSupplies }) => {

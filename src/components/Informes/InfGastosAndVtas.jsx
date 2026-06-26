@@ -39,12 +39,12 @@ ChartJS.register(
 const InfGastosAndVtas = () => {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const listGtosAnio = useSelector((state) => state.bills.gtosxAnio);
-
   const listServByAnio = useSelector((state) => state.sales.vtasxAnio);
   const listSalesByYear = useSelector((state) => state.salesSupply.listSalesSuppliesByYear)
+  const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
+
   const [selectedAnio, setSelectedAnio] = useState();
   const [stateGtosValue, setStateGtosValue] = useState([]);
-
   const [stateServValue, setStateServValue] = useState([]);
   const [stateVtasValue, setStateVtasValue] = useState([]);
 
@@ -67,8 +67,10 @@ const InfGastosAndVtas = () => {
       let anio = now.getFullYear();
       setSelectedAnio(anio);
       dispatch(gtosXanio(companySelectedMenu._id, anio));
-      dispatch(vtasxA(companySelectedMenu._id, anio));
       dispatch(informSalesSupplyByYear(companySelectedMenu._id, anio))
+      if (!companySelectedMenu.category === "indumentaria") {
+        dispatch(vtasxA(companySelectedMenu._id, anio));
+      }
     }
   }, [companySelectedMenu, dispatch]);
 
@@ -264,8 +266,8 @@ const InfGastosAndVtas = () => {
       <Select
         placeholder="Seleccione Año"
         options={ListAños}
-        onChange={ChangeAnio}
         className="classSelect instrument-serif-regular"
+        onChange={ChangeAnio}
       />
 
       <div className="titInf">
@@ -306,12 +308,18 @@ const InfGastosAndVtas = () => {
       <div className="container mb-4">
         {activeGastos ? (
           <Bar data={dataG} options={options} />
-        ) : activeVentas ? (
+        ) : activeVentas ?  (
           <>
+          {!isIndumentary ?
+            <>
             <div className="titGral">
               <h2>Servicios {selectedAnio}</h2>
             </div>
             <Bar data={dataServ} options={options} />
+            
+            </>:null
+          }
+
             <div className="titGral">
               <h2>Ventas {selectedAnio}</h2>
             </div>

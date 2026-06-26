@@ -41,6 +41,10 @@ export function listSuppliesStore(idCompany) {
 }
 
 
-export const resetProductsStore = () => ({
-  type: RESET_SUPPLIES_STORE  ,
-});
+export const resetProductsStore = () => {
+
+
+    return {
+        type: RESET_SUPPLIES_STORE
+    };
+};

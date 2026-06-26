@@ -18,12 +18,13 @@ export function addBrand(payload) {
   };
 }
 
-export function getBrands() {
+export function getBrands(categoryCompany) {
   return async function (dispatch) {
     const listBrands = await axios.get(
-      `${host}/api/listBrands`,
+      `${host}/api/listBrands/${categoryCompany}`,
       {}
     );
+    
     return dispatch({
       type: LIST_BRANDS,
       payload: listBrands.data.brands,

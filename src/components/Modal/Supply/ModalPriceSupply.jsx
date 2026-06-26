@@ -13,7 +13,7 @@ import { FormGroup } from "react-bootstrap";
 import {listCategories} from "../../../reducer/actions/category/actionCategory"
 import { actionEditCompanySupplyVariant } from "../../../reducer/actions/companySupplyVariant/actionsCompanySupplyVariant";
 import { getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
-import { getBrands } from "../../../reducer/actions/actionBrand"
+
 
 const ModalPriceSupply = ({
     modalOpenEditSupply,

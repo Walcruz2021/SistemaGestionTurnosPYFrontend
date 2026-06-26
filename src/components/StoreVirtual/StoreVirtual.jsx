@@ -27,7 +27,7 @@ const StoreVirtual = () => {
     const listSuppliesEcommerce = useSelector(
         (state) => state.companySupply.listSuppliesStore
     );
-console.log(listSuppliesEcommerce)
+
     const listBrand = useSelector((state) => state.gralRed.listBrands);
     const [order, setOrder] = useState(false);
     const [stateFilterCategory, setStateFilterCategory] = useState(false);
@@ -100,32 +100,35 @@ console.log(listSuppliesEcommerce)
     // FILTRADO OPTIMIZADO
     //-------------------------------------------------
     const suppliesFiltered = useMemo(() => {
-        let result = [...listSuppliesEcommerce];
+        if(Array.isArray(listSuppliesEcommerce)){
 
-        // Buscar por nombre
-        if (stateSearch.trim()) {
-            result = result.filter((s) =>
-                s.idGlobalSupply.nameSupply
-                    .toLowerCase()
-                    .includes(stateSearch.toLowerCase())
-            );
+            let result = [...listSuppliesEcommerce];
+    
+            // Buscar por nombre
+            if (stateSearch.trim()) {
+                result = result.filter((s) =>
+                    s.idGlobalSupply.nameSupply
+                        .toLowerCase()
+                        .includes(stateSearch.toLowerCase())
+                );
+            }
+    
+            // Filtrar por categoría
+            if (categoryToSearch) {
+                result = result.filter((s) =>
+                    s.idGlobalSupply?.idCategory._id === categoryToSearch.value
+                );
+            }
+    
+            // Filtrar por marca
+            if (brandToSearch) {
+                result = result.filter(
+                    (s) => s.idGlobalSupply?.idBrand?._id === brandToSearch.value
+                );
+            }
+            return result;
         }
 
-        // Filtrar por categoría
-        if (categoryToSearch) {
-            result = result.filter((s) =>
-                s.idGlobalSupply?.idCategory._id === categoryToSearch.value
-            );
-        }
-
-        // Filtrar por marca
-        if (brandToSearch) {
-            result = result.filter(
-                (s) => s.idGlobalSupply?.idBrand?._id === brandToSearch.value
-            );
-        }
-
-        return result;
     }, [
         listSuppliesEcommerce,
         stateSearch,

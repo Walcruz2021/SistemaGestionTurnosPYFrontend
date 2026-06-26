@@ -68,7 +68,7 @@ export default function FrontPageRegisterLogin({ onContact }) {
                 {/* Header */}
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
                     <h1 className="text-4xl font-black text-white mb-2">
-                        Gestión de <span className="text-gray-400 italic font-light">Turnos</span>
+                        Sistema de <span className="text-gray-400 italic font-light">Gestión PY</span>
                     </h1>
 
                     <p className="text-gray-500 text-sm">

@@ -6,18 +6,20 @@ import {
     FUNCTION_COMPANY_SELECTED,
     RESET_COMPANY_SELECTED,
     IS_CATEGORY_MEDICINE,
+    IS_CATEGORY_INDUMENTARY,
     TYPE_PERSON_CATEGORY,
 } from "../actions/actionsCompany";
 
-import {GET_COMPANY_BY_SLUGCOMPANY} from "../actions/company/actionCompany"
+import { GET_COMPANY_BY_SLUGCOMPANY } from "../actions/company/actionCompany"
 
 const initialState = {
 
     arrayCompanies: [],
     companySelected: null,
     categoryMedicine: false,
+    categoryIndumentary: false,
     typePerson: "Cliente",
-    companySlugCompany:null
+    companySlugCompany: null
 };
 
 
@@ -34,6 +36,11 @@ export default function companyReducer(state = initialState, action) {
             return {
                 ...state,
                 categoryMedicine: action.payload,
+            };
+        case IS_CATEGORY_INDUMENTARY:
+            return {
+                ...state,
+                categoryIndumentary: action.payload,
             };
 
         case TYPE_PERSON_CATEGORY:
@@ -59,7 +66,7 @@ export default function companyReducer(state = initialState, action) {
                 arrayCompanies: [],
             };
 
-            
+
         case GET_COMPANY_BY_SLUGCOMPANY:
             return {
                 ...state,
