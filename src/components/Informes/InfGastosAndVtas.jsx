@@ -41,8 +41,8 @@ const InfGastosAndVtas = () => {
   const listGtosAnio = useSelector((state) => state.bills.gtosxAnio);
   const listServByAnio = useSelector((state) => state.sales.vtasxAnio);
   const listSalesByYear = useSelector((state) => state.salesSupply.listSalesSuppliesByYear)
+  
   const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
-
   const [selectedAnio, setSelectedAnio] = useState();
   const [stateGtosValue, setStateGtosValue] = useState([]);
   const [stateServValue, setStateServValue] = useState([]);
@@ -67,8 +67,9 @@ const InfGastosAndVtas = () => {
       let anio = now.getFullYear();
       setSelectedAnio(anio);
       dispatch(gtosXanio(companySelectedMenu._id, anio));
+      
       dispatch(informSalesSupplyByYear(companySelectedMenu._id, anio))
-      if (!companySelectedMenu.category === "indumentaria") {
+      if (!isIndumentary) {
         dispatch(vtasxA(companySelectedMenu._id, anio));
       }
     }

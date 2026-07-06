@@ -169,7 +169,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             <Col xs={6}>
                 <Form.Group>
-                    <Form.Label>Marca</Form.Label>
+                    <Form.Label>* Marca</Form.Label>
                     <Select
                         styles={customStyles(!currentProduct?.nameBrand)}
                         className="instrument-serif-regular"
@@ -187,7 +187,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             <Col xs={6}>
                 <Form.Group>
-                    <Form.Label>Producto</Form.Label>
+                    <Form.Label>* Producto</Form.Label>
                     <Select
                         styles={customStyles(!currentProduct?.nameSupply)}
                         className="instrument-serif-regular"
@@ -206,7 +206,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             <Col xs={6}>
                 <Form.Group>
-                    <Form.Label>Variante de producto</Form.Label>
+                    <Form.Label>* Variante de producto</Form.Label>
 
                     <Select
                         styles={customStyles(!currentProduct?.nameSupply)}
@@ -230,7 +230,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             <Col xs={4}>
                 <Form.Group>
-                    <Form.Label>Cantidad</Form.Label>
+                    <Form.Label>* Cantidad</Form.Label>
                     <Form.Control
                         type="text"
                         name="quantity"
@@ -245,7 +245,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
 
             <Col xs={4}>
                 <Form.Group>
-                    <Form.Label>Costo Unidad</Form.Label>
+                    <Form.Label>* Costo Unidad</Form.Label>
                     <Form.Control
                         type="text"
                         name="unitCost"
@@ -276,7 +276,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
                 <Form.Group>
                     <Form.Label>Precio Venta</Form.Label>
                     <Form.Control
-                        type="number"
+                        type="text"
                         className="mt-2 instrument-serif-regular"
                         name="priceSale"
                         value={currentProduct?.unitCost * (1 + stateMargen / 100) || ""}

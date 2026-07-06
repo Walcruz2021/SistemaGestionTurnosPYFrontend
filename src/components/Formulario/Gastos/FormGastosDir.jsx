@@ -21,6 +21,11 @@ const FormGastosDir = () => {
   const [visibleCheckE, setVisibleCheckE] = useState(false);
   const [visibleCheckT, setVisibleCheckT] = useState(false);
   const [visibleCheckB, setVisibleCheckB] = useState(false);
+  const [stateValuesGastos, setStateValuesGastos] = useState({
+    efectivo: "",
+    transferencia: "",
+    tarjeta: ""
+  });
 
   const allValues = watch();
 
@@ -46,22 +51,22 @@ const FormGastosDir = () => {
 
     const newData = {
       ...data,
-      efectivo: Number(data.efectivo) || 0,
-      transferencia: Number(data.transferencia) || 0,
-      tarjeta: Number(data.tarjeta) || 0,
+      efectivo: Number(stateValuesGastos.efectivo) || 0,
+      transferencia: Number(stateValuesGastos.transferencia) || 0,
+      tarjeta: Number(stateValuesGastos.tarjeta) || 0,
     };
 
     const value =
-      newData.efectivo + newData.transferencia + newData.tarjeta;
+      Number(stateValuesGastos.efectivo) + Number(stateValuesGastos.transferencia) + Number(stateValuesGastos.tarjeta);
 
     dispatch(
       addGastos({
         año,
         date: newData.date,
         description: newData.description,
-        efectivo: newData.efectivo,
-        tarjeta: newData.tarjeta,
-        transferencia: newData.transferencia,
+        efectivo: stateValuesGastos.efectivo,
+        tarjeta: stateValuesGastos.tarjeta,
+        transferencia: stateValuesGastos.transferencia,
         categoryGasto: "GASTO DIRECTO",
         value,
         mes,
@@ -79,11 +84,14 @@ const FormGastosDir = () => {
     reset({
       date: "",
       description: "",
-      efectivo: 0,
-      transferencia: 0,
-      tarjeta: 0,
       category: null,
     });
+
+    setStateValuesGastos({
+      efectivo: "",
+      transferencia: "",
+      tarjeta: ""
+    })
 
     setVisibleCheckE(false);
     setVisibleCheckT(false);
@@ -95,9 +103,9 @@ const FormGastosDir = () => {
       allValues.date &&
       allValues.description &&
       allValues.description.trim() !== "" &&
-      (Number(allValues.efectivo) > 0 ||
-        Number(allValues.transferencia) > 0 ||
-        Number(allValues.tarjeta) > 0) &&
+      (Number(stateValuesGastos.efectivo) > 0 ||
+        Number(stateValuesGastos.transferencia) > 0 ||
+        Number(stateValuesGastos.tarjeta) > 0) &&
       allValues.category
     );
   };
@@ -111,7 +119,7 @@ const FormGastosDir = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-[11px] font-semibold uppercase text-gray-500">
-            Categoría
+            * Categoría
           </label>
           <Controller
             name="category"
@@ -120,7 +128,7 @@ const FormGastosDir = () => {
             render={({ field }) => (
               <Select
                 {...field}
-                placeholder="* Seleccione Categoria"
+                placeholder="Seleccione Categoria"
                 options={arrayGastosDir}
               />
             )}
@@ -129,7 +137,7 @@ const FormGastosDir = () => {
 
         <div className="flex flex-col gap-1.5">
           <label className="text-[11px] font-semibold uppercase text-gray-500">
-            Fecha
+            * Fecha
           </label>
           <input
             type="date"
@@ -142,7 +150,7 @@ const FormGastosDir = () => {
       {/* MEDIOS DE PAGO */}
       <div className="flex flex-col gap-4 max-w-md">
         <label className="text-[11px] font-semibold uppercase text-gray-500">
-          Medio de pago
+          * Medio de pago
         </label>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -176,10 +184,10 @@ const FormGastosDir = () => {
                 />
 
                 <div
-                  className={`w-4 h-4 border flex items-center justify-center
+                  className={`w-5 h-5 border-1 flex items-center justify-center 
                   ${item.checked
                       ? "bg-black border-black"
-                      : "bg-white border-gray-300"
+                      : "bg-white border-gray-500"
                     }`}
                 >
                   {item.checked && (
@@ -199,19 +207,24 @@ const FormGastosDir = () => {
               </label>
 
               {item.checked && (
-                <Controller
+                <Form.Control
+                  type="text"
+                  placeholder={item.label}
                   name={item.field}
-                  control={control}
-                  defaultValue={0}
-                  render={({ field }) => (
-                    <Form.Control
-                      type="number"
-                      placeholder="$"
-                      min="0"
-                      className="w-full bg-neutral-900 border border-neutral-700 text-gray-200 px-3 py-1.5 text-sm"
-                      {...field}
-                    />
-                  )}
+                  maxLength={10}
+                  required
+                  className="mt-2 instrument-serif-regular"
+                  value={stateValuesGastos[item.field]}
+                  onChange={(e) => {
+                    // Solo permitir números y máximo 10 caracteres
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
+                    setStateValuesGastos((prevState) => ({
+                      ...prevState,
+                      [item.field]: value,
+                    }));
+                  }}
                 />
               )}
             </div>
@@ -222,13 +235,14 @@ const FormGastosDir = () => {
       {/* DESCRIPCION */}
       <div className="flex flex-col gap-1.5">
         <label className="text-[11px] font-semibold uppercase text-gray-500">
-          Descripción del gasto
+          * Descripción del gasto
         </label>
 
         <textarea
           {...register("description")}
           placeholder="Añadí un comentario..."
-          className="w-full bg-white border border-gray-200 text-gray-900 text-sm px-3 py-2.5 resize-none"
+          maxLength={100}
+          className="w-full bg-white border border-gray-500 text-gray-700 text-sm px-3 py-2.5 resize-none"
         />
 
         <p className="text-red-500 text-xs text-left">* Valores obligatorios</p>

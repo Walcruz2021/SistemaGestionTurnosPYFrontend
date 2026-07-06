@@ -8,6 +8,7 @@ export const ORDER_GASTOS_MONTHANIO_PARAM = "ORDER_GASTOS_MONTHANIO_PARAM";
 export const GTOS_ANIO_MES_NOW = "GTOS_ANIO_MES_NOW";
 export const ORDER_GASTOS_MONTH_NOW = "ORDER_GASTOS_MONTH_NOW";
 export const GTO_X_ANIO = "GTO_X_ANIO";
+export const RESET_GASTOS_BYYEAR = "RESET_GASTOS_BYYEAR"
 
 /**
  * Function Insert Direct Costs
@@ -64,6 +65,12 @@ export const resetGastosXanioandMesParam = () => ({
   type: RESET_GASTOSxANIOandPARAM,
 });
 
+export const resetGatosByYear = () => ({
+
+  type: RESET_GASTOS_BYYEAR
+
+})
+
 /**
  *
  * @param {*} idCompany
@@ -116,3 +123,4 @@ export function orderGastosXanioandMesParam(payload) {
     payload,
   };
 }
+

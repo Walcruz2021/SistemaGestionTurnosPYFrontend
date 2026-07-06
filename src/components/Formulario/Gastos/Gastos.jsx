@@ -94,16 +94,16 @@ const Gastos = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
-              className="mt-6 bg-white border border-gray-200 p-8"
+              className="mt-6 bg-white border border-gray-200 p-0 md:p-6 lg:p-8 rounded-md shadow-sm"
             >
-              <h2 className="text-lg font-black text-gray-900 tracking-tight mb-1">
+              <h2 className="text-lg font-black text-gray-1000 tracking-tight mb-1">
                 {current.title}
               </h2>
               <p className="text-gray-500 text-sm font-light">{current.subtitle}</p>
 
               {/* Formulario placeholder */}
-              <div className="mt-8 border-2 border-dashed border-gray-200 rounded-sm text-center">
-                <p className="text-gray-400 text-sm tracking-wide mt-3">
+              <div className="mt-8 border-2 border-dashed border-gray-400 rounded-sm text-center">
+                <p className="text-gray-500 text-sm tracking-wide mt-3">
                   Formulario de carga · <span className="font-semibold text-gray-600">{current.title}</span>
 
                   {current.title==="Gastos Directos" ? (

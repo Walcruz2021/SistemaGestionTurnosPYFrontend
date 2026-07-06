@@ -7,10 +7,12 @@ import { auth } from "../../api/configFirebase";
 
 import { resetCompanySelected } from "../../reducer/actions/actionsCompany";
 import { resetAllClients } from "../../reducer/actions/actionsClients";
-import { resetGastosXanioandMesParam } from "../../reducer/actions/actionsGastos";
-import { resetVentasXanioandMesParam } from "../../reducer/actions/actionsVentas";
+import { resetGastosXanioandMesParam, resetGatosByYear } from "../../reducer/actions/actionsGastos";
+import { resetVentasXanioandMesParam, resetServiciosByYear } from "../../reducer/actions/actionsVentas";
+import { resetSalesProductsByYear } from "../../reducer/actions/supply/actionsInformSalesSupply"
 import { resetProductsStore } from "../../reducer/actions/companySupply/actionCompanySupply";
-import {resetVtaHistoryPets} from "../../reducer/actions/actionsDog"
+import { resetVtaHistoryPets } from "../../reducer/actions/actionsDog"
+import {resetGetSupplyByInvoice} from "../../reducer/actions/supply/actionsSupply"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -203,7 +205,10 @@ function NavBarLat() {
       dispatch(resetVentasXanioandMesParam());
       dispatch(resetProductsStore())
       dispatch(resetVtaHistoryPets())
-
+      dispatch(resetGatosByYear())
+      dispatch(resetServiciosByYear())
+      dispatch(resetSalesProductsByYear())
+      dispatch(resetGetSupplyByInvoice())
 
       await signOut(auth);
 
@@ -348,9 +353,9 @@ function NavBarLat() {
 
 
                 <Link
-  to="/"
-  onClick={() => setOpen(false)}
-  className="
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  className="
     uppercase
     font-bold
     text-white
@@ -361,9 +366,9 @@ function NavBarLat() {
     transition-colors
     duration-200
   "
->
-  {CompanyMenuReducer?.nameCompany}
-</Link>
+                >
+                  {CompanyMenuReducer?.nameCompany}
+                </Link>
 
               </div>
 

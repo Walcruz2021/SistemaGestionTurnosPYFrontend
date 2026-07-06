@@ -13,7 +13,8 @@ import {
     GET_RANKING_VTAS_CLIENT,
     SEARCH_VTA_CLIENT,
     GET_RANKING_VTAS_CLIENT_DETAILS,
-    LAST_VALUES
+    LAST_VALUES,
+    RESET_SERVICIOSBYYEAR
 } from "../actions/actionsVentas";
 
 const initialState = {
@@ -210,6 +211,12 @@ export default function salesReducer(state = initialState, action) {
                 ...state,
                 lastValues: action.payload,
             };
+
+        case RESET_SERVICIOSBYYEAR:
+            return {
+                ...state,
+                vtasxAnio: null
+            }
         default:
             return state;
     }

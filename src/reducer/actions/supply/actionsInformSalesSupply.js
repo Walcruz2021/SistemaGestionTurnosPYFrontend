@@ -5,6 +5,7 @@ export const SALESSUPPLIESBYMONTHNOW = "SALESSUPPLIESBYMONTHNOW"
 export const SALESSUPPLIESBYMONTH = "SALESSUPPLIESBYMONTH"
 export const SALESSUPPLIESBYYEAR = "SALESSUPPLIESBYYEAR"
 export const RESET_SALES_BYMONTH = "RESET_SALES_BYMONTH"
+export const RESET_SALES_PRODUCTS_BYYEAR="RESET_SALES_PRODUCTS_BYYEAR"
 
 export function informSalesSupplyByMonthNow(idCompany) {
 
@@ -70,4 +71,8 @@ export function informSalesSupplyByYear(idCompany, date) {
 
 export const resetSalesByMonth = () => ({
     type: RESET_SALES_BYMONTH,
+});
+
+export const resetSalesProductsByYear = () => ({
+    type: RESET_SALES_PRODUCTS_BYYEAR,
 });

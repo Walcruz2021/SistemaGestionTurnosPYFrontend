@@ -12,7 +12,7 @@ export const UPDATE_SUPPLY_By_LIST = "UPDATE_SUPPLY_By_LIST"
 export const ADD_SALE_SUPPLY = "ADD_SALE_SUPPLY"
 export const GET_BUYSUPPLY_BY_NINVOICE = "GET_BUYSUPPLY_BY_NINVOICE"
 export const GET_LIST_SUPPLIES_GRAL = "GET_LIST_SUPPLIES_GRAL"
-
+export const RESET_BUYSUPPLY_BY_NINVOICE="RESET_BUYSUPPLY_BY_NINVOICE"
 
 /**
  * add supply gral
@@ -171,6 +171,11 @@ export function actionListBuySupplyByNInvoice(idCompany, nInvoice) {
   }
 }
 
+export const resetGetSupplyByInvoice = () => {
+  return {
+    type: RESET_BUYSUPPLY_BY_NINVOICE
+  }
+}
 
 export function actionAddSaleSupply(payload) {
 

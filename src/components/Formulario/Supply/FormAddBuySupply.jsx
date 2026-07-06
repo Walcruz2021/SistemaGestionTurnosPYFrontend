@@ -10,7 +10,8 @@ import {
     getListSupplies,
     actionAddBuySupply,
     actionEditSupplyByList,
-    getListSuppliesGral
+    getListSuppliesGral,
+    actionListBuySuppliesByDateCurrent
 } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand"
 import { addInventory } from "../../../reducer/actions/inventory/actionsInventory";
@@ -42,7 +43,6 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
     const listBrands = useSelector((state) => state.gralRed.listBrands)
     const listSupplies = useSelector((state) => state.supply.listSupplies);
     const listSuppliesGral = useSelector((state) => state.supply.listSuppliesGral)
-
     const [showContable, setShowContable] = useState(true);
     const [showContableProd, setShowContableProd] = useState(1);
     const [openModalSupply, setOpenModalSupply] = useState(false);
@@ -206,7 +206,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
                     confirmButtonColor: "rgb(21, 151, 67)",
                 }).then(() => {
                     dispatch(getListSupplies(companySelectedMenu._id));
-
+                    dispatch(actionListBuySuppliesByDateCurrent(companySelectedMenu._id))
                 });
 
                 setStateInput({
@@ -319,12 +319,12 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
         })
     });
 
-  
+
 
     return (
         <Form centered size="lg">
 
-          
+
 
             {/* =============================== */}
             {/*       BLOQUE CONTABLE           */}
@@ -335,7 +335,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label className="instrument-serif-regular">N Factura</Form.Label>
+                            <Form.Label className="instrument-serif-regular">* N Factura</Form.Label>
                             <Form.Control
                                 type="text"
                                 className={`instrument-serif-regular ${!stateInput.NInvoice ? "border-danger" : ""}`}
@@ -349,13 +349,13 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
                     {/* Proveedor */}
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label className="instrument-serif-regular">Proveedor</Form.Label>
+                            <Form.Label className="instrument-serif-regular">* Proveedor</Form.Label>
                             <Select
                                 styles={customStyles(!stateInput?.nameSupplier)}
                                 options={supplierOptions}
                                 className="instrument-serif-regular"
                                 onChange={handleChangeSupplier}
-                                placeholder="Proveedor"
+                                placeholder={stateInput?.nameSupplier ? stateInput.nameSupplier : "Proveedor"}
                             />
                         </Form.Group>
                     </Col>
@@ -363,7 +363,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
                     {/* Fecha */}
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label className="instrument-serif-regular">Fecha</Form.Label>
+                            <Form.Label className="instrument-serif-regular">* Fecha</Form.Label>
                             <Form.Control
                                 type="date"
                                 name="date"
@@ -377,7 +377,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label className="instrument-serif-regular">Monto Neto</Form.Label>
+                            <Form.Label className="instrument-serif-regular">* Monto Neto</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="montoN"
@@ -416,7 +416,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
 
                     <Col xs={6}>
                         <Form.Group>
-                            <Form.Label className="instrument-serif-regular">Monto Bruto</Form.Label>
+                            <Form.Label className="instrument-serif-regular">* Monto Bruto</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="montoB"
@@ -547,24 +547,17 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
             </div>
 
             < Modal.Footer >
-                {/* <Button variant="secondary" onClick={setOpenModal}>
-          Cancelar
-        </Button> */}
+
                 < Button variant="primary" onClick={() => handleSubmit(stateInput)} listBrands={listBrands} disabled={validationAccountant() || validationBuySupply()}>
                     Guardar Compra
                 </Button>
 
+
+
                 <div className="col-6 col-md-4 d-flex justify-content-center mb-1">
-                    {/* <div className="text-center">
-                        <div className="card-body">
-                            <button className="btn btn-link">
-                                <img src={addSupplyIcon} onClick={addSupplyFunction} />
-                            </button>
-
-                        </div>
-                    </div> */}
-
-
+                    <p className="text-danger small mt-2 instrument-serif-regular">
+                        (*) Campos obligatorios!!!
+                    </p>
                 </div>
 
 

@@ -1,4 +1,4 @@
-import { SALESSUPPLIESBYMONTHNOW, SALESSUPPLIESBYMONTH,SALESSUPPLIESBYYEAR,RESET_SALES_BYMONTH } from "../../actions/supply/actionsInformSalesSupply";
+import { SALESSUPPLIESBYMONTHNOW, SALESSUPPLIESBYMONTH, SALESSUPPLIESBYYEAR, RESET_SALES_BYMONTH, RESET_SALES_PRODUCTS_BYYEAR } from "../../actions/supply/actionsInformSalesSupply";
 
 
 const initialState = {
@@ -22,18 +22,22 @@ export default function informSalesSupply(state = initialState, action) {
                 listSalesSuppliesByMonth: action.payload
             }
 
-            case RESET_SALES_BYMONTH:
-                return {
-                    ...state,
-                    listSalesSuppliesByMonth: []
-                }
+        case RESET_SALES_BYMONTH:
+            return {
+                ...state,
+                listSalesSuppliesByMonth: []
+            }
 
         case SALESSUPPLIESBYYEAR:
             return {
                 ...state,
                 listSalesSuppliesByYear: action.payload
             }
-
+        case RESET_SALES_PRODUCTS_BYYEAR:
+            return {
+                ...state,
+                listSalesSuppliesByYear: null
+            }
         default:
             return state;
     }

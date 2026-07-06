@@ -6,6 +6,7 @@ import {
     GTOS_ANIO_MES_NOW,
     ORDER_GASTOS_MONTH_NOW,
     ORDER_GASTOS_MONTHANIO_PARAM,
+    RESET_GASTOS_BYYEAR
 } from "../actions/actionsGastos";
 
 const initialState = {
@@ -79,6 +80,12 @@ export default function billsReducer(state = initialState, action) {
                 ...state,
                 gastosXanioandMesParam: null,
             };
+
+        case RESET_GASTOS_BYYEAR:
+            return {
+                ...state,
+                gtosxAnio: null
+            }
 
         default:
             return state;

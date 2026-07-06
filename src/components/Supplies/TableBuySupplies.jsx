@@ -679,15 +679,9 @@ const TableBuySupplies = () => {
                         <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
                             <TableDetailBuys stateDetailsBuy={stateDetailsBuy?.detailsBuy} />
                         </div>
-
-
                     </>
-              
-
+            
                 }
-
-
-
 
             </div>
 

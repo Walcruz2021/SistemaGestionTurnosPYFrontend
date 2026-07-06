@@ -38,8 +38,8 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
     });
 
 
-    const handleSubmit = () => {
-        if (stateInput.nameSupplier.trim() === "" || stateInput.address.trim() === "" || stateInput.cuit.trim() === "") {
+    const handleSubmit = async () => {
+        if (stateInput.nameSupplier.trim() === "" || stateInput.address.trim() === "" || stateInput.phone.trim() === "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -54,25 +54,35 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                 phone: stateInput.phone,
                 Company: companySelectedMenu._id
             };
-            dispatch(actionAddSupplier(supplierData));
-            MySwal.fire({
-                title: "¡Proveedor agregado correctamente!",
-                icon: "success",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "rgb(21, 151, 67)",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    dispatch(actionListSupplier(companySelectedMenu._id));
-                    setOpenModal(!openModal);
+            const response = await dispatch(actionAddSupplier(supplierData));
+            console.log(response)
+            if (response.status === 200) {
+                MySwal.fire({
+                    title: "¡Proveedor agregado correctamente!",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(21, 151, 67)",
+                })
 
-                    setStateInput({
-                        nameSupplier: "",
-                        address: "",
-                        cuit: "",
-                        phone: ""
-                    });
-                }
-            });
+                dispatch(actionListSupplier(companySelectedMenu._id));
+                setOpenModal(!openModal);
+
+                setStateInput({
+                    nameSupplier: "",
+                    address: "",
+                    cuit: "",
+                    phone: ""
+                });
+            } else {
+                MySwal.fire({
+                    title: "¡Error al agregar proveedor!",
+                    text: response.message || "Ocurrió un error al agregar el proveedor.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(21, 151, 67)",
+                });
+            }
+
         }
     };
 
@@ -105,7 +115,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                                 controlId="exampleForm.ControlInput1"
                             >
                                 <Form.Label className="instrument-serif-regular">
-                                    Nombre Proveedor
+                                    * Nombre Proveedor
                                 </Form.Label>
 
                                 <Form.Control
@@ -126,7 +136,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                                 controlId="exampleForm.ControlInput1"
                             >
                                 <Form.Label className="instrument-serif-regular">
-                                    Domicilio
+                                    * Domicilio
                                 </Form.Label>
 
                                 <Form.Control
@@ -148,17 +158,29 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                                 controlId="exampleForm.ControlInput1"
                             >
                                 <Form.Label className="instrument-serif-regular">
-                                    Telefono
+                                    * Telefono
                                 </Form.Label>
 
                                 <Form.Control
                                     className="instrument-serif-regular"
                                     type="text"
                                     name="phone"
+                                    inputMode="numeric" //en celulares abre el teclado numérico.
+                                    pattern="[0-9]*"
+                                    placeholder="3876153799"
                                     autoFocus
-                                    maxLength={50}
+                                    maxLength={20}
                                     value={stateInput.phone}
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                        // Solo permitir números y máximo 20 caracteres
+                                        const value = e.target.value
+                                            .replace(/\D/g, "")
+                                            .slice(0, 20);
+                                        setStateInput((prevState) => ({
+                                            ...prevState,
+                                            phone: value,
+                                        }));
+                                    }}
                                     required
                                 />
                             </Form.Group>
@@ -194,7 +216,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                             variant="primary"
                             type="submit"
                             onClick={handleSubmit}
-                            disabled={!stateInput.nameSupplier || !stateInput.address}
+                            disabled={!stateInput.nameSupplier || !stateInput.address || !stateInput.phone || !stateInput.nameSupplier.trim() || !stateInput.address.trim() || !stateInput.phone.trim()}
                         >
                             Agregar Proveedor
                         </Button>

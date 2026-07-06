@@ -117,10 +117,12 @@ const AppRoutes = () => {
         } else if (companySelected.category === "indumentaria") {
           dispatch(isIndumentary(true))
           dispatch(isMedicine(false))
+          dispatch(getBrands(companySelected?.category));
         } else {
           dispatch(isIndumentary(false))
           dispatch(isMedicine(false))
           dispatch(typePerson("Cliente"))
+          dispatch(getBrands("peluAndVet"));
         }
       }
     } else if (loginUser?.emailVerified) {
@@ -132,7 +134,6 @@ const AppRoutes = () => {
   //send dispatch routes grales
   useEffect(() => {
     dispatch(listCategories());
-    dispatch(getBrands(companySelected?.category));
     dispatch(listCategories());
   }, [dispatch])
 

@@ -26,7 +26,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { searchHistorialDog } from "../reducer/actions/actionsDog";
+import { searchHistorialDog, resetVtaHistoryPets } from "../reducer/actions/actionsDog";
 import { getClients } from "../reducer/actions/actionsClients";
 
 import Swal from "sweetalert2";
@@ -79,7 +79,7 @@ function Dashboard() {
   const vtaxClient = useSelector(
     (state) => state.pets.vtaxClient
   );
-console.log(vtaxClient)
+
   const isMedicine = useSelector(
     (state) => state.company.categoryMedicine
   );
@@ -141,6 +141,12 @@ console.log(vtaxClient)
       setIsLoading(false);
     }
   }, [loginUser]);
+
+  useEffect(() => {
+    if (!selectedDog) {
+      dispatch(resetVtaHistoryPets())
+    }
+  }, [selectedDog])
 
   useEffect(() => {
     let interval;
@@ -746,8 +752,7 @@ console.log(vtaxClient)
 
             <AnimatePresence>
 
-              {selectedDog &&
-                vtaxClient?.status === 200 ? (
+              {selectedDog !== null && vtaxClient?.status === 200 ? (
 
                 <motion.div
                   key="historial"
@@ -904,7 +909,7 @@ console.log(vtaxClient)
 
                   <tbody>
 
-                     {vtaxClient && Array.isArray(vtaxClient?.data?.vta) && vtaxClient?.data?.vta.map((vta, i) => (
+                    {vtaxClient && Array.isArray(vtaxClient?.data?.vta) && vtaxClient?.data?.vta.map((vta, i) => (
 
                       <motion.tr
                         key={vta._id}
@@ -941,7 +946,7 @@ console.log(vtaxClient)
                         </td>
 
                       </motion.tr>
-                    ))} 
+                    ))}
 
                   </tbody>
 

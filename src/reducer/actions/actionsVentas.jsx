@@ -10,10 +10,11 @@ export const ORDER_VENTAS_MONTHANIO_PARAM = "ORDER_VENTAS_MONTHANIO_PARAM"
 export const RESET_VENTASxANIOandPARAM = "RESET_VENTASxANIOandPARAM";
 export const DELETE_TURNO = "DELETE_TURNO";
 export const PREDICTIONS_SALES_X_ANIO = "PREDICTIONS_SALES_X_ANIO"
-export const PREDICTIONS_SALES_ByCLIENT_IN_CANT="PREDICTIONS_SALES_ByCLIENT_IN_CAN"
-export const GET_RANKING_VTAS_CLIENT="GET_RANKING_VTAS_CLIENT"
-export const GET_RANKING_VTAS_CLIENT_DETAILS="GET_RANKING_VTAS_CLIENT_DETAILS"
-export const LAST_VALUES="LAST_VALUES"
+export const PREDICTIONS_SALES_ByCLIENT_IN_CANT = "PREDICTIONS_SALES_ByCLIENT_IN_CAN"
+export const GET_RANKING_VTAS_CLIENT = "GET_RANKING_VTAS_CLIENT"
+export const GET_RANKING_VTAS_CLIENT_DETAILS = "GET_RANKING_VTAS_CLIENT_DETAILS"
+export const LAST_VALUES = "LAST_VALUES"
+export const RESET_SERVICIOSBYYEAR="RESET_SERVICIOSBYYEAR"
 import axios from "axios";
 import host from "../../components/ruteBack/vbledeploy";
 
@@ -102,7 +103,7 @@ export function vtasAnioMesNow(idCompany) {
       `${host}/api/vtasxAnioandMesNow/${idCompany}`,
       {}
     );
-   
+
     return dispatch({
       type: VTAS_ANIO_MES_NOW,
       payload: vtas.data.vtas,
@@ -260,3 +261,7 @@ export function rankingVentasByClientDetails(idCompany) {
     });
   };
 }
+
+export const resetServiciosByYear = () => ({
+  type: RESET_SERVICIOSBYYEAR
+})
