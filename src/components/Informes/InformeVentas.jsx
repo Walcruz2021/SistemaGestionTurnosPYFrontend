@@ -41,11 +41,10 @@ import {
 import DetailsSaleSelected from "../Sale/DetailsSaleSelected";
 
 export default function TodoList() {
+  const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const listSalesByMonthNow = useSelector((state) => state.salesSupply.listSalesSuppliesByMonthNow.sales)
-
   const listSalesByMonth = useSelector((state) => state.salesSupply.listSalesSuppliesByMonth.sales)
-
 
   //devolucion decha actual
   let date = new Date();
@@ -165,7 +164,7 @@ export default function TodoList() {
   }, [listSalesByMonthNow, dispatch]);
 
 
-    //suma totales ventas de insumos por mes seleccionado
+  //suma totales ventas de insumos por mes seleccionado
   useEffect(() => {
     if (listSalesByMonth && listSalesByMonth.length) {
       setStateTotalsSaleByMonth(sumaTotalesArraySale(listSalesByMonth));
@@ -367,87 +366,94 @@ export default function TodoList() {
       </div>
 
       <br />
-      {/* <AgendaInputs></AgendaInputs> */}
-      <div className="titGral">
-        <h2>Servicios del Mes Actual</h2>
-      </div>
 
-      {/* TABLE SERVICES MONTH NOW*/}
-      {Array.isArray(ventas) && ventas.length > 0 ? (
-        // HOVER para que semarque con el cursor
-        // BODERED para que se marquen los bordes de las columnas
-        <div className="container-lg table-responsive">
-          <table className="table table-bordered table-hover table-white">
-            <thead class="thead-light">
-              <tr className="instrument-serif-regular">
-                <th >
-                  Fecha{" "}
-                  <FontAwesomeIcon
-                    onClick={(e) => handleOrder(e)}
-                    color={order ? "#FF846A" : "#A2DFFF"}
-                    icon={faSortAlphaDown}
-                    size="lg"
-                    style={{ cursor: "pointer" }}
-                  />
-                </th>
-                <th>Valor Servicio</th>
-                {/* <th>Efectivo</th>
-                <th>Banco</th>
-                <th>Tarjeta</th> */}
-                <th>Cliente</th>
-              </tr>
-            </thead>
-            <tbody className="instrument-serif-regular">
-              {ventas.map((vta) => (
-                <tr key={vta._id}>
-                  <td>{convertDateFormat(vta.date)}</td>
-                  {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
-                  {/* {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
-                  {vta.transferencia ? (
-                    <td>{convertNum(vta.transferencia)}</td>
-                  ) : (
-                    <td>{convertNum(0)}</td>
-                  )}
-                  {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>} */}
-                  <td>{vta.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {
 
-          <div className="containerInforme">
-            <div className="cardInf">
-              <div>
-                <FontAwesomeIcon icon={faChartLine} size="lg" />
-                <p>Total Servicios: {convertNum(sumaTotalsState.sumaMes)}</p>
-              </div>
-            </div>
-            <div className="cardInf">
-              <div>
-                <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-                <p>Total Efectivo: {convertNum(sumaTotalsState.sumaEfectivo)}</p>
-              </div>
-            </div>
-            <div className="cardInf">
-              <div>
-                <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-                <p>Total Banco: {convertNum(sumaTotalsState.sumaTransferencia)}</p>
-              </div>
-            </div>
-            <div className="cardInf">
-              <div>
-                <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-                <p>Total Tarjeta: {convertNum(sumaTotalsState.sumaTarjeta)}</p>
-              </div>
-            </div>
+        !isIndumentary &&
+        <>
+
+          <div className="titGral">
+            <h2>Servicios del Mes Actual</h2>
           </div>
 
-        </div>
-      ) : (
-        <div className="titGral container-lg P-2">
-          <h2 className="alertSearch">No existen Servicios del Mes Actual</h2>
-        </div>
-      )}
+          {Array.isArray(ventas) && ventas.length > 0 ? (
+            // HOVER para que semarque con el cursor
+            // BODERED para que se marquen los bordes de las columnas
+            <div className="container-lg table-responsive">
+              <table className="table table-bordered table-hover table-white">
+                <thead class="thead-light">
+                  <tr className="instrument-serif-regular">
+                    <th >
+                      Fecha{" "}
+                      <FontAwesomeIcon
+                        onClick={(e) => handleOrder(e)}
+                        color={order ? "#FF846A" : "#A2DFFF"}
+                        icon={faSortAlphaDown}
+                        size="lg"
+                        style={{ cursor: "pointer" }}
+                      />
+                    </th>
+                    <th>Valor Servicio</th>
+                    {/* <th>Efectivo</th>
+          <th>Banco</th>
+          <th>Tarjeta</th> */}
+                    <th>Cliente</th>
+                  </tr>
+                </thead>
+                <tbody className="instrument-serif-regular">
+                  {ventas.map((vta) => (
+                    <tr key={vta._id}>
+                      <td>{convertDateFormat(vta.date)}</td>
+                      {vta.valorServ ? <td>{convertNum(vta.valorServ)}</td> : <td>{convertNum(0)}</td>}
+                      {/* {vta.efectivo ? <td>{convertNum(vta.efectivo)}</td> : <td>{convertNum(0)}</td>}
+            {vta.transferencia ? (
+              <td>{convertNum(vta.transferencia)}</td>
+            ) : (
+              <td>{convertNum(0)}</td>
+            )}
+            {vta.tarjeta ? <td>{convertNum(vta.tarjeta)}</td> : <td>{convertNum(0)}</td>} */}
+                      <td>{vta.name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="containerInforme">
+                <div className="cardInf">
+                  <div>
+                    <FontAwesomeIcon icon={faChartLine} size="lg" />
+                    <p>Total Servicios: {convertNum(sumaTotalsState.sumaMes)}</p>
+                  </div>
+                </div>
+                <div className="cardInf">
+                  <div>
+                    <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                    <p>Total Efectivo: {convertNum(sumaTotalsState.sumaEfectivo)}</p>
+                  </div>
+                </div>
+                <div className="cardInf">
+                  <div>
+                    <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                    <p>Total Banco: {convertNum(sumaTotalsState.sumaTransferencia)}</p>
+                  </div>
+                </div>
+                <div className="cardInf">
+                  <div>
+                    <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                    <p>Total Tarjeta: {convertNum(sumaTotalsState.sumaTarjeta)}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          ) : (
+            <div className="titGral container-lg P-2">
+              <h2 className="alertSearch">No existen Servicios del Mes Actual</h2>
+            </div>
+          )}
+        </>
+
+      }
 
       {/* TABLE SSALES MONTH NOW*/}
       {Array.isArray(listSalesByMonthNow) && listSalesByMonthNow.length > 0 ? (
@@ -584,7 +590,7 @@ export default function TodoList() {
 
         <>
           {
-            Array.isArray(vtasFiltered) && vtasFiltered.length > 0 ? (
+             !isIndumentary && Array.isArray(vtasFiltered) && vtasFiltered.length > 0 ? (
               <div>
                 <div className="container-lg table-responsive">
                   <div className="titGral">
@@ -658,7 +664,7 @@ export default function TodoList() {
                 </div>
 
               </div>
-            ) : vtasFiltered&& vtasFiltered.length===0 ?
+            ) : vtasFiltered && vtasFiltered.length === 0 ?
 
               (
                 <div className="titGral container-lg p-2">
@@ -668,7 +674,7 @@ export default function TodoList() {
           }
 
           {
-            Array.isArray(listSalesByMonth) && listSalesByMonth.length > 0 ? (
+           Array.isArray(listSalesByMonth) && listSalesByMonth.length > 0 ? (
               <div>
                 <div className="titGral">
                   <h2>Ventas del Mes Seleccionado</h2>

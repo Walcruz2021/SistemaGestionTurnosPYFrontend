@@ -13,7 +13,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import FormNoteCred from "../Formulario/Vtas/FormNoteCred"
 
 
-const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale,setOpenModalNoteCred, openModalNoteCred }) => {
+const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale, setOpenModalNoteCred, openModalNoteCred }) => {
 
 
     function functionOpenModal() {
@@ -47,7 +47,7 @@ const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale,setOpenModalNote
                             <tr key={item._id}>
                                 {item.quantitySale ? <td>{item.quantitySale}</td> : <td>{0}</td>}
                                 <td>{item.nameSupply}</td>
-                                {item.subtotal ? <td>{convertNum(item.subtotal/item.quantitySale)}</td> : <td>{convertNum(0)}</td>}
+                                {item.subtotal ? <td>{convertNum(item.subtotal / item.quantitySale)}</td> : <td>{convertNum(0)}</td>}
                                 {item.subtotal ? <td>{convertNum(item.subtotal)}</td> : <td>{convertNum(0)}</td>}
                                 {item.quantityReturned ? <td className="text-center text-warning">{item.quantityReturned}</td> : <td className="text-center">{0}</td>}
                             </tr>
@@ -116,8 +116,9 @@ const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale,setOpenModalNote
                 </div>
             </div>
 
-            <div className="d-flex card-body justify-content-center mt-1">
+            {/* hasta que se implemente este componente se deja comentado el llamado al mismo, para que no rompa la app */}
 
+            {/* <div className="d-flex card-body justify-content-center mt-1">
 
                 <OverlayTrigger
                     placement="top"
@@ -128,11 +129,11 @@ const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale,setOpenModalNote
                         <img src={noteCred} />
                     </button>
                 </OverlayTrigger>
+                
+            </div> */}
 
 
-            </div>
-
-            {openModalNoteCred && <FormNoteCred openModal={openModalNoteCred} setOpenModal={setOpenModalNoteCred} dataModalSale={detailsSale} setStateDetailsSale={setStateDetailsSale}/>}
+            {/* {openModalNoteCred && <FormNoteCred openModal={openModalNoteCred} setOpenModal={setOpenModalNoteCred} dataModalSale={detailsSale} setStateDetailsSale={setStateDetailsSale}/>} */}
         </div>
     )
 }

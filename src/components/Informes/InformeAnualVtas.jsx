@@ -21,6 +21,7 @@ import convertArraySalesByYear from "../../functions/convertArraySalesByYear";
 function InformeAnualVtas() {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const listSalesByYear = useSelector((state) => state.salesSupply.listSalesSuppliesByYear)
+  const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
 
   const ListAños = [
     { value: 2020, label: 2020 },
@@ -110,81 +111,80 @@ function InformeAnualVtas() {
           />
         </div>
 
-        <div className="titGral">
-          <h2>Servicios Anuales</h2>
-        </div>
+
         {
-          arrayServByYear && arrayServByYear.totalByMonth.length > 0 && arrayServByYear.totalByYear ?
-            <div className="container-lg table-responsive">
-
-              <div className="titInf">
-                <h5>{selectedAnio}</h5>
+          !isIndumentary && (arrayServByYear && arrayServByYear.totalByMonth.length > 0 && arrayServByYear.totalByYear ? (
+            <>
+              <div className="titGral">
+                <h2>Servicios Anuales</h2>
               </div>
-              <table className="table table-bordered table-hover table-white">
-                <thead className="thead-light table-secondary instrument-serif-regular">
-                  <tr>
-                    <th>Mes</th>
-                    <th>Total Servicio</th>
-                    <th>Efectivo</th>
-                    <th>Tarjeta</th>
-                    <th>Banco</th>
-                  </tr>
-                </thead>
-                <tbody className="instrument-serif-regular">
-                  {arrayServByYear && arrayServByYear.totalByMonth && Array.isArray(arrayServByYear.totalByMonth) ? arrayServByYear.totalByMonth.map((vta) => (
+              <div className="container-lg table-responsive">
+
+                <div className="titInf">
+                  <h5>{selectedAnio}</h5>
+                </div>
+                <table className="table table-bordered table-hover table-white">
+                  <thead className="thead-light table-secondary instrument-serif-regular">
                     <tr>
-                      <td>{vta._id ? vta._id === 1 ? 'Enero' : vta._id === 2 ? 'Febrero' : vta._id === 3 ? 'Marzo' : vta._id === 4 ? 'Abril' : vta._id === 5 ? 'Mayo' : vta._id === 6 ? 'Junio' : vta._id === 7 ? 'Julio' : vta._id === 8 ? 'Agosto' : vta._id === 9 ? 'Septiembre' : vta._id === 10 ? 'Octubre' : vta._id === 11 ? 'Noviembre' : 'Diciembre' : null}</td>
-                      <td>{vta.totalValorServ && convertNum(vta.totalValorServ)}</td>
-                      <td>{vta.totalEfectivo && convertNum(vta.totalEfectivo)}</td>
-                      <td>{vta.totalTarjeta && convertNum(vta.totalTarjeta)}</td>
-                      <td>{vta.totalTransferencia && convertNum(vta.totalTransferencia)}</td>
+                      <th>Mes</th>
+                      <th>Total Servicio</th>
+                      <th>Efectivo</th>
+                      <th>Tarjeta</th>
+                      <th>Banco</th>
                     </tr>
-                  )) : null}
+                  </thead>
+                  <tbody className="instrument-serif-regular">
+                    {arrayServByYear && arrayServByYear.totalByMonth && Array.isArray(arrayServByYear.totalByMonth) ? arrayServByYear.totalByMonth.map((vta) => (
+                      <tr>
+                        <td>{vta._id ? vta._id === 1 ? 'Enero' : vta._id === 2 ? 'Febrero' : vta._id === 3 ? 'Marzo' : vta._id === 4 ? 'Abril' : vta._id === 5 ? 'Mayo' : vta._id === 6 ? 'Junio' : vta._id === 7 ? 'Julio' : vta._id === 8 ? 'Agosto' : vta._id === 9 ? 'Septiembre' : vta._id === 10 ? 'Octubre' : vta._id === 11 ? 'Noviembre' : 'Diciembre' : null}</td>
+                        <td>{vta.totalValorServ && convertNum(vta.totalValorServ)}</td>
+                        <td>{vta.totalEfectivo && convertNum(vta.totalEfectivo)}</td>
+                        <td>{vta.totalTarjeta && convertNum(vta.totalTarjeta)}</td>
+                        <td>{vta.totalTransferencia && convertNum(vta.totalTransferencia)}</td>
+                      </tr>
+                    )) : null}
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
 
 
-              <div className="containerInforme">
-                <div className="cardInf">
-                  <div>
-                    <FontAwesomeIcon icon={faChartLine} size="lg" />
-                    <p>Total Vendido: {convertNum(arrayServByYear.totalByYear.totalValorServ)}</p>
+                <div className="containerInforme">
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faChartLine} size="lg" />
+                      <p>Total Vendido: {convertNum(arrayServByYear.totalByYear.totalValorServ)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
+                      <p>Total Efectivo: {convertNum(arrayServByYear.totalByYear.totalEfectivo)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
+                      <p>Total Banco: {convertNum(arrayServByYear.totalByYear.totalTransferencia)}</p>
+                    </div>
+                  </div>
+                  <div className="cardInf">
+                    <div>
+                      <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
+                      <p>Total Tarjeta: {convertNum(arrayServByYear.totalByYear.totalTarjeta)}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="cardInf">
-                  <div>
-                    <FontAwesomeIcon icon={faHandHoldingDollar} size="lg" />
-                    <p>Total Efectivo: {convertNum(arrayServByYear.totalByYear.totalEfectivo)}</p>
-                  </div>
-                </div>
-                <div className="cardInf">
-                  <div>
-                    <FontAwesomeIcon icon={faBuildingColumns} size="lg" />
-                    <p>Total Banco: {convertNum(arrayServByYear.totalByYear.totalTransferencia)}</p>
-                  </div>
-                </div>
-                <div className="cardInf">
-                  <div>
-                    <FontAwesomeIcon icon={faCreditCardAlt} size="lg" />
-                    <p>Total Tarjeta: {convertNum(arrayServByYear.totalByYear.totalTarjeta)}</p>
-                  </div>
-                </div>
+
+
+
               </div>
-
-
-
-            </div> :
-
+            </>) : (
             <div className="container-lg table-responsive">
-
               <h5 className="alertVtas">
                 No existen Servicios para el año {selectedAnio}
               </h5>
-            </div>
+            </div>))
         }
-
-
 
         <div className="titGral">
           <h2>Ventas Anuales</h2>

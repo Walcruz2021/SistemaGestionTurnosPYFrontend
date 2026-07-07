@@ -54,7 +54,7 @@ const FormNoteCred = ({ openModal, setOpenModal, dataModalSale,setStateDetailsSa
     }
 
     const changeQuantity = (data, { e }) => {
-console.log(data)
+
         const value = Math.max(1, Math.min(data?.quantitySale - (data?.quantityReturn || 0), parseInt(e.target.value, 10) || 0));
         setStateListOptionSelected(prevState => prevState.map(option => option.idItemSale === data.idItemSale ? { ...option, quantityReturn: value } : option));
     };
@@ -198,6 +198,7 @@ console.log(data)
                                     className="form-control"
                                     rows="3"
                                     onChange={(e) => setStateReason(e.target.value)}
+                                    maxLength={100}
                                 ></textarea>
                             </div>
 
@@ -256,12 +257,9 @@ console.log(data)
                 </div>
 
 
-
-
-
                 <div className="mt-4 d-flex gap-2">
                     <button className="btn btn-success" onClick={() => addNoteCred({ date: stateDate, arraySupplies: stateListOptionSelected, idSale: dataModalSale._id, idCompany: companySelectedMenu._id, reason: stateReason })}>
-                        Guardar Nota de Crédito
+                        Guardar Nota de Crédito 
                     </button>
 
                 </div>

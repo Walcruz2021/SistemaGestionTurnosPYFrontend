@@ -741,7 +741,7 @@ const TableSuppliesSale = () => {
                 }
 
 
-                <TableSuppliesSaleDetails dataSupplySeleted={supplySelectedVariant} />
+                <TableSuppliesSaleDetails dataSupplySeleted={supplySelectedVariant} setSupplySelected={setSupplySelected}/>
 
 
                 {/* aqui deberia mostrar la compra mas antigua no todas las compras */}

@@ -18,8 +18,8 @@ import withReactContent from "sweetalert2-react-content";
 import converNum from "../../functions/convertNum"
 import { getListSupplies } from "../../reducer/actions/supply/actionsSupply.js"
 import { motion } from "framer-motion";
-
-const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
+import { ClipLoader } from "react-spinners";
+const TableSuppliesSaleDetails = ({ dataSupplySeleted,setSupplySelected }) => {
 
 
     const [stateOpenModalSale, setStateOpenModalSale] = useState(false);
@@ -50,7 +50,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
     const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
     const [selectState, setSelectState] = useState(null);
-
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
@@ -101,11 +101,11 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
     const addSaleSupply = async (detailsSupplies) => {
 
-
+        setIsLoading(true);
 
         const listPrevArray = detailsSupplies.map(sup => {
             //ellimino todos los campos que no utilizares para cumplir con el formato del backend
-            const { _id, variant,nameSupply, currentStock,idSupplyVariant,priceSale, ...newArray } = sup;
+            const { _id, variant, nameSupply, currentStock, idSupplyVariant, priceSale, ...newArray } = sup;
             return newArray;
         });
 
@@ -117,17 +117,21 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
             paymentMethodEfectivo: stateValueMethodPay.efectivo,
             paymentMethodTransferencia: stateValueMethodPay.transferencia,
             paymentMethodTarjeta: stateValueMethodPay.tarjeta,
-            
+
             items: listPrevArray
         }
 
 
         const requestSale = await dispatch(actionAddSaleSupply(dataSaleSupply))
+
+
         if (requestSale && requestSale.status == 200) {
             //volvemos a cargar la lista de insumos de manera de que se actualice el stock visualizado
             dispatch(getListSupplies(companySelectedMenu._id));
             //limpiamos el array de con insumos elegidos para vender
             setStateDetailsSupplies([]);
+            setSupplySelected(null)
+            setIsLoading(false)
             MySwal.fire({
                 title: `¡Venta Agregada Correctamente!`,
                 icon: "success",
@@ -244,7 +248,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
         if (!stateValueMethodPay.efectivo && !stateValueMethodPay.transferencia && !stateValueMethodPay.tarjeta) return true;
         const totalPay = Number(stateValueMethodPay.efectivo || 0) + Number(stateValueMethodPay.transferencia || 0) + Number(stateValueMethodPay.tarjeta || 0);
         if (totalPay !== totalSale) return true;
-
+        if (isLoading) return true
 
         return false;
     };
@@ -286,7 +290,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                             <tr className="bg-zinc-950">
                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                                     Insumo Venta{" "}
-                              
+
                                 </th>
                                 <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                                     Variante Venta{" "}
@@ -318,9 +322,9 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                                                 0.35
                                         }}
                                         className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
-                                                  <td
+                                        <td
                                             className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                            // style={{ cursor: "pointer" }}
+                                        // style={{ cursor: "pointer" }}
                                         // onClick={(e) =>
                                         //     handleDetailsSupplies(e, { sup })
                                         // }
@@ -330,7 +334,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
                                         <td
                                             className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                            // style={{ cursor: "pointer" }}
+                                        // style={{ cursor: "pointer" }}
                                         // onClick={(e) =>
                                         //     handleDetailsSupplies(e, { sup })
                                         // }
@@ -394,136 +398,151 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
 
             }}
             >
-                <Modal.Body className="pt-1 pb-1">
 
-                    <Form>
+                {isLoading ?
+                    <div className="d-flex vh-70 justify-content-center align-items-center flex-column">
 
-                        <Form.Group
-                            className="mb-1"
-                            controlId="exampleForm.ControlInput1"
-                        >
-                            <Form.Label className="instrument-serif-regular">
-                                (*) Fecha Venta
-                            </Form.Label>
+                        <ClipLoader color="#000" loading={true} size={40} />
 
-                            <Form.Control
-                                className="instrument-serif-regular"
-                                type="date"
-                                name="dateSale"
-                                value={stateSaleDetail.dateSale}
-                                onChange={handleChangeDate}
-                                required
-                            />
-                        </Form.Group>
+                        <div className="titGral">
+                            <h2 className="mt-3">
+                                Espere un Momento por favor ...
+                            </h2>
+                        </div>
 
-                        <Form.Group>
-                            <Form.Label className="instrument-serif-regular">
-                                (*) Detalle de Pago
-                            </Form.Label>
-                        </Form.Group>
+                    </div> :
+                    <Modal.Body className="pt-1 pb-1">
 
-                        <Form.Group>
+                        <Form>
 
-                            <Form.Check
-                                type="checkbox"
-                                id="check-efectivo"
-                                label="Efectivo"
-                                onChange={() => handleCheckChange("Efectivo")}
-                                className="mt-2 instrument-serif-regular"
-
-                            />
-                            {visibleCheckE && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Efectivo"
-                                        name="efectivo"
-                                        inputMode="decimal"
-                                        maxLength={10}
-                                        required
-                                        className="mt-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.efectivo}
-                                        onChange={
-                                            // Solo permitir números y máximo 10 caracteres
-                                            changeNumber
-                                        }
-                                    />
-                                </>
-                            )}
-
-                            <Form.Check
-                                type="checkbox"
-                                id="check-transferencia"
-                                label="Transferencia"
-                                onChange={() => handleCheckChange("Transferencia")}
-                                className="mt-2 instrument-serif-regular"
-                            />
-                            {visibleCheckB && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Transferencia"
-                                        name="transferencia"
-                                        maxLength={10}
-                                        inputMode="decimal"
-                                        required
-                                        className="mt-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.transferencia}
-                                        onChange={changeNumber}
-                                    />
-                                </>
-                            )}
-
-                            <Form.Check
-                                type="checkbox"
-                                id="check-tarjeta"
-                                label="Tarjeta"
-                                onChange={() => handleCheckChange("Tarjeta")}
-                                className="mt-2 instrument-serif-regular"
-                            />
-                            {visibleCheckT && (
-                                <>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Tarjeta"
-                                        name="tarjeta"
-                                        maxLength={10}
-                                        inputMode="decimal"
-                                        required
-                                        className="mt-2 mb-2 instrument-serif-regular"
-                                        value={stateValueMethodPay.tarjeta}
-                                        onChange={changeNumber}
-                                    />
-                                </>
-                            )}
-                        </Form.Group>
-
-
-
-                        <Form.Group className="mt-2">
-
-                            <Form.Label
-                                htmlFor="tam-select"
-                                className="instrument-serif-regular"
+                            <Form.Group
+                                className="mb-1"
+                                controlId="exampleForm.ControlInput1"
                             >
-                                (*) Plataforma Venta
-                            </Form.Label>
-                            {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
-                            <Select
-                                className="instrument-serif-regular"
-                                inputId="tam-select"
-                                inputProps={{ "data-testid": "tam-select" }}
-                                placeholder="Seleccione Plataforma"
-                                onChange={(e) => {
-                                    handleChangePlat(e);
-                                    setSelectState(e);
-                                }}
-                                options={selectPlataformaArray}
-                                value={selectState}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
+                                <Form.Label className="instrument-serif-regular">
+                                    (*) Fecha Venta
+                                </Form.Label>
+
+                                <Form.Control
+                                    className="instrument-serif-regular"
+                                    type="date"
+                                    name="dateSale"
+                                    value={stateSaleDetail.dateSale}
+                                    onChange={handleChangeDate}
+                                    required
+                                />
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label className="instrument-serif-regular">
+                                    (*) Detalle de Pago
+                                </Form.Label>
+                            </Form.Group>
+
+                            <Form.Group>
+
+                                <Form.Check
+                                    type="checkbox"
+                                    id="check-efectivo"
+                                    label="Efectivo"
+                                    onChange={() => handleCheckChange("Efectivo")}
+                                    className="mt-2 instrument-serif-regular"
+
+                                />
+                                {visibleCheckE && (
+                                    <>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Efectivo"
+                                            name="efectivo"
+                                            inputMode="decimal"
+                                            maxLength={10}
+                                            required
+                                            className="mt-2 instrument-serif-regular"
+                                            value={stateValueMethodPay.efectivo}
+                                            onChange={
+                                                // Solo permitir números y máximo 10 caracteres
+                                                changeNumber
+                                            }
+                                        />
+                                    </>
+                                )}
+
+                                <Form.Check
+                                    type="checkbox"
+                                    id="check-transferencia"
+                                    label="Transferencia"
+                                    onChange={() => handleCheckChange("Transferencia")}
+                                    className="mt-2 instrument-serif-regular"
+                                />
+                                {visibleCheckB && (
+                                    <>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Transferencia"
+                                            name="transferencia"
+                                            maxLength={10}
+                                            inputMode="decimal"
+                                            required
+                                            className="mt-2 instrument-serif-regular"
+                                            value={stateValueMethodPay.transferencia}
+                                            onChange={changeNumber}
+                                        />
+                                    </>
+                                )}
+
+                                <Form.Check
+                                    type="checkbox"
+                                    id="check-tarjeta"
+                                    label="Tarjeta"
+                                    onChange={() => handleCheckChange("Tarjeta")}
+                                    className="mt-2 instrument-serif-regular"
+                                />
+                                {visibleCheckT && (
+                                    <>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Tarjeta"
+                                            name="tarjeta"
+                                            maxLength={10}
+                                            inputMode="decimal"
+                                            required
+                                            className="mt-2 mb-2 instrument-serif-regular"
+                                            value={stateValueMethodPay.tarjeta}
+                                            onChange={changeNumber}
+                                        />
+                                    </>
+                                )}
+                            </Form.Group>
+
+
+
+                            <Form.Group className="mt-2">
+
+                                <Form.Label
+                                    htmlFor="tam-select"
+                                    className="instrument-serif-regular"
+                                >
+                                    (*) Plataforma Venta
+                                </Form.Label>
+                                {/* <Form.Label>Seleccione Tamaño</Form.Label> */}
+                                <Select
+                                    className="instrument-serif-regular"
+                                    inputId="tam-select"
+                                    inputProps={{ "data-testid": "tam-select" }}
+                                    placeholder="Seleccione Plataforma"
+                                    onChange={(e) => {
+                                        handleChangePlat(e);
+                                        setSelectState(e);
+                                    }}
+                                    options={selectPlataformaArray}
+                                    value={selectState}
+                                />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                }
+
                 <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
                 <div className="text-danger msgAlertInput">{messsageErrorValidation()}</div>
                 <Modal.Footer className="mt-0 pt-3 pb-1 instrument-serif-regular">
@@ -539,6 +558,7 @@ const TableSuppliesSaleDetails = ({ dataSupplySeleted }) => {
                     </Button>
 
                 </Modal.Footer>
+
             </div>
             <ModalAddSaleSupply openModal={stateOpenModalSale} setOpenModal={setStateOpenModalSale} dataModalSale={dataModalSale} stateDetailsSupplies={stateDetailsSupplies} setStateDetailsSupplies={setStateDetailsSupplies} />
         </motion.div>
