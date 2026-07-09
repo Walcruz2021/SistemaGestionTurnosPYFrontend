@@ -121,7 +121,7 @@ function Dashboard() {
 
   const [companyIndumentary, setCompanyIndumentary] = useState(false)
   const [stateCategory] = useState("Cliente");
-
+  const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
 
 
   useEffect(() => {
@@ -462,7 +462,7 @@ function Dashboard() {
           </div>
 
           <span className="font-bold text-zinc-900 tracking-tight text-lg">
-            Sistema PY
+            Sistema de Gestión PY
           </span>
 
         </div>
@@ -495,9 +495,9 @@ function Dashboard() {
             Dashboard
           </h1>
 
-          <p className="text-zinc-500 mt-2 text-base">
+          {isIndumentary ? <p>Administrá clientes, ventas, inventarios, gastos y tu propia tienda virtual desde un solo lugar.</p> : <p className="text-zinc-500 mt-2 text-base">
             Administrá clientes, mascotas, ventas y turnos desde un solo lugar.
-          </p>
+          </p>}
 
         </motion.div>
 
