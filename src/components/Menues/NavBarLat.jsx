@@ -248,7 +248,7 @@ function NavBarLat() {
               mb-0 m-0
             "
           >
-            Gestión Turnos
+            Gestión de Negocio
           </h2>
         </div>
 
