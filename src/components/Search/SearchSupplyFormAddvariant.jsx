@@ -70,6 +70,7 @@ const SearchSupplyFormAddvariant = ({ listSuppliesGral, stateListSuppliesGral, s
 
     }, [listBrand, stateSelectedCategory]);
 
+
     const suppliesFiltered = useMemo(() => {
         let result = Array.isArray(listSuppliesGral)
             ? [...listSuppliesGral]

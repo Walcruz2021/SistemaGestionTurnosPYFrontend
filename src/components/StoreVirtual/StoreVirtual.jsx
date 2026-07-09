@@ -41,7 +41,7 @@ const StoreVirtual = () => {
     const [stateDetailsSup, setStateDetailsSup] = useState({
         detailsSup: "",
     });
-    const companySelectedMenu=useSelector((state) => state.company.companySlugCompany);
+    const companySelectedMenu = useSelector((state) => state.company.companySlugCompany);
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const StoreVirtual = () => {
 
     useEffect(() => {
         if (companySelectedMenu) {
-         
+
             dispatch(listSuppliesStore(companySelectedMenu._id));
         }
     }, [companySelectedMenu, dispatch]);
@@ -100,10 +100,10 @@ const StoreVirtual = () => {
     // FILTRADO OPTIMIZADO
     //-------------------------------------------------
     const suppliesFiltered = useMemo(() => {
-        if(Array.isArray(listSuppliesEcommerce)){
+        if (Array.isArray(listSuppliesEcommerce)) {
 
             let result = [...listSuppliesEcommerce];
-    
+
             // Buscar por nombre
             if (stateSearch.trim()) {
                 result = result.filter((s) =>
@@ -112,14 +112,14 @@ const StoreVirtual = () => {
                         .includes(stateSearch.toLowerCase())
                 );
             }
-    
+
             // Filtrar por categoría
             if (categoryToSearch) {
                 result = result.filter((s) =>
                     s.idGlobalSupply?.idCategory._id === categoryToSearch.value
                 );
             }
-    
+
             // Filtrar por marca
             if (brandToSearch) {
                 result = result.filter(

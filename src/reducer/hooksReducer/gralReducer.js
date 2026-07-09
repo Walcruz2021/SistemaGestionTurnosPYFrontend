@@ -5,7 +5,7 @@ import { LIST_CATEGORIES } from "../actions/category/actionCategory"
 const initialState = {
     conectionMongo: null,
     dataPrediction: "",
-    listbrands: [],
+    listBrands: [],
     listCategories: []
 };
 
