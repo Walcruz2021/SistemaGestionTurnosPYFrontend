@@ -22,6 +22,7 @@ import { getCompantBySlugCompany } from "../../reducer/actions/company/actionCom
 const StoreVirtual = () => {
     const dispatch = useDispatch();
     const { slugCompany } = useParams();
+    const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
 
     const listCategories = useSelector((state) => state.gralRed.listCategories);
     const listSuppliesEcommerce = useSelector(
@@ -293,11 +294,10 @@ const StoreVirtual = () => {
                 <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-xl bg-zinc-900 flex items-center justify-center">
-                            <span className="text-white text-xs font-black">P</span>
+                            <span className="text-white text-xs font-black">{isIndumentary ? "T" : "P"}</span>
                         </div>
                         <div>
-                            <p className="text-zinc-900 font-bold text-sm leading-none">PetShop</p>
-
+                            <p className="text-zinc-900 font-bold text-sm leading-none">{isIndumentary ? "Tu tienda virtual" : "PetShop"}</p>
                         </div>
                     </div>
                     <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-medium hidden sm:block">
