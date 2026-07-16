@@ -15,6 +15,7 @@ import "../../css/cssGeneral.css";
 import "./FormAddCompany.css";
 import { MDBInput } from "mdb-react-ui-kit";
 import logoNew from "../../IMAGENES/LogoNew.png";
+import { ClipLoader } from "react-spinners";
 
 const FormAddCompany = () => {
   const MySwal = withReactContent(Swal);
@@ -37,7 +38,7 @@ const FormAddCompany = () => {
   });
   const [isInputFocusedName, setIsInputFocusedName] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false)
   //logIn with email of gmail
 
   const handleChange = (e) => {
@@ -75,6 +76,7 @@ const FormAddCompany = () => {
       });
     } else {
       try {
+        setIsLoading(true)
         const newCompany = await dispatch(
           addCompany({
             nameCompany: stateValue.nameCompany,
@@ -87,20 +89,16 @@ const FormAddCompany = () => {
             slug: stateValue.nameCompany.toLowerCase().replace(/\s+/g, "-")
           })
         );
-     
-        if (newCompany && newCompany.status === 200) {
 
+        if (newCompany && newCompany.status === 200) {
+          setIsLoading(false)
           MySwal.fire({
             title: "¡Empresa Creada!",
             icon: "success",
             confirmButtonText: "Aceptar",
             confirmButtonColor: "rgb(21, 151, 67)",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate("/");
-              //alert("add company")
-            }
-          });
+          })
+          navigate("/");
         }
       } catch (error) {
         console.error(error.code, error.message);
@@ -186,7 +184,7 @@ const FormAddCompany = () => {
           name="cuit"
           onFocus={handleFocusName}
           value={stateValue.cuit}
-          minLength={2}  
+          minLength={2}
           maxLength={15}
           required
           onChange={(e) => {
@@ -199,7 +197,7 @@ const FormAddCompany = () => {
           }}
         />
 
-        {!validationName.cuit && isInputFocusedName && stateValue.cuit.length<=2 &&(
+        {!validationName.cuit && isInputFocusedName && stateValue.cuit.length <= 2 && (
           <div className="text-danger msgAlertInput">
             Mayor a 2 números
           </div>
@@ -228,7 +226,7 @@ const FormAddCompany = () => {
             Veterinaria y Peluqueria
           </label>
 
-           <label className="p-2">
+          <label className="p-2">
             <input
               className="m-2"
               type="radio"
@@ -242,27 +240,37 @@ const FormAddCompany = () => {
         </div>
 
         <div className="text-danger msgAlertInput">(*) Valores Obligatorios</div>
-        <div className="text-center pt-2 mb-5 pb-1">
-          {
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={handleSumbit}
-              disabled={
-                !stateValue.nameCompany.trim() ||
-                  validationName.nameCompany === false ||
-                  validationName.address === false ||
-                  !stateValue.address.trim() ||
-                  !stateValue.cuit.trim() ||
-                  !selectedOption
-                  ? true
-                  : false
-              }
-            >
-              Adherir Empresa
-            </button>
-          }
-        </div>
+
+        {isLoading ?
+          <div className="d-flex vh-50 justify-content-center align-items-center flex-column">
+            <ClipLoader color="#000" loading={true} size={70} />
+            <div className="titGral">
+              <h2 className="mt-3">Espere un Momento por favor ...</h2>
+            </div>
+          </div> :
+          <div className="text-center pt-2 mb-5 pb-1">
+            {
+              <button
+                className="btn btn-primary"
+                type="submit"
+                onClick={handleSumbit}
+                disabled={
+                  !stateValue.nameCompany.trim() ||
+                    validationName.nameCompany === false ||
+                    validationName.address === false ||
+                    !stateValue.address.trim() ||
+                    !stateValue.cuit.trim() ||
+                    !selectedOption
+                    ? true
+                    : false
+                }
+              >
+                Adherir Empresa
+              </button>
+            }
+          </div>
+        }
+
       </div>
     </div>
   );

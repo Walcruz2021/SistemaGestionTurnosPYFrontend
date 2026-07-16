@@ -23,13 +23,14 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     const listSuppliesGral = useSelector((state) => state.supply.listSuppliesGral)
 
     const listBrands = useSelector((state) => state.gralRed.listBrands);
+
     const [stateMargen, setmargen] = useState(50)
     const [suppliesOptions, setSuppliesOptions] = useState([]);
 
     const [variantOptions, setVariantOptions] = useState([]);
 
     const [brandOptions, setBrandOptions] = useState([]);
-    //list supplyVariant
+
     const listSuppliesVariant = useSelector((state) => state.supplyVariant.listSuppliesVariant.listSupplyVariants);
 
 
@@ -39,7 +40,7 @@ const BlockAddProducBuy = ({ stateInput, setStateInput, index, validationBuySupp
     useEffect(() => {
         if (companySelectedMenu) {
             dispatch(getListSupplies(companySelectedMenu._id));
-            dispatch(getBrands(companySelectedMenu?.catgory));
+            dispatch(getBrands(companySelectedMenu?.category));
         }
     }, [companySelectedMenu]);
 
