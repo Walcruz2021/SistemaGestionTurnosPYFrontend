@@ -29,7 +29,7 @@ export default function SearchBar () {
     e.preventDefault()
     dispatch(get_clients_id(busc.buscado))
     setBusc({ buscado: '' })
-    console.log(cliBusc)
+
   }
 
   return (

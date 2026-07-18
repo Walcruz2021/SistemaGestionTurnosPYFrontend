@@ -31,4 +31,4 @@ const vector = array.map((array, index) => {
   }
 });
 
-console.log(elemento)
+

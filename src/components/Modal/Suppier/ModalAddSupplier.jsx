@@ -55,7 +55,7 @@ const ModalAddSupplier = ({ openModal, setOpenModal }) => {
                 Company: companySelectedMenu._id
             };
             const response = await dispatch(actionAddSupplier(supplierData));
-            console.log(response)
+     
             if (response.status === 200) {
                 MySwal.fire({
                     title: "¡Proveedor agregado correctamente!",

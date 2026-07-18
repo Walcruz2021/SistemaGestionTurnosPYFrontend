@@ -21,7 +21,6 @@ const SearchSupplyAddSale = ({ listSupplies, stateListSupplies, setStateListSupp
     const [stateSearch, setSearch] = useState("");
     const [stateSelectedCategory, setStateSelectedCategory] = useState();
     const listBrand = useSelector((state) => state.gralRed.listBrands);
-    console.log(listBrand)
     const listCategories = useSelector((state) => state.category.arrayCategories);
     const [brand, setBrand] = useState(null);
     const [stateSelectedBrand, setStateSelectedBrand] = useState();

@@ -325,7 +325,11 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                         { value: "blanco", label: "Blanco" },
                                         { value: "rosa", label: "Rosa" },
                                         { value: "amarillo", label: "Amarillo" },
-                                        { value: "gris", label: "Gris" }
+                                        { value: "beige", label: "Beige" },
+                                        { value: "gris", label: "Gris" },
+                                        { value: "verde", label: "Verde" },
+                                        { value: "rojo", label: "Rojo" },
+                                        { value: "azul", label: "Azul" }
                                     ]}
                                     onChange={onChangeSelectColor}
                                 />
@@ -453,7 +457,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                 {/* Footer */}
 
                 {loading ?
-                    <div className="d-flex vh-100 justify-content-center align-items-center flex-column">
+                    <div className="d-flex vh-50 justify-content-center align-items-center flex-column">
 
                         <ClipLoader color="#cec6c6" loading={true} size={70} />
 
@@ -461,7 +465,7 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                             <h2 className="mt-3 text-white">
                                 Espere un Momento por favor ...
                             </h2>
-                        </div>
+                        </div>z
 
                     </div> :
 
