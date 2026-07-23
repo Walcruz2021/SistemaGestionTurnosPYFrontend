@@ -19,7 +19,7 @@ import BlockAddProducBuy from "../Supply/BlockAddProducBuy.jsx"
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
-import ModalAddSupplyGral from "../../Modal/Supply/ModalAddSupplyGral.jsx";
+
 import { FaBasketShopping } from "react-icons/fa6";
 import { Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -563,10 +563,7 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
 
             </Modal.Footer >
 
-            <ModalAddSupplyGral
-                openModal={openModalSupply}
-                setOpenModal={setOpenModalSupply}
-            />
+      
 
             <ModalAddSupplier
                 openModal={openModalSupplier}

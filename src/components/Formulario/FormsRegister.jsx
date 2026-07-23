@@ -400,9 +400,12 @@ function FormRegister({ autUser }) {
         <div className="col-md-5">
             <FrontPageRegisterLogin onContact={RedirectLinkContact} />
         </div>
+
+    
       </div>
     </div>
   );
 }
 
 export default FormRegister;
+            

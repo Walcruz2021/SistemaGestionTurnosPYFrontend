@@ -12,7 +12,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { motion, AnimatePresence } from "framer-motion";
 import { Boxes, UserPlus, ChevronRight, ChevronUp, ChevronDown,GitBranchPlus,ShoppingBasket} from "lucide-react"
-import ModalAddSupplyGral from '../Modal/Supply/ModalAddSupplyGral';
+import FormAddSupplyGral from '../Formulario/Supply/FormAddSupplyGral';
 import ModalAddSupplier from '../Modal/Suppier/ModalAddSupplier';
 
 import FormAddSupplyVariant from "../Formulario/Supply/FormAddSupplyVariant"
@@ -43,6 +43,7 @@ const TableBuySupplies = () => {
     })
     const [openModalSupplier, setOpenModalSupplier] = useState(false);
     const [openModalSupply, setOpenModalSupply] = useState(false);
+
     const [openModalAddVariant, setOpenModalAddVariant] = useState(false);
 
 
@@ -169,7 +170,7 @@ const TableBuySupplies = () => {
             label: "Insumo",
             sub: "Agregar insumo",
             icon: Boxes,
-            action: () => setOpenModalSupply(!openModalSupply),
+            action: () => {setOpenModalSupply(true),setOpenFormBuySupply(false),setOpenModalAddVariant(false) },
             type: "button",
 
         },
@@ -179,7 +180,7 @@ const TableBuySupplies = () => {
             label: "Proveedor",
             sub: "Agregar proveedor",
             icon: UserPlus,
-            action: () => setOpenModalSupplier(!openModalSupplier),
+            action: () => {setOpenModalSupplier(!openModalSupplier),setOpenModalSupply(false)},
             type: "button",
         },
 
@@ -188,7 +189,7 @@ const TableBuySupplies = () => {
             label: "Variantes",
             sub: "Agregar Variante",
             icon: GitBranchPlus,
-            action: () => { setOpenModalAddVariant(true), setOpenFormBuySupply(false) },
+            action: () => { setOpenModalAddVariant(true), setOpenFormBuySupply(false),setOpenModalSupply(false) },
             type: "button",
             disabled: openModalAddVariant
         },
@@ -198,7 +199,7 @@ const TableBuySupplies = () => {
             label: "Compras",
             sub: "Ingresar Compra / listado Compras",
             icon: ShoppingBasket,
-            action: () => { setOpenFormBuySupply(true), setOpenModalAddVariant(false) },
+            action: () => { setOpenFormBuySupply(true), setOpenModalAddVariant(false),setOpenModalSupply(false) },
             type: "button",
             disabled: openFormBuySupply
         },
@@ -343,7 +344,7 @@ const TableBuySupplies = () => {
                 {openModalAddVariant &&
                     <>
 
-                        <div className="flex items-start justify-between mb-8">
+                        <div className="flex items-start justify-between mb-8 mt-3">
 
                             <div>
                                 <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
@@ -361,7 +362,7 @@ const TableBuySupplies = () => {
                 {openFormBuySupply &&
                     <>
 
-                        <div className="flex items-start justify-between mb-8">
+                        <div className="flex items-start justify-between mb-8 mt-3">
                             <div>
                                 <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
                                     Formulario Compras de Insumos
@@ -377,7 +378,7 @@ const TableBuySupplies = () => {
                                 Detalle Compra
                             </SectionDivider>
 
-{openDetailFormBuy?
+                            {openDetailFormBuy?
                             <button
                                 onClick={changeOpen}
                                 className="flex items-center gap-1 ml-auto"
@@ -392,7 +393,7 @@ const TableBuySupplies = () => {
                                 <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">ABRIR</span>
                             </button>
 
-}
+                            }
                         </div>
 
                         {
@@ -670,9 +671,6 @@ const TableBuySupplies = () => {
                             </motion.div>
                         ) : null}
 
-
-
-
                         <SectionDivider>Detalle de compra seleccionada</SectionDivider>
 
 
@@ -680,15 +678,16 @@ const TableBuySupplies = () => {
                             <TableDetailBuys stateDetailsBuy={stateDetailsBuy?.detailsBuy} />
                         </div>
                     </>
-            
+                }
+
+                {openModalSupply &&
+                    <>
+                      <FormAddSupplyGral openModal={openModalSupply} setOpenModal={setOpenModalSupply}/>
+                    </>
                 }
 
             </div>
 
-            <ModalAddSupplyGral
-                openModal={openModalSupply}
-                setOpenModal={setOpenModalSupply}
-            />
 
             <ModalAddSupplier
                 openModal={openModalSupplier}

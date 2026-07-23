@@ -22,9 +22,10 @@ import "./index.css";
 import App from "./App";
 // import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
-import { store,persistor } from "./store";
+import { store, persistor } from "./store";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { PersistGate } from 'redux-persist/integration/react';
+import { ConversationProvider } from "@elevenlabs/react";
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
@@ -32,7 +33,13 @@ root.render(
     {/* PersistGate is config for use redux-persist*/}
     <PersistGate loading={null} persistor={persistor}>
       <React.StrictMode>
-        <App />
+        <ConversationProvider
+          onConnect={() => console.log("ElevenLabs conectado")}
+          onDisconnect={() => console.log("ElevenLabs desconectado")}
+          onError={(error) => console.error("Error de ElevenLabs:", error)}
+        >
+          <App />
+        </ConversationProvider>
       </React.StrictMode>
     </PersistGate>
   </Provider>

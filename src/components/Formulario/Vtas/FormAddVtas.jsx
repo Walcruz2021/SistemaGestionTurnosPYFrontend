@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalAddSupplyGral from '../../Modal/Supply/ModalAddSupplyGral';
+import ModalAddSupplyGral from '../Supply/FormAddSupplyGral';
 import ModalAddSupplier from '../../Modal/Suppier/ModalAddSupplier';
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"

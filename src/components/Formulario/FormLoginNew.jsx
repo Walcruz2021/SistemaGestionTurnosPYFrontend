@@ -369,7 +369,7 @@ function FormLoginNew({ autUser }) {
                     </div>
 
                     <h2 className="text-white font-bold text-xl sm:text-2xl tracking-tight leading-tight">
-                      Gestión de Turnos PY
+                      Sistema de Gestión PY
                     </h2>
 
                     <p className="text-zinc-500 text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-3">
@@ -569,6 +569,8 @@ function FormLoginNew({ autUser }) {
                           Registrarse
                         </button>
 
+          
+
                       </div>
 
                     </div>
@@ -584,9 +586,9 @@ function FormLoginNew({ autUser }) {
 
         {/* PANEL DERECHO */}
         <div className="col-12 col-lg-5">
-          <div className="h-full">
+   
             <FrontPageRegisterLogin onContact={RedirectLinkContact} />
-          </div>
+  
         </div>
 
       </div>

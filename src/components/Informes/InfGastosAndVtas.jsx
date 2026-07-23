@@ -23,7 +23,8 @@ import Select from "react-select";
 import filterSumaValues from "../../functions/filterSumaValues";
 import filterDataGraphicServ from "../../functions/filterDataGraphicServ";
 import filterDataGraphicSales from "../../functions/filterDataGraphicSales";
-
+import DashboardInformesSale from "./DashboardInformesSale";
+import {ElevenLabsChat} from "./ElevenLabsChat.tsx"
 
 ChartJS.register(
   CategoryScale,
@@ -41,7 +42,7 @@ const InfGastosAndVtas = () => {
   const listGtosAnio = useSelector((state) => state.bills.gtosxAnio);
   const listServByAnio = useSelector((state) => state.sales.vtasxAnio);
   const listSalesByYear = useSelector((state) => state.salesSupply.listSalesSuppliesByYear)
-  
+
   const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
   const [selectedAnio, setSelectedAnio] = useState();
   const [stateGtosValue, setStateGtosValue] = useState([]);
@@ -67,7 +68,7 @@ const InfGastosAndVtas = () => {
       let anio = now.getFullYear();
       setSelectedAnio(anio);
       dispatch(gtosXanio(companySelectedMenu._id, anio));
-      
+
       dispatch(informSalesSupplyByYear(companySelectedMenu._id, anio))
       if (!isIndumentary) {
         dispatch(vtasxA(companySelectedMenu._id, anio));
@@ -309,22 +310,24 @@ const InfGastosAndVtas = () => {
       <div className="container mb-4">
         {activeGastos ? (
           <Bar data={dataG} options={options} />
-        ) : activeVentas ?  (
+        ) : activeVentas ? (
           <>
-          {!isIndumentary ?
-            <>
-            <div className="titGral">
-              <h2>Servicios {selectedAnio}</h2>
-            </div>
-            <Bar data={dataServ} options={options} />
-            
-            </>:null
-          }
+            {!isIndumentary ?
+              <>
+                <div className="titGral">
+                  <h2>Servicios {selectedAnio}</h2>
+                </div>
+                <Bar data={dataServ} options={options} />
+
+              </> : null
+            }
 
             <div className="titGral">
               <h2>Ventas {selectedAnio}</h2>
             </div>
             <Bar data={dataSales} options={options} />
+            {/* <DashboardInformesSale/> */}
+            <ElevenLabsChat idCompany={companySelectedMenu._id} />
           </>
         ) : (
 

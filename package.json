@@ -15,6 +15,7 @@
   "author": "Walter Cruz",
   "license": "MIT",
   "dependencies": {
+    "@elevenlabs/react": "^1.10.1",
     "@firebase/analytics": "^0.10.3",
     "@firebase/app": "^0.10.2",
     "@firebase/auth": "^1.7.3",
@@ -33,7 +34,7 @@
     "cdbreact": "^1.5.19",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.1",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "faker": "^6.6.6",
     "firebase": "^12.1.0",
     "formik": "^2.4.6",

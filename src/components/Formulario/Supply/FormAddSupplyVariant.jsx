@@ -17,7 +17,7 @@ import { addInventory } from "../../../reducer/actions/inventory/actionsInventor
 import addSupplyIcon from "../../../icons/supply2.png"
 import addSupplierIcon from "../../../icons/supplier.png"
 import ModalAddSupplier from "../../Modal/Suppier/ModalAddSupplier.jsx";
-import ModalAddSupplyGral from "../../Modal/Supply/ModalAddSupplyGral.jsx";
+import ModalAddSupplyGral from "./FormAddSupplyGral.jsx";
 
 import { Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";

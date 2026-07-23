@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Dog, Users, Clock, BarChart2, DollarSign, MessageCircle } from "lucide-react";
+import { Dog, Users, Clock, BarChart2, DollarSign, MessageCircle,Bot,Store } from "lucide-react";
 
 export default function FrontPageRegisterLogin({ onContact }) {
     const FEATURES = [
@@ -23,10 +23,20 @@ export default function FrontPageRegisterLogin({ onContact }) {
             title: "Ingresos y Gastos",
             desc: "Detalle claro de tu actividad financiera en tiempo real.",
         },
+        // {
+        //     icon: DollarSign,
+        //     title: "Completamente Gratuito",
+        //     desc: "Sin costos ocultos. Empezá hoy sin tarjeta de crédito.",
+        // },
         {
-            icon: DollarSign,
-            title: "Completamente Gratuito",
-            desc: "Sin costos ocultos. Empezá hoy sin tarjeta de crédito.",
+            icon: Store,
+            title: "Tienda Online Integrada",
+            desc: "Publicá tus productos y compartí tu tienda con un solo enlace",
+        },
+        {
+            icon: Bot,
+            title: "Asistente con IA",
+            desc: "Consultá ventas, stock, clientes y obtené recomendaciones.",
         },
     ];
 
@@ -47,7 +57,7 @@ export default function FrontPageRegisterLogin({ onContact }) {
     };
 
     return (
-        <div className="relative h-full min-h-screen bg-black flex flex-col justify-start px-10 py-11 overflow-hidden">
+        <div className="relative h-full min-h-screen bg-black flex flex-col justify-start px-8 py-2 overflow-hidden">
 
             {/* Background */}
             <div className="absolute top-0 left-0 w-72 h-72 bg-white/3 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
@@ -64,10 +74,9 @@ export default function FrontPageRegisterLogin({ onContact }) {
 
             <div className="relative z-10 max-w-md">
 
-
                 {/* Header */}
-                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
-                    <h1 className="text-4xl font-black text-white mb-2">
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-2 mt-2">
+                    <h1 className="text-4xl font-black text-white mb-1">
                         Sistema de <span className="text-gray-400 italic font-light">Gestión PY</span>
                     </h1>
 
@@ -77,7 +86,7 @@ export default function FrontPageRegisterLogin({ onContact }) {
                 </motion.div>
 
                 {/* Features */}
-                <motion.ul variants={container} initial="hidden" animate="show" className="flex flex-col gap-4">
+                <motion.ul variants={container} initial="hidden" animate="show" className="flex flex-col gap-4 mt-5">
                     {FEATURES.map(({ icon: Icon, title, desc }) => (
                         <motion.li key={title} variants={item} className="flex gap-4">
                             <div className="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg">
@@ -92,14 +101,10 @@ export default function FrontPageRegisterLogin({ onContact }) {
                     ))}
 
                 </motion.ul>
-
-
-
-                {/* Status */}
-                <div className="mt-8 text-gray-600 text-xs pt-5">
+                      {/* Status */}
+                <div className="mt-8 text-gray-600 text-xs pt-3">
                     ● Sistema activo · Sin costo
-            
-                    {/* Botón soporte */}
+
                     <motion.button
                         onClick={onContact}
                         whileHover={{ scale: 1.1 }}
@@ -109,7 +114,6 @@ export default function FrontPageRegisterLogin({ onContact }) {
                         <MessageCircle className="w-5 h-5" />
                     </motion.button>
                 </div>
-
 
             </div>
 
