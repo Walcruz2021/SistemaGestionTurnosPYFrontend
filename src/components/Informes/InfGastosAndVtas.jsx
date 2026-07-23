@@ -327,7 +327,7 @@ const InfGastosAndVtas = () => {
             </div>
             <Bar data={dataSales} options={options} />
             {/* <DashboardInformesSale/> */}
-            <ElevenLabsChat idCompany={companySelectedMenu._id} />
+            {/* <ElevenLabsChat idCompany={companySelectedMenu._id} /> */}
           </>
         ) : (
 
