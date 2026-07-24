@@ -36,6 +36,8 @@ export const ElevenLabsChat = ({
       throw new Error("No se encontró el idCompany");
     }
 
+     console.log("idCompany enviado:", idCompany);
+     
     await navigator.mediaDevices.getUserMedia({
       audio: true,
     });

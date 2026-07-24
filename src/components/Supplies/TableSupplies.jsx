@@ -243,6 +243,14 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
         );
     };
 
+    const categoriesStringFunctions = (categories) => {
+        if (!categories || categories.length === 0) {
+            return "";
+        }
+
+        return categories.map(cat => cat.name).join(" / ");
+    };
+    
     return (
         <div className="px-0.5 md:px-8 py-8 max-w-7xl mx-auto">
 
@@ -503,7 +511,11 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                                     </td>
 
                                                     <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameBrand}</td>
-                                                    <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup.global.nameCategory}</td>
+                                                    {
+                                                        sup.global?.categories &&
+                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{categoriesStringFunctions(sup.global?.categories)}</td>
+
+                                                    }
                                                 </motion.tr>
                                             ))}
                                         </tbody>
@@ -706,7 +718,7 @@ const TableSupplies = ({ setInfo, stateInfo }) => {
                                     </h2>
 
                                     <p className="text-zinc-500 text-sm mt-0.5">
-                                        Seleccione un Inusmo para ver sus detalles
+                                        Seleccione un Insumo para ver sus detalles
                                     </p>
 
                                 </div>

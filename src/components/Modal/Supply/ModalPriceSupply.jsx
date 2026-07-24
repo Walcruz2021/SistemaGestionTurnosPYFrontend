@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import { FormGroup } from "react-bootstrap";
-import {listCategories} from "../../../reducer/actions/category/actionCategory"
+import { listCategories } from "../../../reducer/actions/category/actionCategory"
 import { actionEditCompanySupplyVariant } from "../../../reducer/actions/companySupplyVariant/actionsCompanySupplyVariant";
 import { getListSupplies } from "../../../reducer/actions/supply/actionsSupply"
 
@@ -36,7 +36,9 @@ const ModalPriceSupply = ({
     });
     const handleClose = () => setModalOpenEditSupply(!modalOpenEditSupply);
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
+            .replace(/\D/g, "")
+            .slice(0, 10);
         setStateInput((prevState) => ({
             ...prevState,
             [name]: value,
@@ -86,7 +88,7 @@ const ModalPriceSupply = ({
 
 
             } else {
-   
+
                 MySwal.fire({
                     title: "¡Error al modificar el precio!",
                     icon: "error",
@@ -142,13 +144,23 @@ const ModalPriceSupply = ({
 
                                     <Form.Control
                                         className="instrument-serif-regular"
-                                        type="number"
+                                        type="text"
                                         name="priceSale"
                                         autoFocus
-                                        maxLength={50}
+                                        maxLength={10}
                                         min="0"
                                         value={stateInput.priceSale}
-                                        onChange={handleChange}
+                               
+                                        onChange={(e) => {
+                                            // Solo permitir números y máximo 10 caracteres
+                                            const value = e.target.value
+                                                .replace(/\D/g, "")
+                                                .slice(0, 10);
+                                            setStateInput((prevState) => ({
+                                                ...prevState,
+                                                priceSale: value,
+                                            }));
+                                        }}
                                         required
                                     />
                                 </Form.Group>
