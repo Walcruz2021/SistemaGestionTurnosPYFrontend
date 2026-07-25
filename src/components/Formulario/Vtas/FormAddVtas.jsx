@@ -190,10 +190,7 @@ const FormAddVtas = () => {
 
 
                 <TableSuppliesSale />
-                <ModalAddSupplyGral
-                    openModal={openModalSupply}
-                    setOpenModal={setOpenModalSupply}
-                />
+             
 
                 <ModalAddSupplier
                     openModal={openModalSupplier}
