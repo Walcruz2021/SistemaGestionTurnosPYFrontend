@@ -88,6 +88,7 @@ const TableSuppliesSale = () => {
     // MANEJO DE SELECCIÓN DE VARIANTES
     //-------------------------------------------------
     const handleDetailsSuppliesVariant = (e, variant, nameSupply) => {
+
         e.preventDefault();
         const newDataVariant = {
             ...variant,
@@ -180,7 +181,7 @@ const TableSuppliesSale = () => {
 
 
                 {/* BUSCADOR */}
-                <SearchSupplyAddSale listSupplies={listSupplies} stateListSupplies={stateListSupplies} setStateListSupplies={setStateListSupplies} stateActiveTable={stateActiveTable} setStateActiveTable={setStateActiveTable} setSupplySelectedFromTable={setSupplySelected}/>
+                <SearchSupplyAddSale listSupplies={listSupplies} stateListSupplies={stateListSupplies} setStateListSupplies={setStateListSupplies} stateActiveTable={stateActiveTable} setStateActiveTable={setStateActiveTable} setSupplySelectedFromTable={setSupplySelected} />
 
                 {
 
@@ -248,12 +249,12 @@ const TableSuppliesSale = () => {
                                                     <tr className="bg-zinc-950">
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                                                             Insumo{" "}
-                                                            <FontAwesomeIcon
+                                                            {/* <FontAwesomeIcon
                                                                 onClick={handleOrder}
                                                                 icon={faSortAlphaDown}
                                                                 style={{ cursor: "pointer" }}
                                                                 color={order ? "#FF846A" : "#A2DFFF"}
-                                                            />
+                                                            /> */}
                                                         </th>
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Categoría</th>
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Marca</th>
@@ -516,7 +517,7 @@ const TableSuppliesSale = () => {
 
                 {/* TABLE VARIANTS */}
                 {
-                   supplySelected &&  (
+                    supplySelected && (
                         <>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -577,12 +578,12 @@ const TableSuppliesSale = () => {
                                                     <tr className="bg-zinc-950">
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">
                                                             Variante{" "}
-                                                            <FontAwesomeIcon
+                                                            {/* <FontAwesomeIcon
                                                                 onClick={handleOrder}
                                                                 icon={faSortAlphaDown}
                                                                 style={{ cursor: "pointer" }}
                                                                 color={order ? "#FF846A" : "#A2DFFF"}
-                                                            />
+                                                            /> */}
                                                         </th>
                                                         <th className="px-3 md:px-5 py-3.5 text-left  font-semibold text-zinc-400 uppercase tracking-widest text-[10px] md:text-xs">Insumo</th>
 
@@ -611,18 +612,36 @@ const TableSuppliesSale = () => {
 
 
                                                         <td
-                                                            className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal"
-                                                            style={{ cursor: "pointer" }}
-                                                            onClick={(e) =>
-                                                                handleDetailsSuppliesVariant(e, sup, supplySelected.nameSupply)
+                                                            className={`px-3 md:px-5 py-3 text-xs md:text-sm break-words whitespace-normal ${sup?.currentStock === 0
+                                                                    ? "text-red-600 cursor-not-allowed"
+                                                                    : "text-zinc-500 cursor-pointer"
+                                                                }`}
+                                                            onClick={
+                                                                sup?.currentStock > 0
+                                                                    ? (e) => handleDetailsSuppliesVariant(
+                                                                        e,
+                                                                        sup,
+                                                                        supplySelected.nameSupply,
+                                                                    )
+                                                                    : undefined
                                                             }
                                                         >
                                                             {sup?.variant?.name}
                                                         </td>
+
                                                         <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{supplySelected.nameSupply}</td>
 
 
-                                                        <td className="px-3 md:px-5 py-3 text-xs md:text-sm text-zinc-500 break-words whitespace-normal">{sup?.currentStock}</td>
+                                                        <td
+                                                            className={`px-3 md:px-5 py-3 text-xs md:text-sm break-words whitespace-normal ${sup?.currentStock === 0
+                                                                ? "text-red-600 font-semibold"
+                                                                : "text-zinc-500"
+                                                                }`}
+                                                        >
+                                                            {sup?.currentStock}
+                                                        </td>
+
+
 
                                                     </motion.tr>
                                                 ))}
@@ -741,7 +760,7 @@ const TableSuppliesSale = () => {
                 }
 
 
-                <TableSuppliesSaleDetails dataSupplySeleted={supplySelectedVariant} setSupplySelected={setSupplySelected}/>
+                <TableSuppliesSaleDetails dataSupplySeleted={supplySelectedVariant} setSupplySelected={setSupplySelected} />
 
 
                 {/* aqui deberia mostrar la compra mas antigua no todas las compras */}
