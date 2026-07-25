@@ -40,6 +40,8 @@ import {
 // import { Chart } from "primereact/chart";
 import DetailsSaleSelected from "../Sale/DetailsSaleSelected";
 
+import DemoAsistant from "./DemoAsistant.tsx";
+import { ConversationProvider } from "@elevenlabs/react";
 export default function TodoList() {
   const isIndumentary = useSelector((state) => state.company.categoryIndumentary)
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
@@ -337,6 +339,7 @@ export default function TodoList() {
   return (
     <div>
 
+      
       {/* container buttons */}
       <div className="container">
         <div className="row justify-content-center">
@@ -590,7 +593,7 @@ export default function TodoList() {
 
         <>
           {
-             !isIndumentary && Array.isArray(vtasFiltered) && vtasFiltered.length > 0 ? (
+            !isIndumentary && Array.isArray(vtasFiltered) && vtasFiltered.length > 0 ? (
               <div>
                 <div className="container-lg table-responsive">
                   <div className="titGral">
@@ -674,7 +677,7 @@ export default function TodoList() {
           }
 
           {
-           Array.isArray(listSalesByMonth) && listSalesByMonth.length > 0 ? (
+            Array.isArray(listSalesByMonth) && listSalesByMonth.length > 0 ? (
               <div>
                 <div className="titGral">
                   <h2>Ventas del Mes Seleccionado</h2>
@@ -802,6 +805,11 @@ export default function TodoList() {
       )
 
       }
+
+      <ConversationProvider>
+        <DemoAsistant idCompany={companySelectedMenu._id} />
+      </ConversationProvider>
+
 
     </div>
   )

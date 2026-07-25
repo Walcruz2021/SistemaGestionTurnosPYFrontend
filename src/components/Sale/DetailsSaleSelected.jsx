@@ -11,9 +11,10 @@ import noteCred from "../../icons/noteCred.png";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import FormNoteCred from "../Formulario/Vtas/FormNoteCred"
-
-
+import { ConversationProvider } from "@elevenlabs/react";
+import DemoAsistant from "../Informes/DemoAsistant.tsx"
 const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale, setOpenModalNoteCred, openModalNoteCred }) => {
+  const companySelectedMenu = useSelector((state) => state.company.companySelected);
 
 
     function functionOpenModal() {
@@ -134,6 +135,9 @@ const DetailsSaleSelected = ({ detailsSale, setStateDetailsSale, setOpenModalNot
 
 
             {/* {openModalNoteCred && <FormNoteCred openModal={openModalNoteCred} setOpenModal={setOpenModalNoteCred} dataModalSale={detailsSale} setStateDetailsSale={setStateDetailsSale}/>} */}
+            {/* <ConversationProvider>
+                <DemoAsistant idCompany={companySelectedMenu._id} />
+            </ConversationProvider> */}
         </div>
     )
 }

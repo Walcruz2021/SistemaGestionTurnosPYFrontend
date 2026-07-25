@@ -24,7 +24,9 @@ import filterSumaValues from "../../functions/filterSumaValues";
 import filterDataGraphicServ from "../../functions/filterDataGraphicServ";
 import filterDataGraphicSales from "../../functions/filterDataGraphicSales";
 import DashboardInformesSale from "./DashboardInformesSale";
-import {ElevenLabsChat} from "./ElevenLabsChat.tsx"
+import { ElevenLabsChat } from "./ElevenLabsChat.tsx"
+import DemoAsistant from "./DemoAsistant.tsx";
+import { ConversationProvider } from "@elevenlabs/react";
 
 ChartJS.register(
   CategoryScale,
@@ -36,7 +38,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
 const InfGastosAndVtas = () => {
   const companySelectedMenu = useSelector((state) => state.company.companySelected);
   const listGtosAnio = useSelector((state) => state.bills.gtosxAnio);
@@ -327,7 +328,8 @@ const InfGastosAndVtas = () => {
             </div>
             <Bar data={dataSales} options={options} />
             {/* <DashboardInformesSale/> */}
-            <ElevenLabsChat idCompany={companySelectedMenu._id} />
+            {/* <ElevenLabsChat idCompany={companySelectedMenu._id} /> */}
+         
           </>
         ) : (
 

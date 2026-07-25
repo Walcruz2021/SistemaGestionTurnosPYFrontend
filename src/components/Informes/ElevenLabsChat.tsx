@@ -69,8 +69,15 @@ export const ElevenLabsChat = ({
   const isConnecting = status === "connecting";
 
   return (
-    <section>
-      <h2>Asistente virtual</h2>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 gap-8">
+       <div className="text-center">
+        <p className="text-[10px] font-semibold tracking-[0.35em] uppercase text-muted-foreground mb-1">
+          Vista previa
+        </p>
+        <h1 className="text-2xl font-black text-foreground tracking-tight">
+          Asistente de Voz
+        </h1>
+      </div>
 
       <p>Estado: {status}</p>
 
@@ -100,6 +107,6 @@ export const ElevenLabsChat = ({
           Finalizar conversación
         </button>
       )}
-    </section>
+    </div>
   );
 };
