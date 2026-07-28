@@ -20,6 +20,7 @@
 // export default host
 
 const rutaBackend="https://backend-app-peluqueria.vercel.app"
+const rutaBackendNest="https://backend-nest-informes.vercel.app"
 // const rutaBackend="backend-app-peluqueria-ns26xe7p8-walcruz198821s-projects.vercel.app"
 //const rutaBackend="http://localhost:3002"
 

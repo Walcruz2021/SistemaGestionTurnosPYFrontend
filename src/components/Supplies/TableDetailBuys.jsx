@@ -78,7 +78,6 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
     return (
         <div >
-
             {/* CARDS OSCURAS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mb-5">
 
@@ -151,7 +150,7 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
                         <tbody>
 
-                            {stateDetailsBuy.detailsSupply?.length > 0 ? (
+                            {stateDetailsBuy && stateDetailsBuy.detailsSupply?.length > 0 ? (
                                 stateDetailsBuy.detailsSupply.map((buy) => (
                                     <motion.tr
                                         key={buy._id}
@@ -204,8 +203,8 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
                 </div>
 
             </motion.div>
-
         </div>
+        
     );
 };
 

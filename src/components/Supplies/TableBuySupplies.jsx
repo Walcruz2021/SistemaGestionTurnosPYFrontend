@@ -57,7 +57,6 @@ const TableBuySupplies = () => {
         error,
     } = useSelector((state) => state.supply);
 
-    console.log(findSUpplyByNInvoice)
     /*
      * Estados de búsqueda
      */
@@ -75,6 +74,7 @@ const TableBuySupplies = () => {
     const [openModalSupplier, setOpenModalSupplier] = useState(false);
     const [openModalSupply, setOpenModalSupply] = useState(false);
     const [openModalAddVariant, setOpenModalAddVariant] = useState(false);
+    const [openTableDetailBuys, setOpenTableDetailBuys] = useState(false)
 
     /*
      * Compra seleccionada para visualizar su detalle
@@ -83,7 +83,7 @@ const TableBuySupplies = () => {
     const [stateDetailsBuy, setStateDetailsBuy] = useState({
         detailsBuy: null,
     });
-console.log(stateDetailsBuy)
+
     /*
      * Paginación
      */
@@ -171,9 +171,9 @@ console.log(stateDetailsBuy)
      */
 
     function handleDetailsBuy(event, buy) {
-        console.log(buy)
-        event.preventDefault();
 
+        event.preventDefault();
+        setOpenTableDetailBuys(true)
         setStateDetailsBuy({
             detailsBuy: buy,
         });
@@ -283,9 +283,8 @@ console.log(stateDetailsBuy)
                 dark:border-zinc-800
                 align-middle
                 ${right ? "text-right tabular-nums" : ""}
-                ${
-                    link
-                        ? `
+                ${link
+                    ? `
                             text-zinc-900
                             dark:text-zinc-100
                             font-medium
@@ -293,7 +292,7 @@ console.log(stateDetailsBuy)
                             hover:underline
                             underline-offset-2
                         `
-                        : "text-zinc-500 dark:text-zinc-400"
+                    : "text-zinc-500 dark:text-zinc-400"
                 }
             `}
         >
@@ -583,18 +582,18 @@ console.log(stateDetailsBuy)
                                                     <Td>
                                                         {buy.date
                                                             ? convertDateReverse(
-                                                                  convertDateFormat(
-                                                                      buy.date
-                                                                  )
-                                                              )
+                                                                convertDateFormat(
+                                                                    buy.date
+                                                                )
+                                                            )
                                                             : "Sin fecha"}
                                                     </Td>
 
                                                     <Td right>
                                                         {buy.montoB
                                                             ? convertNum(
-                                                                  buy.montoB
-                                                              )
+                                                                buy.montoB
+                                                            )
                                                             : 0}
                                                     </Td>
                                                 </motion.tr>
@@ -603,16 +602,16 @@ console.log(stateDetailsBuy)
                                         {currentItems.filter(
                                             searchBuy(stateSearch)
                                         ).length === 0 && (
-                                            <tr>
-                                                <td
-                                                    colSpan={4}
-                                                    className="px-4 py-8 text-center text-sm text-zinc-400"
-                                                >
-                                                    No hay compras para
-                                                    mostrar.
-                                                </td>
-                                            </tr>
-                                        )}
+                                                <tr>
+                                                    <td
+                                                        colSpan={4}
+                                                        className="px-4 py-8 text-center text-sm text-zinc-400"
+                                                    >
+                                                        No hay compras para
+                                                        mostrar.
+                                                    </td>
+                                                </tr>
+                                            )}
                                     </tbody>
                                 </table>
                             </div>
@@ -622,100 +621,97 @@ console.log(stateDetailsBuy)
 
                         {suppliesFiltered.length >
                             itemsPerPage && (
-                            <div className="flex justify-center items-center gap-1 mt-4">
-                                <nav>
-                                    <ul className="pagination">
-                                        <li
-                                            className={`page-item ${
-                                                currentPage === 1
-                                                    ? "disabled"
-                                                    : ""
-                                            }`}
-                                        >
-                                            <button
-                                                type="button"
-                                                className="page-link"
-                                                disabled={
-                                                    currentPage === 1
-                                                }
-                                                onClick={() =>
-                                                    setCurrentPage(
-                                                        (
-                                                            previousPage
-                                                        ) =>
-                                                            previousPage -
-                                                            1
-                                                    )
-                                                }
-                                            >
-                                                «
-                                            </button>
-                                        </li>
-
-                                        {Array.from(
-                                            {
-                                                length: totalPages,
-                                            },
-                                            (_, index) => (
-                                                <li
-                                                    key={
-                                                        index + 1
-                                                    }
-                                                    className={`page-item ${
-                                                        currentPage ===
-                                                        index + 1
-                                                            ? "active"
-                                                            : ""
+                                <div className="flex justify-center items-center gap-1 mt-4">
+                                    <nav>
+                                        <ul className="pagination">
+                                            <li
+                                                className={`page-item ${currentPage === 1
+                                                        ? "disabled"
+                                                        : ""
                                                     }`}
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        className="page-link"
-                                                        onClick={() =>
-                                                            setCurrentPage(
-                                                                index +
-                                                                    1
-                                                            )
-                                                        }
-                                                    >
-                                                        {index + 1}
-                                                    </button>
-                                                </li>
-                                            )
-                                        )}
-
-                                        <li
-                                            className={`page-item ${
-                                                currentPage ===
-                                                totalPages
-                                                    ? "disabled"
-                                                    : ""
-                                            }`}
-                                        >
-                                            <button
-                                                type="button"
-                                                className="page-link"
-                                                disabled={
-                                                    currentPage ===
-                                                    totalPages
-                                                }
-                                                onClick={() =>
-                                                    setCurrentPage(
-                                                        (
-                                                            previousPage
-                                                        ) =>
-                                                            previousPage +
-                                                            1
-                                                    )
-                                                }
                                             >
-                                                »
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        )}
+                                                <button
+                                                    type="button"
+                                                    className="page-link"
+                                                    disabled={
+                                                        currentPage === 1
+                                                    }
+                                                    onClick={() =>
+                                                        setCurrentPage(
+                                                            (
+                                                                previousPage
+                                                            ) =>
+                                                                previousPage -
+                                                                1
+                                                        )
+                                                    }
+                                                >
+                                                    «
+                                                </button>
+                                            </li>
+
+                                            {Array.from(
+                                                {
+                                                    length: totalPages,
+                                                },
+                                                (_, index) => (
+                                                    <li
+                                                        key={
+                                                            index + 1
+                                                        }
+                                                        className={`page-item ${currentPage ===
+                                                                index + 1
+                                                                ? "active"
+                                                                : ""
+                                                            }`}
+                                                    >
+                                                        <button
+                                                            type="button"
+                                                            className="page-link"
+                                                            onClick={() =>
+                                                                setCurrentPage(
+                                                                    index +
+                                                                    1
+                                                                )
+                                                            }
+                                                        >
+                                                            {index + 1}
+                                                        </button>
+                                                    </li>
+                                                )
+                                            )}
+
+                                            <li
+                                                className={`page-item ${currentPage ===
+                                                        totalPages
+                                                        ? "disabled"
+                                                        : ""
+                                                    }`}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    className="page-link"
+                                                    disabled={
+                                                        currentPage ===
+                                                        totalPages
+                                                    }
+                                                    onClick={() =>
+                                                        setCurrentPage(
+                                                            (
+                                                                previousPage
+                                                            ) =>
+                                                                previousPage +
+                                                                1
+                                                        )
+                                                    }
+                                                >
+                                                    »
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            )}
 
                         {/* BÚSQUEDA GENERAL */}
 
@@ -753,7 +749,7 @@ console.log(stateDetailsBuy)
                                     onKeyDown={(event) => {
                                         if (
                                             event.key ===
-                                                "Enter" &&
+                                            "Enter" &&
                                             stateSearchGral.trim() &&
                                             !loading
                                         ) {
@@ -867,18 +863,18 @@ console.log(stateDetailsBuy)
                                                 <Td>
                                                     {findSUpplyByNInvoice.date
                                                         ? convertDateReverse(
-                                                              convertDateFormat(
-                                                                  findSUpplyByNInvoice.date
-                                                              )
-                                                          )
+                                                            convertDateFormat(
+                                                                findSUpplyByNInvoice.date
+                                                            )
+                                                        )
                                                         : "Sin fecha"}
                                                 </Td>
 
                                                 <Td right>
                                                     {findSUpplyByNInvoice.montoB
                                                         ? convertNum(
-                                                              findSUpplyByNInvoice.montoB
-                                                          )
+                                                            findSUpplyByNInvoice.montoB
+                                                        )
                                                         : 0}
                                                 </Td>
                                             </tr>
@@ -950,13 +946,17 @@ console.log(stateDetailsBuy)
                             Detalle de compra seleccionada
                         </SectionDivider>
 
-                        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-                            <TableDetailBuys
-                                stateDetailsBuy={
-                                    stateDetailsBuy?.detailsBuy
-                                }
-                            />
-                        </div>
+                        {
+                            openTableDetailBuys &&
+
+                            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
+                                <TableDetailBuys
+                                    stateDetailsBuy={
+                                        stateDetailsBuy?.detailsBuy
+                                    }
+                                />
+                            </div>
+                        }
                     </>
                 )}
 
