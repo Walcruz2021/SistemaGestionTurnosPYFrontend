@@ -140,7 +140,7 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
                         <thead className="bg-zinc-50 dark:bg-zinc-950">
                             <tr>
-
+                                <Th>Insumo</Th>
                                 <Th>Elementos Comprados</Th>
                                 <Th>Marca</Th>
                                 <Th right>Cantidad</Th>
@@ -164,9 +164,11 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
                                     "
                                     >
 
+                                        <Td>{buy.nameSupply}</Td>
+
                                         <Td>
                                             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                                                {buy.nameSupply}
+                                                {buy?.idVariant?.name}
                                             </span>
                                         </Td>
 

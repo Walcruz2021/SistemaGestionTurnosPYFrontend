@@ -41,6 +41,10 @@ const FormGastosVar = () => {
       value: "MULTAS ADMINISTRATIVAS",
       label: "Multas Administrativas",
     },
+    {
+      value: "TRANSPORTE MERCADERIA",
+      label: "Transporte Mercaderia",
+    }
   ];
 
   const onSubmit = (data) => {

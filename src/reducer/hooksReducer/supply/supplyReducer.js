@@ -1,4 +1,4 @@
-import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL,RESET_BUYSUPPLY_BY_NINVOICE } from "../../actions/supply/actionsSupply";
+import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL, RESET_BUYSUPPLY_BY_NINVOICE, BUY_SUPPLY_NOT_FOUND, BUY_SUPPLY_LOADING, BUY_SUPPLY_ERROR } from "../../actions/supply/actionsSupply";
 
 
 
@@ -14,7 +14,9 @@ const initialState = {
     listSupplies: [],
     listBuySupplies: [],
     findSUpplyByNInvoice: [],
-    listSuppliesGral: []
+    listSuppliesGral: [],
+    notFound: false,
+    loading: true
 };
 
 
@@ -27,18 +29,51 @@ export default function supplyReducer(state = initialState, action) {
                 listBuySupplies: action.payload
             }
 
+        case BUY_SUPPLY_LOADING:
+            return {
+                ...state,
+                loading: true,
+                notFound: false,
+                error: null
+            };
+
         case GET_BUYSUPPLY_BY_NINVOICE:
             return {
                 ...state,
-                findSUpplyByNInvoice: action.payload
+                loading: false,
+                findSUpplyByNInvoice: action.payload,
+                notFound: false,
+                error: null
+
             }
+
+        case BUY_SUPPLY_NOT_FOUND:
+            return {
+                ...state,
+                loading: false,
+                findSUpplyByNInvoice: null,
+                notFound: true,
+                error: null
+            };
+
+        case BUY_SUPPLY_ERROR:
+            return {
+                ...state,
+                loading: false,
+                findSUpplyByNInvoice: null,
+                notFound: false,
+                error: action.payload
+            };
 
         case RESET_BUYSUPPLY_BY_NINVOICE:
             return {
                 ...state,
-                findSUpplyByNInvoice: null
+                findSUpplyByNInvoice: null,
+                notFound: false,
+                loading: false,
+                error: null
             }
-            
+
         case ADD_SUPPLY:
             return {
                 ...state
