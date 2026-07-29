@@ -324,7 +324,16 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
             "&:hover": {
                 borderColor: hasError ? "red" : provided.borderColor
             }
-        })
+        }),
+        menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999,
+        }),
+
+        menu: (base) => ({
+            ...base,
+            zIndex: 9999,
+        }),
     });
 
 
@@ -391,6 +400,8 @@ export default function FormAddBuySupply({ openFormBuySupply, setOpenFormBuySupp
                                             placeholder="Seleccione un proveedor"
                                             className="text-sm"
                                             classNamePrefix="purchase-select"
+                                            menuPortalTarget={document.body}
+                                            menuPosition="fixed"
                                         />
                                     </div>
 

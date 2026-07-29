@@ -8,9 +8,9 @@ import {
 } from "../../../reducer/actions/supply/actionsSupply";
 import { getBrands } from "../../../reducer/actions/actionBrand";
 import { getListSuppliesVariant } from "../../../reducer/actions/supply/actionsSupplyVariant";
-
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 const inputClass =
-    "w-full bg-white border border-zinc-500 text-gray-900 text-sm px-3.5 py-2.5 rounded-lg focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/5 transition-all duration-200 placeholder:text-gray-400";
+    "w-full bg-white border border-zinc-500 text-gray-900 text-xs px-3.5 py-2.5 rounded-lg focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/5 transition-all duration-200 placeholder:text-gray-400";
 
 const labelClass =
     "text-[11px] font-semibold tracking-[0.15em] uppercase text-gray-500 mb-1.5 block";
@@ -271,6 +271,17 @@ const BlockAddProducBuy = ({
                 ...prev,
                 detailsSupply: updated,
             };
+        });
+    };
+
+    const handleChangeField = (name, value) => {
+        if (name === "quantity" || name === "unitCost") {
+            value = value.replace(/\D/g, "").slice(0, 10);
+        }
+        setStateInput((prev) => {
+            const updated = [...prev.detailsSupply];
+            updated[index] = { ...updated[index], [name]: value };
+            return { ...prev, detailsSupply: updated };
         });
     };
 
