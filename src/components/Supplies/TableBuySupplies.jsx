@@ -427,18 +427,7 @@ const TableBuySupplies = () => {
 
                 {openFormBuySupply && (
                     <>
-                        <div className="flex items-start justify-between mb-8 mt-3">
-                            <div>
-                                <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
-                                    Formulario Compras de Insumos
-                                </h1>
-
-                                <p className="text-sm text-zinc-400 mt-0.5">
-                                    Gestión y seguimiento de facturas
-                                </p>
-                            </div>
-                        </div>
-
+                    
                         <div className="flex items-center">
                             <div className="flex-1">
                                 <SectionDivider>
@@ -479,6 +468,18 @@ const TableBuySupplies = () => {
                                 }
                             />
                         )}
+
+                        <div className="flex items-start justify-between mb-8 mt-5">
+                            <div>
+                                <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+                                    Tabla de Compras de Insumos
+                                </h1>
+
+                                <p className="text-sm text-zinc-400 mt-0.5">
+                                    Gestión y seguimiento de facturas
+                                </p>
+                            </div>
+                        </div>
 
                         <SectionDivider>
                             Compras del mes actual
@@ -626,8 +627,8 @@ const TableBuySupplies = () => {
                                         <ul className="pagination">
                                             <li
                                                 className={`page-item ${currentPage === 1
-                                                        ? "disabled"
-                                                        : ""
+                                                    ? "disabled"
+                                                    : ""
                                                     }`}
                                             >
                                                 <button
@@ -660,9 +661,9 @@ const TableBuySupplies = () => {
                                                             index + 1
                                                         }
                                                         className={`page-item ${currentPage ===
-                                                                index + 1
-                                                                ? "active"
-                                                                : ""
+                                                            index + 1
+                                                            ? "active"
+                                                            : ""
                                                             }`}
                                                     >
                                                         <button
@@ -683,9 +684,9 @@ const TableBuySupplies = () => {
 
                                             <li
                                                 className={`page-item ${currentPage ===
-                                                        totalPages
-                                                        ? "disabled"
-                                                        : ""
+                                                    totalPages
+                                                    ? "disabled"
+                                                    : ""
                                                     }`}
                                             >
                                                 <button
