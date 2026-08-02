@@ -31,7 +31,7 @@ export function actionNoteCred({ date, arraySupplies, idSale, idCompany, reason 
 }
 
 export function actionBestSelling(idCompany) {
-    console.log(idCompany)
+   
     return async function (dispatch) {
 
         // console.log(API_URL)
@@ -40,6 +40,7 @@ export function actionBestSelling(idCompany) {
 
                 `https://backend-nest-informes.vercel.app/api/nest/salesupplies/bestSelling/${idCompany}`
             );
+            console.log(bestSelling,"action best selling")
             return dispatch({
                 type: BEST_SELLING,
                 payload:bestSelling.data

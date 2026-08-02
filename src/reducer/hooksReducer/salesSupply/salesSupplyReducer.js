@@ -1,30 +1,30 @@
-import { NOTECRED, BEST_SELLING } from "../../actions/supply/actionsSupply";
+// import { NOTECRED, BEST_SELLING } from "../../actions/salesSupply/actionSalesSupply";
 
 
-const initialState = {
-    listSupplies: [],
-    listBestSelling: []
-};
+// const initialState = {
+//     listSupplies: [],
+//     listBestSelling: []
+// };
 
 
-export default function supplyReducer(state = initialState, action) {
-    switch (action.type) {
+// export default function supplyReducer(state = initialState, action) {
+//     switch (action.type) {
 
 
 
-        case NOTECRED:
-            return {
-                ...state,
-                listSupplies: action.payload,
-            };
+//         case NOTECRED:
+//             return {
+//                 ...state,
+//                 listSupplies: action.payload,
+//             };
 
-        case BEST_SELLING:
-            return {
-                ...state,
-                listBestSelling: action.payload
-            }
+//         case BEST_SELLING:
+//             return {
+//                 ...state,
+//                 listBestSelling: action.payload
+//             }
 
-        default:
-            return state;
-    }
-}
+//         default:
+//             return state;
+//     }
+// }

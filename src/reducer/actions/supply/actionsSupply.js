@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import host from "../../../components/ruteBack/vbledeploy"
+import hostNest from "../../../components/ruteBack/vbleDeployNest"
 
 export const ADD_SUPPLY = "ADD_SUPPLY"
 export const ADD_BUY_SUPPLY = "ADD_BUY_SUPPLY"
@@ -13,6 +14,7 @@ export const ADD_SALE_SUPPLY = "ADD_SALE_SUPPLY"
 export const GET_BUYSUPPLY_BY_NINVOICE = "GET_BUYSUPPLY_BY_NINVOICE"
 export const GET_LIST_SUPPLIES_GRAL = "GET_LIST_SUPPLIES_GRAL"
 export const RESET_BUYSUPPLY_BY_NINVOICE="RESET_BUYSUPPLY_BY_NINVOICE"
+export const GRAND_CAPITAL_SUPPLY="GRAND_CAPITAL_SUPPLY"
 
 /**
  * add supply gral
@@ -174,6 +176,21 @@ export function actionListBuySupplyByNInvoice(idCompany, nInvoice) {
 export const resetGetSupplyByInvoice = () => {
   return {
     type: RESET_BUYSUPPLY_BY_NINVOICE
+  }
+}
+
+export function actionGrandCapitalSupply(idCompany) {
+  return async function (dispatch) {
+    const sumaCapitalStock = await axios.get(
+      `${hostNest}/api/nest/supply/grandCapitalSupply/${idCompany}`,
+      {}
+    );
+
+    return dispatch({
+      type: GRAND_CAPITAL_SUPPLY,
+      payload: sumaCapitalStock.data.capitalInvertido
+
+    })
   }
 }
 

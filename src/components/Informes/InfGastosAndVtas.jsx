@@ -60,29 +60,7 @@ const InfGastosAndVtas = () => {
     { value: 2026, label: 2026 },
   ];
 
-  const metrics = [
-    {
-      id: "stock",
-      label: "Capital en Stock",
-      value: "$1.000.000",
-      icon: Package,
-      accent: "text-foreground",
-    },
-    {
-      id: "gross",
-      label: "Ganancia Bruta",
-      value: "$500.000",
-      icon: TrendingUp,
-      accent: "text-foreground",
-    },
-    {
-      id: "sales",
-      label: "Total Ventas",
-      value: "$325.000",
-      icon: DollarSign,
-      accent: "text-foreground",
-    },
-  ];
+
 
   const dispatch = useDispatch();
 
@@ -360,7 +338,7 @@ const InfGastosAndVtas = () => {
 
       </div>
 
-      <MetricsOverview metrics={metrics} />
+      <MetricsOverview />
 
     </div>
   );

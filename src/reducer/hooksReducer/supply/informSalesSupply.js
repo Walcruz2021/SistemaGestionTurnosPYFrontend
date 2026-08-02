@@ -1,10 +1,12 @@
 import { SALESSUPPLIESBYMONTHNOW, SALESSUPPLIESBYMONTH, SALESSUPPLIESBYYEAR, RESET_SALES_BYMONTH, RESET_SALES_PRODUCTS_BYYEAR } from "../../actions/supply/actionsInformSalesSupply";
 
+import { BEST_SELLING } from "../../actions/salesSupply/actionSalesSupply";
 
 const initialState = {
     listSalesSuppliesByMonthNow: [],
     listSalesSuppliesByMonth: [],
-    listSalesSuppliesByYear: []
+    listSalesSuppliesByYear: [],
+    listBestSelling: []
 };
 
 
@@ -37,6 +39,11 @@ export default function informSalesSupply(state = initialState, action) {
             return {
                 ...state,
                 listSalesSuppliesByYear: null
+            }
+        case BEST_SELLING:
+            return {
+                ...state,
+                listBestSelling: action.payload
             }
         default:
             return state;
