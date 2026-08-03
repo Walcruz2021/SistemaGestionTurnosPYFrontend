@@ -329,7 +329,10 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                         { value: "gris", label: "Gris" },
                                         { value: "verde", label: "Verde" },
                                         { value: "rojo", label: "Rojo" },
-                                        { value: "azul", label: "Azul" }
+                                        { value: "azul", label: "Azul" },
+                                        { value: "blanco y azul", label: "Blanco y Azul" },
+                                        { value: "blanco y negro", label: "Blanco y Negro"},
+                                        {value:"blanco y gris", label:"Blanco y Gris"},
                                     ]}
                                     onChange={onChangeSelectColor}
                                 />
