@@ -78,7 +78,6 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
     return (
         <div >
-
             {/* CARDS OSCURAS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mb-5">
 
@@ -140,7 +139,7 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
                         <thead className="bg-zinc-50 dark:bg-zinc-950">
                             <tr>
-
+                                <Th>Insumo</Th>
                                 <Th>Elementos Comprados</Th>
                                 <Th>Marca</Th>
                                 <Th right>Cantidad</Th>
@@ -151,7 +150,7 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
 
                         <tbody>
 
-                            {stateDetailsBuy.detailsSupply?.length > 0 ? (
+                            {stateDetailsBuy && stateDetailsBuy.detailsSupply?.length > 0 ? (
                                 stateDetailsBuy.detailsSupply.map((buy) => (
                                     <motion.tr
                                         key={buy._id}
@@ -164,9 +163,11 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
                                     "
                                     >
 
+                                        <Td>{buy.nameSupply}</Td>
+
                                         <Td>
                                             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                                                {buy.nameSupply}
+                                                {buy?.idVariant?.name}
                                             </span>
                                         </Td>
 
@@ -202,8 +203,8 @@ const TableDetailBuys = ({ stateDetailsBuy }) => {
                 </div>
 
             </motion.div>
-
         </div>
+        
     );
 };
 

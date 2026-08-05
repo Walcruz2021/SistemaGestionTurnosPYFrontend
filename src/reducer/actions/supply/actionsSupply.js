@@ -13,9 +13,11 @@ export const UPDATE_SUPPLY_By_LIST = "UPDATE_SUPPLY_By_LIST"
 export const ADD_SALE_SUPPLY = "ADD_SALE_SUPPLY"
 export const GET_BUYSUPPLY_BY_NINVOICE = "GET_BUYSUPPLY_BY_NINVOICE"
 export const GET_LIST_SUPPLIES_GRAL = "GET_LIST_SUPPLIES_GRAL"
-export const RESET_BUYSUPPLY_BY_NINVOICE="RESET_BUYSUPPLY_BY_NINVOICE"
+export const RESET_BUYSUPPLY_BY_NINVOICE = "RESET_BUYSUPPLY_BY_NINVOICE"
 export const GRAND_CAPITAL_SUPPLY="GRAND_CAPITAL_SUPPLY"
-
+export const BUY_SUPPLY_NOT_FOUND = "BUY_SUPPLY_NOT_FOUND"
+export const BUY_SUPPLY_LOADING = "BUY_SUPPLY_LOADING"
+export const BUY_SUPPLY_ERROR="BUY_SUPPLY_ERROR"
 /**
  * add supply gral
  * @param {*} nameSupply
@@ -154,24 +156,62 @@ export function actionListBuySuppliesByDateCurrent(idCompany) {
   }
 }
 
-export function actionListBuySupplyByNInvoice(idCompany, nInvoice) {
-  return async function (dispatch) {
-    const listBuySupplies = await axios.get(
-      `${host}/api/getBuySupplyXNInvoice/${idCompany}`,
-      {
-        params: {
-          NInvoice: nInvoice,
 
-        }
+export const actionListBuySupplyByNInvoice =
+  (idCompany, NInvoice) => async (dispatch) => {
+    dispatch({
+      type: BUY_SUPPLY_LOADING
+    });
+
+    try {
+      const response = await axios.get(
+        `${host}/api/getBuySupplyXNInvoice/${idCompany}?NInvoice=${encodeURIComponent(NInvoice)}`
+      );
+
+      dispatch({
+        type: GET_BUYSUPPLY_BY_NINVOICE,
+        payload: response.data.findSupply
+      });
+
+      return {
+        success: true,
+        status: response.status,
+        data: response.data.findSupply
+      };
+
+    } catch (error) {
+      const status = error.response?.status;
+
+      if (status === 404) {
+        dispatch({
+          type: BUY_SUPPLY_NOT_FOUND
+        });
+
+        return {
+          success: false,
+          status: 404,
+          message:
+            error.response?.data?.message ||
+            "No se encontró la factura"
+        };
       }
-    );
-    return dispatch({
-      type: GET_BUYSUPPLY_BY_NINVOICE,
-      payload: listBuySupplies.data.findSupply
 
-    })
-  }
-}
+      const message =
+        error.response?.data?.message ||
+        "Error en el servidor";
+
+      dispatch({
+        type: BUY_SUPPLY_ERROR,
+        payload: message
+      });
+
+      return {
+        success: false,
+        status: status || 500,
+        message
+      };
+    }
+  };
 
 export const resetGetSupplyByInvoice = () => {
   return {

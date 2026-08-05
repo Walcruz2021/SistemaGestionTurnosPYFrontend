@@ -1,4 +1,4 @@
-import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL, RESET_BUYSUPPLY_BY_NINVOICE, GRAND_CAPITAL_SUPPLY } from "../../actions/supply/actionsSupply";
+import { ADD_SUPPLY, ADD_BUY_SUPPLY, GET_LIST_SUPPLIES, ORDER_SUPPLIES, UPDATE_SUPPLY, GET_LIST_BUY_SUPPLIES_BY_DATE_CURRENT, UPDATE_SUPPLY_By_LIST, ADD_SALE_SUPPLY, GET_BUYSUPPLY_BY_NINVOICE, GET_LIST_SUPPLIES_GRAL,  RESET_BUYSUPPLY_BY_NINVOICE, GRAND_CAPITAL_SUPPLY, BUY_SUPPLY_NOT_FOUND, BUY_SUPPLY_LOADING, BUY_SUPPLY_ERROR } from "../../actions/supply/actionsSupply";
 
 
 
@@ -15,7 +15,9 @@ const initialState = {
     listBuySupplies: [],
     findSUpplyByNInvoice: [],
     listSuppliesGral: [],
-    capitalStock: ""
+    capitalStock: "",
+    notFound: false,
+    loading: true
 };
 
 
@@ -27,6 +29,14 @@ export default function supplyReducer(state = initialState, action) {
                 ...state,
                 listBuySupplies: action.payload
             }
+
+        case BUY_SUPPLY_LOADING:
+            return {
+                ...state,
+                loading: true,
+                notFound: false,
+                error: null
+            };
 
         case GET_BUYSUPPLY_BY_NINVOICE:
             return {
@@ -43,8 +53,12 @@ export default function supplyReducer(state = initialState, action) {
         case RESET_BUYSUPPLY_BY_NINVOICE:
             return {
                 ...state,
-                findSUpplyByNInvoice: null
+                findSUpplyByNInvoice: null,
+                notFound: false,
+                loading: false,
+                error: null
             }
+
 
         case ADD_SUPPLY:
             return {
