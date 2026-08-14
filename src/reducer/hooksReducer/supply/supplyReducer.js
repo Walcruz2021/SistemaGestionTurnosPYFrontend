@@ -17,7 +17,7 @@ const initialState = {
     listSuppliesGral: [],
     capitalStock: "",
     notFound: false,
-    loading: true
+    loading: false
 };
 
 
@@ -53,10 +53,7 @@ export default function supplyReducer(state = initialState, action) {
         case RESET_BUYSUPPLY_BY_NINVOICE:
             return {
                 ...state,
-                findSUpplyByNInvoice: null,
-                notFound: false,
-                loading: false,
-                error: null
+                findSUpplyByNInvoice: null
             }
 
 

@@ -179,13 +179,13 @@ export default function MetricsOverview() {
     //   </div>
     // </section>
 
-    <section className="w-full">
+    <section className="w-full pt-4">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-8"
+        className="mb-3"
       >
         <p className="text-[10px] font-semibold tracking-[0.4em] uppercase text-muted-foreground mb-2">
           Resumen financiero

@@ -397,9 +397,11 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                                 { value: "blanco y azul", label: "Blanco y Azul" },
                                                 { value: "blanco y negro", label: "Blanco y Negro" },
                                                 { value: "blanco y gris", label: "Blanco y Gris" },
+                                                { value: "blanco y rosa", label: "Blanco y Rosa" },
                                                 { value: "negro y gris", label: "Negro y Gris" },
                                                 { value: "negro y azul", label: "Negro y Azul" },
                                                 { value: "negro y blanco", label: "Negro y Blanco" },
+                                                { value: "negro y rosa", label: "Negro y Rosa" }
                                             ]}
                                             onChange={onChangeSelectColor}
                                             placeholder="Seleccionar"
@@ -453,6 +455,14 @@ const BlockAddVariant = ({ stateSupplySelected, setStateSupplySelected }) => {
                                 <Select
                                     styles={selectStyles}
                                     options={[
+                                        { value: 26, label: "26" },
+                                        { value: 27, label: "27" },
+                                        { value: 28, label: "28" },
+                                        { value: 29, label: "29" },
+                                        { value: 30, label: "30" },
+                                        { value: 31, label: "31" },
+                                        { value: 32, label: "32" },
+                                        { value: 33, label: "33" },
                                         { value: 34, label: "34" },
                                         { value: 35, label: "35" },
                                         { value: 36, label: "36" },

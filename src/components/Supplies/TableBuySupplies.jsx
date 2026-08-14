@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     actionListBuySuppliesByDateCurrent,
     actionListBuySupplyByNInvoice,
+    resetGetSupplyByInvoice
 } from "../../reducer/actions/supply/actionsSupply";
 
 import FormAddBuySupply from "../Formulario/Supply/FormAddBuySupply";
@@ -11,7 +12,7 @@ import FormAddSupplyGral from "../Formulario/Supply/FormAddSupplyGral";
 import FormAddSupplyVariant from "../Formulario/Supply/FormAddSupplyVariant";
 import ModalAddSupplier from "../Modal/Suppier/ModalAddSupplier";
 import TableDetailBuys from "./TableDetailBuys";
-
+import { ClipLoader } from "react-spinners";
 import convertDateFormat from "../../functions/convertDateFormat";
 import convertDateReverse from "../../functions/convertDateReverse";
 import convertNum from "../../functions/convertNum";
@@ -53,14 +54,14 @@ const TableBuySupplies = () => {
         listBuySupplies,
         findSUpplyByNInvoice,
         notFound,
-        loading,
         error,
     } = useSelector((state) => state.supply);
 
     /*
      * Estados de búsqueda
      */
-
+    const [loading, setLoading] = useState(false)
+    const [messageError, setMessageError] = useState("");
     const [stateSearch, setSearch] = useState("");
     const [stateSearchGral, setSearchGral] = useState("");
 
@@ -70,7 +71,6 @@ const TableBuySupplies = () => {
 
     const [openFormBuySupply, setOpenFormBuySupply] = useState(false);
     const [openDetailFormBuy, setOpenDetailBuy] = useState(true);
-
     const [openModalSupplier, setOpenModalSupplier] = useState(false);
     const [openModalSupply, setOpenModalSupply] = useState(false);
     const [openModalAddVariant, setOpenModalAddVariant] = useState(false);
@@ -104,6 +104,13 @@ const TableBuySupplies = () => {
             );
         }
     }, [companySelectedMenu?._id, dispatch]);
+
+    //reseteamos la compra buscada por numero de factura cuando se desmonta el componente
+    useEffect(() => {
+        return () => {
+            dispatch(resetGetSupplyByInvoice());
+        };
+    }, [dispatch]);
 
     /*
      * Lista de compras
@@ -152,18 +159,27 @@ const TableBuySupplies = () => {
      */
 
     async function searchBuyGralByNInvoice() {
+        setLoading(true);
         const invoice = stateSearchGral.trim();
 
         if (!companySelectedMenu?._id || !invoice) {
             return;
         }
 
-        await dispatch(
+        const searchResult = await dispatch(
             actionListBuySupplyByNInvoice(
                 companySelectedMenu._id,
                 invoice
             )
         );
+
+        if (searchResult?.status == 200) {
+            setLoading(false);
+            setMessageError("")
+        } else if (searchResult?.status == 404) {
+            setMessageError("No existe compra con el número de factura ingresado.");
+            setLoading(false);
+        }
     }
 
     /*
@@ -427,7 +443,7 @@ const TableBuySupplies = () => {
 
                 {openFormBuySupply && (
                     <>
-                    
+
                         <div className="flex items-center">
                             <div className="flex-1">
                                 <SectionDivider>
@@ -761,27 +777,31 @@ const TableBuySupplies = () => {
                                 />
                             </div>
 
-                            <motion.button
-                                type="button"
-                                whileHover={{
-                                    opacity: 0.85,
-                                }}
-                                whileTap={{
-                                    scale: 0.97,
-                                }}
-                                onClick={
-                                    searchBuyGralByNInvoice
-                                }
-                                disabled={
-                                    !stateSearchGral.trim() ||
-                                    loading
-                                }
-                                className="px-4 h-9 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-[13px] font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-opacity min-w-[90px]"
-                            >
-                                {loading
-                                    ? "Buscando..."
-                                    : "Buscar"}
-                            </motion.button>
+                            {
+                                !loading &&
+                                <motion.button
+                                    type="button"
+                                    whileHover={{
+                                        opacity: 0.85,
+                                    }}
+                                    whileTap={{
+                                        scale: 0.97,
+                                    }}
+                                    onClick={
+                                        searchBuyGralByNInvoice
+                                    }
+                                    disabled={
+                                        !stateSearchGral.trim() ||
+                                        loading
+                                    }
+                                    className="px-4 h-9 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-[13px] font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-opacity min-w-[90px]"
+                                >
+                                    {loading
+                                        ? "Buscando..."
+                                        : "Buscar"}
+                                </motion.button>
+
+                            }
                         </div>
 
                         {/* ESTADO DE CARGA */}
@@ -887,7 +907,7 @@ const TableBuySupplies = () => {
 
                         {/* FACTURA NO ENCONTRADA */}
 
-                        {!loading && notFound && (
+                        {!loading && messageError && (
                             <motion.div
                                 initial={{
                                     opacity: 0,

@@ -139,7 +139,7 @@ const TableSuppliesSale = () => {
         : [];
 
 
-    console.log(currentItems)
+
     const CustomControlSelect1 = ({ children, ...props }) => {
         return (
             <components.Control {...props}>

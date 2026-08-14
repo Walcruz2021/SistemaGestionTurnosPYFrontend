@@ -33,7 +33,7 @@ export default function ProductMetricCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      className={`group relative bg-card border border-border p-6 sm:p-7 overflow-hidden hover:border-foreground/30 transition-all duration-300 ${accentRing}`}
+      className={`group relative bg-card border border-border p-2 sm:p-4 overflow-hidden hover:border-foreground/30 transition-all duration-300 ${accentRing}`}
     >
       <div
         className={`absolute -top-16 -right-16 w-40 h-40 rounded-full ${accentGlow} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
